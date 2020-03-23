@@ -1,28 +1,16 @@
 package Sandbox;
 
-import Sandbox.*; // Import sandbox package
-
-// Include Junit v5
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.*;
-
-import java.util.Scanner;
-
 public class sandboxMain {
 
-
     public static void main(String[] args) {
-        System.out.println("----- MAIN START -----");
+        System.out.println("----- SANDBOX START -----");
 
-        Scanner scanner = new Scanner(System.in);
+        System.out.println(System.getProperty("user.dir")); // Output 'working directory' e.g. C:\java\project
 
-        new gui();
-
-        System.out.println(System.getProperty("user.dir")); // C:\Users\tom\Dropbox\Java\CAB302-Dev
-
+        new gui(); // GUI class for testing billboard features
+        new readXML(); // Class for figuring out parsing XML
 
 
-        //scanner.nextLine(); // Wait for any input
-        System.out.println("----- MAIN END -----");
+        System.out.println("----- SANDBOX END -----");
     }
 }
