@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-// Java Swing?
+// Java Swing
 /*
 Swing:
     javax.swing - https://docs.oracle.com/en/java/javase/13/docs/api/java.desktop/javax/swing/package-summary.html
@@ -44,8 +44,7 @@ public class gui {
     private double xRes; //Full screen width
     private double yRes; //Full screen height
     boolean windowed = false; // set to true for Windowed (dev)
-    private String imagePath = System.getProperty("user.dir") + "\\src\\sandbox\\" + testImage; // test file
-    // C:\Users\tom\Dropbox\Java\CAB302-Dev\Billboard1200x800.png
+    private String imagePath = System.getProperty("user.dir") + "\\Assets\\" + testImage; // test file
 
     BufferedImage image = null; // null initialisation
     Image scaledImage = null; // null initialisation
