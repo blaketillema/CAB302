@@ -1,28 +1,43 @@
 package billboard_viewer;
 
+import java.util.TreeMap;
+
 public class CurrentBillboard extends Billboard {
-    String message;
-    String picture;
+    private TreeMap<String, String> billboardContents;
 
-    /** Billboard with message only
+    /**
      *
-     * @param message
+     * @param billboardContents
      */
-    public void billboard(String message){
-        this.message = message;
-        this.picture = null;
+    public CurrentBillboard(TreeMap<String, String> billboardContents) {
+        this.billboardContents = billboardContents;
     }
 
-    /** Billboard with message & picture
-     * @param message
-     * @param picture
+
+
+
+    /**
+     *
+     * @return
      */
-    public void billboard(String message, String picture){
-        this.message = message;
-        this.picture = picture;
+    public String getBillboardMessage() {
+        if (billboardContents.containsKey("message")) {
+            return billboardContents.get("message");
+        }
+        else return null;
     }
 
-    // billboard with...
+
+    /**
+     *
+     * @return
+     */
+    public TreeMap<String, String> getBillboardContents() {
+        return billboardContents;
+    }
+
+
+
 
     /*
     Types of Billboards:
