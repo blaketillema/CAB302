@@ -32,7 +32,7 @@ public class ServerConnect implements Runnable{
      */
     public void run() {
         // running
-        System.out.println("Debug: runnable start");
+        //System.out.println("Debug: runnable start");
         connect();
         while(true) {
             try {
@@ -47,7 +47,7 @@ public class ServerConnect implements Runnable{
     public ServerConnect() {
         //Initialize client server connection settings
         // Read from .props file connection settings
-        System.out.println("Debug: ServerConnect start");
+        //System.out.println("Debug: ServerConnect start");
 
     }
 
@@ -55,8 +55,7 @@ public class ServerConnect implements Runnable{
      * Returns the current billBoard TreeMap
      * @return
      */
-    public TreeMap getBillboard() {
-        //
+    public TreeMap<String, String> getBillboard() {
         return billboardMap;
     }
 
@@ -64,7 +63,7 @@ public class ServerConnect implements Runnable{
      * Print the billboard treemap for debug purposes
      */
     public void printBillboard() {
-        System.out.println("Debug: Printing Billboard...");
+        //System.out.println("Debug: Printing Billboard...");
         Set<String> set1 = billboardMap.keySet();
         for (String key: set1) {
             System.out.println("Key : "  + key + "\t\t" + "Value : "  + billboardMap.get(key));
@@ -78,7 +77,7 @@ public class ServerConnect implements Runnable{
      * Return true/false if the billboard is new
      */
     private boolean connect() {
-        System.out.println("Debug: Connect to server");
+        //System.out.println("Debug: Connect to server");
         boolean equals = false;
 
         // Unimplemented test
@@ -88,11 +87,11 @@ public class ServerConnect implements Runnable{
         // Compare TreeMaps
         if (newBillboardMap.equals(billboardMap)) {
             // Same map - do nothing
-            System.out.println("Debug: Same Billboard");
+            // System.out.println("Debug: Same Billboard");
             return false; // same billboard
         } else {
             // New map - update billboardMap
-            System.out.println("Debug: New Billboard");
+            //System.out.println("Debug: New Billboard");
             billboardMap = newBillboardMap;
             return true; // New billboard
         }
