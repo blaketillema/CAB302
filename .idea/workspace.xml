@@ -4,9 +4,10 @@
     <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/CAB302.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CAB302.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/userManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/UserManagement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_server/authentication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/Authentication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/displayBillboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/DisplayBillboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/Billboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/Billboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/BillboardDataHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/BillboardDataHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/CurrentBillboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/CurrentBillboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/DisplayBillboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/DisplayBillboard.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,8 +17,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -47,7 +48,12 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
-  <component name="RunManager" selected="Application.sandboxMain">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\dnehl\OneDrive - Queensland University of Technology\CAB302\assignment\CAB302\src" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.RunDisplayBillboard">
     <configuration name="Unnamed" type="AndroidJUnit" factoryName="Android JUnit" nameIsGenerated="true">
       <module name="CAB302" />
       <useClassPathOnly />
@@ -60,14 +66,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="Sandbox.sandboxMain" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="sandboxMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Sandbox.sandboxMain" />
+    <configuration name="RunDisplayBillboard" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="billboard_viewer.RunDisplayBillboard" />
       <module name="CAB302" />
       <extension name="coverage">
         <pattern>
@@ -79,13 +79,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Sandbox.sandboxMain" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Android JUnit.Unnamed" />
-      <item itemvalue="Application.sandboxMain" />
+      <item itemvalue="Application.RunDisplayBillboard" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.sandboxMain" />
+        <item itemvalue="Application.RunDisplayBillboard" />
       </list>
     </recent_temporary>
   </component>
@@ -111,10 +117,10 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="1920" y="32" key="#Project_Structure/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585363322833" />
-    <state x="2488" y="114" width="1352" height="966" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1585363384476">
+    <state x="2488" y="114" width="1352" height="966" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1585464838673">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2488" y="114" width="1352" height="966" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585363384476" />
+    <state x="2488" y="114" width="1352" height="966" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585464838673" />
     <state x="2033" y="303" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1585226512752">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
@@ -123,49 +129,49 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2909" y="170" key="#com.intellij.ide.macro.MacrosDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585362813763" />
-    <state x="2834" y="296" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1585362763801">
+    <state x="2834" y="296" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1585464834616">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2834" y="296" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585362763801" />
+    <state x="2834" y="296" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585464834616" />
     <state x="2251" y="411" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1585264949809">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2251" y="411" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585264949809" />
-    <state x="1920" y="0" key="CommitChangelistDialog2" timestamp="1585362926396">
+    <state x="1920" y="0" key="CommitChangelistDialog2" timestamp="1585453971046">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="1920" y="0" key="CommitChangelistDialog2/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585362926396" />
+    <state x="1920" y="0" key="CommitChangelistDialog2/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585453971046" />
     <state x="2884" y="228" key="FileChooserDialogImpl" timestamp="1585363319998">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2884" y="228" key="FileChooserDialogImpl/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585363319998" />
-    <state width="890" height="264" key="GridCell.Tab.0.bottom" timestamp="1585364072516">
+    <state width="1034" height="261" key="GridCell.Tab.0.bottom" timestamp="1585463596515">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="890" height="264" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072516" />
-    <state width="890" height="264" key="GridCell.Tab.0.center" timestamp="1585364072516">
+    <state width="1034" height="261" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585463596515" />
+    <state width="1034" height="261" key="GridCell.Tab.0.center" timestamp="1585463596515">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="890" height="264" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072516" />
-    <state width="890" height="264" key="GridCell.Tab.0.left" timestamp="1585364072515">
+    <state width="1034" height="261" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585463596515" />
+    <state width="1034" height="261" key="GridCell.Tab.0.left" timestamp="1585463596514">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="890" height="264" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072515" />
-    <state width="890" height="264" key="GridCell.Tab.0.right" timestamp="1585364072516">
+    <state width="1034" height="261" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585463596514" />
+    <state width="1034" height="261" key="GridCell.Tab.0.right" timestamp="1585463596515">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="890" height="264" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072516" />
-    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog" timestamp="1585264927015">
+    <state width="1034" height="261" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585463596515" />
+    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog" timestamp="1585453539788">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585264927015" />
-    <state x="3017" y="0" width="830" height="1087" key="dock-window-1" timestamp="1585392272835">
+    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585453539788" />
+    <state x="2873" y="0" width="974" height="1087" key="dock-window-1" timestamp="1585465123484">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="3017" y="0" width="830" height="1087" key="dock-window-1/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585392272835" />
-    <state x="1894" y="-2" key="search.everywhere.popup" timestamp="1585366180196">
-      <screen x="0" y="0" width="1920" height="1050" />
+    <state x="2873" y="0" width="974" height="1087" key="dock-window-1/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585465123484" />
+    <state x="1972" y="-2" width="1009" height="1470" key="search.everywhere.popup" timestamp="1585461243292">
+      <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="1894" y="-2" key="search.everywhere.popup/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585366180196" />
+    <state x="1972" y="-2" width="1009" height="1470" key="search.everywhere.popup/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585461243292" />
   </component>
 </project>

@@ -1,26 +1,15 @@
 package billboard_viewer;
 
-import ...
+/**
+ * This is the main GUI to display the current billboard
+ */
 
 public class DisplayBillboard {
     // GUI
     public void displayCurrentBillboard() {
 
-    }
-
-
-
-
-    public static void main(String[] args) {
-        // get billboard data
-
-
-        /** Call to refresh the screen display to enact update
-         */
-        displayCurrentBillboard();
 
     }
-
 }
 
 

@@ -1,6 +1,5 @@
 package billboard_viewer;
 
-import ...
 
 import javax.swing.text.Document;
 
@@ -10,9 +9,9 @@ import javax.swing.text.Document;
  */
 
 public class BillboardDataHandler{
-        // private String displayDefault = "<billboard> <message>No Billboard to Display</message> </billboard>";
-        // private String currentDisplay = displayDefault;
-        private Document currentDisplay;
+        private String displayDefault = "<billboard> <message>No Billboard to Display</message> </billboard>";
+        private String currentDisplay = displayDefault;
+        //private Document currentDisplay;
 
         // Connect to server to refresh data to currently display
         // (need to run every 15 seconds)
