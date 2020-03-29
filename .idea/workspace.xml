@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/CAB302.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CAB302.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/billboard_viewer/MainRunDisplay.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/Billboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/Billboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/BillboardDataHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/BillboardDataHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/CurrentBillboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/CurrentBillboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/DisplayBillboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/DisplayBillboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/BillboardDataHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/CurrentBillboard.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/CurrentBillboard.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/DisplayBillboard.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/DisplayBillboard.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/RunDisplayBillboard.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/ServerConnect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/ServerConnect.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +54,7 @@
       <recent name="C:\Users\dnehl\OneDrive - Queensland University of Technology\CAB302\assignment\CAB302\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.RunDisplayBillboard">
+  <component name="RunManager" selected="Application.MainRunDisplay">
     <configuration name="Unnamed" type="AndroidJUnit" factoryName="Android JUnit" nameIsGenerated="true">
       <module name="CAB302" />
       <useClassPathOnly />
@@ -66,8 +67,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="RunDisplayBillboard" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="billboard_viewer.RunDisplayBillboard" />
+    <configuration name="MainRunDisplay" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="billboard_viewer.MainRunDisplay" />
       <module name="CAB302" />
       <extension name="coverage">
         <pattern>
@@ -87,11 +88,11 @@
     </configuration>
     <list>
       <item itemvalue="Android JUnit.Unnamed" />
-      <item itemvalue="Application.RunDisplayBillboard" />
+      <item itemvalue="Application.MainRunDisplay" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.RunDisplayBillboard" />
+        <item itemvalue="Application.MainRunDisplay" />
       </list>
     </recent_temporary>
   </component>
@@ -145,33 +146,65 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2884" y="228" key="FileChooserDialogImpl/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585363319998" />
-    <state width="1034" height="261" key="GridCell.Tab.0.bottom" timestamp="1585463596515">
+    <state width="890" height="260" key="GridCell.Tab.0.bottom" timestamp="1585484508950">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1034" height="261" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585463596515" />
-    <state width="1034" height="261" key="GridCell.Tab.0.center" timestamp="1585463596515">
+    <state width="890" height="260" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585484508950" />
+    <state width="890" height="260" key="GridCell.Tab.0.center" timestamp="1585484508949">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1034" height="261" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585463596515" />
-    <state width="1034" height="261" key="GridCell.Tab.0.left" timestamp="1585463596514">
+    <state width="890" height="260" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585484508949" />
+    <state width="890" height="260" key="GridCell.Tab.0.left" timestamp="1585484508949">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1034" height="261" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585463596514" />
-    <state width="1034" height="261" key="GridCell.Tab.0.right" timestamp="1585463596515">
+    <state width="890" height="260" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585484508949" />
+    <state width="890" height="260" key="GridCell.Tab.0.right" timestamp="1585484508949">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="1034" height="261" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585463596515" />
-    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog" timestamp="1585453539788">
+    <state width="890" height="260" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585484508949" />
+    <state width="890" height="439" key="GridCell.Tab.1.bottom" timestamp="1585483619423">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585453539788" />
-    <state x="2873" y="0" width="974" height="1087" key="dock-window-1" timestamp="1585465123484">
+    <state width="890" height="439" key="GridCell.Tab.1.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585483619423" />
+    <state width="890" height="439" key="GridCell.Tab.1.center" timestamp="1585483619423">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2873" y="0" width="974" height="1087" key="dock-window-1/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585465123484" />
+    <state width="890" height="439" key="GridCell.Tab.1.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585483619423" />
+    <state width="890" height="439" key="GridCell.Tab.1.left" timestamp="1585483619422">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="890" height="439" key="GridCell.Tab.1.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585483619422" />
+    <state width="890" height="439" key="GridCell.Tab.1.right" timestamp="1585483619423">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="890" height="439" key="GridCell.Tab.1.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585483619423" />
+    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog" timestamp="1585481700496">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585481700496" />
+    <state x="2873" y="0" width="974" height="1087" key="dock-window-1" timestamp="1585481723795">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2873" y="0" width="974" height="1087" key="dock-window-1/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585481723795" />
     <state x="1972" y="-2" width="1009" height="1470" key="search.everywhere.popup" timestamp="1585461243292">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="1972" y="-2" width="1009" height="1470" key="search.everywhere.popup/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585461243292" />
+  </component>
+  <component name="XDebuggerManager">
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="connectThread" />
+        <watch expression="connectThread" language="JAVA" />
+        <watch expression="connect" />
+        <watch expression="doc" />
+        <watch expression="doc" />
+      </configuration>
+    </watches-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/CAB302$RunDisplayBillboard.ic" NAME="RunDisplayBillboard Coverage Results" MODIFIED="1585481569110" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>Sandbox.*</FILTER>
+    </SUITE>
   </component>
 </project>
