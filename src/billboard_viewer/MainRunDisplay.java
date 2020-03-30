@@ -20,16 +20,22 @@ public class MainRunDisplay {
         ServerConnect connect;
         Thread connectThread = new Thread(connect = new ServerConnect()); // Create a thread
         connectThread.start(); // Start the thread, will run every 15 seconds
+
         /**
          * Refresh the billboard display (if new data)
          */
+        // TODO set this screen to update along with thread
+        // Add billboard contents to new billboard from server with connect.getBillboard()
+        CurrentBillboard billboardNow = new CurrentBillboard( connect.getBillboard() );
+        // TODO update this with conditionals for choosing class with overridden methods
+        DisplayBillboard display = new DisplayBillboard(billboardNow);
+        display.displayCurrentBillboard();
 
 
 
         // ------------ TESTING  ----------
         // TEST BILLBOARD USING NEW SERVER CONNECT CLASS
-        // Add billboard contents from connect.getBillboard()
-        CurrentBillboard billboardNow = new CurrentBillboard( connect.getBillboard() );
+
         // get contents
         TreeMap<String, String> contentsNow = billboardNow.getBillboardContents();
         // Print contents of billboard
