@@ -129,7 +129,7 @@ public class ServerConnect implements Runnable{
     /**
      * Parse an XML billboard Document and extract variables, create a TreeMap from variables
      * Returns the TreeMap
-     * NOTE: This functionality will be moved to the Control Panel, it is in the viewier for now
+     * NOTE: This functionality will be moved to the Control Panel, it is in the viewer for now
      */
     private TreeMap parseBillboard(Document doc) {
         // implementation attempt
