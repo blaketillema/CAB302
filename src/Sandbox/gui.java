@@ -32,7 +32,7 @@ Types of Billboards:
     - Message, picture and information
  */
 
-public class gui {
+public class gui extends JFrame implments ActionListener{
 
     JFrame frame = new JFrame("Billboard Frame");
 
