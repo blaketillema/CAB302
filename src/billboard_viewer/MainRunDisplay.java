@@ -26,7 +26,7 @@ public class MainRunDisplay {
          */
         // TODO set this screen to update along with thread
         // Add billboard contents to new billboard from server with connect.getBillboard()
-        CurrentBillboard billboardNow = new CurrentBillboard( connect.getBillboard() );
+        Billboard billboardNow = new Billboard( connect.getBillboard() );
         // TODO update this with conditionals for choosing class with overridden methods
         DisplayBillboard display = new DisplayBillboard(billboardNow);
         display.displayCurrentBillboard();
