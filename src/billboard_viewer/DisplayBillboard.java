@@ -29,19 +29,27 @@ public class DisplayBillboard {
     private String messageColour = "#ae82ff"; // DEFAULT purple
     private String informationColour = "#4682b4"; // DEFAULT Steel blue
     // Billboard
-    private CurrentBillboard billboardNow;
+    private Billboard billboardNow;
 
 
     // TODO add overriding for each different billboard type
-    public DisplayBillboard(CurrentBillboard billboardNow) {
-        if (billboardNow.getBillboardContents().containsKey("message")) {
-            // Message only
-        }
-        if (billboardNow.getBillboardContents().containsKey("message")) {
-            // Message only
-        }
+    public DisplayBillboard(Billboard billboardNow) {
+
     }
 
+
+
+        /*  Types of Billboards:
+        - Error - No billboard
+        - Error - Billboard server not available
+        - Message
+        - Picture
+        - Information
+        - Message and Picture
+        - Message and Information
+        - Picture and Information
+        - Message, picture and information
+        */
 
     // TODO implement this method for each billboard type / class
     public void displayCurrentBillboard() {

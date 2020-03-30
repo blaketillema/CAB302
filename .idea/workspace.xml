@@ -3,11 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/Billboard.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/CurrentBillboard.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/CurrentBillboard.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/CurrentBillboard.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/DisplayBillboard.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/DisplayBillboard.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/Billboard.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/CurrentBillboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/CurrentBillboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/CurrentBillboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/Billboard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_viewer/DisplayBillboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/DisplayBillboard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_viewer/MainRunDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/MainRunDisplay.java" afterDir="false" />
     </list>
@@ -147,22 +145,22 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2884" y="228" key="FileChooserDialogImpl/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585363319998" />
-    <state width="890" height="262" key="GridCell.Tab.0.bottom" timestamp="1585542345794">
+    <state width="1352" height="262" key="GridCell.Tab.0.bottom" timestamp="1585550769938">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="890" height="262" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585542345794" />
-    <state width="890" height="262" key="GridCell.Tab.0.center" timestamp="1585542345794">
+    <state width="1352" height="262" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585550769938" />
+    <state width="1352" height="262" key="GridCell.Tab.0.center" timestamp="1585550769938">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="890" height="262" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585542345794" />
-    <state width="890" height="262" key="GridCell.Tab.0.left" timestamp="1585542345793">
+    <state width="1352" height="262" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585550769938" />
+    <state width="1352" height="262" key="GridCell.Tab.0.left" timestamp="1585550769938">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="890" height="262" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585542345793" />
-    <state width="890" height="262" key="GridCell.Tab.0.right" timestamp="1585542345794">
+    <state width="1352" height="262" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585550769938" />
+    <state width="1352" height="262" key="GridCell.Tab.0.right" timestamp="1585550769938">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state width="890" height="262" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585542345794" />
+    <state width="1352" height="262" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585550769938" />
     <state width="890" height="439" key="GridCell.Tab.1.bottom" timestamp="1585484853584">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
@@ -183,18 +181,22 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2015" y="277" key="com.intellij.ide.util.TipDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585524550383" />
-    <state x="2873" y="0" width="974" height="1087" key="dock-window-1" timestamp="1585538803155">
+    <state x="2875" y="0" width="972" height="1087" key="dock-window-1" timestamp="1585550777200">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2873" y="0" width="974" height="1087" key="dock-window-1/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585538803155" />
+    <state x="2875" y="0" width="972" height="1087" key="dock-window-1/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585550777200" />
+    <state x="1963" y="246" width="1009" height="1469" key="run.anything.popup" timestamp="1585546007537">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1963" y="246" width="1009" height="1469" key="run.anything.popup/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585546007537" />
     <state x="1972" y="-2" width="1009" height="1470" key="search.everywhere.popup" timestamp="1585461243292">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="1972" y="-2" width="1009" height="1470" key="search.everywhere.popup/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585461243292" />
-    <state x="3097" y="419" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1585528467091">
+    <state x="3097" y="419" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1585543763943">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="3097" y="419" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585528467091" />
+    <state x="3097" y="419" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585543763943" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
