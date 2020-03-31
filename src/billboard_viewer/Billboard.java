@@ -5,8 +5,6 @@ import java.util.TreeMap;
 public class Billboard {
     private TreeMap<String, String> billboardContents;
 
-    public Billboard(){
-    }
     /**
      *
      * @param billboardContents
@@ -26,7 +24,7 @@ public class Billboard {
         if ( billboardContents.containsKey("message") && billboardContents.containsKey("information")
                 && (billboardContents.containsKey("pictureUrl") || billboardContents.containsKey("pictureData")) ) {
             // Message, picture and information
-            return "messagepictureinformation" ;
+            return "messagepictureinformation";
         }
         if (billboardContents.containsKey("information")
                 && (billboardContents.containsKey("pictureUrl") || billboardContents.containsKey("pictureData"))) {
