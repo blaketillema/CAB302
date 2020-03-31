@@ -213,6 +213,7 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2884" y="228" key="FileChooserDialogImpl/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585363319998" />
+<<<<<<< Updated upstream
     <state width="1696" height="367" key="GridCell.Tab.0.bottom" timestamp="1585582416068">
       <screen x="0" y="0" width="1739" height="939" />
     </state>
@@ -235,6 +236,26 @@
     <state width="1352" height="262" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585550769938" />
     <state width="1696" height="367" key="GridCell.Tab.1.bottom" timestamp="1585582416068">
       <screen x="0" y="0" width="1739" height="939" />
+=======
+    <state width="1352" height="262" key="GridCell.Tab.0.bottom" timestamp="1585551609528">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1352" height="262" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585551609528" />
+    <state width="1352" height="262" key="GridCell.Tab.0.center" timestamp="1585551609528">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1352" height="262" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585551609528" />
+    <state width="1352" height="262" key="GridCell.Tab.0.left" timestamp="1585551609528">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1352" height="262" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585551609528" />
+    <state width="1352" height="262" key="GridCell.Tab.0.right" timestamp="1585551609528">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1352" height="262" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585551609528" />
+    <state width="890" height="439" key="GridCell.Tab.1.bottom" timestamp="1585484853584">
+      <screen x="1920" y="0" width="1920" height="1080" />
+>>>>>>> Stashed changes
     </state>
     <state width="1696" height="367" key="GridCell.Tab.1.bottom/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585582416068" />
     <state width="890" height="439" key="GridCell.Tab.1.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585484853584" />
@@ -253,6 +274,7 @@
     </state>
     <state width="1696" height="367" key="GridCell.Tab.1.right/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585582416068" />
     <state width="890" height="439" key="GridCell.Tab.1.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585484853583" />
+<<<<<<< Updated upstream
     <state x="350" y="48" key="SettingsEditor" timestamp="1585573851603">
       <screen x="0" y="0" width="1739" height="939" />
     </state>
@@ -278,9 +300,16 @@
     </state>
     <state x="659" y="364" key="com.intellij.uiDesigner.propertyInspector.editors.string.StringEditorDialog/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585578946106" />
     <state x="2875" y="0" width="972" height="1087" key="dock-window-1" timestamp="1585550777200">
+=======
+    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog" timestamp="1585636815446">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2875" y="0" width="972" height="1087" key="dock-window-1/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585550777200" />
+    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585636815446" />
+    <state x="2875" y="0" width="972" height="1087" key="dock-window-1" timestamp="1585636889902">
+>>>>>>> Stashed changes
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2875" y="0" width="972" height="1087" key="dock-window-1/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585636889902" />
     <state x="1963" y="246" width="1009" height="1469" key="run.anything.popup" timestamp="1585546007537">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
