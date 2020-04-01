@@ -45,11 +45,16 @@ public class MainRunDisplay {
             String value = entry.getValue();
             System.out.println(MessageFormat.format("Key: {0} Value: {1}", key, value));
         }
-
         TreeMap<String, String> billboardMap = new TreeMap<String, String>();
         billboardMap = connect.getBillboard(); // get the current TreeMap
         connect.printBillboard(); // Print the current TreeMap to terminal
 
+
+        // Test has message
+        TreeMap mapTestHasMessage = new TreeMap();
+        mapTestHasMessage.put("message", "is here");
+        Billboard billboardTestHasMessage = new Billboard(mapTestHasMessage);
+        System.out.println("The billboard has message is: " + billboardTestHasMessage.hasMessage() );
     }
 
 }
