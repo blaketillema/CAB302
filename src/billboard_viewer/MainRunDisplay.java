@@ -26,17 +26,26 @@ public class MainRunDisplay {
          */
         // TODO set this screen to update along with thread
         // Add billboard contents to new billboard from server with connect.getBillboard()
-        Billboard billboardNow = new Billboard( connect.getBillboard() );
-        // TODO update this with conditionals for choosing class with overridden methods
-        DisplayBillboard display = new DisplayBillboard(billboardNow);
+        // connect.getBillboard()
+        TreeMap billboardNowData = connect.getBillboard();
+
+        Billboard billboardNow = new Billboard( billboardNowData );
+        billboardNow.initialise();
+        DisplayBillboard display = new DisplayBillboard( billboardNow );
         display.displayCurrentBillboard();
 
 
 
         // ------------ TESTING  ----------
-        // TEST BILLBOARD USING NEW SERVER CONNECT CLASS
+        // TEST BILLBOARD USING SERVER CONNECT CLASS
+        System.out.println("The billboard boolean has message is: " + billboardNow.hasMessage() );
+        System.out.println("The billboard boolean has information is: " + billboardNow.hasInformation() );
+        System.out.println("The billboard boolean has imageData is: " + billboardNow.hasImageData() );
+        System.out.println("The billboard boolean has imageURL is: " + billboardNow.hasImageURL() );
+        System.out.println("The billboard boolean isDefaultL is: " + billboardNow.isDefault() );
 
         // get contents
+        /*
         TreeMap<String, String> contentsNow = billboardNow.getBillboardContents();
         // Print contents of billboard
         System.out.println("Using getBillboardContents(), this billboard has: ");
@@ -48,13 +57,7 @@ public class MainRunDisplay {
         TreeMap<String, String> billboardMap = new TreeMap<String, String>();
         billboardMap = connect.getBillboard(); // get the current TreeMap
         connect.printBillboard(); // Print the current TreeMap to terminal
-
-
-        // Test has message
-        TreeMap mapTestHasMessage = new TreeMap();
-        mapTestHasMessage.put("message", "is here");
-        Billboard billboardTestHasMessage = new Billboard(mapTestHasMessage);
-        System.out.println("The billboard has message is: " + billboardTestHasMessage.hasMessage() );
+        */
     }
 
 }

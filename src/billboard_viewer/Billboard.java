@@ -4,8 +4,21 @@ import java.util.TreeMap;
 
 public class Billboard {
     private TreeMap<String, String> billboardContents;
-    private boolean hasMessage = billboardContents.containsKey("message");
+    private boolean hasMessage = false;
+    private boolean hasInformation = false;
+    private boolean hasImageData = false;
+    private boolean hasImageURL = false;
+    private boolean isDefault = false;
 
+    /**
+     *  Default constructor (No billboard to display)
+     */
+    public Billboard() {
+        isDefault = true;
+        TreeMap<String, String> defaultBillboard = new TreeMap<>();
+        defaultBillboard.put("default", "Advertise Here!!!");
+        this.billboardContents = defaultBillboard;
+    }
     /**
      *
      * @param billboardContents
@@ -13,6 +26,25 @@ public class Billboard {
     public Billboard(TreeMap<String, String> billboardContents) {
         this.billboardContents = billboardContents;
     }
+
+    // TODO - fix this - something is not working -  still returns false
+    //  (possibly  only when retrieving data from server in Main with connect.getBillboard();
+    public final void initialise() {
+        // Set attributes for this billboard
+        if ( billboardContents.containsKey("message") ) {
+            hasMessage = true;
+        }
+        if ( billboardContents.containsKey("information") ) {
+            hasInformation = true;
+        }
+        if ( billboardContents.containsKey("pictureData") ) {
+            hasImageData = true;
+        }
+        if ( billboardContents.containsKey("pictureURL") ) {
+            hasImageURL = true;
+        }
+    }
+
     /**
      *
      * @return
@@ -21,80 +53,44 @@ public class Billboard {
         return billboardContents;
     }
 
+    /**
+     *
+     * @return
+     */
+    public boolean hasMessage() {
+        return hasMessage;
+    }
 
     /**
      *
      * @return
      */
-    /*
-    public boolean hasMessage() {
-        if ( billboardContents.containsKey("message") ) return true;
-        else return false;
-    }
-    */
-    public boolean hasMessage() {
-        return hasMessage;
+    public boolean hasInformation() {
+        return hasInformation;
     }
 
-
-
-
-    public String getBilboardType() {
-        if ( billboardContents.containsKey("message") && billboardContents.containsKey("information")
-                && (billboardContents.containsKey("pictureUrl") || billboardContents.containsKey("pictureData")) ) {
-            // Message, picture and information
-            return "messagepictureinformation";
-        }
-        if (billboardContents.containsKey("information")
-                && (billboardContents.containsKey("pictureUrl") || billboardContents.containsKey("pictureData"))) {
-            // Picture and information
-            return "pictureinformation";
-        }
-        if (billboardContents.containsKey("information")
-                && (billboardContents.containsKey("message"))) {
-            // Message and information
-            return "messageinformation";
-        }
-        if (billboardContents.containsKey("message")
-                && (billboardContents.containsKey("pictureUrl") || billboardContents.containsKey("pictureData"))) {
-            // Message and picture
-            return "messagepicture";
-        }
-        if (billboardContents.containsKey("pictureData")) {
-            //  Picture
-            return "picture";
-        }
-        if (billboardContents.containsKey("message")) {
-            // Message
-            return "message";
-        }
-        if (billboardContents.containsKey("information")){
-            // Information
-            return "information";
-        }
-        // TODO finish implementing getBilboardType() for Error - No Billboard and Error - Billboard server not avail
-        if (!billboardContents.containsKey("")){
-            // No billboard
-            return "Error - No billboard";
-        }
-        if (!billboardContents.containsKey("server")){
-            // Server unavailable
-            return "Error - Billboard server not available";
-        }
-        else {
-            return "defaultbillboard";
-        }
+    /**
+     *
+     * @return
+     */
+    public boolean hasImageData() {
+        return hasImageData;
     }
+
+    /**
+     *
+     * @return
+     */
+    public boolean hasImageURL() {
+        return hasImageURL;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public boolean isDefault() {
+        return isDefault;
+    }
+
 }
-
-        /*  Types of Billboards:
-        - Error - No billboard
-        - Error - Billboard server not available
-        x Message
-        x Picture
-        x Information
-        x Message and Picture
-        x Message and Information
-        x Picture and Information
-        x Message, picture and information
-        */
