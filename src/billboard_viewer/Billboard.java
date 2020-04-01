@@ -4,6 +4,7 @@ import java.util.TreeMap;
 
 public class Billboard {
     private TreeMap<String, String> billboardContents;
+    private boolean hasMessage = billboardContents.containsKey("message");
 
     /**
      *
@@ -19,6 +20,24 @@ public class Billboard {
     public TreeMap<String, String> getBillboardContents() {
         return billboardContents;
     }
+
+
+    /**
+     *
+     * @return
+     */
+    /*
+    public boolean hasMessage() {
+        if ( billboardContents.containsKey("message") ) return true;
+        else return false;
+    }
+    */
+    public boolean hasMessage() {
+        return hasMessage;
+    }
+
+
+
 
     public String getBilboardType() {
         if ( billboardContents.containsKey("message") && billboardContents.containsKey("information")
