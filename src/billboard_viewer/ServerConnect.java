@@ -122,7 +122,6 @@ public class ServerConnect implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return doc;
     }
 

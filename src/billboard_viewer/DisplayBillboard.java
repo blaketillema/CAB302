@@ -32,29 +32,13 @@ public class DisplayBillboard {
     private Billboard billboardNow;
 
 
-    // TODO add overriding for each different billboard type
     public DisplayBillboard(Billboard billboardNow) {
-
+        this.billboardNow = billboardNow;
     }
 
-
-
-        /*  Types of Billboards:
-        - Error - No billboard
-        - Error - Billboard server not available
-        - Message
-        - Picture
-        - Information
-        - Message and Picture
-        - Message and Information
-        - Picture and Information
-        - Message, picture and information
-        */
-
-    // TODO implement this method for each billboard type / class
     public void displayCurrentBillboard() {
-        // TODO implement defaults here
         setupScreen();
+        setBillboardSpecificSettings();
         setupImage();
     }
 
@@ -69,6 +53,58 @@ public class DisplayBillboard {
         setupKeyStroke();
         setupMouseClick();
     }
+
+    private void setBillboardSpecificSettings() {
+        if ( billboardNow.hasMessage() ) {
+            if (billboardNow.hasInformation() && ( billboardNow.hasImageData() || billboardNow.hasImageURL() )) {
+                // Settings for 1 - Message, picture and information
+
+            }
+            else if ( billboardNow.hasInformation()) {
+                // Settings for 2 - Message and Information
+
+            }
+            else if ( billboardNow.hasImageData() || billboardNow.hasImageURL() ) {
+                // Settings for 3 - Message and Picture
+
+            }
+            else {
+                // Settings for 4 - Message
+
+            }
+        }
+        else if (  billboardNow.hasImageData() || billboardNow.hasImageURL() ) {
+            if (billboardNow.hasInformation()) {
+                // Settings for 5 - Picture and Information
+
+            } else {
+                // Settings for 6 - Picture
+
+            }
+        }
+        else if ( billboardNow.hasInformation() ) {
+                // Settings for 7 - Information
+
+            }
+        else if ( billboardNow.isDefault() ) {
+            // Settings for 8 - Default - No billboard to display "Advertise Here!!!"
+        }
+        // TODO - check if 9 Server not available needed in addition to 8
+        /*
+        Types of Billboards:
+        1 - Message, picture and information
+        2 - Message and Information
+        3 - Message and Picture
+        4 - Message
+        5 - Picture and Information
+        6 - Picture
+        7 - Information
+        8 - Default - No billboard to display "Advertise Here!!!"
+        9 - Billboard server not available (Not sure if this & last are same message?)
+        */
+    }
+
+
 
     // TODO setup so mouse click properly exits program
     private void setupMouseClick() {
