@@ -37,7 +37,7 @@ public class MainRunDisplay {
         // END TESTING
 
 
-        // NOT TESTING  - KEEP Below
+        // NOT TESTING  - KEEP THIS BELOW
         // Add billboard now to new billboard to display
         Billboard billboardNow = new Billboard( billboardNowData );
         DisplayBillboard display = new DisplayBillboard( billboardNow );

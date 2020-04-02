@@ -29,9 +29,6 @@ public class Billboard {
         initialise();
     }
 
-    // TODO - fix this - something is not working -  still returns false
-    // (possibly  only when retrieving data from server in Main with connect.getBillboard();
-
     // THIS is is what i'm wondering i should just do on the fly
     public final void initialise() {
         // Set attributes for this billboard
