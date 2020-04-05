@@ -63,10 +63,10 @@ public class ServerConnect implements Runnable{
      * Print the billboard treemap for debug purposes
      */
     public void printBillboard() {
-        //System.out.println("Debug: Printing Billboard...");
+        System.out.println("Connect: Printing Billboard...");
         Set<String> set1 = billboardMap.keySet();
         for (String key: set1) {
-            System.out.println("Key : "  + key + "\t\t" + "Value : "  + billboardMap.get(key));
+            System.out.println("Connect Key : "  + key + "\t\t" + "Value : "  + billboardMap.get(key));
         }
     }
 

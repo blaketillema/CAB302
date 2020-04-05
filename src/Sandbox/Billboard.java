@@ -1,4 +1,4 @@
-package billboard_viewer;
+package Sandbox;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;

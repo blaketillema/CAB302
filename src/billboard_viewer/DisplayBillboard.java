@@ -54,7 +54,9 @@ public class DisplayBillboard {
         setupMouseClick();
     }
 
+
     private void setBillboardSpecificSettings() {
+        /*
         if ( billboardNow.hasMessage() ) {
             if (billboardNow.hasInformation() && ( billboardNow.hasImageData() || billboardNow.hasImageURL() )) {
                 // Settings for 1 - Message, picture and information
@@ -159,6 +161,12 @@ public class DisplayBillboard {
         frame.add(background);
     }
 
+
+    /**
+     * 50% Image scaling for Picture only or Message AND Picture
+     * NOTE: 1/3rd (~33%) scaling should be used for Message, Picture AND Information
+     */
+    //TODO: Implement variant with 33% image scaling (or and IF statement check for billboard type)
     private void setupImage() {
         // Add an image to the panel
         double aspectRatio, scaledHeight, scaledWidth;
