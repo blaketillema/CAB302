@@ -31,27 +31,17 @@ public class DisplayBillboard {
     // Billboard
     private Billboard billboardNow;
 
-    /**
-     *
-     * @param billboardNow
-     */
+
     public DisplayBillboard(Billboard billboardNow) {
         this.billboardNow = billboardNow;
     }
 
-    /**
-     * This is the main method to setup and display the billboard scree
-     */
     public void displayCurrentBillboard() {
         setupScreen();
-        setBillboardGenericSettings();
         setBillboardSpecificSettings();
         setupImage();
     }
 
-    /**
-     *
-     */
     private void setupScreen() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         xRes = screenSize.getWidth();
@@ -64,23 +54,13 @@ public class DisplayBillboard {
         setupMouseClick();
     }
 
-    /**
-     *
-     */
-    // TODO finish this method for GUI
-    private void setBillboardGenericSettings(){
-        // Generic settings such as message text colour etc.
-    }
 
-    /**
-     *
-     */
-    // TODO finish this method for GUI
     private void setBillboardSpecificSettings() {
+        /*
         if ( billboardNow.hasMessage() ) {
             if (billboardNow.hasInformation() && ( billboardNow.hasImageData() || billboardNow.hasImageURL() )) {
                 // Settings for 1 - Message, picture and information
-                // eg: location of information
+
             }
             else if ( billboardNow.hasInformation()) {
                 // Settings for 2 - Message and Information
@@ -126,9 +106,8 @@ public class DisplayBillboard {
         */
     }
 
-    /**
-     *
-     */
+
+
     // TODO setup so mouse click properly exits program
     private void setupMouseClick() {
         // Close frame on Left mouse click
@@ -182,6 +161,12 @@ public class DisplayBillboard {
         frame.add(background);
     }
 
+
+    /**
+     * 50% Image scaling for Picture only or Message AND Picture
+     * NOTE: 1/3rd (~33%) scaling should be used for Message, Picture AND Information
+     */
+    //TODO: Implement variant with 33% image scaling (or and IF statement check for billboard type)
     private void setupImage() {
         // Add an image to the panel
         double aspectRatio, scaledHeight, scaledWidth;
@@ -206,6 +191,10 @@ public class DisplayBillboard {
             scaledWidth = (int) (xRes / 2);
             aspectRatio = scaledWidth / sourceWidth;
             scaledHeight = sourceHeight * aspectRatio;
+        }
+        // TODO Fix checks and action proper fixes
+        if (scaledWidth > xRes/2 || scaledHeight > yRes/2) {
+            System.out.println("Debug: Bad Resolution! Acceptable Maximum: "+xRes/2+"x"+yRes/2);
         }
         scaledImage = image.getScaledInstance((int) scaledWidth,(int) scaledHeight, Image.SCALE_DEFAULT);
         JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
