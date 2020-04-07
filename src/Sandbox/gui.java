@@ -43,8 +43,12 @@ public class gui {
 
     private double xRes; //Full screen width
     private double yRes; //Full screen height
-    boolean windowed = false; // set to true for Windowed (dev)
-    private String imagePath = System.getProperty("user.dir") + "\\Assets\\" + testImage; // test file
+    boolean fullScreen = false; //application is fullscreen if true
+
+    //file path will work on all platforms
+    private String cWorkingDir = System.getProperty("user.dir");
+    private String imagePath =  java.nio.file.Paths.get(
+            cWorkingDir, "Assets", testImage).toString();
 
     BufferedImage image = null; // null initialisation
     Image scaledImage = null; // null initialisation
@@ -55,11 +59,12 @@ public class gui {
         xRes = screenSize.getWidth();
         yRes = screenSize.getHeight();
 
+        System.out.println(imagePath);
+
         setupFrame();
         setupImage();
         //setBackground();
 
-        System.out.println(imagePath);
         System.out.println("Screen Size: x="+xRes+" y="+yRes);
 
         frame.setVisible(true);
@@ -121,7 +126,7 @@ public class gui {
     private void setupFrame() {
         //frame.setSize(600,600);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        if (!windowed) {
+        if (fullScreen) {
             frame.setUndecorated(true); // Set to True to remove window bars for true fullscreen
         }
 
