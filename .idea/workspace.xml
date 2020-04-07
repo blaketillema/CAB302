@@ -4,9 +4,7 @@
     <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/CAB302.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CAB302.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/userManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/UserManagement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_server/authentication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/Authentication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/displayBillboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/DisplayBillboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_server/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,8 +14,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -42,12 +40,12 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../mariadb-java-client-2.6.0.jar!/" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
-  <component name="RunManager" selected="Application.sandboxMain">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Unnamed" type="AndroidJUnit" factoryName="Android JUnit" nameIsGenerated="true">
       <module name="CAB302" />
       <useClassPathOnly />
@@ -56,6 +54,19 @@
       <option name="TEST_OBJECT" value="class" />
       <option name="PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="billboard_server.Main" />
+      <module name="CAB302" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="billboard_server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -82,9 +93,11 @@
     <list>
       <item itemvalue="Android JUnit.Unnamed" />
       <item itemvalue="Application.sandboxMain" />
+      <item itemvalue="Application.Main" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.sandboxMain" />
       </list>
     </recent_temporary>
@@ -135,26 +148,35 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="1920" y="0" key="CommitChangelistDialog2/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585362926396" />
-    <state x="2884" y="228" key="FileChooserDialogImpl" timestamp="1585363319998">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="1285" y="296" key="FileChooserDialogImpl" timestamp="1586265760737">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="2884" y="228" key="FileChooserDialogImpl/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585363319998" />
-    <state width="890" height="264" key="GridCell.Tab.0.bottom" timestamp="1585364072516">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="1285" y="296" key="FileChooserDialogImpl/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586265760737" />
+    <state width="2517" height="401" key="GridCell.Tab.0.bottom" timestamp="1586272054979">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="890" height="264" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072516" />
-    <state width="890" height="264" key="GridCell.Tab.0.center" timestamp="1585364072516">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state width="2517" height="401" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586272054979" />
+    <state width="2517" height="401" key="GridCell.Tab.0.center" timestamp="1586272054979">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="890" height="264" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072516" />
-    <state width="890" height="264" key="GridCell.Tab.0.left" timestamp="1585364072515">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state width="2517" height="401" key="GridCell.Tab.0.center/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586272054979" />
+    <state width="2517" height="401" key="GridCell.Tab.0.left" timestamp="1586272054979">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="890" height="264" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072515" />
-    <state width="890" height="264" key="GridCell.Tab.0.right" timestamp="1585364072516">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state width="2517" height="401" key="GridCell.Tab.0.left/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586272054979" />
+    <state width="2517" height="401" key="GridCell.Tab.0.right" timestamp="1586272054979">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="890" height="264" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072516" />
+    <state width="2517" height="401" key="GridCell.Tab.0.right/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586272054979" />
+    <state x="760" y="274" key="SettingsEditor" timestamp="1586265767716">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="760" y="274" key="SettingsEditor/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586265767716" />
     <state x="2015" y="277" key="com.intellij.ide.util.TipDialog" timestamp="1585264927015">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
