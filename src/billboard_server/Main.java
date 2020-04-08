@@ -10,7 +10,6 @@ public class Main {
 
         Server sv = new Server();
 
-        sv.addUser("phteven");
-
+        System.out.println(sv.getTables());
     }
 }

@@ -5,6 +5,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/CAB302.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CAB302.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_server/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/Server.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,13 +40,17 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../mariadb-java-client-2.6.0.jar!/" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="JUnit.ServerTest">
     <configuration name="Unnamed" type="AndroidJUnit" factoryName="Android JUnit" nameIsGenerated="true">
       <module name="CAB302" />
       <useClassPathOnly />
@@ -77,28 +82,84 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="sandboxMain" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Sandbox.sandboxMain" />
+    <configuration name="ServerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="CAB302" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="Sandbox.*" />
+          <option name="PATTERN" value="billboard_server.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="billboard_server" />
+      <option name="MAIN_CLASS_NAME" value="billboard_server.ServerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerTest.checkNonEmptyDb" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CAB302" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="billboard_server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="billboard_server" />
+      <option name="MAIN_CLASS_NAME" value="billboard_server.ServerTest" />
+      <option name="METHOD_NAME" value="checkNonEmptyDb" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerTest.createServer" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CAB302" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="billboard_server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="billboard_server" />
+      <option name="MAIN_CLASS_NAME" value="billboard_server.ServerTest" />
+      <option name="METHOD_NAME" value="createServer" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServerTest.getUsers" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="CAB302" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="billboard_server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="billboard_server" />
+      <option name="MAIN_CLASS_NAME" value="billboard_server.ServerTest" />
+      <option name="METHOD_NAME" value="getUsers" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
       <item itemvalue="Android JUnit.Unnamed" />
-      <item itemvalue="Application.sandboxMain" />
       <item itemvalue="Application.Main" />
+      <item itemvalue="JUnit.ServerTest.checkNonEmptyDb" />
+      <item itemvalue="JUnit.ServerTest.createServer" />
+      <item itemvalue="JUnit.ServerTest.getUsers" />
+      <item itemvalue="JUnit.ServerTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ServerTest" />
+        <item itemvalue="JUnit.ServerTest.checkNonEmptyDb" />
+        <item itemvalue="JUnit.ServerTest.getUsers" />
+        <item itemvalue="JUnit.ServerTest.createServer" />
         <item itemvalue="Application.Main" />
-        <item itemvalue="Application.sandboxMain" />
       </list>
     </recent_temporary>
   </component>
@@ -128,6 +189,10 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2488" y="114" width="1352" height="966" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585363384476" />
+    <state x="466" y="351" width="2376" height="1359" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1586322182643">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="466" y="351" width="2376" height="1359" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586322182643" />
     <state x="2033" y="303" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1585226512752">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
@@ -153,26 +218,42 @@
     </state>
     <state x="2884" y="228" key="FileChooserDialogImpl/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585363319998" />
     <state x="1285" y="296" key="FileChooserDialogImpl/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586265760737" />
-    <state width="2517" height="401" key="GridCell.Tab.0.bottom" timestamp="1586272054979">
+    <state width="2517" height="401" key="GridCell.Tab.0.bottom" timestamp="1586322925476">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="890" height="264" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072516" />
-    <state width="2517" height="401" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586272054979" />
-    <state width="2517" height="401" key="GridCell.Tab.0.center" timestamp="1586272054979">
+    <state width="2517" height="401" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586322925476" />
+    <state width="2517" height="401" key="GridCell.Tab.0.center" timestamp="1586322925476">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="890" height="264" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072516" />
-    <state width="2517" height="401" key="GridCell.Tab.0.center/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586272054979" />
-    <state width="2517" height="401" key="GridCell.Tab.0.left" timestamp="1586272054979">
+    <state width="2517" height="401" key="GridCell.Tab.0.center/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586322925476" />
+    <state width="2517" height="401" key="GridCell.Tab.0.left" timestamp="1586322925476">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="890" height="264" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072515" />
-    <state width="2517" height="401" key="GridCell.Tab.0.left/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586272054979" />
-    <state width="2517" height="401" key="GridCell.Tab.0.right" timestamp="1586272054979">
+    <state width="2517" height="401" key="GridCell.Tab.0.left/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586322925476" />
+    <state width="2517" height="401" key="GridCell.Tab.0.right" timestamp="1586322925476">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="890" height="264" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072516" />
-    <state width="2517" height="401" key="GridCell.Tab.0.right/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586272054979" />
+    <state width="2517" height="401" key="GridCell.Tab.0.right/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586322925476" />
+    <state width="2517" height="492" key="GridCell.Tab.1.bottom" timestamp="1586321744611">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2517" height="492" key="GridCell.Tab.1.bottom/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586321744611" />
+    <state width="2517" height="492" key="GridCell.Tab.1.center" timestamp="1586321744611">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2517" height="492" key="GridCell.Tab.1.center/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586321744611" />
+    <state width="2517" height="492" key="GridCell.Tab.1.left" timestamp="1586321744611">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2517" height="492" key="GridCell.Tab.1.left/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586321744611" />
+    <state width="2517" height="492" key="GridCell.Tab.1.right" timestamp="1586321744611">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state width="2517" height="492" key="GridCell.Tab.1.right/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586321744611" />
     <state x="760" y="274" key="SettingsEditor" timestamp="1586265767716">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -181,6 +262,10 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2015" y="277" key="com.intellij.ide.util.TipDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585264927015" />
+    <state x="984" y="593" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1586312620611">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="984" y="593" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586312620611" />
     <state x="3017" y="0" width="830" height="1087" key="dock-window-1" timestamp="1585392272835">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>

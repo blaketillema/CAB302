@@ -12,7 +12,9 @@ public class Server {
     private String username;
     private String password;
 
-    private static final String SETUP_SQL = "CREATE TABLE IF NOT EXISTS users ( userId INT NOT NULL PRIMARY KEY AUTO_INCREMENT, userName VARCHAR(255) NOT NULL )"; //TODO: write a proper statement to create the db
+    private static final String USERS_TABLE = "CREATE TABLE IF NOT EXISTS users ( userId INT NOT NULL PRIMARY KEY AUTO_INCREMENT, userName VARCHAR(255) NOT NULL ); ";
+    private static final String BILLBOARDS_TABLE = "CREATE TABLE IF NOT EXISTS billboards ( billboardId INT NOT NULL PRIMARY KEY AUTO_INCREMENT )"; //TODO: write a proper statement to create the db
+    private static final String SCHEDULE_TABLE = "CREATE TABLE IF NOT EXISTS schedule ( scheduleId INT NOT NULL PRIMARY KEY AUTO_INCREMENT )";
 
     public Server() throws SQLException{ // Reads the db.props file and sets the variables for the server to those props
         try{
@@ -37,7 +39,9 @@ public class Server {
     private void setup() throws SQLException { //Runs a setup SQL statement, creating the users table. This is run during construction TODO: actually make the right tables
         Connection conn = DriverManager.getConnection(url + "/" + schema, username, password);
         Statement statement = conn.createStatement();
-        statement.executeQuery(SETUP_SQL);
+        statement.executeQuery(USERS_TABLE);
+        statement.executeQuery(BILLBOARDS_TABLE);
+        statement.executeQuery(SCHEDULE_TABLE);
         conn.close();
     }
 
@@ -46,5 +50,27 @@ public class Server {
         Statement statement = conn.createStatement();
         statement.executeQuery("INSERT INTO users (userName) VALUES (\"" + name + "\")");
         conn.close();
+    }
+
+    public String getTables() throws SQLException{
+        Connection conn = DriverManager.getConnection(url + "/" + schema, username, password);
+        Statement statement = conn.createStatement();
+        ResultSet rs = statement.executeQuery("SHOW TABLES");
+        String tables = "";
+        while(rs.next()){
+            tables = tables.concat(rs.getString(1) + " ");
+        }
+        return tables;
+    }
+
+    public String getUsers() throws SQLException{
+        Connection conn = DriverManager.getConnection(url + "/" + schema, username, password);
+        Statement statement = conn.createStatement();
+        ResultSet rs = statement.executeQuery("SELECT * FROM users");
+        String users = "";
+        while(rs.next()){
+            users = users.concat(rs.getString(2) + " ");
+        }
+        return users;
     }
 }
