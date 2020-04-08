@@ -9,9 +9,14 @@ public class ServerTest {
 
     private Server sv;
 
-    @BeforeEach @Test
+    @BeforeEach
     public void createServer() throws SQLException {
         sv = new Server();
+    }
+
+    @AfterEach
+    public void clearTables() throws SQLException{
+        sv.resetTables();
     }
 
     @Test
