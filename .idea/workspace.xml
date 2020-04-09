@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="">
+    <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="Added TCP connection tests for: viewer &lt;-&gt; server &lt;-&gt; control panel">
+      <change afterPath="$PROJECT_DIR$/src/billboard_server/TCPClass.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/billboard_server/TCPDatabase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/billboard_server/TCPTestControl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/billboard_server/TCPTestServer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/billboard_server/TCPTestViewer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_server/ServerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/ServerTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +52,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
-  <component name="RunManager" selected="JUnit.ServerTest">
+  <component name="RunManager" selected="Application.TCPTestViewer">
     <configuration name="Unnamed" type="AndroidJUnit" factoryName="Android JUnit" nameIsGenerated="true">
       <module name="CAB302" />
       <useClassPathOnly />
@@ -63,8 +65,47 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="billboard_server.Main" />
+    <configuration name="TCPTestClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="billboard_server.TCPTestClient" />
+      <module name="CAB302" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="billboard_server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TCPTestControl" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="billboard_server.TCPTestControl" />
+      <module name="CAB302" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="billboard_server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TCPTestServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="billboard_server.TCPTestServer" />
+      <module name="CAB302" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="billboard_server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TCPTestViewer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="billboard_server.TCPTestViewer" />
       <module name="CAB302" />
       <extension name="coverage">
         <pattern>
@@ -97,69 +138,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ServerTest.checkNonEmptyDb" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="CAB302" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="billboard_server.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="billboard_server" />
-      <option name="MAIN_CLASS_NAME" value="billboard_server.ServerTest" />
-      <option name="METHOD_NAME" value="checkNonEmptyDb" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ServerTest.createServer" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="CAB302" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="billboard_server.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="billboard_server" />
-      <option name="MAIN_CLASS_NAME" value="billboard_server.ServerTest" />
-      <option name="METHOD_NAME" value="createServer" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="ServerTest.getUsers" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="CAB302" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="billboard_server.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="billboard_server" />
-      <option name="MAIN_CLASS_NAME" value="billboard_server.ServerTest" />
-      <option name="METHOD_NAME" value="getUsers" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
-      <item itemvalue="Android JUnit.Unnamed" />
-      <item itemvalue="Application.Main" />
-      <item itemvalue="JUnit.ServerTest.checkNonEmptyDb" />
-      <item itemvalue="JUnit.ServerTest.createServer" />
-      <item itemvalue="JUnit.ServerTest.getUsers" />
+      <item itemvalue="Application.TCPTestClient" />
+      <item itemvalue="Application.TCPTestServer" />
+      <item itemvalue="Application.TCPTestControl" />
+      <item itemvalue="Application.TCPTestViewer" />
       <item itemvalue="JUnit.ServerTest" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.TCPTestViewer" />
+        <item itemvalue="Application.TCPTestControl" />
+        <item itemvalue="Application.TCPTestServer" />
+        <item itemvalue="Application.TCPTestClient" />
         <item itemvalue="JUnit.ServerTest" />
-        <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.ServerTest.checkNonEmptyDb" />
-        <item itemvalue="JUnit.ServerTest.getUsers" />
-        <item itemvalue="JUnit.ServerTest.createServer" />
       </list>
     </recent_temporary>
   </component>
@@ -175,6 +167,10 @@
       <updated>1585222824688</updated>
     </task>
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added TCP connection tests for: viewer &lt;-&gt; server &lt;-&gt; control panel" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added TCP connection tests for: viewer &lt;-&gt; server &lt;-&gt; control panel" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1920" y="29" key="#Notifications" timestamp="1585225589833">
@@ -209,33 +205,46 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2251" y="411" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585264949809" />
-    <state x="1920" y="0" key="CommitChangelistDialog2" timestamp="1585362926396">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="694" y="265" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1586440457374">
+      <screen x="0" y="0" width="1920" height="1030" />
     </state>
+    <state x="694" y="265" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1586440457374" />
+    <state x="0" y="0" width="1920" height="1030" key="CommitChangelistDialog2" timestamp="1586448354656">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="0" y="0" width="1920" height="1030" key="CommitChangelistDialog2/0.0.1920.1030@0.0.1920.1030" timestamp="1586448354656" />
     <state x="1920" y="0" key="CommitChangelistDialog2/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585362926396" />
+    <state x="188" y="91" key="DiffContextDialog" timestamp="1586447645391">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="188" y="91" key="DiffContextDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1586447645391" />
     <state x="1285" y="296" key="FileChooserDialogImpl" timestamp="1586265760737">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="2884" y="228" key="FileChooserDialogImpl/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585363319998" />
     <state x="1285" y="296" key="FileChooserDialogImpl/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586265760737" />
-    <state width="2517" height="401" key="GridCell.Tab.0.bottom" timestamp="1586338408167">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state width="853" height="907" key="GridCell.Tab.0.bottom" timestamp="1586448241889">
+      <screen x="0" y="0" width="1920" height="1030" />
     </state>
+    <state width="853" height="907" key="GridCell.Tab.0.bottom/0.0.1920.1030@0.0.1920.1030" timestamp="1586448241889" />
     <state width="890" height="264" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072516" />
     <state width="2517" height="401" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586338408167" />
-    <state width="2517" height="401" key="GridCell.Tab.0.center" timestamp="1586338408167">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state width="853" height="907" key="GridCell.Tab.0.center" timestamp="1586448241887">
+      <screen x="0" y="0" width="1920" height="1030" />
     </state>
+    <state width="853" height="907" key="GridCell.Tab.0.center/0.0.1920.1030@0.0.1920.1030" timestamp="1586448241887" />
     <state width="890" height="264" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072516" />
     <state width="2517" height="401" key="GridCell.Tab.0.center/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586338408167" />
-    <state width="2517" height="401" key="GridCell.Tab.0.left" timestamp="1586338408167">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state width="853" height="907" key="GridCell.Tab.0.left" timestamp="1586448241885">
+      <screen x="0" y="0" width="1920" height="1030" />
     </state>
+    <state width="853" height="907" key="GridCell.Tab.0.left/0.0.1920.1030@0.0.1920.1030" timestamp="1586448241885" />
     <state width="890" height="264" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072515" />
     <state width="2517" height="401" key="GridCell.Tab.0.left/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586338408167" />
-    <state width="2517" height="401" key="GridCell.Tab.0.right" timestamp="1586338408167">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state width="853" height="907" key="GridCell.Tab.0.right" timestamp="1586448241888">
+      <screen x="0" y="0" width="1920" height="1030" />
     </state>
+    <state width="853" height="907" key="GridCell.Tab.0.right/0.0.1920.1030@0.0.1920.1030" timestamp="1586448241888" />
     <state width="890" height="264" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072516" />
     <state width="2517" height="401" key="GridCell.Tab.0.right/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586338408167" />
     <state width="2517" height="492" key="GridCell.Tab.1.bottom" timestamp="1586321744611">
