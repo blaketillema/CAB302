@@ -1,8 +1,5 @@
 package billboard_viewer;
 
-import java.io.*;
-import java.net.Socket;
-
 import billboard_server.TCPClass;
 import billboard_server.TCPClient;
 
@@ -18,28 +15,12 @@ public class TCPConnect extends TCPClient
 
     public void serverReceive()
     {
-        try
-        {
-            super.init("viewer");
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            System.exit(1);
-        }
+        super.init("viewer");
 
         while(true)
         {
-            try
-            {
-                TCPClass recv = super.readFromStream();
-                System.out.println("from server: " + recv.toString());
-            }
-            catch (IOException | ClassNotFoundException e)
-            {
-                e.printStackTrace();
-                System.exit(1);
-            }
+            TCPClass recv = super.readFromStream();
+            System.out.println("from server: " + recv.toString());
         }
     }
 }
