@@ -8,7 +8,7 @@ To test viewer<->server<->control panel socket connections
     - billboard_server -> TCPServerTest -> main
         - should say its accepting new clients
         - should write to database when control panel sends stuff
-- run either: 
+- run both (order doesn't matter): 
     - billboard_control_panel -> TCPConnect -> main
         - should ask server to add TCPClass object to database every 3 secs
     - billboard_viewer -> TCPConnect -> main
