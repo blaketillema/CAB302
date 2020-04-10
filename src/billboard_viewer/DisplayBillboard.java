@@ -1,14 +1,10 @@
 package billboard_viewer;
 
-import ...
-
 public class DisplayBillboard {
     // GUI
-    public void displayCurrentBillboard() {
+    public static void displayCurrentBillboard() {
 
     }
-
-
 
 
     public static void main(String[] args) {
