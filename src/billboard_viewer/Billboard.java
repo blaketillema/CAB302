@@ -9,6 +9,12 @@ import java.awt.event.MouseEvent;
 import java.util.Set;
 import java.util.TreeMap;
 
+/* Sample Colour codes:
+Green: #55FF00
+Yellow: #FFC300
+Red: #FF0000
+ */
+
 public class Billboard {
 
     private TreeMap<String, String> billboardContents;
@@ -58,6 +64,7 @@ public class Billboard {
         xRes = screenSize.getWidth(); // Set resolution x
         yRes = screenSize.getHeight(); // Set resolution y
         billboardFrame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Set Frame to Full Screen
+        billboardFrame.setUndecorated(true); // Remove window bars for true full screen
 
         billboardFrame.add(noBillboardPanel());
 

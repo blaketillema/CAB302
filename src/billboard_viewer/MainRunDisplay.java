@@ -94,9 +94,9 @@ public class MainRunDisplay {
                 billboardNowData = billboardTemp;
                 newBillboard.updateBillboard(billboardNowData);
 
-                connect.printBillboard(); // DEBUG - print connect TreeMap
+                //connect.printBillboard(); // DEBUG - print connect TreeMap
                 //billboardNow.printBillboard(); // DEBUG - print billboard TreeMap
-                newBillboard.printBillboard(); // DEBUG - print billboard TreeMap
+                //newBillboard.printBillboard(); // DEBUG - print billboard TreeMap
 
                 sleep(15000); // Sleep 15 seconds
             } catch (InterruptedException e) {
