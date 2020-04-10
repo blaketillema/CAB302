@@ -5,14 +5,14 @@ To test viewer<->server<->control panel socket connections
 
 - change settings: run -> edit configurations -> turn on parralel run
 - run first: 
- - billboard_server -> TCPServerTest -> main
-  - should say its accepting new clients
-  - should write to database when control panel sends stuff
+    - billboard_server -> TCPServerTest -> main
+        - should say its accepting new clients
+        - should write to database when control panel sends stuff
 - run either: 
- - billboard_control_panel -> TCPConnect -> main
-  - should ask server to add TCPClass object to database every 3 secs
- - billboard_viewer -> TCPConnect -> main
-  - should ask server to send database to it every 3 secs
+    - billboard_control_panel -> TCPConnect -> main
+        - should ask server to add TCPClass object to database every 3 secs
+    - billboard_viewer -> TCPConnect -> main
+        - should ask server to send database to it every 3 secs
 
 
 **Relevant JDK Packages and Classes:** 
