@@ -1,9 +1,5 @@
 package billboard_control_panel;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 import billboard_server.TCPClass;
 import billboard_server.TCPClient;
 
@@ -19,15 +15,7 @@ public class TCPConnect extends TCPClient{
 
     public void talkToServer()
     {
-        try
-        {
-            super.init("control");
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-            System.exit(1);
-        }
+        super.init("control panel");
 
         int counter = 0;
 
@@ -40,15 +28,7 @@ public class TCPConnect extends TCPClient{
 
             System.out.println("sending to server: " + send.toString());
 
-            try
-            {
-                super.writeToStream(send);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
-                System.exit(1);
-            }
+            super.writeToStream(send);
 
             super.sleep(3000);
         }
