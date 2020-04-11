@@ -80,6 +80,7 @@ public class Billboard {
      * @return JPanel
      */
     private JPanel noBillboardPanel(){
+        // TODO - build appropriate visuals for no connection billboard
         JPanel defaultPanel = new JPanel();
         JLabel label = new JLabel("ERROR! No Connection to Billboard Server. Attempting to Connect...");
         defaultPanel.add(label);

@@ -134,7 +134,8 @@ public class Panel {
      * Message, Picture and Information
      */
     private void createMPI() {
-        // TODO - Message and information font sizing, should this scale on screen and message size?
+        // TODO - Message and information font sizing, should this scale on screen and message size
+        // TODO - Input image from network location or base64 - this should be handled elsewhere in a new function?
 
         //createPlaceholder();
 
@@ -176,6 +177,7 @@ public class Panel {
         topPanel.setPreferredSize(new Dimension(scaledWidth,scaledHeight));
         JLabel topMessage = new JLabel(message);
         topMessage.setFont(new Font("Serif", Font.BOLD, 50)); // Set font and size
+        topMessage.setForeground(Color.decode(messageColour));
         topPanel.add(topMessage);
 
         // Center Image
@@ -196,6 +198,7 @@ public class Panel {
         //bottomPanel.setBorder(BorderFactory.createTitledBorder("Debug: Bottom Panel"));
         JLabel bottomText = new JLabel(information);
         bottomText.setFont(new Font("Serif", Font.PLAIN, 40)); // Set font and size
+        bottomText.setForeground(Color.decode(messageColour));
         bottomPanel.add(bottomText);
 
         billboardPanel.add(topPanel, BorderLayout.PAGE_START);
@@ -203,11 +206,11 @@ public class Panel {
         billboardPanel.add(bottomPanel, BorderLayout.PAGE_END);
 
         // Set Panel Backgrounds
-        billboardBackground = "#a3a375"; // test colour yellow
+        //billboardBackground = "#a3a375"; // test colour yellow
 
         billboardPanel.setBackground(Color.decode(billboardBackground));
         topPanel.setBackground(Color.decode(billboardBackground));
-        centrePanel.setBackground(Color.decode("#9999ff")); // test color
+        centrePanel.setBackground(Color.decode(billboardBackground)); // test color
         bottomPanel.setBackground(Color.decode(billboardBackground));
 
         //billboardPanel.setBackground(Color.decode(billboardBackground));
