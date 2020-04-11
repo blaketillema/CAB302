@@ -107,7 +107,10 @@ public class MainRunDisplay {
 
         }
 
+
         System.out.println("DEBUG: End of Main");
+
+        // TODO - Safely terminate/end viewer application once end of main is reached
 
     }
 }
