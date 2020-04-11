@@ -1,4 +1,4 @@
-package billboard_control_panel;
+package Sandbox;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,12 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-
 public class UserManagement {
     private JPanel LoginPanel;
     private JPasswordField passwordField1;
     private JTextField usernameField1;
     private JButton loginButton;
+
     // TODO: clean up GUI
     public UserManagement() {
         loginButton.addActionListener(new ActionListener() {
@@ -21,15 +21,16 @@ public class UserManagement {
                 String password = passwordField1.getText();
 
                 Component frame = null;
-                if(username.equals("Lahiru") && password.equals("password")){
+                if (username.equals("Lahiru") && password.equals("password")) {
                     JOptionPane.showMessageDialog(null, "Successfully logged in");
-                }
-                else{
+
+                } else {
                     JOptionPane.showMessageDialog(null, "Invalid username or password");
                 }
             }
         });
     }
+
     public static void main(String[] args) {
         JFrame frame = new JFrame("UserLoginPanel");
         frame.setContentPane(new UserManagement().LoginPanel);
@@ -41,4 +42,5 @@ public class UserManagement {
     private void createUIComponents() {
         // TODO: place custom component creation code here
     }
+
 }
