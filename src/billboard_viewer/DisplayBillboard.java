@@ -44,7 +44,7 @@ public class DisplayBillboard {
      */
     public void displayCurrentBillboard() {
         setupScreen();
-        setBillboardGenericSettings();
+        //setBillboardGenericSettings();
         setBillboardSpecificSettings();
         setupImage();
     }
