@@ -4,7 +4,9 @@ import java.text.MessageFormat;
 import java.util.Map;
 import java.util.TreeMap;
 
- /**
+import static java.lang.Thread.sleep;
+
+/**
  * This is the main class to run the program
  */
 public class MainRunDisplay {
