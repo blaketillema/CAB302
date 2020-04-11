@@ -1,4 +1,4 @@
-package billboard_viewer;
+package Sandbox;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
@@ -8,12 +8,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.util.Set;
 import java.util.TreeMap;
-
-/* Sample Colour codes:
-Green: #55FF00
-Yellow: #FFC300
-Red: #FF0000
- */
 
 public class Billboard {
 
@@ -64,7 +58,6 @@ public class Billboard {
         xRes = screenSize.getWidth(); // Set resolution x
         yRes = screenSize.getHeight(); // Set resolution y
         billboardFrame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Set Frame to Full Screen
-        billboardFrame.setUndecorated(true); // Remove window bars for true full screen
 
         billboardFrame.add(noBillboardPanel());
 
@@ -80,7 +73,6 @@ public class Billboard {
      * @return JPanel
      */
     private JPanel noBillboardPanel(){
-        // TODO - build appropriate visuals for no connection billboard
         JPanel defaultPanel = new JPanel();
         JLabel label = new JLabel("ERROR! No Connection to Billboard Server. Attempting to Connect...");
         defaultPanel.add(label);
