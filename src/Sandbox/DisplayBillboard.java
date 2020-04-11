@@ -3,7 +3,7 @@ package Sandbox;
 import javax.swing.*;
 import java.awt.*;
 
-public class DisplayBillboard extends JFrame{
+public class DisplayBillboard extends JFrame {
     private JPanel panel;
     private JLabel label01;
     private ImageIcon icon01;
@@ -11,7 +11,7 @@ public class DisplayBillboard extends JFrame{
     public DisplayBillboard() {
 
         setLayout(new FlowLayout());
-        setSize(50,50);
+        setSize(50, 50);
 
         //label01
         icon01 = new ImageIcon(getClass().getResource("Billboard1200x800.png"));
@@ -31,5 +31,6 @@ public class DisplayBillboard extends JFrame{
         gui.pack();
         gui.setTitle("Image");
     }
+
 }
 
