@@ -1,18 +1,9 @@
 package billboard_control_panel;
 
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 public class LoginManager extends JFrame {
     public JPanel LoginPanel;
@@ -46,6 +37,7 @@ public class LoginManager extends JFrame {
     public static void main(String[] args) {
         /* Create and display the form */
         JFrame frameLP = new JFrame("LoginPanel");
+        Main.centreWindow(frameLP);
         frameLP.setContentPane(new LoginManager().LoginPanel);
         frameLP.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frameLP.pack();

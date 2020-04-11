@@ -1,17 +1,9 @@
 package billboard_control_panel;
 
-import com.jgoodies.forms.layout.CellConstraints;
-import com.jgoodies.forms.layout.FormLayout;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 public class ControlPanel {
     private JTabbedPane tabbedPane1;
@@ -21,10 +13,11 @@ public class ControlPanel {
     private JButton previewBB_Button;
     private JList billboardList;
     private JButton createUser_Button;
-    private JButton editUser_Button;
-    private JButton removeUser_Button;
+    private JButton ModifyUser_Button;
+    private JButton deleteUser_Button;
     private JList userList;
     private JButton logOutButton;
+    private JButton scheduleBB_Button;
 
     public ControlPanel() {
         Window[] wns = LoginManager.getFrames();
@@ -42,8 +35,10 @@ public class ControlPanel {
             public void actionPerformed(ActionEvent e) {
                 int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to log out?");
                 if (n == JOptionPane.YES_OPTION) {
+                    // TODO: Make this a function (Hides and disposes Frames)
                     Window[] wns = LoginManager.getFrames();
                     for (Window wn1 : wns) {
+                        wn1.dispose();
                         wn1.setVisible(false);
                     }
                     new LoginManager().main(null);
@@ -56,9 +51,32 @@ public class ControlPanel {
             public void actionPerformed(ActionEvent e) {
                 Window[] wns = LoginManager.getFrames();
                 for (Window wn1 : wns) {
+                    wn1.dispose();
                     wn1.setVisible(false);
                 }
                 new BillboardBuilder().main(null);
+            }
+        });
+        editBB_Button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Window[] wns = LoginManager.getFrames();
+                for (Window wn1 : wns) {
+                    wn1.dispose();
+                    wn1.setVisible(false);
+                }
+                new BillboardBuilder().main(null);
+            }
+        });
+        createUser_Button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Window[] wns = LoginManager.getFrames();
+                for (Window wn1 : wns) {
+                    wn1.dispose();
+                    wn1.setVisible(false);
+                }
+                new UserBuilder().main(null);
             }
         });
     }

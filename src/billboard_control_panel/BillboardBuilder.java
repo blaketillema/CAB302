@@ -28,6 +28,7 @@ public class BillboardBuilder {
                 if (n == JOptionPane.YES_OPTION) {
                     Window[] wns = LoginManager.getFrames();
                     for (Window wn1 : wns) {
+                        wn1.dispose();
                         wn1.setVisible(false);
                     }
                     new ControlPanel().main(null);
