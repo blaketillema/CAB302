@@ -69,49 +69,51 @@ public class Panel {
         information = billboard.get("information");
 
         // Determine billboard type and call method to create appropriate panel
-        if (message != null) {
-            if (information != null && ( pictureData != null || pictureUrl != null )) {
-                // Settings for 1 - Message, picture and information
-                System.out.println("DEBUG: Panel Type 1, MPI");
-                createMPI();
-            }
-            else if (information != null) {
-                // Settings for 2 - Message and Information
-                System.out.println("DEBUG: Panel Type 2, MI");
-                createMI();
-            }
-            else if (pictureData != null || pictureUrl != null) {
-                // Settings for 3 - Message and Picture
-                System.out.println("DEBUG: Panel Type 3, MP");
-                createMP();
-            }
-            else {
-                // Settings for 4 - Message
-                System.out.println("DEBUG: Panel Type 4, M");
-                createM();
+        boolean TESTING = true; // DEBUG/TESTING to call billboard being developed
+        if (TESTING) {
+            // TODO - Remove testing/debug code when all panel types implemented
+            //call a billboard type here to test it
+            createPI();
+        } else {
+            if (message != null) {
+                if (information != null && (pictureData != null || pictureUrl != null)) {
+                    // Settings for 1 - Message, picture and information
+                    System.out.println("DEBUG: Panel Type 1, MPI");
+                    createMPI();
+                } else if (information != null) {
+                    // Settings for 2 - Message and Information
+                    System.out.println("DEBUG: Panel Type 2, MI");
+                    createMI();
+                } else if (pictureData != null || pictureUrl != null) {
+                    // Settings for 3 - Message and Picture
+                    System.out.println("DEBUG: Panel Type 3, MP");
+                    createMP();
+                } else {
+                    // Settings for 4 - Message
+                    System.out.println("DEBUG: Panel Type 4, M");
+                    createM();
+                }
+            } else if (pictureData != null || pictureUrl != null) {
+                if (information != null) {
+                    // Settings for 5 - Picture and Information
+                    System.out.println("DEBUG: Panel Type 5, PI");
+                    createPI();
+                } else {
+                    // Settings for 6 - Picture
+                    System.out.println("DEBUG: Panel Type 6, P");
+                    createP();
+                }
+            } else if (information != null) {
+                // Settings for 7 - Information
+                System.out.println("DEBUG: Panel Type 7, I");
+                createI();
+            } else if (true) { // billboardNow.isDefault()
+                // Settings for 8 - Default - No billboard to display "Advertise Here!!!"
+                System.out.println("DEBUG: Panel Type 8, default");
+                createDefault();
             }
         }
-        else if (pictureData != null || pictureUrl != null) {
-            if (information != null) {
-                // Settings for 5 - Picture and Information
-                System.out.println("DEBUG: Panel Type 5, PI");
-                createPI();
-            } else {
-                // Settings for 6 - Picture
-                System.out.println("DEBUG: Panel Type 6, P");
-                createP();
-            }
-        }
-        else if (information != null) {
-            // Settings for 7 - Information
-            System.out.println("DEBUG: Panel Type 7, I");
-            createI();
-        }
-        else if (true) { // billboardNow.isDefault()
-            // Settings for 8 - Default - No billboard to display "Advertise Here!!!"
-            System.out.println("DEBUG: Panel Type 8, default");
-            createDefault();
-        }
+
         // TODO - check if 9 Server not available needed in addition to 8
         /*
         Types of Billboards:
@@ -127,7 +129,6 @@ public class Panel {
             From the specifications: If there is no billboard scheduled at a particular time,
             the Server should send back something else for the Viewer to display in the meantime
         */
-
     }
 
     /**
@@ -153,16 +154,8 @@ public class Panel {
         // TEST IMAGE SETUP
         BufferedImage image = null; // null initialisation
         BufferedImage scaledImage = null; // null initialisation
-        String testImage = "Billboard640x480.png";
-        String imagePath = System.getProperty("user.dir") + "\\Assets\\" + testImage; // test file
 
-        File imageFile = new File(imagePath);
-        try {
-            image = ImageIO.read(imageFile);
-
-        } catch (IOException ex) {
-            // Exception handling
-        }
+        image = imagePlaceholder(pictureData, pictureUrl); // Get test image from placeholder Image handler
 
         // Scale input image to a third
         scaledImage = scaleThird(image);
@@ -221,37 +214,178 @@ public class Panel {
     /**
      * Message and Information
      */
-    private void createMI() {createPlaceholder();}
+    private void createMI() {
+        /**
+         * If only message and information are present,
+         * the message text should be sized to fit in the top half of the screen and
+         * the information text sized to fit in the bottom half of the screen.
+         */
+
+        billboardPanel.setLayout(new BorderLayout());
+
+        // Top Message
+        JPanel topPanel = new JPanel(new GridBagLayout());
+        //topPanel.setBorder(BorderFactory.createTitledBorder("Debug: Top Panel"));
+        topPanel.setPreferredSize(new Dimension((int) xRes/2,(int) yRes/2));
+        JLabel topMessage = new JLabel(message);
+        topMessage.setFont(new Font("Serif", Font.BOLD, 50)); // Set font and size
+        topMessage.setForeground(Color.decode(messageColour));
+        topPanel.add(topMessage);
+
+        // Bottom Text
+        JPanel bottomPanel = new JPanel(new GridBagLayout());
+        bottomPanel.setPreferredSize(new Dimension((int) xRes/2,(int) yRes/2));
+        //bottomPanel.setBorder(BorderFactory.createTitledBorder("Debug: Bottom Panel"));
+        JLabel bottomText = new JLabel(information);
+        bottomText.setFont(new Font("Serif", Font.PLAIN, 40)); // Set font and size
+        bottomText.setForeground(Color.decode(messageColour));
+        bottomPanel.add(bottomText);
+
+        billboardPanel.add(topPanel, BorderLayout.PAGE_START);
+        billboardPanel.add(bottomPanel, BorderLayout.PAGE_END);
+
+        billboardPanel.setBackground(Color.decode(billboardBackground));
+        topPanel.setBackground(Color.decode(billboardBackground));
+        bottomPanel.setBackground(Color.decode(billboardBackground));
+        billboardPanel.setOpaque(true);
+
+    }
 
     /**
      * Message and Picture
      */
-    private void createMP() {createPlaceholder();}
+    private void createMP() {
+        /**
+         * If only message and picture are present, the picture should be the same size as before,
+         * but instead of being drawn in the centre of the screen,
+         * it should be drawn in the middle of the bottom 2/3 of the screen.
+         * The message should then be sized to fit in the remaining space between the top of the image
+         * and the top of the screen and placed in the centre of that gap.
+         */
+        // Scale half?
+
+        billboardPanel.setLayout(new BorderLayout());
+
+        // IMAGE SETUP
+        BufferedImage image = null; // null initialisation
+        BufferedImage scaledImage = null; // null initialisation
+        image = imagePlaceholder(pictureData, pictureUrl); // Get test image from placeholder Image handler
+
+        scaledImage = scaleHalf(image);
+
+        int scaledWidth = scaledImage.getWidth();
+        int scaledHeight = scaledImage.getHeight();
+
+        // Top Message
+        JPanel topPanel = new JPanel(new GridBagLayout());
+        topPanel.setPreferredSize(new Dimension(scaledWidth, (int) yRes/3)); // set one third screen height
+        JLabel topMessage = new JLabel(message);
+        topMessage.setFont(new Font("Serif", Font.BOLD, 50)); // Set font and size
+        topMessage.setForeground(Color.decode(messageColour));
+        topPanel.add(topMessage);
+
+        // Center Image
+        JPanel centrePanel = new JPanel(new GridBagLayout()); // GridBagLayout will center the image
+        JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
+
+        centrePanel.setSize(scaledWidth, scaledHeight);
+        centrePanel.setPreferredSize(new Dimension(scaledWidth, (int) yRes * 2/3)); // set two third screen height
+
+        // ADD IMAGE
+        centrePanel.add(imageLabel);
+
+        billboardPanel.add(topPanel, BorderLayout.PAGE_START);
+        billboardPanel.add(centrePanel, BorderLayout.CENTER);
+
+        // Set Panel Backgrounds
+        billboardPanel.setBackground(Color.decode(billboardBackground));
+        topPanel.setBackground(Color.decode(billboardBackground));
+        centrePanel.setBackground(Color.decode(billboardBackground));
+        billboardPanel.setOpaque(true);
+    }
 
     /**
      * Message
      */
-    private void createM() {createPlaceholder();}
+    private void createM() {
+        /**
+         * If only message is present, the message should be displayed almost as large as possible,
+         * within the constraints that the text cannot be broken across multiple lines and it must all fit on the screen.
+         */
+        // TODO - Implement message scale for 'almost as large as possible' on one line
+
+        billboardPanel.setLayout(new BorderLayout());
+
+        // Top Message
+        JPanel topPanel = new JPanel(new GridBagLayout());
+        //topPanel.setBorder(BorderFactory.createTitledBorder("Debug: Top Panel"));
+        topPanel.setPreferredSize(new Dimension((int)xRes,(int)yRes));
+        JLabel topMessage = new JLabel(message);
+        topMessage.setFont(new Font("Serif", Font.BOLD, 50)); // Set font and size
+        topMessage.setForeground(Color.decode(messageColour));
+        topPanel.add(topMessage);
+
+        billboardPanel.add(topPanel, BorderLayout.CENTER);
+
+        // Set background colours
+        billboardPanel.setBackground(Color.decode(billboardBackground));
+        topPanel.setBackground(Color.decode(billboardBackground));
+        billboardPanel.setOpaque(true);
+
+    }
 
     /**
      * Picture and Information
      */
-    private void createPI() {createPlaceholder();}
+    private void createPI() {
+        /**
+         * If only picture and information are present, the picture should be the same size as before,
+         * but instead of being drawn in the centre of the screen,
+         * it should be drawn in the middle of the top 2/3 of the screen.
+         * The information text should then be sized to fit in the remaining space between the bottom of the image and
+         * the bottom of the screen and placed in the centre of that gap
+         * (within the constraint that the information text should not fill up more than 75% of the screen’s width.)
+         */
+
+
+
+    }
 
     /**
      * Picture
      */
-    private void createP() {createPlaceholder();}
+    private void createP() {
+        /**
+         * If only picture is present, the image should be scaled up to
+         * half the width and height of the screen anddisplayed in the centre.
+         *  Note that this scaling up should not distort the aspect ratio of the image.
+         * If the screen is 1000 pixels wide and 750 pixels high, a 100x100 image should be displayed at 375x375.
+         * On the other hand, a 100x50 image should be displayed at 500x250. In each case the image is scaled,
+         * preserving the aspect ratio, to the largest size that can fit in a 500x375 (50% of the screen’s width and height) rectangle.
+         */
 
-    /** Information
-     *
+
+        createPlaceholder();
+    }
+
+    /**
+     * Information
      */
-    private void createI() {createPlaceholder();}
+    private void createI() {
+        /**
+         * If only information is present, the text should be displayed in the centre,
+         * with word wrapping and font size chosen so that the text fills up no more than 75% of the screen’s width
+         * and 50% of the screen’s height.
+         */
+
+        createPlaceholder();
+    }
 
     /**
      * Billboard for no server connection error
      */
     private void createDefault() {
+        // TODO - tidy up the default to a better looking error message
         JLabel label = new JLabel("ERROR! No Connection to Billboard Server. Attempting to Connect...");
         billboardPanel.add(label);
     }
@@ -354,6 +488,30 @@ public class Panel {
      */
     public JPanel getPanel(){
         return billboardPanel;
+    }
+
+    /**
+     * Placeholder for getting an image from a url or base64
+     * @param pictureUrl
+     * @param pictureData
+     * @return
+     */
+    private BufferedImage imagePlaceholder(String pictureUrl, String pictureData) {
+        // TODO - placeholder stub for returning an image until implementation complete
+        // Test image data
+        BufferedImage image = null; // null initialisation
+        String testImage = "Billboard640x480.png";
+        String imagePath = System.getProperty("user.dir") + "\\Assets\\" + testImage; // test file
+
+        File imageFile = new File(imagePath);
+        try {
+            image = ImageIO.read(imageFile);
+
+        } catch (IOException ex) {
+            // Exception handling
+        }
+
+        return image;
     }
 
     /**
