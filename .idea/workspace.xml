@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/Billboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/Billboard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_viewer/MainRunDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/MainRunDisplay.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -253,10 +252,10 @@
     </state>
     <state width="1696" height="367" key="GridCell.Tab.1.right/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585582416068" />
     <state width="890" height="439" key="GridCell.Tab.1.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585484853583" />
-    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog" timestamp="1585636815446">
+    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog" timestamp="1586409640760">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585636815446" />
+    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586409640760" />
     <state x="2993" y="0" width="854" height="1087" key="dock-window-1" timestamp="1585732302250">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
