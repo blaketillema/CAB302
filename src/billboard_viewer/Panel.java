@@ -3,15 +3,14 @@ package billboard_viewer;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.util.Base64;
 import java.util.TreeMap;
 
-
-// TODO - pictureUrl download from http/https source to image
-// TODO - pictureData conversion from Base64 to image
+// TODO - Message and information text font size scaling, information word wrap.
 
 /**
  * Create a JPanel based on the input TreeMap and determination of type
@@ -69,11 +68,11 @@ public class Panel {
         information = billboard.get("information");
 
         // Determine billboard type and call method to create appropriate panel
-        boolean TESTING = true; // DEBUG/TESTING to call billboard being developed
-        if (TESTING) {
+        boolean testing = false; // DEBUG/TESTING to call billboard being developed
+        if (testing) {
             // TODO - Remove testing/debug code when all panel types implemented
             //call a billboard type here to test it
-            createPI();
+            createI();
         } else {
             if (message != null) {
                 if (information != null && (pictureData != null || pictureUrl != null)) {
@@ -138,24 +137,17 @@ public class Panel {
         // TODO - Message and information font sizing, should this scale on screen and message size
         // TODO - Input image from network location or base64 - this should be handled elsewhere in a new function?
 
-        //createPlaceholder();
-
         billboardPanel.setLayout(new BorderLayout());
-        //billboardPanel.setLayout(new BorderLayout());
 
-        //CardLayout card =
-        //billboardPanel.setLayout(card);
-
-        /*
-        JLabel messageLabel = new JLabel("Message text: Hello World");
-        billboardPanel.add(messageLabel);
-         */
-
-        // TEST IMAGE SETUP
+        // Image SETUP
         BufferedImage image = null; // null initialisation
         BufferedImage scaledImage = null; // null initialisation
 
-        image = imagePlaceholder(pictureData, pictureUrl); // Get test image from placeholder Image handler
+        try {
+            image = produceImageBuffer(pictureUrl, pictureData); // Get image from URL or base 64 Data
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Scale input image to a third
         scaledImage = scaleThird(image);
@@ -180,7 +172,6 @@ public class Panel {
 
         centrePanel.setSize(scaledWidth, scaledHeight);
         centrePanel.setPreferredSize(new Dimension(scaledWidth, scaledHeight));
-        //centrePanel.set
 
         // ADD IMAGE
         centrePanel.add(imageLabel);
@@ -199,14 +190,10 @@ public class Panel {
         billboardPanel.add(bottomPanel, BorderLayout.PAGE_END);
 
         // Set Panel Backgrounds
-        //billboardBackground = "#a3a375"; // test colour yellow
-
         billboardPanel.setBackground(Color.decode(billboardBackground));
         topPanel.setBackground(Color.decode(billboardBackground));
         centrePanel.setBackground(Color.decode(billboardBackground)); // test color
         bottomPanel.setBackground(Color.decode(billboardBackground));
-
-        //billboardPanel.setBackground(Color.decode(billboardBackground));
         billboardPanel.setOpaque(true);
 
     }
@@ -220,6 +207,7 @@ public class Panel {
          * the message text should be sized to fit in the top half of the screen and
          * the information text sized to fit in the bottom half of the screen.
          */
+        // TODO - Scale information text
 
         billboardPanel.setLayout(new BorderLayout());
 
@@ -244,6 +232,7 @@ public class Panel {
         billboardPanel.add(topPanel, BorderLayout.PAGE_START);
         billboardPanel.add(bottomPanel, BorderLayout.PAGE_END);
 
+        // Set Panel Backgrounds
         billboardPanel.setBackground(Color.decode(billboardBackground));
         topPanel.setBackground(Color.decode(billboardBackground));
         bottomPanel.setBackground(Color.decode(billboardBackground));
@@ -262,17 +251,20 @@ public class Panel {
          * The message should then be sized to fit in the remaining space between the top of the image
          * and the top of the screen and placed in the centre of that gap.
          */
-        // Scale half?
+        // TODO - Scale message text
 
         billboardPanel.setLayout(new BorderLayout());
 
         // IMAGE SETUP
         BufferedImage image = null; // null initialisation
         BufferedImage scaledImage = null; // null initialisation
-        image = imagePlaceholder(pictureData, pictureUrl); // Get test image from placeholder Image handler
+        try {
+            image = produceImageBuffer(pictureUrl, pictureData); // Get image from URL or base 64 Data
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         scaledImage = scaleHalf(image);
-
         int scaledWidth = scaledImage.getWidth();
         int scaledHeight = scaledImage.getHeight();
 
@@ -287,7 +279,6 @@ public class Panel {
         // Center Image
         JPanel centrePanel = new JPanel(new GridBagLayout()); // GridBagLayout will center the image
         JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
-
         centrePanel.setSize(scaledWidth, scaledHeight);
         centrePanel.setPreferredSize(new Dimension(scaledWidth, (int) yRes * 2/3)); // set two third screen height
 
@@ -346,9 +337,47 @@ public class Panel {
          * the bottom of the screen and placed in the centre of that gap
          * (within the constraint that the information text should not fill up more than 75% of the screen’s width.)
          */
+        // TODO - Information text size scaling
 
+        billboardPanel.setLayout(new BorderLayout());
 
+        // IMAGE SETUP
+        BufferedImage image = null; // null initialisation
+        BufferedImage scaledImage = null; // null initialisation
+        try {
+            image = produceImageBuffer(pictureUrl, pictureData); // Get image from URL or base 64 Data
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        scaledImage = scaleHalf(image); // Picture size? 50%? criteria not clear
+
+        int scaledWidth = scaledImage.getWidth();
+        int scaledHeight = scaledImage.getHeight();
+
+        // Top Image panel
+        JPanel topPanel = new JPanel(new GridBagLayout());
+        topPanel.setPreferredSize(new Dimension(scaledWidth, (int) yRes * 2/3)); // set height top 2/3rd
+        JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
+        topPanel.add(imageLabel);
+
+        // Bottom Text
+        JPanel bottomPanel = new JPanel(new GridBagLayout());
+        bottomPanel.setPreferredSize(new Dimension(scaledWidth, (int) yRes * 1/3)); // set height bottom 1/3rd
+        //bottomPanel.setBorder(BorderFactory.createTitledBorder("Debug: Bottom Panel"));
+        JLabel bottomText = new JLabel(information);
+        bottomText.setFont(new Font("Serif", Font.PLAIN, 40)); // Set font and size
+        bottomText.setForeground(Color.decode(messageColour));
+        bottomPanel.add(bottomText);
+
+        billboardPanel.add(topPanel, BorderLayout.PAGE_START);
+        billboardPanel.add(bottomPanel, BorderLayout.PAGE_END);
+
+        // Set Panel Backgrounds
+        billboardPanel.setBackground(Color.decode(billboardBackground));
+        topPanel.setBackground(Color.decode(billboardBackground));
+        bottomPanel.setBackground(Color.decode(billboardBackground));
+        billboardPanel.setOpaque(true);
     }
 
     /**
@@ -357,15 +386,45 @@ public class Panel {
     private void createP() {
         /**
          * If only picture is present, the image should be scaled up to
-         * half the width and height of the screen anddisplayed in the centre.
+         * half the width and height of the screen and displayed in the centre.
          *  Note that this scaling up should not distort the aspect ratio of the image.
          * If the screen is 1000 pixels wide and 750 pixels high, a 100x100 image should be displayed at 375x375.
          * On the other hand, a 100x50 image should be displayed at 500x250. In each case the image is scaled,
          * preserving the aspect ratio, to the largest size that can fit in a 500x375 (50% of the screen’s width and height) rectangle.
          */
+        // TODO - Implement
 
+        billboardPanel.setLayout(new BorderLayout());
 
-        createPlaceholder();
+        // IMAGE SETUP
+        BufferedImage image = null; // null initialisation
+        BufferedImage scaledImage = null; // null initialisation
+        try {
+            image = produceImageBuffer(pictureUrl, pictureData); // Get image from URL or base 64 Data
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        scaledImage = scaleHalf(image); // Scale picture to 50% screen size
+
+        int scaledWidth = scaledImage.getWidth();
+        int scaledHeight = scaledImage.getHeight();
+
+        // Center Image
+        JPanel centrePanel = new JPanel(new GridBagLayout()); // GridBagLayout will center the image
+        JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
+        centrePanel.setSize(scaledWidth, scaledHeight);
+        centrePanel.setPreferredSize(new Dimension(scaledWidth, scaledHeight));
+
+        // ADD IMAGE
+        centrePanel.add(imageLabel);
+        billboardPanel.add(centrePanel, BorderLayout.CENTER);
+
+        // Set Panel Backgrounds
+        billboardPanel.setBackground(Color.decode(billboardBackground));
+        centrePanel.setBackground(Color.decode(billboardBackground));
+        billboardPanel.setOpaque(true);
+
     }
 
     /**
@@ -377,8 +436,26 @@ public class Panel {
          * with word wrapping and font size chosen so that the text fills up no more than 75% of the screen’s width
          * and 50% of the screen’s height.
          */
+        // TODO - Implement message size scaling & text wrap
 
-        createPlaceholder();
+        billboardPanel.setLayout(new BorderLayout());
+
+        // Bottom Text
+        JPanel centrePanel = new JPanel(new GridBagLayout());
+        //bottomPanel.setPreferredSize(new Dimension(scaledWidth,scaledHeight));
+        //bottomPanel.setBorder(BorderFactory.createTitledBorder("Debug: Bottom Panel"));
+        JLabel bottomText = new JLabel(information);
+        bottomText.setFont(new Font("Serif", Font.PLAIN, 40)); // Set font and size
+        bottomText.setForeground(Color.decode(messageColour));
+        centrePanel.add(bottomText);
+
+        billboardPanel.add(centrePanel, BorderLayout.CENTER);
+
+        // Set Panel Backgrounds
+        billboardPanel.setBackground(Color.decode(billboardBackground));
+        centrePanel.setBackground(Color.decode(billboardBackground));
+        billboardPanel.setOpaque(true);
+
     }
 
     /**
@@ -430,9 +507,6 @@ public class Panel {
         graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         graphics2D.drawImage(image, 0, 0, (int) scaledWidth, (int) scaledHeight, null);
 
-        //scaledImage = image.getScaledInstance()
-        //scaledImage = image.getScaledInstance((int) scaledWidth,(int) scaledHeight, Image.SCALE_DEFAULT);
-
         return scaledImage;
     }
 
@@ -476,9 +550,6 @@ public class Panel {
         graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         graphics2D.drawImage(image, 0, 0, (int) scaledWidth, (int) scaledHeight, null);
 
-        //scaledImage = image.getScaledInstance()
-        //scaledImage = image.getScaledInstance((int) scaledWidth,(int) scaledHeight, Image.SCALE_DEFAULT);
-
         return scaledImage;
     }
 
@@ -491,36 +562,30 @@ public class Panel {
     }
 
     /**
-     * Placeholder for getting an image from a url or base64
+     * Creates and returns a billboard image from either base64 image data or an Image URL
      * @param pictureUrl
      * @param pictureData
      * @return
+     * @throws IOException
      */
-    private BufferedImage imagePlaceholder(String pictureUrl, String pictureData) {
-        // TODO - placeholder stub for returning an image until implementation complete
-        // Test image data
-        BufferedImage image = null; // null initialisation
-        String testImage = "Billboard640x480.png";
-        String imagePath = System.getProperty("user.dir") + "\\Assets\\" + testImage; // test file
+    private BufferedImage produceImageBuffer(String pictureUrl, String pictureData) throws IOException {
+        BufferedImage imageBuffer = null;
 
-        File imageFile = new File(imagePath);
-        try {
-            image = ImageIO.read(imageFile);
-
-        } catch (IOException ex) {
-            // Exception handling
+        if (pictureUrl == null) {
+            // process base64 image
+            System.out.println("DEBUG: Picture type - BASE64");
+            byte[] imageBytes = Base64.getDecoder().decode(pictureData);
+            ByteArrayInputStream imageBytesStream = new ByteArrayInputStream(imageBytes);
+            imageBuffer = ImageIO.read(imageBytesStream);
         }
-
-        return image;
-    }
-
-    /**
-     * Unimplemented PlaceHolder JPanel
-     */
-    private void createPlaceholder() {
-        //JPanel billboardPanel = new JPanel();
-        JLabel label = new JLabel("Hello World - PlaceHolder JPanel");
-        billboardPanel.add(label);
+        else {
+            // process image from URL
+            System.out.println("DEBUG: Picture type - URL");
+            URL url = new URL(pictureUrl);
+            imageBuffer = ImageIO.read(url);
+        }
+        // Sample image goes here
+        return imageBuffer;
     }
 
 }

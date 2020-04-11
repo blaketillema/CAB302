@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <billboard background="#0000FF">
     <message colour="#FFFF00">Welcome to the ____ Corporation's Annual Fundraiser!</message>
-    <picture url="https://example.com/fundraiser_image.jpg"/>
+    <picture url="https://www.w3schools.com/html/pic_trulli.jpg"/>
     <information colour="#00FFFF">Be sure to check out https://example.com/ for more information.</information>
 </billboard>
