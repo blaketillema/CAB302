@@ -2,5 +2,5 @@
 <billboard background="#0000FF">
     <message colour="#FFFF00">Welcome to the ____ Corporation's Annual Fundraiser!</message>
     <picture url="https://www.w3schools.com/html/pic_trulli.jpg"/>
-    <information colour="#00FFFF">Be sure to check out https://example.com/ for more information.</information>
+    <information colour="#00FFFF">Be sure to check out https://example.com/ for more information. Longer Information string for testing: Hello world. Hello World. Hello World. Hello World. Hello World. Hello World. INFORMATION END</information>
 </billboard>
