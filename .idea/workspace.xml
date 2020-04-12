@@ -1,14 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="" />
+    <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="TCP connection code improvements">
+      <change afterPath="$PROJECT_DIR$/src/billboard_server/TCPServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/CAB302.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CAB302.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/TCPConnect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/TCPConnect.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_server/TCPTestServer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/DisplayBillboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/DisplayBillboard.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="billboard_server" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="MERGE" />
   </component>
   <component name="IgnoredFileRootStore">
     <option name="generatedRoots">
@@ -27,8 +48,124 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="Downloaded.Files.Path.Enabled" value="false" />
+    <property name="Repository.Attach.Annotations" value="false" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/billboard_viewer" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/billboard_control_panel" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/billboard_viewer" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.TCPConnect (2)">
+    <configuration name="Unnamed" type="AndroidJUnit" factoryName="Android JUnit" nameIsGenerated="true">
+      <module name="CAB302" />
+      <useClassPathOnly />
+      <option name="MAIN_CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TCPConnect (2)" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="billboard_control_panel.TCPConnect" />
+      <module name="CAB302" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="billboard_control_panel.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TCPConnect" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="billboard_viewer.TCPConnect" />
+      <module name="CAB302" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="billboard_viewer.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TCPConnect" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="billboard_server.TCPConnect" />
+      <module name="CAB302" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="billboard_server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TCPTestServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="billboard_server.TCPTestServer" />
+      <module name="CAB302" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="billboard_server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TCPTestViewer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="billboard_server.TCPTestViewer" />
+      <module name="CAB302" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="billboard_server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Sandbox.sandboxMain" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.TCPTestServer" />
+      <item itemvalue="Application.TCPTestViewer" />
+      <item itemvalue="Application.TCPConnect" />
+      <item itemvalue="Application.TCPConnect (1)" />
+      <item itemvalue="Application.TCPConnect (2)" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.TCPConnect (2)" />
+        <item itemvalue="Application.TCPConnect" />
+        <item itemvalue="Application.TCPTestServer" />
+        <item itemvalue="Application.TCPConnect (1)" />
+        <item itemvalue="Application.TCPTestViewer" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -41,16 +178,163 @@
       <option name="presentableId" value="Default" />
       <updated>1585222824688</updated>
     </task>
+    <task id="LOCAL-00001" summary="Added TCP connection tests for: viewer &lt;-&gt; server &lt;-&gt; control panel">
+      <created>1586448373119</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1586448373119</updated>
+    </task>
+    <task id="LOCAL-00002" summary="TCP connection code improvements">
+      <created>1586486448019</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1586486448020</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added TCP connection tests for: viewer &lt;-&gt; server &lt;-&gt; control panel" />
+    <MESSAGE value="TCP connection code improvements" />
+    <option name="LAST_COMMIT_MESSAGE" value="TCP connection code improvements" />
   </component>
   <component name="WindowStateProjectService">
     <state x="1920" y="29" key="#Notifications" timestamp="1585225589833">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="1920" y="29" key="#Notifications/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585225589833" />
+    <state x="1920" y="32" key="#Project_Structure" timestamp="1585363322833">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1920" y="32" key="#Project_Structure/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585363322833" />
+    <state x="568" y="108" width="1352" height="966" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1586487378453">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="568" y="108" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1586487378453" />
+    <state x="2488" y="114" width="1352" height="966" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585363384476" />
+    <state x="466" y="351" width="2376" height="1359" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1586322182643">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="466" y="351" width="2376" height="1359" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586322182643" />
     <state x="2033" y="303" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1585226512752">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2033" y="303" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585226512752" />
+    <state x="2909" y="170" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1585362813763">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2909" y="170" key="#com.intellij.ide.macro.MacrosDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585362813763" />
+    <state x="769" y="235" key="#com.intellij.ide.util.MemberChooser" timestamp="1586484598935">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="769" y="235" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1030@0.0.1920.1030" timestamp="1586484598935" />
+    <state x="2834" y="296" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1585362763801">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2834" y="296" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585362763801" />
+    <state x="2251" y="411" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1585264949809">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2251" y="411" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585264949809" />
+    <state x="694" y="265" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1586440457374">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="694" y="265" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1586440457374" />
+    <state x="0" y="0" width="1920" height="1030" key="CommitChangelistDialog2" timestamp="1586495265517">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="0" y="0" width="1920" height="1030" key="CommitChangelistDialog2/0.0.1920.1030@0.0.1920.1030" timestamp="1586495265517" />
+    <state x="1920" y="0" key="CommitChangelistDialog2/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585362926396" />
+    <state x="188" y="91" key="DiffContextDialog" timestamp="1586447645391">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="188" y="91" key="DiffContextDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1586447645391" />
+    <state x="1285" y="296" key="FileChooserDialogImpl" timestamp="1586265760737">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="2884" y="228" key="FileChooserDialogImpl/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585363319998" />
+    <state x="1285" y="296" key="FileChooserDialogImpl/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586265760737" />
+    <state width="728" height="907" key="GridCell.Tab.0.bottom" timestamp="1586495079937">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state width="728" height="907" key="GridCell.Tab.0.bottom/0.0.1920.1030@0.0.1920.1030" timestamp="1586495079937" />
+    <state width="890" height="264" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072516" />
+    <state width="2517" height="401" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586338408167" />
+    <state width="728" height="907" key="GridCell.Tab.0.center" timestamp="1586495079937">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state width="728" height="907" key="GridCell.Tab.0.center/0.0.1920.1030@0.0.1920.1030" timestamp="1586495079937" />
+    <state width="890" height="264" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072516" />
+    <state width="2517" height="401" key="GridCell.Tab.0.center/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586338408167" />
+    <state width="728" height="907" key="GridCell.Tab.0.left" timestamp="1586495079937">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state width="728" height="907" key="GridCell.Tab.0.left/0.0.1920.1030@0.0.1920.1030" timestamp="1586495079937" />
+    <state width="890" height="264" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072515" />
+    <state width="2517" height="401" key="GridCell.Tab.0.left/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586338408167" />
+    <state width="728" height="907" key="GridCell.Tab.0.right" timestamp="1586495079937">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state width="728" height="907" key="GridCell.Tab.0.right/0.0.1920.1030@0.0.1920.1030" timestamp="1586495079937" />
+    <state width="890" height="264" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585364072516" />
+    <state width="2517" height="401" key="GridCell.Tab.0.right/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586338408167" />
+    <state width="1874" height="346" key="GridCell.Tab.1.bottom" timestamp="1586492973681">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state width="1874" height="346" key="GridCell.Tab.1.bottom/0.0.1920.1030@0.0.1920.1030" timestamp="1586492973681" />
+    <state width="2517" height="492" key="GridCell.Tab.1.bottom/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586321744611" />
+    <state width="1874" height="346" key="GridCell.Tab.1.center" timestamp="1586492973681">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state width="1874" height="346" key="GridCell.Tab.1.center/0.0.1920.1030@0.0.1920.1030" timestamp="1586492973681" />
+    <state width="2517" height="492" key="GridCell.Tab.1.center/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586321744611" />
+    <state width="1874" height="346" key="GridCell.Tab.1.left" timestamp="1586492973680">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state width="1874" height="346" key="GridCell.Tab.1.left/0.0.1920.1030@0.0.1920.1030" timestamp="1586492973680" />
+    <state width="2517" height="492" key="GridCell.Tab.1.left/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586321744611" />
+    <state width="1874" height="346" key="GridCell.Tab.1.right" timestamp="1586492973681">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state width="1874" height="346" key="GridCell.Tab.1.right/0.0.1920.1030@0.0.1920.1030" timestamp="1586492973681" />
+    <state width="2517" height="492" key="GridCell.Tab.1.right/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586321744611" />
+    <state x="188" y="89" key="MergeDialog" timestamp="1586482867622">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="188" y="89" key="MergeDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1586482867622" />
+    <state x="672" y="234" key="MultipleFileMergeDialog" timestamp="1586482868593">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="672" y="234" key="MultipleFileMergeDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1586482868593" />
+    <state x="760" y="274" key="SettingsEditor" timestamp="1586265767716">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="760" y="274" key="SettingsEditor/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586265767716" />
+    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog" timestamp="1585264927015">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585264927015" />
+    <state x="984" y="593" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1586312620611">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="984" y="593" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.2560.1400/2560.-104.1920.1040@0.0.2560.1400" timestamp="1586312620611" />
+    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1586495244486">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1030@0.0.1920.1030" timestamp="1586495244486" />
+    <state x="3017" y="0" width="830" height="1087" key="dock-window-1" timestamp="1585392272835">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="3017" y="0" width="830" height="1087" key="dock-window-1/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585392272835" />
+    <state x="721" y="219" width="476" height="589" key="git4idea.branch.GitSmartOperationDialog" timestamp="1586482830351">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="721" y="219" width="476" height="589" key="git4idea.branch.GitSmartOperationDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1586482830351" />
+    <state x="1894" y="-2" key="search.everywhere.popup" timestamp="1585366180196">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="1894" y="-2" key="search.everywhere.popup/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585366180196" />
   </component>
 </project>
