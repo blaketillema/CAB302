@@ -33,7 +33,7 @@ public class UserBuilder {
 
     public static void main(String[] args) {
         /* Create and display the form */
-        JFrame frame = new JFrame("UBPanel");
+        JFrame frame = new JFrame("Billboard User Builder");
         Main.centreWindow(frame);
         frame.setContentPane(new UserBuilder().UBPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

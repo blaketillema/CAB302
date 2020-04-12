@@ -79,11 +79,22 @@ public class ControlPanel {
                 new UserBuilder().main(null);
             }
         });
+        ModifyUser_Button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Window[] wns = LoginManager.getFrames();
+                for (Window wn1 : wns) {
+                    wn1.dispose();
+                    wn1.setVisible(false);
+                }
+                new UserBuilder().main(null);
+            }
+        });
     }
 
     public static void main(String[] args) {
         /* Create and display the form */
-        JFrame frame = new JFrame("CP_Panel");
+        JFrame frame = new JFrame("Billboard Control Panel");
         Main.centreWindow(frame);
         frame.setContentPane(new ControlPanel().CPPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

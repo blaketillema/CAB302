@@ -36,7 +36,7 @@ public class LoginManager extends JFrame {
 
     public static void main(String[] args) {
         /* Create and display the form */
-        JFrame frameLP = new JFrame("LoginPanel");
+        JFrame frameLP = new JFrame("Billboard Control Panel Login");
         Main.centreWindow(frameLP);
         frameLP.setContentPane(new LoginManager().LoginPanel);
         frameLP.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

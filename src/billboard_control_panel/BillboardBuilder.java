@@ -39,7 +39,7 @@ public class BillboardBuilder {
     }
     public static void main(String[] args) {
         /* Create and display the form */
-        JFrame frame = new JFrame("BB_BuilderPanel");
+        JFrame frame = new JFrame("Billboard Builder");
         Main.centreWindow(frame);
         frame.setContentPane(new BillboardBuilder().BB_BuilderPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
