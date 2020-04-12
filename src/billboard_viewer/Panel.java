@@ -68,7 +68,7 @@ public class Panel {
         information = billboard.get("information");
 
         // Determine billboard type and call method to create appropriate panel
-        boolean testing = false; // DEBUG/TESTING to call billboard being developed
+        boolean testing = true; // DEBUG/TESTING to call billboard being developed
         if (testing) {
             // TODO - Remove testing/debug code when all panel types implemented
             //call a billboard type here to test it
@@ -134,6 +134,15 @@ public class Panel {
      * Message, Picture and Information
      */
     private void createMPI() {
+        /**
+         * If message, picture and information are all present, all three should be drawn.
+         * The picture should be drawn in the centre, but this time at 1/3 of screen width and screen height
+         * (once again, scaled to preserve aspect ratio).
+         * The message should be sized and centred to fit in the gap between the top of the picture
+         * and the top of the screen.
+         * The information should be sized and centred to fit in the gap between the bottom of the picture
+         * and the bottom of the screen.
+         */
         // TODO - Message and information font sizing, should this scale on screen and message size
         // TODO - Input image from network location or base64 - this should be handled elsewhere in a new function?
 
@@ -311,8 +320,42 @@ public class Panel {
         JPanel topPanel = new JPanel(new GridBagLayout());
         //topPanel.setBorder(BorderFactory.createTitledBorder("Debug: Top Panel"));
         topPanel.setPreferredSize(new Dimension((int)xRes,(int)yRes));
+
         JLabel topMessage = new JLabel(message);
-        topMessage.setFont(new Font("Serif", Font.BOLD, 50)); // Set font and size
+
+        // Font Scaling?
+        String fontName = "Serif";
+        //int fontSize = 0;
+        //int messageWidth;
+        //int componentWidth;
+
+        //double widthRatio;
+        Font labelFont = topMessage.getFont();
+        String labelText = topMessage.getText();
+
+        int stringWidth = topMessage.getFontMetrics(labelFont).stringWidth(labelText);
+        System.out.println("StringWidth: "+stringWidth);
+
+        // Find out how much the font can grow in width.
+        double widthRatio = xRes / (double)stringWidth;
+        System.out.println("widthRatio: "+widthRatio);
+
+        int newFontSize = (int)(labelFont.getSize() * widthRatio);
+
+        System.out.println("FONT SIZE: "+newFontSize);
+        // Set the label's font size to the newly determined size.
+        topMessage.setFont(new Font("Serif", Font.BOLD, newFontSize));
+
+        /*
+        int componentHeight = topMessage.getHeight();
+        System.out.println("newFontSize: "+newFontSize);
+        System.out.println("componentHeight: "+componentHeight);
+        // Pick a new font size so it will not be larger than the height of label.
+        int fontSizeToUse = Math.min(newFontSize, componentHeight);
+        fontSizeToUse = newFontSize;
+         */
+        //topMessage.setFont(new Font("Serif", Font.BOLD, 50)); // Set font and size
+
         topMessage.setForeground(Color.decode(messageColour));
         topPanel.add(topMessage);
 
@@ -444,9 +487,113 @@ public class Panel {
         JPanel centrePanel = new JPanel(new GridBagLayout());
         //bottomPanel.setPreferredSize(new Dimension(scaledWidth,scaledHeight));
         //bottomPanel.setBorder(BorderFactory.createTitledBorder("Debug: Bottom Panel"));
-        JLabel bottomText = new JLabel(information);
-        bottomText.setFont(new Font("Serif", Font.PLAIN, 40)); // Set font and size
-        bottomText.setForeground(Color.decode(messageColour));
+
+
+        //bottomText.setFont(new Font("Serif", Font.PLAIN, 40)); // Set font and size
+
+
+
+        // Enable text wrapping with the html tags
+        String informationWrap = "<html>"+information+"</html>";
+        JLabel bottomText = new JLabel(informationWrap);
+
+        /*
+        String labelText = bottomText.getText();
+
+        double maxWidth = xRes * 0.75;
+        double maxHeight = yRes * 0.5;
+        System.out.println("Max Width: "+maxWidth);
+        System.out.println("Max Height: "+maxHeight);
+
+        bottomText.setPreferredSize(new Dimension((int) maxWidth,(int) maxHeight));
+
+        Font labelFont = bottomText.getFont();
+        int stringWidth = bottomText.getFontMetrics(labelFont).stringWidth(labelText);
+        double widthRatio = maxWidth / (double)stringWidth;
+
+        //int newFontSize = (int)(bottomText.getWidth() * widthRatio);
+        int newFontSize = (int)(bottomText.getWidth() * widthRatio);
+
+        System.out.println("widthRatio: "+widthRatio);
+        System.out.println("bottomText.getWidth(): "+(int)(bottomText.getWidth()));
+        System.out.println("newFontSize: "+newFontSize);
+
+        bottomText.setFont(new Font("Serif", Font.PLAIN, newFontSize)); // Set font and size
+        */
+
+        double maxWidth = xRes * 0.75;
+        double maxHeight = yRes * 0.5;
+        System.out.println("Max Width: "+maxWidth);
+        System.out.println("Max Height: "+maxHeight);
+
+        // Set JLabel size
+        bottomText.setPreferredSize(new Dimension((int) maxWidth,(int) maxHeight));
+
+        Font labelFont = bottomText.getFont();
+        String labelText = bottomText.getText();
+        System.out.println("labelFont: "+labelFont);
+        System.out.println("labelText: "+labelText);
+
+        int stringWidth = bottomText.getFontMetrics(labelFont).stringWidth(labelText);
+        int componentWidth = (int) maxWidth;
+        System.out.println("stringWidth: "+stringWidth);
+        System.out.println("componentWidth: "+componentWidth);
+
+        // Find out how much the font can grow in width.
+        double widthRatio = (double)componentWidth / (double)stringWidth;
+
+        int newFontSize = (int)(labelFont.getSize() * widthRatio);
+        System.out.println("newFontSize: "+newFontSize);
+        int componentHeight = (int) maxHeight;
+        System.out.println("componentHeight: "+componentHeight);
+
+        // Pick a new font size so it will not be larger than the height of label.
+        int fontSizeToUse = Math.min(newFontSize, componentHeight);
+
+        System.out.println("fontSizeToUse: "+fontSizeToUse);
+
+        // Set the label's font size to the newly determined size.
+        bottomText.setFont(new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse));
+
+        bottomText.setBackground(Color.red);
+        bottomText.setOpaque(true);
+
+        /*
+        // Font Scaling?
+        String fontName = "Serif";
+        //int fontSize = 0;
+        //int messageWidth;
+        //int componentWidth;
+
+        //double widthRatio;
+        Font labelFont = topMessage.getFont();
+        String labelText = topMessage.getText();
+
+        int stringWidth = topMessage.getFontMetrics(labelFont).stringWidth(labelText);
+        System.out.println("StringWidth: "+stringWidth);
+
+        // Find out how much the font can grow in width.
+        double widthRatio = xRes / (double)stringWidth;
+        System.out.println("widthRatio: "+widthRatio);
+
+        int newFontSize = (int)(labelFont.getSize() * widthRatio);
+
+        System.out.println("FONT SIZE: "+newFontSize);
+        // Set the label's font size to the newly determined size.
+        topMessage.setFont(new Font("Serif", Font.BOLD, newFontSize));
+
+        int componentHeight = topMessage.getHeight();
+        System.out.println("newFontSize: "+newFontSize);
+        System.out.println("componentHeight: "+componentHeight);
+        // Pick a new font size so it will not be larger than the height of label.
+        int fontSizeToUse = Math.min(newFontSize, componentHeight);
+        fontSizeToUse = newFontSize;
+         */
+        //topMessage.setFont(new Font("Serif", Font.BOLD, 50)); // Set font and size
+
+
+        bottomText.setForeground(Color.decode(messageColour)); // Set text colour
+
         centrePanel.add(bottomText);
 
         billboardPanel.add(centrePanel, BorderLayout.CENTER);
