@@ -40,7 +40,6 @@ public class Billboard {
         TreeMap<String, String> defaultBillboard = new TreeMap<>();
         defaultBillboard.put("default", "Advertise Here!!!");
         this.billboardContents = defaultBillboard;
-
         frameSetup();
     }
 
@@ -50,7 +49,6 @@ public class Billboard {
      */
     public Billboard(TreeMap<String, String> billboardContents) {
         this.billboardContents = billboardContents;
-
         frameSetup();
     }
 
@@ -84,7 +82,6 @@ public class Billboard {
         JPanel defaultPanel = new JPanel();
         JLabel label = new JLabel("ERROR! No Connection to Billboard Server. Attempting to Connect...");
         defaultPanel.add(label);
-
         return defaultPanel;
     }
 

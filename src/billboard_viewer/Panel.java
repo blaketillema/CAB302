@@ -409,7 +409,10 @@ public class Panel {
         bottomPanel.setPreferredSize(new Dimension(scaledWidth, (int) yRes * 1/3)); // set height bottom 1/3rd
         //bottomPanel.setBorder(BorderFactory.createTitledBorder("Debug: Bottom Panel"));
         JLabel bottomText = new JLabel(information);
-        bottomText.setFont(new Font("Serif", Font.PLAIN, 40)); // Set font and size
+        // get font size to fill information box
+        int bottomTextFontSize = getFontSizeToFitBoundingRectangle(scaledWidth, scaledHeight, bottomText, bottomText.getFont(), information);
+        Font bottomTextFont = new Font("Serif", Font.PLAIN, 40);
+        bottomText.setFont(bottomTextFont); // Set font and size
         bottomText.setForeground(Color.decode(messageColour));
         bottomPanel.add(bottomText);
 
@@ -635,7 +638,6 @@ public class Panel {
         }
         return fontSizeToSet;
     }
-
 
     /**
      * Billboard for no server connection error
