@@ -479,24 +479,17 @@ public class Panel {
          * with word wrapping and font size chosen so that the text fills up no more than 75% of the screen’s width
          * and 50% of the screen’s height.
          */
-        // TODO - Implement message size scaling & text wrap
-
         billboardPanel.setLayout(new BorderLayout());
-
         // Bottom Text
         JPanel centrePanel = new JPanel(new GridBagLayout());
         //bottomPanel.setPreferredSize(new Dimension(scaledWidth,scaledHeight));
         //bottomPanel.setBorder(BorderFactory.createTitledBorder("Debug: Bottom Panel"));
 
-
         //bottomText.setFont(new Font("Serif", Font.PLAIN, 40)); // Set font and size
-
-
 
         // Enable text wrapping with the html tags
         String informationWrap = "<html>"+information+"</html>";
         JLabel bottomText = new JLabel(informationWrap);
-
 
         /*
         String labelText = bottomText.getText();
@@ -543,7 +536,7 @@ public class Panel {
         System.out.println("stringWidth: "+stringWidth);
         System.out.println("componentWidth: "+componentWidth);
 
-        // Find out how much the font can grow in width.\
+        // Find out how much the font can grow in width.
         double widthRatio = (double)componentWidth / (double)stringWidth;
 
         int newFontSize = (int)(labelFont.getSize() * widthRatio);
@@ -551,21 +544,11 @@ public class Panel {
         int componentHeight = (int) maxHeight;
         System.out.println("componentHeight: "+componentHeight);
 
-
         // Pick a new font size so it will not be larger than the height of label.
-        // TODO clean below for setting final font size
-        // int fontSizeToUse = Math.min(newFontSize, componentHeight);
-
         int fontSizeToUse = getFontSizeToFitBoundingRectangle(componentWidth, componentHeight,
-                                                                    bottomText, labelFont, labelText);
-
-
-
-        System.out.println("fontSizeToUse: "+fontSizeToUse);
-
+                                                                bottomText, labelFont, labelText);
         // Set the label's font size to the newly determined size.
         bottomText.setFont(new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse));
-
         bottomText.setBackground(Color.red);
         bottomText.setOpaque(true);
 
@@ -613,9 +596,7 @@ public class Panel {
         billboardPanel.setBackground(Color.decode(billboardBackground));
         centrePanel.setBackground(Color.decode(billboardBackground));
         billboardPanel.setOpaque(true);
-
     }
-
 
     /**
      *
@@ -625,70 +606,35 @@ public class Panel {
      * @param font
      * @param text
      * @return
+     * Useful resources: http://www.java2s.com/Code/Java/Swing-JFC/GetMaxFittingFontSize.htm
      */
     private int getFontSizeToFitBoundingRectangle(int rectangleWidth, int rectangleHeight, JLabel label, Font font, String text){
         int minSize = 0;
         int maxSize = 288;
         int fontSizeToSet = font.getSize(); // init current size
-
-        // TODO rm comments
-        System.out.println("getFontSizeToFitBoundingRectangle() Rectangle height given is: " + rectangleHeight);
-
+        // iterate through, drawing max and min closer to the required text size
         while (maxSize - minSize > 2) {
             // get font metrics for the current size
             FontMetrics fontMetrics = label.getFontMetrics(new Font(font.getName(), font.getStyle(), fontSizeToSet) );
-            // check current width
+            // current font & box details
             int fontStringWidth = fontMetrics.stringWidth(text);
             int fontLineHeight = fontMetrics.getHeight(); // line height including leading + ascent to descent
-
-            if ( (fontStringWidth > rectangleWidth) || (fontLineHeight > rectangleHeight) ) {
+            int numberOfLines = (int) Math.ceil( (double) fontStringWidth / (double) rectangleWidth);
+            int totalHeightOfLines = (int) Math.ceil( (double) numberOfLines * (double) fontLineHeight);
+            // check if max needs to be decreased or min increased
+            if ((fontStringWidth > (rectangleWidth * numberOfLines)) || (totalHeightOfLines > rectangleHeight)) {
+                // reduce maxSize to current font size
                 maxSize = fontSizeToSet;
-                fontSizeToSet = (maxSize + minSize) / 2;
-                System.out.println("While loop if ");
             }
             else {
+                // increase minSize to current font size
                 minSize = fontSizeToSet;
-                fontSizeToSet = (maxSize + minSize) / 2;
-                System.out.println("while loop else");
             }
-
-            System.out.println("getFontSizeToFitBoundingRectangle() font size to set: " + String.valueOf(fontSizeToSet) );
-            System.out.println("getFontSizeToFitBoundingRectangle() string width: " + String.valueOf(fontStringWidth) );
-            System.out.println("getFontSizeToFitBoundingRectangle() line height: " + String.valueOf(fontLineHeight) );
+            // new font size set to average max & min
+            fontSizeToSet = (maxSize + minSize) / 2;
         }
-
-
-
-        /*
-        // Find out how much the font can grow in width.\
-        double widthRatio = (double)componentWidth / (double)stringWidth;
-
-        int newFontSize = (int)(labelFont.getSize() * widthRatio);
-        System.out.println("newFontSize: "+newFontSize);
-        int componentHeight = (int) maxHeight;
-        System.out.println("componentHeight: "+componentHeight);
-         */
-
-        // TODO remove testing below
-        // http://www.java2s.com/Code/Java/Swing-JFC/GetMaxFittingFontSize.htm
-
-        /*
-        //int stringWidth = label.getFontMetrics(font).stringWidth(text);
-        //int lineHeight = label.getFontMetrics(font).getHeight(); // of one line (ascent to descent)
-        //int linesOfText = (int) Math.ceil( (float) stringWidth / (float) rectangleWidth );
-        int linesOfText = (int) Math.ceil( (float) stringWidth / (float) rectangleWidth );
-        while ( (linesOfText * stringHeight) > rectangleHeight ) {
-            stringWidth = label.getFontMetrics(fontType).stringWidth(text);
-            stringHeight = label.getFontMetrics(fontType).getHeight(); // of one line (ascent to descent)
-            linesOfText = (int) Math.ceil( (float) stringWidth / (float) rectangleWidth );
-            fontSizeToSet--;
-        }
-        */
-
-        // End testing
         return fontSizeToSet;
     }
-
 
 
     /**
