@@ -68,11 +68,11 @@ public class Panel {
         information = billboard.get("information");
 
         // Determine billboard type and call method to create appropriate panel
-        boolean testing = true; // DEBUG/TESTING to call billboard being developed
+        boolean testing = false; // DEBUG/TESTING to call billboard being developed
         if (testing) {
             // TODO - Remove testing/debug code when all panel types implemented
             //call a billboard type here to test it
-            createI();
+            createMP();
         } else {
             if (message != null) {
                 if (information != null && (pictureData != null || pictureUrl != null)) {
@@ -143,8 +143,7 @@ public class Panel {
          * The information should be sized and centred to fit in the gap between the bottom of the picture
          * and the bottom of the screen.
          */
-        // TODO - Message and information font sizing, should this scale on screen and message size
-        // TODO - Input image from network location or base64 - this should be handled elsewhere in a new function?
+        // TODO - Implement information font sizing, ensure information font size is smaller than message font size
 
         billboardPanel.setLayout(new BorderLayout());
 
@@ -167,12 +166,24 @@ public class Panel {
 
         // Top Message
         JPanel topPanel = new JPanel(new GridBagLayout());
-        //topPanel.setBorder(BorderFactory.createTitledBorder("Debug: Top Panel"));
-        topPanel.setPreferredSize(new Dimension(scaledWidth,scaledHeight));
-        JLabel topMessage = new JLabel(message);
-        topMessage.setFont(new Font("Serif", Font.BOLD, 50)); // Set font and size
-        topMessage.setForeground(Color.decode(messageColour));
-        topPanel.add(topMessage);
+        topPanel.setPreferredSize(new Dimension((int) xRes,scaledHeight));
+
+        // Create message text and scale to billboard width
+        JLabel topMessage = new JLabel(message, SwingConstants.CENTER);
+        topMessage.setPreferredSize(new Dimension((int) xRes, scaledHeight));
+        int fontSize = (int) (scaleMessageFont(topMessage) * 0.9); // Get font size to width of screen, reduce slightly
+        System.out.println("DEBUG: Font Size: " + fontSize);
+        topMessage.setFont(new Font("Serif", Font.BOLD, fontSize)); // Set new font size
+
+        // Resolve overlapping text issue
+        topMessage.setText("<html><div style='text-align: center;'>" + message + "</div></html>"); // text fix?
+
+        // Testing JLabel size;
+        //topMessage.setBackground(Color.red);
+        //topMessage.setOpaque(true);
+
+        topMessage.setForeground(Color.decode(messageColour)); // Set message colour
+        topPanel.add(topMessage); // add message to panel
 
         // Center Image
         JPanel centrePanel = new JPanel(new GridBagLayout()); // GridBagLayout will center the image
@@ -216,17 +227,29 @@ public class Panel {
          * the message text should be sized to fit in the top half of the screen and
          * the information text sized to fit in the bottom half of the screen.
          */
-        // TODO - Scale information text
+        // TODO - Scale information text to be smaller than message if message is smaller font
 
         billboardPanel.setLayout(new BorderLayout());
 
         // Top Message
         JPanel topPanel = new JPanel(new GridBagLayout());
-        //topPanel.setBorder(BorderFactory.createTitledBorder("Debug: Top Panel"));
-        topPanel.setPreferredSize(new Dimension((int) xRes/2,(int) yRes/2));
-        JLabel topMessage = new JLabel(message);
-        topMessage.setFont(new Font("Serif", Font.BOLD, 50)); // Set font and size
-        topMessage.setForeground(Color.decode(messageColour));
+        topPanel.setPreferredSize(new Dimension((int) xRes,(int) yRes/2));
+
+        // Create message text and scale to billboard width
+        JLabel topMessage = new JLabel(message, SwingConstants.CENTER);
+        topMessage.setPreferredSize(new Dimension((int) xRes, (int) yRes/2));
+        int fontSize = (int) (scaleMessageFont(topMessage) * 0.9); // Get font size to width of screen, reduce slightly
+        System.out.println("DEBUG: Font Size: " + fontSize);
+        topMessage.setFont(new Font("Serif", Font.BOLD, fontSize)); // Set new font size
+
+        // Resolve overlapping text issue
+        topMessage.setText("<html><div style='text-align: center;'>" + message + "</div></html>"); // text fix?
+
+        // Testing JLabel size;
+        //topMessage.setBackground(Color.red);
+        //topMessage.setOpaque(true);
+
+        topMessage.setForeground(Color.decode(messageColour)); // Set message colour
         topPanel.add(topMessage);
 
         // Bottom Text
@@ -260,7 +283,6 @@ public class Panel {
          * The message should then be sized to fit in the remaining space between the top of the image
          * and the top of the screen and placed in the centre of that gap.
          */
-        // TODO - Scale message text
 
         billboardPanel.setLayout(new BorderLayout());
 
@@ -279,10 +301,23 @@ public class Panel {
 
         // Top Message
         JPanel topPanel = new JPanel(new GridBagLayout());
-        topPanel.setPreferredSize(new Dimension(scaledWidth, (int) yRes/3)); // set one third screen height
-        JLabel topMessage = new JLabel(message);
-        topMessage.setFont(new Font("Serif", Font.BOLD, 50)); // Set font and size
-        topMessage.setForeground(Color.decode(messageColour));
+        topPanel.setPreferredSize(new Dimension((int) xRes, (int) yRes/3)); // set one third screen height
+
+        // Create message text and scale to billboard width
+        JLabel topMessage = new JLabel(message, SwingConstants.CENTER);
+        topMessage.setPreferredSize(new Dimension((int) xRes, (int) yRes/3));
+        int fontSize = (int) (scaleMessageFont(topMessage) * 0.9); // Get font size to width of screen, reduce slightly
+        System.out.println("DEBUG: Font Size: " + fontSize);
+        topMessage.setFont(new Font("Serif", Font.BOLD, fontSize)); // Set new font size
+
+        // Resolve overlapping text issue
+        topMessage.setText("<html><div style='text-align: center;'>" + message + "</div></html>"); // text fix?
+
+        // Testing JLabel size;
+        //topMessage.setBackground(Color.red);
+        //topMessage.setOpaque(true);
+
+        topMessage.setForeground(Color.decode(messageColour)); // Set message colour
         topPanel.add(topMessage);
 
         // Center Image
@@ -312,7 +347,6 @@ public class Panel {
          * If only message is present, the message should be displayed almost as large as possible,
          * within the constraints that the text cannot be broken across multiple lines and it must all fit on the screen.
          */
-        // TODO - Implement message scale for 'almost as large as possible' on one line
 
         billboardPanel.setLayout(new BorderLayout());
 
@@ -321,51 +355,29 @@ public class Panel {
         //topPanel.setBorder(BorderFactory.createTitledBorder("Debug: Top Panel"));
         topPanel.setPreferredSize(new Dimension((int)xRes,(int)yRes));
 
-        JLabel topMessage = new JLabel(message);
+        // Create message text and scale to billboard width
+        JLabel topMessage = new JLabel(message, SwingConstants.CENTER);
+        topMessage.setPreferredSize(new Dimension((int) xRes, (int) yRes));
+        int fontSize = (int) (scaleMessageFont(topMessage) * 0.9); // Get font size to width of screen, reduce slightly
+        System.out.println("DEBUG: Font Size: " + fontSize);
+        topMessage.setFont(new Font("Serif", Font.BOLD, fontSize)); // Set new font size
 
-        // Font Scaling?
-        String fontName = "Serif";
-        //int fontSize = 0;
-        //int messageWidth;
-        //int componentWidth;
+        // Resolve overlapping text issue
+        topMessage.setText("<html><div style='text-align: center;'>" + message + "</div></html>"); // text fix?
 
-        //double widthRatio;
-        Font labelFont = topMessage.getFont();
-        String labelText = topMessage.getText();
+        // Testing JLabel size;
+        //topMessage.setBackground(Color.red);
+        //topMessage.setOpaque(true);
 
-        int stringWidth = topMessage.getFontMetrics(labelFont).stringWidth(labelText);
-        System.out.println("StringWidth: "+stringWidth);
-
-        // Find out how much the font can grow in width.
-        double widthRatio = xRes / (double)stringWidth;
-        System.out.println("widthRatio: "+widthRatio);
-
-        int newFontSize = (int)(labelFont.getSize() * widthRatio);
-
-        System.out.println("FONT SIZE: "+newFontSize);
-        // Set the label's font size to the newly determined size.
-        topMessage.setFont(new Font("Serif", Font.BOLD, newFontSize));
-
-        /*
-        int componentHeight = topMessage.getHeight();
-        System.out.println("newFontSize: "+newFontSize);
-        System.out.println("componentHeight: "+componentHeight);
-        // Pick a new font size so it will not be larger than the height of label.
-        int fontSizeToUse = Math.min(newFontSize, componentHeight);
-        fontSizeToUse = newFontSize;
-         */
-        //topMessage.setFont(new Font("Serif", Font.BOLD, 50)); // Set font and size
-
+        // Set message text colour, add label and panel
         topMessage.setForeground(Color.decode(messageColour));
         topPanel.add(topMessage);
-
         billboardPanel.add(topPanel, BorderLayout.CENTER);
 
         // Set background colours
         billboardPanel.setBackground(Color.decode(billboardBackground));
         topPanel.setBackground(Color.decode(billboardBackground));
         billboardPanel.setOpaque(true);
-
     }
 
     /**
@@ -380,7 +392,7 @@ public class Panel {
          * the bottom of the screen and placed in the centre of that gap
          * (within the constraint that the information text should not fill up more than 75% of the screen’s width.)
          */
-        // TODO - Information text size scaling
+        // TODO - Add Information text size scaling
 
         billboardPanel.setLayout(new BorderLayout());
 
@@ -608,7 +620,7 @@ public class Panel {
      * @param label
      * @param font
      * @param text
-     * @return
+     * @return fontSizeToSet
      * Useful resources: http://www.java2s.com/Code/Java/Swing-JFC/GetMaxFittingFontSize.htm
      */
     private int getFontSizeToFitBoundingRectangle(int rectangleWidth, int rectangleHeight, JLabel label, Font font, String text){
@@ -640,6 +652,25 @@ public class Panel {
     }
 
     /**
+     * Get a font size to scale the message text for filling the billboard width
+     * @param messageLabel
+     * @return
+     */
+    private int scaleMessageFont(JLabel messageLabel) {
+        // Scale message font to almost screen width size on one line
+        // Messages are Serif styled and BOLD, check based on these factors
+
+        messageLabel.setFont(new Font("Serif", Font.BOLD, 12));
+        Font messageFont = messageLabel.getFont();
+        String messageText = messageLabel.getText();
+        int stringWidth = messageLabel.getFontMetrics(messageFont).stringWidth(messageText);
+        double widthRatio = xRes / (double)stringWidth;
+        int newFontSize = (int)(messageFont.getSize() * widthRatio);
+
+        return newFontSize; // Return font size
+    }
+
+    /**
      * Billboard for no server connection error
      */
     private void createDefault() {
@@ -651,7 +682,7 @@ public class Panel {
     /**
      * Scale image to 50% of screen size
      * @param image
-     * @return
+     * @return BufferedImage
      */
     private BufferedImage scaleHalf(BufferedImage image) {
 
@@ -694,7 +725,7 @@ public class Panel {
     /**
      * Scale image to a third of screen size on largest relative axis
      * @param image
-     * @return
+     * @return BufferedImage
      */
     private BufferedImage scaleThird(BufferedImage image) {
 
