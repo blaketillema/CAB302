@@ -46,6 +46,23 @@ public class serverResponse implements Serializable
         {
             System.out.println("none");
         }
+    }
 
+    public static serverResponse buildResponse(String status, String[][] data)
+    {
+        serverResponse response = new serverResponse();
+        response.status = status;
+
+        if (data != null)
+        {
+            TreeMap<String, String> params = new TreeMap<>();
+
+            for (String[] args : data)
+            {
+                params.put(args[0], args[1]);
+            }
+        }
+
+        return response;
     }
 }

@@ -4,14 +4,17 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.TreeMap;
 
 public class serverSocket
 {
     private int port;
     private ServerSocket serverSocket = null;
+    public static TestDatabase database = null;
 
     public serverSocket(int port)
     {
+        database = new TestDatabase();
         this.port = port;
     }
 
@@ -50,6 +53,35 @@ class clientThread implements Runnable
         return "ejsefeafa";
     }
 
+    private serverResponse parseAuthRequest(String user, String hash)
+    {
+        String dbSalt = null;
+        String dbHash = null;
+
+        serverResponse response = null;
+
+        try {
+            dbHash = serverSocket.database.getHash(user);
+            dbSalt = serverSocket.database.getSalt(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        String doubleHash = userAuth.hashAndSalt(hash, dbSalt);
+
+        if(doubleHash.equals(dbHash)){
+            response = serverResponse.buildResponse("OK", new String[][] {{"sessionId", genSessionId()}});
+        }
+
+        else
+        {
+            response = serverResponse.buildResponse("invalid username or password", null);
+        }
+
+        return response;
+    }
+
     private serverResponse parseRequest(clientRequest request)
     {
         serverResponse response = new serverResponse();
@@ -58,8 +90,7 @@ class clientThread implements Runnable
         {
             if(request.path.equals("/cmd/newSessionId"))
             {
-                response.data.put("sessionId", genSessionId());
-                response.status = "OK";
+                return parseAuthRequest(request.data.get("user"), request.data.get("hash"));
             }
         }
 
