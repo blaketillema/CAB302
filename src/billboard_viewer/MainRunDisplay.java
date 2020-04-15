@@ -25,9 +25,7 @@ public class MainRunDisplay {
         /**
          * Refresh the billboard display (if new data)
          */
-        // TODO set this screen to update along with thread
 
-        // TODO fix: connect.getBillboard is not returning billboard
         // Add billboard contents to new billboard from server with connect.getBillboard()
         TreeMap billboardNowData = connect.getBillboard();
         connect.printBillboard();
