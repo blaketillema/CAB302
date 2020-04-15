@@ -5,12 +5,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class serverResponse implements Serializable
+public class ServerResponse implements Serializable
 {
     String status = "UNHANDLED ERROR";
     TreeMap<String, String> data;
 
-    public serverResponse()
+    public ServerResponse()
     {
         this.data = new TreeMap<>();
     }
@@ -48,18 +48,18 @@ public class serverResponse implements Serializable
         }
     }
 
-    public static serverResponse buildResponse(String status, String[][] data)
+    public static ServerResponse buildResponse(String status, String[][] data)
     {
-        serverResponse response = new serverResponse();
+        ServerResponse response = new ServerResponse();
         response.status = status;
 
         if (data != null)
         {
-            TreeMap<String, String> params = new TreeMap<>();
+            response.data = new TreeMap<>();
 
             for (String[] args : data)
             {
-                params.put(args[0], args[1]);
+                response.data.put(args[0], args[1]);
             }
         }
 

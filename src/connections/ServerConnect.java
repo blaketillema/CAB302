@@ -5,20 +5,40 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class serverConnect implements Runnable
+public class ServerConnect implements Runnable
 {
     private String ip = null;
     private int port;
-    private clientRequest request = null;
-    private serverResponse response = null;
+    private ClientRequest request = null;
+    private ServerResponse response = null;
 
-    public serverConnect(String ip, int port, clientRequest request){
+    public static ServerResponse request(String ip, int port, ClientRequest request) throws HttpException {
+        ServerConnect server = new ServerConnect(ip, port, request);
+
+        Thread thread = new Thread(server);
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        ServerResponse response = server.getResponse();
+
+        if (!response.status.equals("OK"))
+        {
+            throw new HttpException(response.status);
+        }
+
+        return response;
+    }
+
+    public ServerConnect(String ip, int port, ClientRequest request){
         this.ip = ip;
         this.port = port;
         this.request = request;
     }
 
-    public serverResponse getResponse()
+    public ServerResponse getResponse()
     {
         return this.response;
     }
@@ -34,7 +54,7 @@ public class serverConnect implements Runnable
 
             outStream.writeObject(this.request);
 
-            this.response = (serverResponse) inStream.readObject();
+            this.response = (ServerResponse) inStream.readObject();
 
             socket.close();
 

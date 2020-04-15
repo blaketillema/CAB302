@@ -41,7 +41,8 @@ public class ControlPanel {
                         wn1.dispose();
                         wn1.setVisible(false);
                     }
-                    new LoginManager().main(null);
+                    new LoginManager();
+                    LoginManager.main(null);
                 } else if (n == JOptionPane.NO_OPTION) {
                 }
             }
@@ -54,7 +55,8 @@ public class ControlPanel {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new BillboardBuilder().main(null);
+                new BillboardBuilder();
+                BillboardBuilder.main(null);
             }
         });
         editBB_Button.addActionListener(new ActionListener() {
@@ -65,7 +67,8 @@ public class ControlPanel {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new BillboardBuilder().main(null);
+                new BillboardBuilder();
+                BillboardBuilder.main(null);
             }
         });
         createUser_Button.addActionListener(new ActionListener() {
@@ -76,7 +79,8 @@ public class ControlPanel {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new UserBuilder().main(null);
+                new UserBuilder();
+                UserBuilder.main(null);
             }
         });
     }

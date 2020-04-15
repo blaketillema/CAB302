@@ -31,7 +31,8 @@ public class BillboardBuilder {
                         wn1.dispose();
                         wn1.setVisible(false);
                     }
-                    new ControlPanel().main(null);
+                    new ControlPanel();
+                    ControlPanel.main(null);
                 } else if (n == JOptionPane.NO_OPTION) {
                 }
             }

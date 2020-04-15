@@ -16,7 +16,6 @@ public class LoginManager extends JFrame {
 
         setTitle("Login Form");
 
-
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -25,7 +24,8 @@ public class LoginManager extends JFrame {
 
                 Component frame = null;
                 if (username.equals("admin") && password.equals("admin")) {
-                    new ControlPanel().main(null);
+                    new ControlPanel();
+                    ControlPanel.main(null);
 
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid username or password");
