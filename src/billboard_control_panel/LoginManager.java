@@ -16,6 +16,7 @@ public class LoginManager extends JFrame {
 
         setTitle("Login Form");
 
+
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -24,8 +25,7 @@ public class LoginManager extends JFrame {
 
                 Component frame = null;
                 if (username.equals("admin") && password.equals("admin")) {
-                    new ControlPanel();
-                    ControlPanel.main(null);
+                    new MainControl().main(null);
 
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid username or password");
@@ -36,7 +36,7 @@ public class LoginManager extends JFrame {
 
     public static void main(String[] args) {
         /* Create and display the form */
-        JFrame frameLP = new JFrame("LoginPanel");
+        JFrame frameLP = new JFrame("Billboard Control Panel Login");
         Main.centreWindow(frameLP);
         frameLP.setContentPane(new LoginManager().LoginPanel);
         frameLP.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
