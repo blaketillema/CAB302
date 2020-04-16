@@ -3,7 +3,11 @@ package Sandbox;
 import javax.swing.*;
 import java.awt.*;
 
+<<<<<<< HEAD
 public class DisplayBillboard extends JFrame {
+=======
+public class DisplayBillboard extends JFrame{
+>>>>>>> billboardViewer
     private JPanel panel;
     private JLabel label01;
     private ImageIcon icon01;
@@ -11,7 +15,11 @@ public class DisplayBillboard extends JFrame {
     public DisplayBillboard() {
 
         setLayout(new FlowLayout());
+<<<<<<< HEAD
         setSize(50, 50);
+=======
+        setSize(50,50);
+>>>>>>> billboardViewer
 
         //label01
         icon01 = new ImageIcon(getClass().getResource("Billboard1200x800.png"));
@@ -31,6 +39,9 @@ public class DisplayBillboard extends JFrame {
         gui.pack();
         gui.setTitle("Image");
     }
+<<<<<<< HEAD
 
+=======
+>>>>>>> billboardViewer
 }
 

@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/CAB302.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CAB302.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
+=======
+      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/MainRunDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/MainRunDisplay.java" afterDir="false" />
+>>>>>>> billboardViewer
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +60,11 @@
       <recent name="C:\Users\dnehl\OneDrive - Queensland University of Technology\CAB302\assignment\CAB302\src" />
     </key>
   </component>
+<<<<<<< HEAD
   <component name="RunManager" selected="Application.userAuth">
+=======
+  <component name="RunManager" selected="Application.MainRunDisplay">
+>>>>>>> billboardViewer
     <configuration name="Unnamed" type="AndroidJUnit" factoryName="Android JUnit" nameIsGenerated="true">
       <module name="CAB302" />
       <useClassPathOnly />
@@ -70,6 +77,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+<<<<<<< HEAD
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="billboard_control_panel.Main" />
       <module name="CAB302" />
@@ -83,6 +91,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+=======
+>>>>>>> billboardViewer
     <configuration name="MainRunDisplay" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="billboard_viewer.MainRunDisplay" />
       <module name="CAB302" />
@@ -92,6 +102,7 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+<<<<<<< HEAD
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -124,16 +135,27 @@
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Sandbox.sandboxMain" />
+=======
+>>>>>>> billboardViewer
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+<<<<<<< HEAD
     <configuration name="userAuth" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="connections.userAuth" />
       <module name="CAB302" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="connections.*" />
+=======
+    <configuration name="UserManagement" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="billboard_control_panel.UserManagement" />
+      <module name="CAB302" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="billboard_control_panel.UserManagement" />
+>>>>>>> billboardViewer
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -141,7 +163,14 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Sandbox.sandboxMain" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
+<<<<<<< HEAD
       <item itemvalue="Application.MainRunDisplay" />
       <item itemvalue="Application.UserManagement" />
       <item itemvalue="Application.Main" />
@@ -155,6 +184,12 @@
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
+=======
+      <item itemvalue="Android JUnit.Unnamed" />
+      <item itemvalue="Application.MainRunDisplay" />
+      <item itemvalue="Application.UserManagement" />
+    </list>
+>>>>>>> billboardViewer
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -174,6 +209,7 @@
       <option name="project" value="LOCAL" />
       <updated>1585582372717</updated>
     </task>
+<<<<<<< HEAD
     <task id="LOCAL-00002" summary="Basic GUI for control panel login&#10;Extended billboard cases in the viewer">
       <created>1586670275660</created>
       <option name="number" value="00002" />
@@ -189,6 +225,9 @@
       <updated>1586937794667</updated>
     </task>
     <option name="localTasksCounter" value="4" />
+=======
+    <option name="localTasksCounter" value="2" />
+>>>>>>> billboardViewer
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -229,11 +268,19 @@
     <state x="1920" y="32" key="#Project_Structure/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585363322833" />
     <state x="473" y="139" key="#Unnamed" timestamp="1585576519593">
       <screen x="0" y="0" width="1739" height="939" />
+<<<<<<< HEAD
     </state>
     <state x="473" y="139" key="#Unnamed/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585576519593" />
     <state x="650" y="147" key="#com.intellij.codeInsight.i18n.I18nizeQuickFixDialog_Form" timestamp="1585581674764">
       <screen x="0" y="0" width="1739" height="939" />
     </state>
+=======
+    </state>
+    <state x="473" y="139" key="#Unnamed/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585576519593" />
+    <state x="650" y="147" key="#com.intellij.codeInsight.i18n.I18nizeQuickFixDialog_Form" timestamp="1585581674764">
+      <screen x="0" y="0" width="1739" height="939" />
+    </state>
+>>>>>>> billboardViewer
     <state x="650" y="147" key="#com.intellij.codeInsight.i18n.I18nizeQuickFixDialog_Form/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585581674764" />
     <state x="387" y="97" width="1225" height="830" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1585581662439">
       <screen x="0" y="0" width="1739" height="939" />
@@ -248,11 +295,18 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2909" y="170" key="#com.intellij.ide.macro.MacrosDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585362813763" />
+<<<<<<< HEAD
     <state x="745" y="197" width="382" height="559" key="#com.intellij.ide.util.MemberChooser" timestamp="1586932213011">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
     <state x="675" y="180" key="#com.intellij.ide.util.MemberChooser/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585581734316" />
     <state x="745" y="197" width="382" height="559" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1030@0.0.1920.1030" timestamp="1586932213011" />
+=======
+    <state x="675" y="180" key="#com.intellij.ide.util.MemberChooser" timestamp="1585581734316">
+      <screen x="0" y="0" width="1739" height="939" />
+    </state>
+    <state x="675" y="180" key="#com.intellij.ide.util.MemberChooser/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585581734316" />
+>>>>>>> billboardViewer
     <state x="828" y="257" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1585581660317">
       <screen x="0" y="0" width="1739" height="939" />
     </state>
@@ -268,6 +322,7 @@
     <state x="2251" y="411" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585264949809" />
     <state x="89" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1585579917115">
       <screen x="0" y="0" width="1739" height="939" />
+<<<<<<< HEAD
     </state>
     <state x="89" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585579917115" />
     <state x="655" y="272" key="#com.intellij.uiDesigner.palette.ComponentItemDialog" timestamp="1585579096665">
@@ -356,6 +411,78 @@
     <state x="3097" y="419" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1585711274769">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
+=======
+    </state>
+    <state x="89" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585579917115" />
+    <state x="655" y="272" key="#com.intellij.uiDesigner.palette.ComponentItemDialog" timestamp="1585579096665">
+      <screen x="0" y="0" width="1739" height="939" />
+    </state>
+    <state x="655" y="272" key="#com.intellij.uiDesigner.palette.ComponentItemDialog/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585579096665" />
+    <state x="577" y="25" key="CommitChangelistDialog2" timestamp="1585582372076">
+      <screen x="0" y="0" width="1739" height="939" />
+    </state>
+    <state x="577" y="25" key="CommitChangelistDialog2/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585582372076" />
+    <state x="1920" y="0" key="CommitChangelistDialog2/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585453971046" />
+    <state x="2884" y="228" key="FileChooserDialogImpl" timestamp="1585733881900">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2884" y="228" key="FileChooserDialogImpl/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585733881900" />
+    <state width="1202" height="262" key="GridCell.Tab.0.bottom" timestamp="1585789674648">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1202" height="262" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585789674648" />
+    <state width="1202" height="262" key="GridCell.Tab.0.center" timestamp="1585789674648">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1202" height="262" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585789674648" />
+    <state width="1202" height="262" key="GridCell.Tab.0.left" timestamp="1585789674648">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1202" height="262" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585789674648" />
+    <state width="1202" height="262" key="GridCell.Tab.0.right" timestamp="1585789674648">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1202" height="262" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585789674648" />
+    <state width="890" height="439" key="GridCell.Tab.1.bottom" timestamp="1585484853584">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state width="1696" height="367" key="GridCell.Tab.1.bottom/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585582416068" />
+    <state width="890" height="439" key="GridCell.Tab.1.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585484853584" />
+    <state width="1696" height="367" key="GridCell.Tab.1.center" timestamp="1585582416068">
+      <screen x="0" y="0" width="1739" height="939" />
+    </state>
+    <state width="1696" height="367" key="GridCell.Tab.1.center/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585582416068" />
+    <state width="890" height="439" key="GridCell.Tab.1.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585484853583" />
+    <state width="1696" height="367" key="GridCell.Tab.1.left" timestamp="1585582416068">
+      <screen x="0" y="0" width="1739" height="939" />
+    </state>
+    <state width="1696" height="367" key="GridCell.Tab.1.left/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585582416068" />
+    <state width="890" height="439" key="GridCell.Tab.1.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585484853583" />
+    <state width="1696" height="367" key="GridCell.Tab.1.right" timestamp="1585582416068">
+      <screen x="0" y="0" width="1739" height="939" />
+    </state>
+    <state width="1696" height="367" key="GridCell.Tab.1.right/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585582416068" />
+    <state width="890" height="439" key="GridCell.Tab.1.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585484853583" />
+    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog" timestamp="1586409640760">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2015" y="277" key="com.intellij.ide.util.TipDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586409640760" />
+    <state x="2993" y="0" width="854" height="1087" key="dock-window-1" timestamp="1585732302250">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2993" y="0" width="854" height="1087" key="dock-window-1/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585732302250" />
+    <state x="1963" y="246" width="1009" height="1469" key="run.anything.popup" timestamp="1585711773521">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1963" y="246" width="1009" height="1469" key="run.anything.popup/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585711773521" />
+    <state x="1972" y="-2" width="1009" height="1470" key="search.everywhere.popup" timestamp="1585461243292">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="1972" y="-2" width="1009" height="1470" key="search.everywhere.popup/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585461243292" />
+    <state x="3097" y="419" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1585711274769">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+>>>>>>> billboardViewer
     <state x="3097" y="419" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585711274769" />
   </component>
   <component name="XDebuggerManager">
@@ -370,10 +497,17 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+<<<<<<< HEAD
     <SUITE FILE_PATH="coverage/CAB302$RunDisplayBillboard.ic" NAME="RunDisplayBillboard Coverage Results" MODIFIED="1585481569110" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>Sandbox.*</FILTER>
     </SUITE>
     <SUITE FILE_PATH="coverage/CAB302$MainRunDisplay.ic" NAME="MainRunDisplay Coverage Results" MODIFIED="1585574155421" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+=======
+    <SUITE FILE_PATH="coverage/CAB302$MainRunDisplay.ic" NAME="MainRunDisplay Coverage Results" MODIFIED="1585574155421" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>Sandbox.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/CAB302$RunDisplayBillboard.ic" NAME="RunDisplayBillboard Coverage Results" MODIFIED="1585481569110" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+>>>>>>> billboardViewer
       <FILTER>Sandbox.*</FILTER>
     </SUITE>
   </component>

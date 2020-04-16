@@ -40,7 +40,6 @@ public class Billboard {
         TreeMap<String, String> defaultBillboard = new TreeMap<>();
         defaultBillboard.put("default", "Advertise Here!!!");
         this.billboardContents = defaultBillboard;
-
         frameSetup();
     }
 
@@ -50,14 +49,12 @@ public class Billboard {
      */
     public Billboard(TreeMap<String, String> billboardContents) {
         this.billboardContents = billboardContents;
-
         frameSetup();
     }
 
     /**
      * Setup JFrame
      */
-    //TODO - Create and set default JPanel
     private void frameSetup() {
         // Handle billboard
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // Get screen Resolution
@@ -80,9 +77,12 @@ public class Billboard {
      * @return JPanel
      */
     private JPanel noBillboardPanel(){
-        // TODO - build appropriate visuals for no connection billboard
-        JPanel defaultPanel = new JPanel();
-        JLabel label = new JLabel("ERROR! No Connection to Billboard Server. Attempting to Connect...");
+        JPanel defaultPanel = new JPanel(new GridBagLayout());
+
+        String defaultMessage = "No connection to Billboard Server. Attempting to connect...";
+        JLabel label = new JLabel(defaultMessage);
+        label.setForeground(Color.WHITE);
+        defaultPanel.setBackground(Color.decode("#700000"));
         defaultPanel.add(label);
 
         return defaultPanel;
