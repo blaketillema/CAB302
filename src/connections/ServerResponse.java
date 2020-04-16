@@ -18,7 +18,8 @@ public class ServerResponse implements Serializable
     // debugging
     public String toString()
     {
-        return String.format("status: %s\ndata: %s", this.status, this.data);
+        return String.format("status: %s\ndata: %s\n-------------------------",
+                this.status, this.data);
     }
 
     public void print()

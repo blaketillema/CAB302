@@ -16,19 +16,16 @@ public class ClientRequest implements Serializable
     // debugging
     public String toString()
     {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("type: ").append(this.type);
-        sb.append("path: ").append(this.path);
-        sb.append("sessionId: ").append(this.sessionId);
-        sb.append("params: ").append(this.params);
-        sb.append("data: ").append(this.data);
-
-        return sb.toString();
+        return "type: " + this.type +
+                "\npath: " + this.path +
+                "\nsessionId: " + this.sessionId +
+                "\nparams: " + this.params +
+                "\ndata: " + this.data +
+                "\n---------------------------";
     }
 
     public void print()
     {
-        this.toString();
+        System.out.println(this.toString());
     }
 }
