@@ -24,7 +24,7 @@ public class ServerConnect implements Runnable
         }
         ServerResponse response = server.getResponse();
 
-        if (!response.status.equals("OK"))
+        if (response.status == null || !response.status.equals("OK"))
         {
             throw new HttpException(response.status);
         }

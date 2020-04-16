@@ -3,6 +3,8 @@ package connections;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import static connections.ServerSocket.*;
@@ -77,9 +79,7 @@ class ClientThread implements Runnable
             String unixTime = String.valueOf(System.currentTimeMillis());
             sessionIds.put(sessionId, new String[] {user, unixTime});
             response = ServerResponse.buildResponse("OK", new String[][] {{Protocol.Params.SESSION_ID, sessionId}});
-        }
-        else
-        {
+        } else {
             response = ServerResponse.buildResponse("invalid username or password", null);
         }
 
@@ -120,6 +120,7 @@ class ClientThread implements Runnable
         ServerResponse response = new ServerResponse();
         response.status = "OK";
 
+        // GET
         if(request.type.equals(Protocol.Type.GET))
         {
             if(request.path.equals(Protocol.Path.NEW_SESSION_ID))
@@ -129,8 +130,8 @@ class ClientThread implements Runnable
                     String user = request.params.get(Protocol.USER);
                     String hash = request.params.get(Protocol.HASH);
                     return getSessionId(user, hash);
-                } catch (NullPointerException e)
-                {
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
                     response.status = "user and/or hash not in database";
                 }
             }
@@ -143,33 +144,28 @@ class ClientThread implements Runnable
                     try {
                         response.data = database.getCurrentBillboard();
                     } catch (Exception e) {
-                        response.status = "no billboard currently scheduled";
+                        e.printStackTrace();
+                        response.status = e.getMessage();
                     }
                 }
                 else
                 {
-                    try {
-                        throw new Exception();
-                    } catch (Exception e) {
-                        response.status = "<s,<s,s>> return values not supported yet";
-                    }
+                    response.data = database.getAllBillboard();
                 }
             }
         }
+
+        // POST
         else if(request.type.equals(Protocol.Type.POST))
         {
             if(request.path.equals(Protocol.Path.USERS))
             {
                 try
                 {
-                    String user = request.params.get(Protocol.USER);
-                    String hash = request.params.get(Protocol.HASH);
-                    String salt = request.params.get(Protocol.SALT);
-                    String permission = request.params.get(Protocol.PERMISSION);
-                    database.addUserInfo(user, hash, salt, permission);
-                } catch (NullPointerException e) {
+                    database.addUsers(request.data);
+                } catch (Exception e) {
                     e.printStackTrace();
-                    response.status = "missing any combination of username, password (hashed), salt or permission";
+                    response.status = e.getMessage();
                 }
             }
 
@@ -181,15 +177,19 @@ class ClientThread implements Runnable
                     sessionId = request.params.get(Protocol.Params.SESSION_ID);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
-                    response.status = "missing any combination of username, password (hashed), salt or permission";
+                    response.status = "missing sessionId";
                     return response;
                 }
 
                 if(checkPermissions(sessionId, Protocol.Permission.EDIT_USERS))
                 {
-                    TreeMap<String, String> billboard = new TreeMap<>();
-                    billboard.put("fake data", "awrfkfweakjnwajfwa");
-                    database.addBillboard("billboard name", billboard);
+                    try
+                    {
+                        database.addBillboards(request.data);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        response.status = e.getMessage();
+                    }
                 } else {
                     response.status = "invalid permissions to add billboard";
                 }

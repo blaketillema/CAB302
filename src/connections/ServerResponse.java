@@ -8,7 +8,7 @@ import java.util.TreeMap;
 public class ServerResponse implements Serializable
 {
     String status = "UNHANDLED ERROR";
-    TreeMap<String, String> data;
+    TreeMap<String, TreeMap<String, String>> data;
 
     public ServerResponse()
     {
@@ -18,7 +18,7 @@ public class ServerResponse implements Serializable
     public String toString()
     {
         try{
-            Map.Entry<String, String> head = data.firstEntry();
+            // Map.Entry<String, TreeMap<String, String>> head = data.firstEntry();
             return String.format("status = %s, data head = %s", this.status, this.data);
         } catch (Exception e) {
             return String.format("status = %s, data = null", this.status);
@@ -34,11 +34,11 @@ public class ServerResponse implements Serializable
         try
         {
             //get all entries
-            Set<Map.Entry<String, String>> entries = this.data.entrySet();
+            Set<Map.Entry<String, TreeMap<String, String>>> entries = this.data.entrySet();
 
 
             //using for loop
-            for(Map.Entry<String, String> entry : entries){
+            for(Map.Entry<String, TreeMap<String, String>> entry : entries){
                 System.out.println( entry.getKey() + "=>" + entry.getValue() );
             }
         }
@@ -55,12 +55,13 @@ public class ServerResponse implements Serializable
 
         if (data != null)
         {
-            response.data = new TreeMap<>();
+            TreeMap<String, String> map = new TreeMap<>();
 
             for (String[] args : data)
             {
-                response.data.put(args[0], args[1]);
+                map.put(args[0], args[1]);
             }
+            response.data.put("data", map);
         }
 
         return response;

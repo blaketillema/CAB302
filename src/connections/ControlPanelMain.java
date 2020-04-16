@@ -1,11 +1,12 @@
 package connections;
 
+import java.util.TreeMap;
+
 public class ControlPanelMain
 {
     private static String password = "password1234";
     private static String salt = null;
     private static String sessionId = null;
-
 
     public static void main(String[] args) throws ClassNotFoundException, InterruptedException {
 
@@ -16,21 +17,28 @@ public class ControlPanelMain
 
         getSessionId();
 
-        addToDatabase();
+        addBillboard();
 
-        getCurrentBillboard();
+        getAllBillboards();
 
     }
 
     public static void sendCredentials()
     {
-        ClientRequest request = ClientRequest.buildRequest(
-                Protocol.Type.POST,
-                Protocol.Path.USERS,
-                null,
-                new String[][] {{Protocol.USER, "max"}, {Protocol.HASH, password}, {Protocol.SALT, salt},
-                        {Protocol.PERMISSION, Protocol.Permission.EDIT_USERS}},
-                null);
+
+        ClientRequest request = new ClientRequest();
+
+        request.type = Protocol.Type.POST;
+        request.path = Protocol.Path.USERS;
+        request.data = new TreeMap<>();
+
+        TreeMap<String, String> body = new TreeMap<>();
+        body.put(Protocol.HASH, password);
+        body.put(Protocol.SALT, salt);
+        body.put(Protocol.PERMISSION, Protocol.Permission.EDIT_USERS);
+
+        String username = "max";
+        request.data.put(username, body);
 
         ServerResponse response;
         try
@@ -44,32 +52,40 @@ public class ControlPanelMain
 
     public static void getSessionId()
     {
-        ClientRequest request = ClientRequest.buildRequest(
-                Protocol.Type.GET,
-                Protocol.Path.NEW_SESSION_ID,
-                null,
-                new String[][] {{Protocol.USER, "max"}, {Protocol.HASH, password}},
-                null);
+
+        ClientRequest request = new ClientRequest();
+
+        request.type = Protocol.Type.GET;
+        request.path = Protocol.Path.NEW_SESSION_ID;
+        request.params = new TreeMap<>();
+        request.params.put(Protocol.USER, "max");
+        request.params.put(Protocol.HASH, password);
 
         ServerResponse response;
         try
         {
             response = ServerConnect.request(Protocol.LOCALHOST, 1234, request);
-            sessionId = response.data.get(Protocol.Params.SESSION_ID);
+            sessionId = response.data.get("data").get(Protocol.Params.SESSION_ID);
             response.print();
         } catch (HttpException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public static void addToDatabase()
+    public static void addBillboard()
     {
-        ClientRequest request = ClientRequest.buildRequest(
-                Protocol.Type.POST,
-                Protocol.Path.BILLBOARDS,
-                null,
-                new String[][] {{Protocol.Params.SESSION_ID, sessionId}},
-                new String[][] {{"test", "test"}});
+
+        ClientRequest request = new ClientRequest();
+
+        request.type = Protocol.Type.POST;
+        request.path = Protocol.Path.BILLBOARDS;
+        request.params = new TreeMap<>();
+        request.params.put(Protocol.Params.SESSION_ID, sessionId);
+
+        request.data = new TreeMap<>();
+        TreeMap<String, String> body = new TreeMap<>();
+        body.put("xmlData", "xxxxxxxxxxxx");
+        request.data.put("billboard_name_2", body);
 
         ServerResponse response;
         try
@@ -83,12 +99,32 @@ public class ControlPanelMain
 
     public static void getCurrentBillboard()
     {
-        ClientRequest request = ClientRequest.buildRequest(
-                Protocol.Type.GET,
-                Protocol.Path.BILLBOARDS,
-                null,
-                new String[][] {{Protocol.Params.SESSION_ID, sessionId}, {Protocol.Params.CURRENT_SCHEDULED, "true"}},
-                null);
+        ClientRequest request = new ClientRequest();
+
+        request.type = Protocol.Type.GET;
+        request.path = Protocol.Path.BILLBOARDS;
+        request.params = new TreeMap<>();
+        request.params.put(Protocol.Params.SESSION_ID, sessionId);
+        request.params.put(Protocol.Params.CURRENT_SCHEDULED, "true");
+
+        ServerResponse response;
+        try
+        {
+            response = ServerConnect.request(Protocol.LOCALHOST, 1234, request);
+            response.print();
+        } catch (HttpException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void getAllBillboards()
+    {
+        ClientRequest request = new ClientRequest();
+
+        request.type = Protocol.Type.GET;
+        request.path = Protocol.Path.BILLBOARDS;
+        request.params = new TreeMap<>();
+        request.params.put(Protocol.Params.SESSION_ID, sessionId);
 
         ServerResponse response;
         try
