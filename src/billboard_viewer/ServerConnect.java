@@ -19,6 +19,9 @@ import java.util.*;
  * When built will get a billboard TreeMap from the server.
  */
 
+// TODO - Implement server connection and remove XML related code
+// TODO - Implement read from config/properties file for server connection address and port
+
 public class ServerConnect implements Runnable{
 
     String serverAddress = null;

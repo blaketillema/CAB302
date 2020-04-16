@@ -25,9 +25,7 @@ public class MainRunDisplay {
         /**
          * Refresh the billboard display (if new data)
          */
-        // TODO set this screen to update along with thread
 
-        // TODO fix: connect.getBillboard is not returning billboard
         // Add billboard contents to new billboard from server with connect.getBillboard()
         TreeMap billboardNowData = connect.getBillboard();
         connect.printBillboard();
@@ -37,7 +35,8 @@ public class MainRunDisplay {
         // billboardNowData.put("information", "random info");
         // END TESTING
 
-        // NOT TESTING  - KEEP Below
+
+        // NOT TESTING  - KEEP THIS BELOW
         // Add billboard now to new billboard to display
         //Billboard billboardNow = new Billboard( billboardNowData );
         //DisplayBillboard display = new DisplayBillboard( billboardNow );
@@ -94,9 +93,9 @@ public class MainRunDisplay {
                 billboardNowData = billboardTemp;
                 newBillboard.updateBillboard(billboardNowData);
 
-                connect.printBillboard(); // DEBUG - print connect TreeMap
+                //connect.printBillboard(); // DEBUG - print connect TreeMap
                 //billboardNow.printBillboard(); // DEBUG - print billboard TreeMap
-                newBillboard.printBillboard(); // DEBUG - print billboard TreeMap
+                //newBillboard.printBillboard(); // DEBUG - print billboard TreeMap
 
                 sleep(15000); // Sleep 15 seconds
             } catch (InterruptedException e) {
@@ -107,7 +106,10 @@ public class MainRunDisplay {
 
         }
 
+
         System.out.println("DEBUG: End of Main");
+
+        // TODO - Safely terminate/end viewer application once end of main is reached
 
     }
 }

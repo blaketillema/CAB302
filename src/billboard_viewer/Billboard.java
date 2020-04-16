@@ -9,6 +9,12 @@ import java.awt.event.MouseEvent;
 import java.util.Set;
 import java.util.TreeMap;
 
+/* Sample Colour codes:
+Green: #55FF00
+Yellow: #FFC300
+Red: #FF0000
+ */
+
 public class Billboard {
 
     private TreeMap<String, String> billboardContents;
@@ -34,7 +40,6 @@ public class Billboard {
         TreeMap<String, String> defaultBillboard = new TreeMap<>();
         defaultBillboard.put("default", "Advertise Here!!!");
         this.billboardContents = defaultBillboard;
-
         frameSetup();
     }
 
@@ -44,20 +49,19 @@ public class Billboard {
      */
     public Billboard(TreeMap<String, String> billboardContents) {
         this.billboardContents = billboardContents;
-
         frameSetup();
     }
 
     /**
      * Setup JFrame
      */
-    //TODO - Create and set default JPanel
     private void frameSetup() {
         // Handle billboard
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // Get screen Resolution
         xRes = screenSize.getWidth(); // Set resolution x
         yRes = screenSize.getHeight(); // Set resolution y
         billboardFrame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Set Frame to Full Screen
+        billboardFrame.setUndecorated(true); // Remove window bars for true full screen
 
         billboardFrame.add(noBillboardPanel());
 
@@ -73,8 +77,12 @@ public class Billboard {
      * @return JPanel
      */
     private JPanel noBillboardPanel(){
-        JPanel defaultPanel = new JPanel();
-        JLabel label = new JLabel("ERROR! No Connection to Billboard Server. Attempting to Connect...");
+        JPanel defaultPanel = new JPanel(new GridBagLayout());
+
+        String defaultMessage = "No connection to Billboard Server. Attempting to connect...";
+        JLabel label = new JLabel(defaultMessage);
+        label.setForeground(Color.WHITE);
+        defaultPanel.setBackground(Color.decode("#700000"));
         defaultPanel.add(label);
 
         return defaultPanel;
