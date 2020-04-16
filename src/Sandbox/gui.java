@@ -12,6 +12,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import static java.lang.Thread.sleep;
+
 // Java Swing
 /*
 Swing:
@@ -32,9 +34,11 @@ Types of Billboards:
     - Message, picture and information
  */
 
-public class gui {
+public class gui extends JFrame {
 
     JFrame frame = new JFrame("Billboard Frame");
+    JPanel panel1 = new JPanel();
+    JPanel panel2 = new JPanel();
 
     //private String testImage = "Billboard1200x800.png";
     //private String testImage = "Billboard1200x1800.png";
@@ -72,6 +76,63 @@ public class gui {
         keyStroke();
         mouseClick();
 
+
+        try {
+            sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        /**
+         * Clear frame
+         */
+        frame.getContentPane().removeAll();
+
+
+        try {
+            sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //JPanel panel1 = new JPanel();
+        JLabel label = new JLabel("Hello World");
+        panel1.add(label);
+        //panel.
+        setupPanelImage();
+
+
+
+        frame.add(panel1);
+
+        frame.revalidate();
+        frame.repaint();
+        frame.setVisible(true);
+
+
+
+
+        /**
+         * Testing the ability to copy an entire JFrame...
+         */
+        /*
+        JFrame frameCopy = new JFrame("Billboard Frame Copy");
+        frameCopy = frame;
+        //frameCopy.setVisible(true);
+
+        frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)); // Close window
+        frameCopy.setVisible(true);
+        */
+
+        /*
+        frameCopy.removeAll();
+        frameCopy.revalidate();
+        frameCopy.repaint();
+        frameCopy.setVisible(true);
+        */
+
+
+
         System.out.println("End GUI.");
     }
 
@@ -99,12 +160,10 @@ public class gui {
             @Override
             public void mouseMoved(MouseEvent e) {}
         });
-
     }
 
     private void keyStroke() {
         // this function gave me a stroke
-
         frame.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -184,6 +243,48 @@ public class gui {
         scaledImage = image.getScaledInstance((int) scaledWidth,(int) scaledHeight, Image.SCALE_DEFAULT);
         JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
         frame.add(imageLabel);
+
+    }
+
+    private void setupPanelImage() {
+        // Add an image to the panel
+        double aspectRatio, scaledHeight, scaledWidth;
+
+        File imageFile = new File(imagePath);
+
+        try {
+            image = ImageIO.read(imageFile);
+
+        } catch (IOException ex) {
+            // Exception handling
+        }
+
+        double sourceWidth = image.getWidth();
+        double sourceHeight = image.getHeight();
+        System.out.println("Original Image Size: x="+sourceWidth+" y="+sourceHeight);
+
+        if ( (xRes/2) / sourceWidth * sourceHeight > yRes/2) { // Check if scale should start on width or height
+            // Scale on Height
+            scaledHeight = (int) (yRes / 2);
+            aspectRatio = scaledHeight / sourceHeight;
+            scaledWidth = sourceWidth * aspectRatio;
+        } else {
+            // Scale on Width
+            scaledWidth = (int) (xRes / 2);
+            aspectRatio = scaledWidth / sourceWidth;
+            scaledHeight = sourceHeight * aspectRatio;
+        }
+
+        // Checks
+        if (scaledWidth > xRes/2 || scaledHeight > yRes/2) {
+            System.out.println("Debug: Bad Resolution! Acceptable Maximum: "+xRes/2+"x"+yRes/2);
+        }
+
+        System.out.println("Scaled Image Size: x="+scaledWidth+" y="+scaledHeight);
+        scaledImage = image.getScaledInstance((int) scaledWidth,(int) scaledHeight, Image.SCALE_DEFAULT);
+        JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
+
+        panel1.add(imageLabel);
 
     }
 
