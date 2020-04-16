@@ -4,22 +4,11 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-<<<<<<< HEAD
-<<<<<<< HEAD
       <excludeFolder url="file://$MODULE_DIR$/src/Sandbox" />
-      <excludeFolder url="file://$MODULE_DIR$/src/billboard_control_panel" />
-=======
->>>>>>> billboardViewer
-      <excludeFolder url="file://$MODULE_DIR$/src/billboard_server" />
-      <excludeFolder url="file://$MODULE_DIR$/src/billboard_viewer" />
-=======
-      <excludeFolder url="file://$MODULE_DIR$/src/billboard_server" />
->>>>>>> billboardControlPanel
     </content>
     <content url="file://$MODULE_DIR$/bin/production/CAB302/billboard_control_panel" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-<<<<<<< HEAD
     <orderEntry type="module-library">
       <library name="JUnit5.4">
         <CLASSES>
@@ -36,7 +25,5 @@
         <SOURCES />
       </library>
     </orderEntry>
-=======
->>>>>>> billboardControlPanel
   </component>
 </module>

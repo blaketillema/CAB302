@@ -1,4 +1,8 @@
-package connections;
+package connections.engines;
+
+import connections.types.ClientRequest;
+import connections.exceptions.HttpException;
+import connections.types.ServerResponse;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -47,7 +51,6 @@ public class ServerConnect implements Runnable
     public void run() {
         try {
             Socket socket = new Socket(this.ip, this.port);
-            System.out.println("Connected");
 
             ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream());

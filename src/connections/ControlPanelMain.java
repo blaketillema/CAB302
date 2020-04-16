@@ -1,139 +1,88 @@
 package connections;
 
 import java.util.TreeMap;
+import connections.Protocol.*;
+import connections.exceptions.HttpException;
 
 public class ControlPanelMain
 {
-    private static String password = "password1234";
-    private static String salt = null;
-    private static String sessionId = null;
 
-    public static void main(String[] args) throws ClassNotFoundException, InterruptedException {
+    // NOTE: this can only be called once, as it will be stored server and client side
+    public static void testAddAdminToDatabases(ClientServerInterface server) throws Exception {
+        String pw = "admin";
 
-        salt = UserAuth.generateSalt();
-        password = UserAuth.hashAndSalt(password, salt);
-
-        sendCredentials();
-
-        getSessionId();
-
-        addBillboard();
-
-        getAllBillboards();
-
-    }
-
-    public static void sendCredentials()
-    {
-
-        ClientRequest request = new ClientRequest();
-
-        request.type = Protocol.Type.POST;
-        request.path = Protocol.Path.USERS;
-        request.data = new TreeMap<>();
-
-        TreeMap<String, String> body = new TreeMap<>();
-        body.put(Protocol.HASH, password);
-        body.put(Protocol.SALT, salt);
-        body.put(Protocol.PERMISSION, Protocol.Permission.EDIT_USERS);
-
-        String username = "max";
-        request.data.put(username, body);
-
-        ServerResponse response;
-        try
-        {
-            response = ServerConnect.request(Protocol.LOCALHOST, 1234, request);
-            response.print();
+        try {
+            server.addNewUser("admin", pw, "1111");
         } catch (HttpException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            System.exit(0);
         }
     }
 
-    public static void getSessionId()
-    {
-
-        ClientRequest request = new ClientRequest();
-
-        request.type = Protocol.Type.GET;
-        request.path = Protocol.Path.NEW_SESSION_ID;
-        request.params = new TreeMap<>();
-        request.params.put(Protocol.USER, "max");
-        request.params.put(Protocol.HASH, password);
-
-        ServerResponse response;
-        try
-        {
-            response = ServerConnect.request(Protocol.LOCALHOST, 1234, request);
-            sessionId = response.data.get("data").get(Protocol.Params.SESSION_ID);
-            response.print();
+    public static void testAdminLogin(ClientServerInterface server) throws Exception {
+        String pw = "admin";
+        // login as admin
+        try {
+            server.login("admin", pw);
         } catch (HttpException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            System.exit(0);
         }
     }
 
-    public static void addBillboard()
+    // NOTE: this can only be called once, as it will be stored server and client side
+    public static void testAddUsersToDatabases(ClientServerInterface server)
     {
+        String[] users = new String[] {"joe", "bob", "jack"};
+        String[] passwords = new String[] {"test1", "test2", "test3"};
+        String[] permissions = new String[] {
+                Permission.combine(Permission.EDIT_USERS, Permission.CREATE_BILLBOARDS),
+                Permission.combine(Permission.CREATE_BILLBOARDS, Permission.SCHEDULE_BILLBOARDS),
+                Permission.combine(Permission.EDIT_ALL_BILLBOARDS)};
 
-        ClientRequest request = new ClientRequest();
-
-        request.type = Protocol.Type.POST;
-        request.path = Protocol.Path.BILLBOARDS;
-        request.params = new TreeMap<>();
-        request.params.put(Protocol.Params.SESSION_ID, sessionId);
-
-        request.data = new TreeMap<>();
-        TreeMap<String, String> body = new TreeMap<>();
-        body.put("xmlData", "xxxxxxxxxxxx");
-        request.data.put("billboard_name_2", body);
-
-        ServerResponse response;
-        try
+        for(int i = 0; i < users.length; i++)
         {
-            response = ServerConnect.request(Protocol.LOCALHOST, 1234, request);
-            response.print();
-        } catch (HttpException e) {
-            System.out.println(e.getMessage());
+            try {
+                server.addNewUser(users[i], passwords[i], permissions[i]);
+            } catch (HttpException e) {
+                e.printStackTrace();
+                System.exit(0);
+            }
         }
     }
 
-    public static void getCurrentBillboard()
+    public static void testAddBillboards(ClientServerInterface server)
     {
-        ClientRequest request = new ClientRequest();
+        String[] billboardNames = new String[] {"billboard1", "billboard2", "billboard3"};
 
-        request.type = Protocol.Type.GET;
-        request.path = Protocol.Path.BILLBOARDS;
-        request.params = new TreeMap<>();
-        request.params.put(Protocol.Params.SESSION_ID, sessionId);
-        request.params.put(Protocol.Params.CURRENT_SCHEDULED, "true");
-
-        ServerResponse response;
-        try
+        for(String billboard : billboardNames)
         {
-            response = ServerConnect.request(Protocol.LOCALHOST, 1234, request);
-            response.print();
-        } catch (HttpException e) {
-            System.out.println(e.getMessage());
+            TreeMap<String, String> data = new TreeMap<>();
+            data.put("message", java.util.UUID.randomUUID().toString());
+
+            try {
+                server.addBillboard(billboard, data);
+            } catch (HttpException e) {
+                e.printStackTrace();
+                System.exit(0);
+            }
         }
+
     }
 
-    public static void getAllBillboards()
-    {
-        ClientRequest request = new ClientRequest();
+    public static void main(String[] args) throws Exception {
 
-        request.type = Protocol.Type.GET;
-        request.path = Protocol.Path.BILLBOARDS;
-        request.params = new TreeMap<>();
-        request.params.put(Protocol.Params.SESSION_ID, sessionId);
+        ClientServerInterface server = new ClientServerInterface();
 
-        ServerResponse response;
-        try
-        {
-            response = ServerConnect.request(Protocol.LOCALHOST, 1234, request);
-            response.print();
-        } catch (HttpException e) {
-            System.out.println(e.getMessage());
-        }
+        testAddAdminToDatabases(server);
+
+        testAdminLogin(server);
+
+        testAddUsersToDatabases(server);
+
+        testAddBillboards(server);
+
+        System.out.println(server.getAllBillboards());
+
     }
-
 }

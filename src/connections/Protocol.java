@@ -5,30 +5,60 @@ public class Protocol
     public static final String LOCALHOST = "localHost";
 
     public static final String PERMISSION = "permission";
-    public class Permission
+
+    public static class Permission
     {
-        public static final String EDIT_ALL_BILLBOARDS = "EDIT_ALL_BILLBOARDS";
-        public static final String CREATE_BILLBOARDS = "CREATE_BILLBOARDS";
-        public static final String SCHEDULE_BILLBOARDS = "SCHEDULE_BILLBOARDS";
-        public static final String EDIT_USERS = "EDIT_USERS";
+        // add permissions together
+        public static String combine(String ... permissions)
+        {
+            int total = 0;
+            for(String permission : permissions)
+            {
+                total += Integer.parseInt(permission);
+            }
+            return String.valueOf(total);
+        }
+
+        // check if permissions match exactly
+        public static boolean hasAll(String toCompare, String needed)
+        {
+            return toCompare.equals(needed);
+        }
+
+        // check if toCompare has more or equal to the permissions of needed
+        public static boolean hasOne(String toCompare, String needed)
+        {
+            int a = Integer.parseInt(toCompare, 2);
+            int b = Integer.parseInt(needed, 2);
+
+            return (a & b) >= b;
+        }
+
+        public static final String NONE = "0";
+        public static final String EDIT_ALL_BILLBOARDS = "1";
+        public static final String CREATE_BILLBOARDS = "10";
+        public static final String SCHEDULE_BILLBOARDS = "100";
+        public static final String EDIT_USERS = "1000";
+        public static final String ALL = "1111";
     }
 
     public static final String PATH = "path";
-    public class Path
+
+    public static class Path
     {
         public static final String USERS = "/users/";
         public static final String BILLBOARDS = "/billboards/";
         public static final String NEW_SESSION_ID = "/cmd/newSessionId";
     }
 
-    public class Type
+    public static class Type
     {
         public static final String POST = "POST";
         public static final String GET = "GET";
         public static final String DELETE = "DELETE";
     }
 
-    public class Params
+    public static class Params
     {
         public static final String SESSION_ID = "sessionId";
         public static final String CURRENT_SCHEDULED = "currentScheduled";

@@ -1,4 +1,4 @@
-package connections;
+package connections.types;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -7,8 +7,8 @@ import java.util.TreeMap;
 
 public class ServerResponse implements Serializable
 {
-    String status = "UNKNOWN";
-    TreeMap<String, TreeMap<String, String>> data;
+    public String status = "UNKNOWN";
+    public TreeMap<String, TreeMap<String, String>> data;
 
     public ServerResponse()
     {

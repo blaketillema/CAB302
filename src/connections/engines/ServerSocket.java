@@ -1,13 +1,18 @@
-package connections;
+package connections.engines;
+
+import connections.types.TestDatabase;
+import connections.tools.Tools;
+import connections.tools.UserAuth;
+import connections.types.ClientRequest;
+import connections.Protocol;
+import connections.types.ServerResponse;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
-import static connections.ServerSocket.*;
+import static connections.engines.ServerSocket.*;
 
 public class ServerSocket
 {
@@ -27,6 +32,8 @@ public class ServerSocket
     {
         try {
             java.net.ServerSocket serverSocket = new java.net.ServerSocket(this.port);
+
+            System.out.printf("server running @ localhost, port %d\n", this.port);
 
             while(true)
             {
@@ -89,47 +96,41 @@ class ClientThread implements Runnable
 
     private static String checkSessionId(String sessionId) throws Exception {
 
-        String[] userAndTime = sessionIds.get(sessionId);
+        String[] userAndTime;
+
+        userAndTime = sessionIds.get(sessionId);
 
         long timeDiff = System.currentTimeMillis() - Long.parseLong(userAndTime[1]);
 
         if(timeDiff >= ONE_DAY_MS)
         {
             sessionIds.remove(sessionId);
-            throw new Exception();
+            throw new Exception("session id has expired");
         }
 
         return userAndTime[0];
     }
 
-    private static boolean checkPermissions(String sessionId, String permissionNeeded)
-    {
-        try
-        {
-            String user = checkSessionId(sessionId);
-            String permission = database.getPermission(user);
-
-            return permission.equals(permissionNeeded);
-        }
-        catch(Exception e) {e.printStackTrace();}
-
-        return false;
-    }
-
     private static ServerResponse parseRequest(ClientRequest request)
     {
+        String type = request.type;
+        String path = request.path;
+        String sessionId = request.sessionId;
+        TreeMap<String, String> params = request.params;
+        TreeMap<String, TreeMap<String, String>> data = request.data;
+
         ServerResponse response = new ServerResponse();
         response.status = "OK";
 
         // GET
-        if(request.type.equals(Protocol.Type.GET))
+        if(type.equals(Protocol.Type.GET))
         {
-            if(request.path.equals(Protocol.Path.NEW_SESSION_ID))
+            // ** get new session id **
+            if(path.equals(Protocol.Path.NEW_SESSION_ID))
             {
-                try
-                {
-                    String user = request.params.get(Protocol.USER);
-                    String hash = request.params.get(Protocol.HASH);
+                try {
+                    String user = params.get(Protocol.USER);
+                    String hash = params.get(Protocol.HASH);
                     return getSessionId(user, hash);
                 } catch (NullPointerException e) {
                     e.printStackTrace();
@@ -137,62 +138,51 @@ class ClientThread implements Runnable
                 }
             }
 
-            else if(request.path.equals(Protocol.Path.BILLBOARDS))
+            // ** get billboards (all or current scheduled) **
+            else if(path.equals(Protocol.Path.BILLBOARDS))
             {
-                if(request.params.containsKey(Protocol.Params.CURRENT_SCHEDULED) &&
-                        request.params.get(Protocol.Params.CURRENT_SCHEDULED).equals("true"))
-                {
+                if(params != null && params.containsKey(Protocol.Params.CURRENT_SCHEDULED) &&
+                        params.get(Protocol.Params.CURRENT_SCHEDULED).equals("true")) {
                     try {
                         response.data = database.getCurrentBillboard();
                     } catch (Exception e) {
                         e.printStackTrace();
                         response.status = e.getMessage();
                     }
-                }
-                else
-                {
+                } else {
                     response.data = database.getAllBillboard();
                 }
             }
         }
 
         // POST
-        else if(request.type.equals(Protocol.Type.POST))
+        else if(type.equals(Protocol.Type.POST))
         {
-            if(request.path.equals(Protocol.Path.USERS))
+            // ** add new user **
+            if(path.equals(Protocol.Path.USERS))
             {
-                try
-                {
-                    database.addUsers(request.data);
+                try {
+                    String user;
+                    if(sessionIds.isEmpty() && data.firstKey().equals("admin")) {
+                        user = "admin";
+                    } else {
+                        user = checkSessionId(sessionId);
+                    }
+                    database.addUser(user, data.firstKey(), data.get(data.firstKey()));
                 } catch (Exception e) {
                     e.printStackTrace();
                     response.status = e.getMessage();
                 }
             }
 
+            // ** add new billboard **
             else if(request.path.equals(Protocol.Path.BILLBOARDS))
             {
-                String sessionId;
-                try
-                {
-                    sessionId = request.params.get(Protocol.Params.SESSION_ID);
-                } catch (NullPointerException e) {
+                try {
+                    database.addBillboard(checkSessionId(sessionId), data.firstKey(), data.get(data.firstKey()));
+                } catch (Exception e) {
                     e.printStackTrace();
-                    response.status = "missing sessionId";
-                    return response;
-                }
-
-                if(checkPermissions(sessionId, Protocol.Permission.EDIT_USERS))
-                {
-                    try
-                    {
-                        database.addBillboards(request.data);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        response.status = e.getMessage();
-                    }
-                } else {
-                    response.status = "invalid permissions to add billboard";
+                    response.status = e.getMessage();
                 }
             }
         }

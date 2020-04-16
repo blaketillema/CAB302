@@ -1,4 +1,4 @@
-package connections;
+package connections.exceptions;
 
 public class HttpException extends Exception
 {
