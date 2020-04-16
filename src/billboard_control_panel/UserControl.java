@@ -5,19 +5,31 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class UserBuilder {
-    private JPanel UBPanel;
+public class UserControl {
     private JTextField textField1;
     private JPasswordField passwordField1;
-    private JRadioButton createBillboardsRadioButton;
-    private JRadioButton editAllBillboardsRadioButton;
-    private JRadioButton scheduleBillboardsRadioButton;
-    private JRadioButton editUsersRadioButton;
+    private JCheckBox checkBox1;
+    private JCheckBox checkBox2;
+    private JCheckBox checkBox3;
+    private JCheckBox checkBox4;
     private JButton removeButton;
     private JButton saveButton;
     private JButton saveAndExitButton;
+    private JPanel userControl;
 
-    public UserBuilder() {
+    public UserControl() {
+        removeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        saveButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
         saveAndExitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -26,16 +38,15 @@ public class UserBuilder {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new ControlPanel().main(null);
+                new MainControl().main(null);
             }
         });
     }
-
     public static void main(String[] args) {
         /* Create and display the form */
         JFrame frame = new JFrame("Billboard User Builder");
         Main.centreWindow(frame);
-        frame.setContentPane(new UserBuilder().UBPanel);
+        frame.setContentPane(new UserControl().userControl);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

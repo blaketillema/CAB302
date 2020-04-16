@@ -5,31 +5,26 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ControlPanel {
-    private JTabbedPane tabbedPane1;
-    public JPanel CPPanel;
-    private JButton createBB_Button;
-    private JButton editBB_Button;
-    private JButton previewBB_Button;
+public class MainControl {
+    private JTabbedPane mainControl;
     private JList billboardList;
-    private JButton createUser_Button;
-    private JButton ModifyUser_Button;
-    private JButton deleteUser_Button;
-    private JList userList;
+    private JButton createUserButton;
+    private JButton modifyUserButton;
+    private JButton deleteUserButton;
     private JButton logOutButton;
-    private JButton scheduleBB_Button;
+    private JList userList;
+    private JButton scheduleBillboardButton;
+    private JButton createBillboardButton;
+    private JButton editBillboardButton;
+    private JButton previewBillboardButton;
+    private JPanel controlPanel;
 
-    public ControlPanel() {
+    public MainControl() {
         Window[] wns = LoginManager.getFrames();
         for (Window wn1 : wns) {
             wn1.setVisible(false);
         }
-        createBB_Button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
-        });
         logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -46,7 +41,10 @@ public class ControlPanel {
                 }
             }
         });
-        createBB_Button.addActionListener(new ActionListener() {
+
+        // User Setting Buttons
+
+        deleteUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Window[] wns = LoginManager.getFrames();
@@ -54,10 +52,11 @@ public class ControlPanel {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new BillboardBuilder().main(null);
+                new UserControl().main(null);
             }
         });
-        editBB_Button.addActionListener(new ActionListener() {
+
+        createUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Window[] wns = LoginManager.getFrames();
@@ -65,10 +64,10 @@ public class ControlPanel {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new BillboardBuilder().main(null);
+                new UserControl().main(null);
             }
         });
-        createUser_Button.addActionListener(new ActionListener() {
+        modifyUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Window[] wns = LoginManager.getFrames();
@@ -76,10 +75,13 @@ public class ControlPanel {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new UserBuilder().main(null);
+                new UserControl().main(null);
             }
         });
-        ModifyUser_Button.addActionListener(new ActionListener() {
+
+        // User Setting Buttons
+
+        createBillboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Window[] wns = LoginManager.getFrames();
@@ -87,19 +89,49 @@ public class ControlPanel {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new UserBuilder().main(null);
+                new BillboardControl().main(null);
             }
         });
+        editBillboardButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Window[] wns = LoginManager.getFrames();
+                for (Window wn1 : wns) {
+                    wn1.dispose();
+                    wn1.setVisible(false);
+                }
+                new BillboardControl().main(null);
+            }
+        });
+
+        previewBillboardButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        scheduleBillboardButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+
+
     }
 
     public static void main(String[] args) {
         /* Create and display the form */
         JFrame frame = new JFrame("Billboard Control Panel");
         Main.centreWindow(frame);
-        frame.setContentPane(new ControlPanel().CPPanel);
+        frame.setContentPane(new MainControl().controlPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
     }
 
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }
