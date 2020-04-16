@@ -13,56 +13,22 @@ public class ClientRequest implements Serializable
     public TreeMap<String, String> params = null;
     public TreeMap<String, TreeMap<String, String>> data = null;
 
+    // debugging
     public String toString()
     {
-        return this.type;
-    }
+        StringBuilder sb = new StringBuilder();
 
-    public static void printSet(TreeMap<String, String> set)
-    {
-        try
-        {
-            //get all entries
-            Set<Map.Entry<String, String>> entries = set.entrySet();
+        sb.append("type: ").append(this.type);
+        sb.append("path: ").append(this.path);
+        sb.append("sessionId: ").append(this.sessionId);
+        sb.append("params: ").append(this.params);
+        sb.append("data: ").append(this.data);
 
-            //using for loop
-            for(Map.Entry<String, String> entry : entries){
-                System.out.println( entry.getKey() + "=>" + entry.getValue() );
-            }
-
-        } catch (NullPointerException ignored) {
-            System.out.println("none");
-        }
-    }
-
-    public static void printBigSet(TreeMap<String, TreeMap<String, String>> set)
-    {
-        try
-        {
-            //get all entries
-            Set<Map.Entry<String, TreeMap<String, String>>> entries = set.entrySet();
-
-            //using for loop
-            for(Map.Entry<String, TreeMap<String, String>> entry : entries){
-                System.out.println( entry.getKey() + "=>" + entry.getValue() );
-            }
-
-        } catch (NullPointerException ignored) {
-            System.out.println("none");
-        }
+        return sb.toString();
     }
 
     public void print()
     {
-        System.out.println("type: " + this.type);
-        System.out.println("path: " + this.path);
-        System.out.println("sessionId: " + this.sessionId);
-
-        System.out.println("params: ");
-        printSet(this.params);
-
-        System.out.println("data: ");
-        printBigSet(this.data);
-
+        this.toString();
     }
 }

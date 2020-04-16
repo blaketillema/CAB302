@@ -63,7 +63,8 @@ class ClientThread implements Runnable
         String dbSalt = null;
         String dbHash = null;
 
-        ServerResponse response = null;
+        ServerResponse response = new ServerResponse();
+        response.status = "OK";
 
         try {
             dbHash = database.getHash(user);
@@ -78,9 +79,9 @@ class ClientThread implements Runnable
             String sessionId = genSessionId();
             String unixTime = String.valueOf(System.currentTimeMillis());
             sessionIds.put(sessionId, new String[] {user, unixTime});
-            response = ServerResponse.buildResponse("OK", new String[][] {{Protocol.Params.SESSION_ID, sessionId}});
+            response.data.put("data", Tools.tMap(Protocol.Params.SESSION_ID, sessionId));
         } else {
-            response = ServerResponse.buildResponse("invalid username or password", null);
+            response.status = "invalid username or password";
         }
 
         return response;
