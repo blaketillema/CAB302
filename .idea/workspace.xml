@@ -171,6 +171,7 @@
     </configuration>
     <list>
 <<<<<<< HEAD
+<<<<<<< HEAD
       <item itemvalue="Application.MainRunDisplay" />
       <item itemvalue="Application.UserManagement" />
       <item itemvalue="Application.Main" />
@@ -182,6 +183,20 @@
         <item itemvalue="Application.userAuth" />
         <item itemvalue="Application.UserBuilder" />
         <item itemvalue="Application.Main" />
+=======
+      <item itemvalue="Android JUnit.Unnamed" />
+      <item itemvalue="Application.TCPTestServer" />
+      <item itemvalue="Application.TCPTestViewer" />
+      <item itemvalue="Application.TCPConnect" />
+      <item itemvalue="Application.TCPConnect (2)" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.TCPConnect (2)" />
+        <item itemvalue="Application.TCPConnect" />
+        <item itemvalue="Application.TCPTestServer" />
+        <item itemvalue="Application.TCPTestViewer" />
+>>>>>>> billboardServer
       </list>
     </recent_temporary>
 =======
