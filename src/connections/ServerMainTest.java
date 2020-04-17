@@ -1,11 +1,9 @@
-package connections.testing;
+package connections;
 
 import connections.engines.Server;
 
-public class ServerMain
-{
-    public static void main(String[] args)
-    {
+public class ServerMainTest {
+    public static void main(String[] args) {
         Server server = new Server();
 
         server.run();

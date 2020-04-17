@@ -1,6 +1,7 @@
 package connections.testing;
 
 import connections.ClientServerInterface;
+import connections.exceptions.ServerException;
 
 import java.util.Map;
 import java.util.Set;
@@ -17,24 +18,29 @@ public class User2EditBillboards {
         System.out.println(server.getAllBillboards());
     }
 
-    public static void editBillboards(ClientServerInterface server) throws Exception {
-        TreeMap<String, TreeMap<String, String>> oldData = server.getAllBillboards();
-        TreeMap<String, TreeMap<String, String>> oldNames = new TreeMap<>();
-        TreeMap<String, TreeMap<String, String>> newData = new TreeMap<>();
+    public static void editBillboards(ClientServerInterface server) {
+        TreeMap<String, TreeMap<String, String>> oldData;
 
-        for (Map.Entry<String, TreeMap<String, String>> billboard : oldData.entrySet()) {
-            // if changing title, add to oldName so server knows what to remove:
-            oldNames.put(billboard.getKey(), null);
-
-            // change title:
-            String newTitle = "user 2 edited: " + billboard.getKey();
-            newData.put(newTitle, new TreeMap<>());
-
-            // change message
-            newData.get(newTitle).put("message", java.util.UUID.randomUUID().toString());
+        try {
+            oldData = server.getAllBillboards();
+        } catch (ServerException e) {
+            System.out.println(e.getMessage());
+            return;
         }
 
-        server.removeBillboards(oldNames);
-        server.addBillboards(newData);
+        for (Map.Entry<String, TreeMap<String, String>> billboard : oldData.entrySet()) {
+            // change title:
+            String newTitle = "(edit by user 2) " + billboard.getKey();
+            oldData.get(billboard.getKey()).put("renameTo", newTitle);
+
+            // change message
+            oldData.get(billboard.getKey()).put("message", java.util.UUID.randomUUID().toString());
+        }
+
+        try {
+            server.sendEditedBillboards(oldData);
+        } catch (ServerException e) {
+            e.printStackTrace();
+        }
     }
 }

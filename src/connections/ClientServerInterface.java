@@ -8,6 +8,7 @@ import connections.types.ServerResponse;
 
 import java.io.*;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Properties;
 import java.util.TreeMap;
 
@@ -32,7 +33,7 @@ public class ClientServerInterface
             Paths.get(System.getProperty("user.dir"), "src", "connections", "assets", "network.props").toString();
 
     /****************
-     * initialiser
+     * initialiser (reads network.prop)
      ****************/
     public ClientServerInterface()
     {
@@ -57,19 +58,18 @@ public class ClientServerInterface
 
      PUBLIC FUNCTIONS
      ********************/
+
+    /****************
+     * add a new user
+     *
+     * input: username, password and permission (use Protocol.Permission class)
+     ****************/
     public void addNewUser(String user, String password, String permission) throws ServerException {
+
         System.out.printf("requesting to add user: %s, with permission: %s ... ", user, permission);
 
         String salt = UserAuth.generateSalt();
         String hash = UserAuth.hashAndSalt(password, salt);
-
-        // add to client
-        try {
-            saveUserSalt(user, salt);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return;
-        }
 
         ClientRequest request = new ClientRequest();
 
@@ -87,11 +87,64 @@ public class ClientServerInterface
 
         ServerClientConnection.request(this.ip, this.port, request);
 
+        // add salt to salts.map
+        try {
+            saveUserSalt(user, salt);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
+        System.out.println("done");
+    }
+
+    /****************
+     * modify a user
+     *
+     * input: username, password and permission (use Protocol.Permission class)
+     ****************/
+    public void modifyUser(String originalUser, String user, String password, String permission) throws ServerException {
+
+        System.out.printf("requesting to modify user: %s -> %s with new permission: %s ... ", originalUser, user, permission);
+
+        String salt = UserAuth.generateSalt();
+        String hash = UserAuth.hashAndSalt(password, salt);
+
+        ClientRequest request = new ClientRequest();
+
+        request.type = Protocol.Type.POST;
+        request.path = Protocol.Path.USERS;
+        request.data = new TreeMap<>();
+
+        TreeMap<String, String> data = new TreeMap<>();
+        data.put(Protocol.HASH, hash);
+        data.put(Protocol.SALT, salt);
+        data.put(Protocol.PERMISSION, permission);
+        data.put("renameTo", user);
+
+        request.data.put(originalUser, data);
+        request.sessionId = this.sessionId;
+
+        request.params = new TreeMap<>();
+        request.params.put(Protocol.Params.INTENT, Protocol.Params.Intent.EDIT_USERS);
+
+        ServerClientConnection.request(this.ip, this.port, request);
+
+        // add salt to salts.map
+        try {
+            saveUserSalt(user, salt);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
+
         System.out.println("done");
     }
 
     /****************
      * server login
+     *
+     * input: username and password
      ****************/
     public void login(String user, String password) throws ServerException {
         System.out.printf("requesting to login user: %s ... ", user);
@@ -130,6 +183,8 @@ public class ClientServerInterface
 
     /****************
      * get current billboard
+     *
+     * returns: <billboard treemap>
      ****************/
     public TreeMap<String, String> getCurrentBillboard() throws ServerException {
         System.out.println("requesting to get current billboard ... ");
@@ -155,6 +210,8 @@ public class ClientServerInterface
 
     /****************
      * get all billboards
+     *
+     * returns: <billboard title/s, <billboard treemap/s>>
      ****************/
     public TreeMap<String, TreeMap<String, String>> getAllBillboards() throws ServerException {
         System.out.println("requesting to get all billboards ... ");
@@ -171,6 +228,8 @@ public class ClientServerInterface
 
     /****************
      * get all users
+     *
+     * returns: <username/s, <keys, values>>
      ****************/
     public TreeMap<String, TreeMap<String, String>> getAllUsers() throws ServerException {
         System.out.println("requesting to get all users ... ");
@@ -186,26 +245,41 @@ public class ClientServerInterface
     }
 
     /****************
-     * add billboard/s
+     * send one new billboard
+     *
+     * input: user that created it, billboard title and billboard treemap
      ****************/
-    public void addBillboard(String name, TreeMap<String, String> data) throws ServerException {
-        System.out.printf("requesting to add billboard %s ... ", name);
-
-        ClientRequest request = new ClientRequest();
-
-        request.type = Protocol.Type.POST;
-        request.path = Protocol.Path.BILLBOARDS;
-        request.sessionId = this.sessionId;
-
-        request.data = new TreeMap<>();
-        request.data.put(name, data);
-
-        ServerClientConnection.request(this.ip, this.port, request);
-
-        System.out.println("done");
+    public void sendNewBillboard(String user, String title, TreeMap<String, String> data) throws ServerException {
+        TreeMap<String, TreeMap<String, String>> body = new TreeMap<>();
+        data.put("createdBy", user);
+        body.put(title, data);
+        sendNewBillboards(body);
     }
 
-    public void addBillboards(TreeMap<String, TreeMap<String, String>> data) throws ServerException {
+    /****************
+     * send many new billboards
+     *
+     * input: lists of users, titles and billboard treemaps
+     ****************/
+    public void sendNewBillboards(List<String> users, List<String> titles, List<TreeMap<String, String>> data) throws ServerException {
+        if (users.size() != titles.size() || users.size() != data.size()) {
+            throw new ServerException("list sizes are not equal");
+        }
+
+        for (int i = 0; i < users.size(); i++) {
+            TreeMap<String, TreeMap<String, String>> body = new TreeMap<>();
+            data.get(i).put("createdBy", users.get(i));
+            body.put(titles.get(i), data.get(i));
+            sendNewBillboards(body);
+        }
+    }
+
+    /****************
+     * send many new billboards
+     *
+     * input: treemap (see the function above to see what is required for this treemap)
+     ****************/
+    public void sendNewBillboards(TreeMap<String, TreeMap<String, String>> data) throws ServerException {
         System.out.printf("requesting to add billboards %s ... ", data);
 
         ClientRequest request = new ClientRequest();
@@ -213,6 +287,57 @@ public class ClientServerInterface
         request.type = Protocol.Type.POST;
         request.path = Protocol.Path.BILLBOARDS;
         request.sessionId = this.sessionId;
+
+        request.data = data;
+
+        request.params = new TreeMap<>();
+        request.params.put(Protocol.Params.INTENT, Protocol.Params.Intent.ADD_BILLBOARD);
+
+        ServerClientConnection.request(this.ip, this.port, request);
+
+        System.out.println("done");
+    }
+
+    /****************
+     * send billboards to overwrite the ones in the database
+     *
+     * input: treemap
+     ****************/
+    public void sendEditedBillboards(TreeMap<String, TreeMap<String, String>> data) throws ServerException {
+        System.out.printf("requesting to modify billboards %s ... ", data);
+
+        ClientRequest request = new ClientRequest();
+
+        request.type = Protocol.Type.POST;
+        request.path = Protocol.Path.BILLBOARDS;
+        request.sessionId = this.sessionId;
+
+        request.data = data;
+
+        request.params = new TreeMap<>();
+        request.params.put(Protocol.Params.INTENT, Protocol.Params.Intent.EDIT_BILLBOARD);
+
+        ServerClientConnection.request(this.ip, this.port, request);
+
+        System.out.println("done");
+    }
+
+    /****************
+     * send schedules for billboards currently in database
+     *
+     * input: treemap
+     ****************/
+    public void sendSchedules(TreeMap<String, TreeMap<String, String>> data) throws ServerException {
+        System.out.printf("requesting to modify schedule %s ... ", data);
+
+        ClientRequest request = new ClientRequest();
+
+        request.type = Protocol.Type.POST;
+        request.path = Protocol.Path.BILLBOARDS;
+        request.sessionId = this.sessionId;
+
+        request.params = new TreeMap<>();
+        request.params.put(Protocol.Params.INTENT, Protocol.Params.Intent.EDIT_SCHEDULE);
 
         request.data = data;
 
@@ -224,6 +349,7 @@ public class ClientServerInterface
     /****************
      * remove billboard/s
      ****************/
+    @Deprecated
     public void removeBillboards(TreeMap<String, TreeMap<String, String>> data) throws ServerException {
         System.out.printf("requesting to remove billboards %s ... ", data.keySet());
 
@@ -243,7 +369,7 @@ public class ClientServerInterface
 
     /**********************
 
-     PRIVATE FUNCTIONS
+     private functions
      **********************/
     private static String getUserSalt(String user) throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream(saltMapPath);

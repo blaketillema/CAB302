@@ -31,7 +31,7 @@ public class Protocol
             int a = Integer.parseInt(toCompare, 2);
             int b = Integer.parseInt(needed, 2);
 
-            return (a & b) >= b;
+            return (a & b) != 0;
         }
 
         public static final String NONE = "0";
@@ -58,11 +58,27 @@ public class Protocol
         public static final String DELETE = "DELETE";
     }
 
-    public static class Params
-    {
+    public static class Params {
         public static final String SESSION_ID = "sessionId";
         public static final String CURRENT_SCHEDULED = "currentScheduled";
+        public static final String INTENT = "intent";
+
+
+        public static class Intent {
+            public static final String EDIT_BILLBOARD = "editBoard";
+            public static final String ADD_BILLBOARD = "addBoard";
+            public static final String EDIT_SCHEDULE = "editSchedule";
+            public static final String EDIT_USERS = "editUsers";
+        }
     }
+
+    public static class Schedule {
+        public static final char MIN = 'M';
+        public static final char HOUR = 'H';
+        public static final char DAY = 'D';
+        public static final char WEEK = 'W';
+    }
+
 
     public static final String HASH = "hash";
     public static final String SALT = "salt";
