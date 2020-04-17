@@ -151,10 +151,10 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Android JUnit.Unnamed" />
       <item itemvalue="Application.TCPTestServer" />
       <item itemvalue="Application.TCPTestViewer" />
       <item itemvalue="Application.TCPConnect" />
-      <item itemvalue="Application.TCPConnect (1)" />
       <item itemvalue="Application.TCPConnect (2)" />
     </list>
     <recent_temporary>
@@ -162,7 +162,6 @@
         <item itemvalue="Application.TCPConnect (2)" />
         <item itemvalue="Application.TCPConnect" />
         <item itemvalue="Application.TCPTestServer" />
-        <item itemvalue="Application.TCPConnect (1)" />
         <item itemvalue="Application.TCPTestViewer" />
       </list>
     </recent_temporary>
