@@ -1,16 +1,16 @@
-package connections;
+package connections.testing;
 
-import connections.exceptions.HttpException;
+import connections.ClientServerInterface;
+import connections.exceptions.ServerException;
 
-public class ViewerMain
-{
+public class ViewerGetCurrent {
     public static void main(String[] args) throws ClassNotFoundException, InterruptedException {
 
         ClientServerInterface server = new ClientServerInterface();
 
         try {
             System.out.println(server.getCurrentBillboard());
-        } catch (HttpException e) {
+        } catch (ServerException e) {
             e.printStackTrace();
         }
     }

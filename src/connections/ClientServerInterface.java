@@ -1,9 +1,9 @@
 package connections;
 
-import connections.engines.ServerConnect;
+import connections.engines.ServerClientConnection;
 import connections.tools.UserAuth;
 import connections.types.ClientRequest;
-import connections.exceptions.HttpException;
+import connections.exceptions.ServerException;
 import connections.types.ServerResponse;
 
 import java.io.*;
@@ -55,11 +55,9 @@ public class ClientServerInterface
 
     /*********************
 
-        PUBLIC FUNCTIONS
-
+     PUBLIC FUNCTIONS
      ********************/
-    public void addNewUser(String user, String password, String permission) throws HttpException
-    {
+    public void addNewUser(String user, String password, String permission) throws ServerException {
         System.out.printf("requesting to add user: %s, with permission: %s ... ", user, permission);
 
         String salt = UserAuth.generateSalt();
@@ -87,7 +85,7 @@ public class ClientServerInterface
         request.data.put(user, data);
         request.sessionId = this.sessionId;
 
-        ServerConnect.request(this.ip, this.port, request);
+        ServerClientConnection.request(this.ip, this.port, request);
 
         System.out.println("done");
     }
@@ -95,8 +93,7 @@ public class ClientServerInterface
     /****************
      * server login
      ****************/
-    public void login(String user, String password) throws HttpException
-    {
+    public void login(String user, String password) throws ServerException {
         System.out.printf("requesting to login user: %s ... ", user);
 
         String salt;
@@ -120,12 +117,12 @@ public class ClientServerInterface
 
         ServerResponse response;
 
-        response = ServerConnect.request(this.ip, this.port, request);
+        response = ServerClientConnection.request(this.ip, this.port, request);
 
         try {
             this.sessionId = response.data.get("data").get(Protocol.Params.SESSION_ID);
         } catch (Exception e) {
-            throw new HttpException(e.getMessage());
+            throw new ServerException(e.getMessage());
         }
 
         System.out.println("done");
@@ -134,8 +131,7 @@ public class ClientServerInterface
     /****************
      * get current billboard
      ****************/
-    public TreeMap<String, String> getCurrentBillboard() throws HttpException
-    {
+    public TreeMap<String, String> getCurrentBillboard() throws ServerException {
         System.out.println("requesting to get current billboard ... ");
 
         ClientRequest request = new ClientRequest();
@@ -148,20 +144,19 @@ public class ClientServerInterface
 
         ServerResponse response;
 
-        response = ServerConnect.request(this.ip, this.port, request);
+        response = ServerClientConnection.request(this.ip, this.port, request);
 
         try {
             return response.data.firstEntry().getValue();
         } catch (Exception e) {
-            throw new HttpException(e.getMessage());
+            throw new ServerException(e.getMessage());
         }
     }
 
     /****************
      * get all billboards
      ****************/
-    public TreeMap<String, TreeMap<String, String>> getAllBillboards() throws HttpException
-    {
+    public TreeMap<String, TreeMap<String, String>> getAllBillboards() throws ServerException {
         System.out.println("requesting to get all billboards ... ");
 
         ClientRequest request = new ClientRequest();
@@ -170,15 +165,30 @@ public class ClientServerInterface
         request.path = Protocol.Path.BILLBOARDS;
         request.sessionId = this.sessionId;
 
-        ServerResponse response = ServerConnect.request(this.ip, this.port, request);
+        ServerResponse response = ServerClientConnection.request(this.ip, this.port, request);
         return response.data;
     }
 
     /****************
-     * add billboard
+     * get all users
      ****************/
-    public void addBillboard(String name, TreeMap<String, String> data) throws HttpException
-    {
+    public TreeMap<String, TreeMap<String, String>> getAllUsers() throws ServerException {
+        System.out.println("requesting to get all users ... ");
+
+        ClientRequest request = new ClientRequest();
+
+        request.type = Protocol.Type.GET;
+        request.path = Protocol.Path.USERS;
+        request.sessionId = this.sessionId;
+
+        ServerResponse response = ServerClientConnection.request(this.ip, this.port, request);
+        return response.data;
+    }
+
+    /****************
+     * add billboard/s
+     ****************/
+    public void addBillboard(String name, TreeMap<String, String> data) throws ServerException {
         System.out.printf("requesting to add billboard %s ... ", name);
 
         ClientRequest request = new ClientRequest();
@@ -190,20 +200,52 @@ public class ClientServerInterface
         request.data = new TreeMap<>();
         request.data.put(name, data);
 
-        ServerConnect.request(this.ip, this.port, request);
+        ServerClientConnection.request(this.ip, this.port, request);
+
+        System.out.println("done");
+    }
+
+    public void addBillboards(TreeMap<String, TreeMap<String, String>> data) throws ServerException {
+        System.out.printf("requesting to add billboards %s ... ", data);
+
+        ClientRequest request = new ClientRequest();
+
+        request.type = Protocol.Type.POST;
+        request.path = Protocol.Path.BILLBOARDS;
+        request.sessionId = this.sessionId;
+
+        request.data = data;
+
+        ServerClientConnection.request(this.ip, this.port, request);
+
+        System.out.println("done");
+    }
+
+    /****************
+     * remove billboard/s
+     ****************/
+    public void removeBillboards(TreeMap<String, TreeMap<String, String>> data) throws ServerException {
+        System.out.printf("requesting to remove billboards %s ... ", data.keySet());
+
+        ClientRequest request = new ClientRequest();
+
+        request.type = Protocol.Type.DELETE;
+        request.path = Protocol.Path.BILLBOARDS;
+        request.sessionId = this.sessionId;
+
+        request.data = data;
+
+        ServerClientConnection.request(this.ip, this.port, request);
 
         System.out.println("done");
     }
 
 
-
     /**********************
 
-        PRIVATE FUNCTIONS
-
+     PRIVATE FUNCTIONS
      **********************/
-    private static String getUserSalt(String user) throws IOException, ClassNotFoundException
-    {
+    private static String getUserSalt(String user) throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream(saltMapPath);
         ObjectInputStream ois = new ObjectInputStream(fis);
 

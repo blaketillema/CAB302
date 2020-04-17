@@ -1,5 +1,7 @@
 package connections.engines;
 
+import connections.ServerDatabaseInterface;
+import connections.exceptions.ServerException;
 import connections.types.TestDatabase;
 import connections.tools.Tools;
 import connections.tools.UserAuth;
@@ -10,26 +12,32 @@ import connections.types.ServerResponse;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
+import java.nio.file.Paths;
+import java.util.Properties;
 import java.util.TreeMap;
 
-import static connections.engines.ServerSocket.*;
+import static connections.engines.Server.*;
 
-public class ServerSocket
-{
+/****************
+ * initialiser
+ ****************/
+public class Server {
     private int port;
-    public static TestDatabase database = null;
+    public static ServerDatabaseInterface database = null;
     public static TreeMap<String, String[]> sessionIds = null;
     public static long ONE_DAY_MS = 86400000;
 
-    public ServerSocket(int port)
-    {
-        database = new TestDatabase();
+
+    private static final String networkPath =
+            Paths.get(System.getProperty("user.dir"), "src", "connections", "assets", "network.props").toString();
+
+    public Server() {
+        this.port = 1234;
+        database = new ServerDatabaseInterface();
         sessionIds = new TreeMap<>();
-        this.port = port;
     }
 
-    public void run()
-    {
+    public void run() {
         try {
             java.net.ServerSocket serverSocket = new java.net.ServerSocket(this.port);
 
@@ -74,8 +82,8 @@ class ClientThread implements Runnable
         response.status = "OK";
 
         try {
-            dbHash = database.getHash(user);
-            dbSalt = database.getSalt(user);
+            dbHash = database.getUserValue(user, Protocol.HASH);
+            dbSalt = database.getUserValue(user, Protocol.SALT);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -94,7 +102,7 @@ class ClientThread implements Runnable
         return response;
     }
 
-    private static String checkSessionId(String sessionId) throws Exception {
+    private static String getUser(String sessionId) throws Exception {
 
         String[] userAndTime;
 
@@ -102,8 +110,7 @@ class ClientThread implements Runnable
 
         long timeDiff = System.currentTimeMillis() - Long.parseLong(userAndTime[1]);
 
-        if(timeDiff >= ONE_DAY_MS)
-        {
+        if (timeDiff >= ONE_DAY_MS) {
             sessionIds.remove(sessionId);
             throw new Exception("session id has expired");
         }
@@ -150,7 +157,17 @@ class ClientThread implements Runnable
                         response.status = e.getMessage();
                     }
                 } else {
-                    response.data = database.getAllBillboard();
+                    response.data = database.getAllBillboards();
+                }
+            }
+
+            // ** get users **
+            else if (path.equals(Protocol.Path.USERS)) {
+                try {
+                    response.data = database.getAllUsers(getUser(sessionId));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    response.status = e.getMessage();
                 }
             }
         }
@@ -166,9 +183,9 @@ class ClientThread implements Runnable
                     if(sessionIds.isEmpty() && data.firstKey().equals("admin")) {
                         user = "admin";
                     } else {
-                        user = checkSessionId(sessionId);
+                        user = getUser(sessionId);
                     }
-                    database.addUser(user, data.firstKey(), data.get(data.firstKey()));
+                    database.addUsers(user, data);
                 } catch (Exception e) {
                     e.printStackTrace();
                     response.status = e.getMessage();
@@ -176,10 +193,21 @@ class ClientThread implements Runnable
             }
 
             // ** add new billboard **
-            else if(request.path.equals(Protocol.Path.BILLBOARDS))
-            {
+            else if (request.path.equals(Protocol.Path.BILLBOARDS)) {
                 try {
-                    database.addBillboard(checkSessionId(sessionId), data.firstKey(), data.get(data.firstKey()));
+                    database.addBillboards(getUser(sessionId), data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    response.status = e.getMessage();
+                }
+            }
+        }
+
+        // DELETE
+        else if (type.equals(Protocol.Type.DELETE)) {
+            if (path.equals(Protocol.Path.BILLBOARDS)) {
+                try {
+                    database.removeBillboards(getUser(sessionId), data.keySet());
                 } catch (Exception e) {
                     e.printStackTrace();
                     response.status = e.getMessage();
