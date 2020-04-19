@@ -1,4 +1,4 @@
-package connections;
+package connections.tools;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -42,8 +42,7 @@ public class UserAuth
 
             return sb.toString();
 
-        } catch (NoSuchAlgorithmException e)
-        {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return "";
         }
