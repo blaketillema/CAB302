@@ -1,8 +1,12 @@
 package billboard_viewer;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Map;
 import java.util.TreeMap;
+
+import connections.*;
+import connections.exceptions.ServerException;
 
 import static java.lang.Thread.sleep;
 
@@ -14,21 +18,47 @@ public class MainRunDisplay {
      *
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ServerException {
         /**
          * Start the Server Connect as a new thread
          * Every 15 seconds, refresh billboard data
          */
-        ServerConnect connect;
-        Thread connectThread = new Thread(connect = new ServerConnect()); // Create a thread
-        connectThread.start(); // Start the thread, will run every 15 seconds
+        // TODO may need to set this up to run every 15 seconds - thread or something
+        ClientServerInterface server = new ClientServerInterface();
         /**
          * Refresh the billboard display (if new data)
          */
-
         // Add billboard contents to new billboard from server with connect.getBillboard()
-        TreeMap billboardNowData = connect.getBillboard();
-        connect.printBillboard();
+
+        TreeMap billboardNowData = new TreeMap();
+        try {
+            billboardNowData = server.getCurrentBillboard();
+            System.out.println("currentBilboard " + billboardNowData);
+        } catch (ServerException e) {
+            System.out.println(e.getMessage());
+        }
+
+
+
+        // TODO Remove old server connect below
+        /**
+         * Start the Server Connect as a new thread
+         * Every 15 seconds, refresh billboard data
+         */
+        /*
+        ServerConnect connect;
+        Thread connectThread = new Thread(connect = new ServerConnect()); // Create a thread
+        connectThread.start(); // Start the thread, will run every 15 seconds
+        */
+        /**
+         * Refresh the billboard display (if new data)
+         */
+        // Add billboard contents to new billboard from server with connect.getBillboard()
+        //TreeMap billboardNowData = connect.getBillboard();
+
+
+        // TODO remove print below???
+        // connect.printBillboard();
 
         // TESTING
         // TreeMap billboardNowData = new TreeMap<>();     ;
@@ -63,9 +93,7 @@ public class MainRunDisplay {
         // --------------------------------
         */
 
-
         Billboard newBillboard = new Billboard(billboardNowData);
-
 
         /**
          * Loop Every 15 seconds to check for a new billboard from the serverConnect
@@ -75,7 +103,11 @@ public class MainRunDisplay {
         boolean billboardClosed = false;
         while(!billboardClosed) {
             try {
-                billboardTemp = connect.getBillboard();
+                // NEW SERVER
+                billboardTemp = server.getCurrentBillboard();
+                // TODO remove below
+                // OLD SERVER
+                //billboardTemp = connect.getBillboard();
 
                 /*
                 if (billboardNowData.equals(billboardTemp)) {
@@ -101,15 +133,10 @@ public class MainRunDisplay {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
             billboardClosed = newBillboard.getState(); // Check if billboard has been closed by esc/mouseclick
-
         }
 
-
         System.out.println("DEBUG: End of Main");
-
         // TODO - Safely terminate/end viewer application once end of main is reached
-
     }
 }

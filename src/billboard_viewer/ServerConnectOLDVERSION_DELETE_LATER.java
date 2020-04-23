@@ -1,18 +1,19 @@
 package billboard_viewer;
 
-import connections.*;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Set up client-server connection settings and attempt to connect and pull billboard
@@ -22,7 +23,21 @@ import java.util.*;
  * When built will get a billboard TreeMap from the server.
  */
 
-public class ServerConnect implements Runnable{
+
+
+
+// TODO
+
+
+// TODO DON'T DELETE this until the XML stuff has been implemented in the server
+
+
+
+    //TODO
+
+
+
+public class ServerConnectOLDVERSION_DELETE_LATER implements Runnable{
 
     String serverAddress = null;
     String serverPort = null;
@@ -47,7 +62,7 @@ public class ServerConnect implements Runnable{
         }
     }
 
-    public ServerConnect() {
+    public ServerConnectOLDVERSION_DELETE_LATER() {
         //Initialize client server connection settings
         // Read from .props file connection settings
         //System.out.println("Debug: ServerConnect start");

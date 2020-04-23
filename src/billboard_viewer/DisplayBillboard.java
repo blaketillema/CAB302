@@ -14,7 +14,6 @@ import java.io.IOException;
 /**
  * This is the main GUI to display the current billboard
  */
-// TODO change this back to an abstract class and extend it for each billboard type ???
 public class DisplayBillboard {
     JFrame frame = new JFrame("Billboard Frame");
     private double xRes; //Full screen width
