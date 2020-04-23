@@ -1,8 +1,6 @@
-package connections;
+package connections.types;
 
 import java.io.Serializable;
-import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 public class ClientRequest implements Serializable

@@ -1,19 +1,22 @@
-package connections;
+package connections.engines;
+
+import connections.types.ClientRequest;
+import connections.exceptions.ServerException;
+import connections.types.ServerResponse;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ServerConnect implements Runnable
-{
+public class ServerClientConnection implements Runnable {
     private String ip = null;
     private int port;
     private ClientRequest request = null;
     private ServerResponse response = null;
 
-    public static ServerResponse request(String ip, int port, ClientRequest request) throws HttpException {
-        ServerConnect server = new ServerConnect(ip, port, request);
+    public static ServerResponse request(String ip, int port, ClientRequest request) throws ServerException {
+        ServerClientConnection server = new ServerClientConnection(ip, port, request);
 
         Thread thread = new Thread(server);
         thread.start();
@@ -26,13 +29,13 @@ public class ServerConnect implements Runnable
 
         if (response.status == null || !response.status.equals("OK"))
         {
-            throw new HttpException(response.status);
+            throw new ServerException(response.status);
         }
 
         return response;
     }
 
-    public ServerConnect(String ip, int port, ClientRequest request){
+    public ServerClientConnection(String ip, int port, ClientRequest request) {
         this.ip = ip;
         this.port = port;
         this.request = request;
@@ -47,7 +50,6 @@ public class ServerConnect implements Runnable
     public void run() {
         try {
             Socket socket = new Socket(this.ip, this.port);
-            System.out.println("Connected");
 
             ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream());
