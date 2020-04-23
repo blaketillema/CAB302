@@ -22,6 +22,8 @@ public class User1AddBillboards {
 
         for (String billboard : billboardNames) {
             TreeMap<String, String> data = new TreeMap<>();
+            // TODO testing
+            data.put("default", "Advertise Here!!!");
             data.put("message", java.util.UUID.randomUUID().toString());
 
             try {
