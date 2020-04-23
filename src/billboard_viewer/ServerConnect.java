@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -18,9 +19,6 @@ import java.util.*;
  * Will create a TreeMap from an xml - this would be part of the control panel when built
  * When built will get a billboard TreeMap from the server.
  */
-
-// TODO - Implement server connection and remove XML related code
-// TODO - Implement read from config/properties file for server connection address and port
 
 public class ServerConnect implements Runnable{
 
@@ -106,7 +104,7 @@ public class ServerConnect implements Runnable{
     private Document sampleInput() {
         // Create a File from sample xml
         String sampleFile = "SampleBillboard.xml"; // sample billboard file
-        String xmlPath = System.getProperty("user.dir") + "\\Assets\\" + sampleFile; // test file
+        String xmlPath = Paths.get(System.getProperty("user.dir"), "Assets", sampleFile).toString();
         File newBillboardFile = new File(xmlPath);
 
         // Create doc from file
