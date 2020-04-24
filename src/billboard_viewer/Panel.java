@@ -165,7 +165,7 @@ public class Panel {
         // Create message text and scale to billboard width
         JLabel topMessage = new JLabel(message, SwingConstants.CENTER);
         topMessage.setPreferredSize(new Dimension((int) xRes, scaledHeight));
-        int messageFontSize = (int) (scaleMessageFont(topMessage) * 0.9); // Get font size to width of screen, reduce slightly
+        int messageFontSize = (int) (scaleMessageFont(topMessage) * 0.95); // Get font size to width of screen, reduce slightly
         topMessage.setFont(new Font("Serif", Font.BOLD, messageFontSize)); // Set new font size
 
         // Resolve overlapping text issue
@@ -202,7 +202,7 @@ public class Panel {
                 bottomText, labelFont, labelText);
 
         // Check for information font size to be smaller than the message
-        if (informationFontSize > (messageFontSize * 0.8)) {
+        if (informationFontSize >= (messageFontSize * 0.8)) {
             informationFontSize = (int) (messageFontSize * 0.8); // Set Info text to 80% of Message size
         }
 
@@ -244,7 +244,7 @@ public class Panel {
         // Create message text and scale to billboard width
         JLabel topMessage = new JLabel(message, SwingConstants.CENTER);
         topMessage.setPreferredSize(new Dimension((int) xRes, (int) yRes/2));
-        int messageFontSize = (int) (scaleMessageFont(topMessage) * 0.9); // Get font size to width of screen, reduce slightly
+        int messageFontSize = (int) (scaleMessageFont(topMessage) * 0.95); // Get font size to width of screen, reduce slightly
         topMessage.setFont(new Font("Serif", Font.BOLD, messageFontSize)); // Set new font size
 
         // Resolve overlapping text issue
@@ -271,7 +271,7 @@ public class Panel {
                 bottomText, labelFont, labelText);
 
         // Check for information font size to be smaller than the message
-        if (informationFontSize > (messageFontSize * 0.8)) {
+        if (informationFontSize >= (messageFontSize * 0.8)) {
             informationFontSize = (int) (messageFontSize * 0.8); // Set Info text to 80% of Message size
         }
 
@@ -326,7 +326,7 @@ public class Panel {
         // Create message text and scale to billboard width
         JLabel topMessage = new JLabel(message, SwingConstants.CENTER);
         topMessage.setPreferredSize(new Dimension((int) xRes, (int) yRes/3));
-        int fontSize = (int) (scaleMessageFont(topMessage) * 0.9); // Get font size to width of screen, reduce slightly
+        int fontSize = (int) (scaleMessageFont(topMessage) * 0.95); // Get font size to width of screen, reduce slightly
         topMessage.setFont(new Font("Serif", Font.BOLD, fontSize)); // Set new font size
 
         // Resolve overlapping text issue
@@ -372,7 +372,7 @@ public class Panel {
         // Create message text and scale to billboard width
         JLabel topMessage = new JLabel(message, SwingConstants.CENTER);
         topMessage.setPreferredSize(new Dimension((int) xRes, (int) yRes));
-        int fontSize = (int) (scaleMessageFont(topMessage) * 0.9); // Get font size to width of screen, reduce slightly
+        int fontSize = (int) (scaleMessageFont(topMessage) * 0.95); // Get font size to width of screen, reduce slightly
         topMessage.setFont(new Font("Serif", Font.BOLD, fontSize)); // Set new font size
 
         // Resolve overlapping text issue
@@ -627,7 +627,7 @@ public class Panel {
         // Create message text and scale to billboard width
         JLabel topMessage = new JLabel(message, SwingConstants.CENTER);
         topMessage.setPreferredSize(new Dimension((int) xRes, (int) yRes));
-        int fontSize = (int) (scaleMessageFont(topMessage) * 0.9); // Get font size to width of screen, reduce slightly
+        int fontSize = (int) (scaleMessageFont(topMessage) * 0.95); // Get font size to width of screen, reduce slightly
         topMessage.setFont(new Font("Serif", Font.BOLD, fontSize)); // Set new font size
 
         // Resolve overlapping text issue
