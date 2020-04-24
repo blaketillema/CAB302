@@ -205,6 +205,11 @@
       </method>
     </configuration>
     <list>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> connections
       <item itemvalue="Application.MainRunDisplay" />
       <item itemvalue="Application.UserManagement" />
       <item itemvalue="Application.User2EditBillboards" />
@@ -215,11 +220,31 @@
     </list>
     <recent_temporary>
       <list>
+<<<<<<< HEAD
+        <item itemvalue="Application.userAuth" />
+        <item itemvalue="Application.UserBuilder" />
+        <item itemvalue="Application.Main" />
+=======
+      <item itemvalue="Android JUnit.Unnamed" />
+      <item itemvalue="Application.TCPTestServer" />
+      <item itemvalue="Application.TCPTestViewer" />
+      <item itemvalue="Application.TCPConnect" />
+      <item itemvalue="Application.TCPConnect (2)" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.TCPConnect (2)" />
+        <item itemvalue="Application.TCPConnect" />
+        <item itemvalue="Application.TCPTestServer" />
+        <item itemvalue="Application.TCPTestViewer" />
+>>>>>>> billboardServer
+=======
         <item itemvalue="Application.ClientMainTest" />
         <item itemvalue="Application.ServerMainTest" />
         <item itemvalue="Application.AdminModifyUsers" />
         <item itemvalue="Application.User3ScheduleBillboards" />
         <item itemvalue="Application.User2EditBillboards" />
+>>>>>>> connections
       </list>
     </recent_temporary>
   </component>

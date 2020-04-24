@@ -2,10 +2,44 @@ package billboard_server;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.sql.*;
 import java.util.Properties;
 
 public class Server {
+
+    public static void main(String[] args) throws IOException, SQLException {
+
+        ServerSocket svSocket = new ServerSocket(42070); //opens server on port 42070
+        Server sv = new Server(); //creates a new server object TODO: will i even need this anymore
+        System.out.println("Server running on port " + svSocket.getLocalPort());
+        Boolean svState = true;
+
+        while(svState){ // this will keep running until the client sends an exit command
+
+            Socket socket = svSocket.accept(); //accept a connection
+            System.out.println("Connected to " + socket.getInetAddress());
+
+            InputStream in = socket.getInputStream(); //setup input and output streams
+            ObjectInputStream ois = new ObjectInputStream(in);
+            String inString = ois.readUTF(); //read input bytes to a string
+            System.out.println("Client: " + inString);
+
+            if(inString.equals("exit")){ //if the string reads exit, close the server TODO: handle more than one command
+                System.out.println("Server shutting down. Goodbye.");
+                svState = false;
+            }
+
+            in.close(); //close streams and sockets
+            ois.close();
+            socket.close();
+
+        }
+
+    }
 
     private String url;
     private String schema;
