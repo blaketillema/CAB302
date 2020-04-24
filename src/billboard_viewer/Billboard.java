@@ -9,12 +9,12 @@ import java.awt.event.MouseEvent;
 import java.util.Set;
 import java.util.TreeMap;
 
-/* Sample Colour codes:
-Green: #55FF00
-Yellow: #FFC300
-Red: #FF0000
- */
 
+/**
+ * Billboard class is called from main, taking Input TreeMap billboard data,
+ * handling the JFrame presented to the screen and calling the Panel class
+ * from input TreeMap to retrieve JPanels of a visual Billboard in full screen.
+ */
 public class Billboard {
 
     private TreeMap<String, String> billboardContents;
@@ -29,7 +29,6 @@ public class Billboard {
 
     private JFrame billboardFrame = new JFrame("Billboard Frame");
     private boolean billboardClosed = false;
-
 
     /**
      *  Default constructor (No billboard to display)
@@ -97,10 +96,10 @@ public class Billboard {
         // Check if billboard is the same as previous
         if (billboardContents.equals(newBillboard)) {
             // Same Billboard, do nothing
-            System.out.println("Debug: Same Billboard");
+            //System.out.println("Debug: Same Billboard");
         } else {
             // New Billboard
-            System.out.println("Debug: New Billboard");
+            //System.out.println("Debug: New Billboard");
             this.billboardContents = newBillboard;
 
             /**
@@ -119,10 +118,12 @@ public class Billboard {
                 hasImageURL = true;
             }
 
+            /*
             System.out.println("Message: "+hasMessage);
             System.out.println("information: "+hasInformation);
             System.out.println("pictureData: "+hasImageData);
             System.out.println("pictureURL: "+hasImageURL);
+             */
 
             // Create a new billboard JPanel
             Panel panel = new Panel(newBillboard);
@@ -145,10 +146,10 @@ public class Billboard {
      * DEBUG Method, print TreeMap to check contents
      */
     public void printBillboard() {
-        System.out.println("Billboard: Printing Billboard...");
+        //System.out.println("Billboard: Printing Billboard...");
         Set<String> set1 = billboardContents.keySet();
         for (String key: set1) {
-            System.out.println("Billboard Key : "  + key + "\t\t" + "Value : "  + billboardContents.get(key));
+            //System.out.println("Billboard Key : "  + key + "\t\t" + "Value : "  + billboardContents.get(key));
         }
     }
 
@@ -161,7 +162,7 @@ public class Billboard {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int click = e.getButton();
-                System.out.println("Mouse Click: "+click);
+                //System.out.println("Mouse Click: "+click);
                 if (click == 1) {
                     exitBillboard();
                 }
@@ -190,7 +191,7 @@ public class Billboard {
             @Override
             public void keyTyped(KeyEvent e) {
                 char key = e.getKeyChar();
-                System.out.println("Key Press: "+key);
+                //System.out.println("Key Press: "+key);
                 if (key == '') {
                     exitBillboard();
                 }
@@ -207,9 +208,10 @@ public class Billboard {
      * Close the billboard window and change boolean signal for main to read application is to close
      */
     private void exitBillboard() {
-        System.out.println("DEBUG: Closing Billboard");
+        //System.out.println("DEBUG: Closing Billboard");
         billboardFrame.setVisible(false); // Hide but reserve the frame?
         //frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)); // Close window
+        billboardFrame.dispose(); // Dispose of JFrame
         billboardClosed = true;
     }
 

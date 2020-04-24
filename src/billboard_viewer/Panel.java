@@ -11,12 +11,22 @@ import java.util.Base64;
 import java.util.TreeMap;
 
 /**
- * Create a JPanel based on the input TreeMap and determination of type
+ * Create a JPanel based on the input TreeMap and determination of type of billboard,
+ * Includes methods to create billboard types and to return the JPanel to the calling billboard class
+ * <p>
+ * Types of Billboards:
+ * 1 - Message, picture and information
+ * 2 - Message and Information
+ * 3 - Message and Picture
+ * 4 - Message
+ * 5 - Picture and Information
+ * 6 - Picture
+ * 7 - Information
+ * 8 - Billboard server not available - Default with no applicable billboard above
  */
 public class Panel {
 
-    JPanel billboardPanel = new JPanel();
-
+    JPanel billboardPanel = new JPanel(); // Initialize The JPanel
     private double xRes; //Full screen width
     private double yRes; //Full screen height
 
@@ -25,15 +35,21 @@ public class Panel {
     String messageColour = "#000000"; // Black
     String informationColour = "#000000"; // Black
 
-    // Non-default values
+    // Non-default values, either NULL or input value
     String message;
     String pictureUrl;
     String pictureData;
     String information;
 
+    /**
+     * Construct the Panel class with the input billboard data from a TreeMap, determines the type of billboard
+     * and calls the appropriate JPanel creation class.
+     *
+     * @param billboard
+     */
     public Panel(TreeMap<String, String> billboard) {
 
-        // Set Resolution
+        // Get full screen Resolution and set variables
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         xRes = screenSize.getWidth();
         yRes = screenSize.getHeight();
@@ -45,87 +61,72 @@ public class Panel {
         } else {
             //null, keep default
         }
-
         if (billboard.get("messageColour") != null) {
             //not null
             messageColour = billboard.get("messageColour");
         } else {
             //null, keep default
         }
-
         if (billboard.get("informationColour") != null) {
             //not null
             informationColour = billboard.get("informationColour");
         } else {
             //null, keep default
         }
-        // Set non-default variables
-        message = billboard.get("message");
-        pictureUrl = billboard.get("pictureUrl");
-        pictureData = billboard.get("pictureData");
-        information = billboard.get("information");
 
-        // Determine billboard type and call method to create appropriate panel
-        boolean testing = false; // DEBUG/TESTING to call billboard being developed
-        if (testing) {
-            // TODO - Remove testing/debug code when all panel types implemented
-            //call a billboard type here to test it
-            createDefault();
-        } else {
-            if (message != null) {
-                if (information != null && (pictureData != null || pictureUrl != null)) {
-                    // Settings for 1 - Message, picture and information
-                    System.out.println("DEBUG: Panel Type 1, MPI");
-                    createMPI();
-                } else if (information != null) {
-                    // Settings for 2 - Message and Information
-                    System.out.println("DEBUG: Panel Type 2, MI");
-                    createMI();
-                } else if (pictureData != null || pictureUrl != null) {
-                    // Settings for 3 - Message and Picture
-                    System.out.println("DEBUG: Panel Type 3, MP");
-                    createMP();
-                } else {
-                    // Settings for 4 - Message
-                    System.out.println("DEBUG: Panel Type 4, M");
-                    createM();
-                }
-            } else if (pictureData != null || pictureUrl != null) {
-                if (information != null) {
-                    // Settings for 5 - Picture and Information
-                    System.out.println("DEBUG: Panel Type 5, PI");
-                    createPI();
-                } else {
-                    // Settings for 6 - Picture
-                    System.out.println("DEBUG: Panel Type 6, P");
-                    createP();
-                }
-            } else if (information != null) {
-                // Settings for 7 - Information
-                System.out.println("DEBUG: Panel Type 7, I");
-                createI();
-            } else if (true) { // billboardNow.isDefault()
-                // Settings for 8 - Billboard server not available
-                System.out.println("DEBUG: Panel Type 8, default");
-                createDefault();
-            }
+        // Set non-default variables - if key does not exist the default value will remain null
+        if (billboard.containsKey("message")) {
+            message = billboard.get("message");
+        }
+        if (billboard.containsKey("pictureUrl")) {
+            pictureUrl = billboard.get("pictureUrl");
+        }
+        if (billboard.containsKey("pictureData")) {
+            pictureData = billboard.get("pictureData");
+        }
+        if (billboard.containsKey("information")) {
+            information = billboard.get("information");
         }
 
-        /*
-        Types of Billboards:
-        1 - Message, picture and information
-        2 - Message and Information
-        3 - Message and Picture
-        4 - Message
-        5 - Picture and Information
-        6 - Picture
-        7 - Information
-        8 - Billboard server not available
-        */
+        // testing code example;
+        // createDefault();
+
+        // Determine billboard type and call method to create appropriate panel
+        if (message != null) {
+            if (information != null && (pictureData != null || pictureUrl != null)) {
+                // Settings for 1 - Message, picture and information
+                createMPI();
+            } else if (information != null) {
+                // Settings for 2 - Message and Information
+                createMI();
+            } else if (pictureData != null || pictureUrl != null) {
+                // Settings for 3 - Message and Picture
+                createMP();
+            } else {
+                // Settings for 4 - Message
+                createM();
+            }
+        } else if (pictureData != null || pictureUrl != null) {
+            if (information != null) {
+                // Settings for 5 - Picture and Information
+                createPI();
+            } else {
+                // Settings for 6 - Picture
+                createP();
+            }
+        } else if (information != null) {
+            // Settings for 7 - Information
+            createI();
+        } else if (true) { // billboardNow.isDefault()
+            // Settings for 8 - Billboard server not available
+            createDefault();
+        }
+        //End Non-testing code code
+
     }
 
     /**
-     * Message, Picture and Information
+     * Creates a billboard of type; Message, Picture and Information
      */
     private void createMPI() {
         /**
@@ -165,22 +166,16 @@ public class Panel {
         JLabel topMessage = new JLabel(message, SwingConstants.CENTER);
         topMessage.setPreferredSize(new Dimension((int) xRes, scaledHeight));
         int messageFontSize = (int) (scaleMessageFont(topMessage) * 0.9); // Get font size to width of screen, reduce slightly
-        System.out.println("DEBUG: Font Size: " + messageFontSize);
         topMessage.setFont(new Font("Serif", Font.BOLD, messageFontSize)); // Set new font size
 
         // Resolve overlapping text issue
         topMessage.setText("<html><div style='text-align: center;'>" + message + "</div></html>"); // text fix?
-
-        // Testing JLabel size;
-        //topMessage.setBackground(Color.red);
-        //topMessage.setOpaque(true);
 
         topMessage.setForeground(Color.decode(messageColour)); // Set message colour
         topPanel.add(topMessage); // add message to panel
 
         // Center Image
         JPanel centrePanel = new JPanel(new GridBagLayout()); // GridBagLayout will center the image
-        //centrePanel.setBorder(BorderFactory.createTitledBorder("Debug: Centre Panel"));
         JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
 
         centrePanel.setSize(scaledWidth, scaledHeight);
@@ -231,7 +226,7 @@ public class Panel {
     }
 
     /**
-     * Message and Information
+     * Creates a billboard of type; Message and Information
      */
     private void createMI() {
         /**
@@ -250,7 +245,6 @@ public class Panel {
         JLabel topMessage = new JLabel(message, SwingConstants.CENTER);
         topMessage.setPreferredSize(new Dimension((int) xRes, (int) yRes/2));
         int messageFontSize = (int) (scaleMessageFont(topMessage) * 0.9); // Get font size to width of screen, reduce slightly
-        System.out.println("DEBUG: Font Size: " + messageFontSize);
         topMessage.setFont(new Font("Serif", Font.BOLD, messageFontSize)); // Set new font size
 
         // Resolve overlapping text issue
@@ -299,7 +293,7 @@ public class Panel {
     }
 
     /**
-     * Message and Picture
+     * Creates a billboard of type; Message and Picture
      */
     private void createMP() {
         /**
@@ -333,15 +327,10 @@ public class Panel {
         JLabel topMessage = new JLabel(message, SwingConstants.CENTER);
         topMessage.setPreferredSize(new Dimension((int) xRes, (int) yRes/3));
         int fontSize = (int) (scaleMessageFont(topMessage) * 0.9); // Get font size to width of screen, reduce slightly
-        System.out.println("DEBUG: Font Size: " + fontSize);
         topMessage.setFont(new Font("Serif", Font.BOLD, fontSize)); // Set new font size
 
         // Resolve overlapping text issue
         topMessage.setText("<html><div style='text-align: center;'>" + message + "</div></html>"); // text fix?
-
-        // Testing JLabel size;
-        //topMessage.setBackground(Color.red);
-        //topMessage.setOpaque(true);
 
         topMessage.setForeground(Color.decode(messageColour)); // Set message colour
         topPanel.add(topMessage);
@@ -366,7 +355,7 @@ public class Panel {
     }
 
     /**
-     * Message
+     * Creates a billboard of type; Message
      */
     private void createM() {
         /**
@@ -378,22 +367,16 @@ public class Panel {
 
         // Top Message
         JPanel topPanel = new JPanel(new GridBagLayout());
-        //topPanel.setBorder(BorderFactory.createTitledBorder("Debug: Top Panel"));
         topPanel.setPreferredSize(new Dimension((int)xRes,(int)yRes));
 
         // Create message text and scale to billboard width
         JLabel topMessage = new JLabel(message, SwingConstants.CENTER);
         topMessage.setPreferredSize(new Dimension((int) xRes, (int) yRes));
         int fontSize = (int) (scaleMessageFont(topMessage) * 0.9); // Get font size to width of screen, reduce slightly
-        System.out.println("DEBUG: Font Size: " + fontSize);
         topMessage.setFont(new Font("Serif", Font.BOLD, fontSize)); // Set new font size
 
         // Resolve overlapping text issue
         topMessage.setText("<html><div style='text-align: center;'>" + message + "</div></html>"); // text fix?
-
-        // Testing JLabel size;
-        //topMessage.setBackground(Color.red);
-        //topMessage.setOpaque(true);
 
         // Set message text colour, add label and panel
         topMessage.setForeground(Color.decode(messageColour));
@@ -407,7 +390,7 @@ public class Panel {
     }
 
     /**
-     * Picture and Information
+     * Creates a billboard of type; Picture and Information
      */
     private void createPI() {
         /**
@@ -433,7 +416,6 @@ public class Panel {
         scaledImage = scaleHalf(image); // Picture size? 50%? criteria not clear
 
         int scaledWidth = scaledImage.getWidth();
-        int scaledHeight = scaledImage.getHeight();
 
         // Top Image panel
         JPanel topPanel = new JPanel(new GridBagLayout());
@@ -475,7 +457,7 @@ public class Panel {
     }
 
     /**
-     * Picture
+     * Creates a billboard of type; Picture
      */
     private void createP() {
         /**
@@ -521,7 +503,7 @@ public class Panel {
     }
 
     /**
-     * Information
+     * Creates a billboard of type; Information
      */
     private void createI() {
         /**
@@ -532,10 +514,6 @@ public class Panel {
         billboardPanel.setLayout(new BorderLayout());
         // Bottom Text
         JPanel centrePanel = new JPanel(new GridBagLayout());
-        //bottomPanel.setPreferredSize(new Dimension(scaledWidth,scaledHeight));
-        //bottomPanel.setBorder(BorderFactory.createTitledBorder("Debug: Bottom Panel"));
-
-        //bottomText.setFont(new Font("Serif", Font.PLAIN, 40)); // Set font and size
 
         // Enable text wrapping with the html tags
         String informationWrap = "<html><div style='text-align: center;'>"+information+"</div></html>";
@@ -543,45 +521,32 @@ public class Panel {
 
         // Text scaling to < 75% width and 50% height
         // Centred, with word wrap
-
         double maxWidth = xRes * 0.75;
         double maxHeight = yRes * 0.5;
-        System.out.println("Max Width: "+maxWidth);
-        System.out.println("Max Height: "+maxHeight);
 
         // Set JLabel size
         bottomText.setPreferredSize(new Dimension((int) maxWidth,(int) maxHeight));
 
         Font labelFont = bottomText.getFont();
         String labelText = bottomText.getText();
-        System.out.println("labelFont: "+labelFont);
-        System.out.println("labelText: "+labelText);
 
         int stringWidth = bottomText.getFontMetrics(labelFont).stringWidth(labelText);
         int componentWidth = (int) maxWidth;
-        System.out.println("stringWidth: "+stringWidth);
-        System.out.println("componentWidth: "+componentWidth);
 
         // Find out how much the font can grow in width.
         double widthRatio = (double)componentWidth / (double)stringWidth;
 
         int newFontSize = (int)(labelFont.getSize() * widthRatio);
-        System.out.println("newFontSize: "+newFontSize);
         int componentHeight = (int) maxHeight;
-        System.out.println("componentHeight: "+componentHeight);
 
         // Pick a new font size so it will not be larger than the height of label.
         int fontSizeToUse = getFontSizeToFitBoundingRectangle(componentWidth, componentHeight,
                                                                 bottomText, labelFont, labelText);
         // Set the label's font size to the newly determined size.
         bottomText.setFont(new Font(labelFont.getName(), Font.PLAIN, fontSizeToUse));
-        //bottomText.setBackground(Color.red);
-        //bottomText.setOpaque(true);
 
         bottomText.setForeground(Color.decode(messageColour)); // Set text colour
-
         centrePanel.add(bottomText);
-
         billboardPanel.add(centrePanel, BorderLayout.CENTER);
 
         // Set Panel Backgrounds
@@ -631,7 +596,7 @@ public class Panel {
     /**
      * Get a font size to scale the message text for filling the billboard width
      * @param messageLabel
-     * @return
+     * @return newFontSize
      */
     private int scaleMessageFont(JLabel messageLabel) {
         // Scale message font to almost screen width size on one line
@@ -648,7 +613,7 @@ public class Panel {
     }
 
     /**
-     * Billboard for no server connection error
+     * Creates a billboard of type; Billboard for no server connection error
      */
     private void createDefault() {
 
@@ -685,8 +650,6 @@ public class Panel {
         double sourceWidth = image.getWidth();
         double sourceHeight = image.getHeight();
 
-        System.out.println("Original Image Size: x="+sourceWidth+" y="+sourceHeight);
-
         // Get scaled resolution
         if ( (xRes/2) / sourceWidth * sourceHeight > yRes/2) { // Check if scale should start on width or height
             // Scale on Height
@@ -699,12 +662,6 @@ public class Panel {
             aspectRatio = scaledWidth / sourceWidth;
             scaledHeight = sourceHeight * aspectRatio;
         }
-
-        // Checks - clean this up
-        if (scaledWidth > xRes/2 || scaledHeight > yRes/2) {
-            System.out.println("Debug: Bad Resolution! Acceptable Maximum: "+xRes/2+"x"+yRes/2);
-        }
-        System.out.println("Scaled Image Size: x="+scaledWidth+" y="+scaledHeight);
 
         // Create blank image
         BufferedImage scaledImage = new BufferedImage((int) scaledWidth, (int) scaledHeight, BufferedImage.TYPE_INT_ARGB);
@@ -728,8 +685,6 @@ public class Panel {
         double sourceWidth = image.getWidth();
         double sourceHeight = image.getHeight();
 
-        System.out.println("Original Image Size: x="+sourceWidth+" y="+sourceHeight);
-
         // Get scaled resolution
         if ( (xRes*1/3) / sourceWidth * sourceHeight > yRes*1/3) { // Check if scale should start on width or height
             // Scale on Height
@@ -742,12 +697,6 @@ public class Panel {
             aspectRatio = scaledWidth / sourceWidth;
             scaledHeight = sourceHeight * aspectRatio;
         }
-
-        // Checks - clean this up
-        if (scaledWidth > xRes*1/3 || scaledHeight > yRes*1/3) {
-            System.out.println("Debug: Bad Resolution! Acceptable Maximum: "+xRes*1/3+"x"+yRes*1/3);
-        }
-        System.out.println("Scaled Image Size: x="+scaledWidth+" y="+scaledHeight);
 
         // Create blank image
         BufferedImage scaledImage = new BufferedImage((int) scaledWidth, (int) scaledHeight, BufferedImage.TYPE_INT_ARGB);
@@ -780,14 +729,12 @@ public class Panel {
 
         if (pictureUrl == null) {
             // process base64 image
-            System.out.println("DEBUG: Picture type - BASE64");
             byte[] imageBytes = Base64.getDecoder().decode(pictureData);
             ByteArrayInputStream imageBytesStream = new ByteArrayInputStream(imageBytes);
             imageBuffer = ImageIO.read(imageBytesStream);
         }
         else {
             // process image from URL
-            System.out.println("DEBUG: Picture type - URL");
             URL url = new URL(pictureUrl);
             imageBuffer = ImageIO.read(url);
         }
