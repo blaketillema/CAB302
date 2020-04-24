@@ -7,6 +7,9 @@ import java.util.TreeMap;
 
 import connections.*;
 import connections.exceptions.ServerException;
+import connections.testing.AdminAddUsers;
+import connections.testing.User1AddBillboards;
+import connections.testing.User3ScheduleBillboards;
 
 import static java.lang.Thread.sleep;
 
@@ -19,6 +22,21 @@ public class MainRunDisplay {
      * @param args
      */
     public static void main(String[] args) throws ServerException {
+
+        try
+        {
+            System.out.println("admin adding users: user1 with create billboard permission, user3 with schedule permission:\n");
+            connections.testing.AdminAddUsers.main(args);
+
+            System.out.println("\n\nlogin as user1 and add billboards:\n");
+            connections.testing.User1AddBillboards.main(args);
+
+            System.out.println("\n\nlogin as user3 and schedule user 1's billboards (first billboard is scheduled to run now)\n");
+            connections.testing.User3ScheduleBillboards.main(args);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
         /**
          * Start the Server Connect as a new thread
          * Every 15 seconds, refresh billboard data
@@ -30,10 +48,12 @@ public class MainRunDisplay {
          */
         // Add billboard contents to new billboard from server with connect.getBillboard()
 
+        System.out.println("\n\nattempting to get current billboard: should print something like...");
+        System.out.println("{createdBy=user1, default=Advertise here!!!, message=......, schedule=1234... 2345...}\n");
         TreeMap billboardNowData = new TreeMap();
         try {
             billboardNowData = server.getCurrentBillboard();
-            System.out.println("currentBilboard " + billboardNowData);
+            System.out.println("billboard from server = " + billboardNowData + "\n\n");
         } catch (ServerException e) {
             System.out.println(e.getMessage());
         }
