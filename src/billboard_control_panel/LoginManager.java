@@ -42,8 +42,6 @@ public class LoginManager extends JFrame {
         frameLP.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frameLP.pack();
         frameLP.setVisible(true);
-
-
     }
     private void createUIComponents() {
         // TODO: place custom component creation code here

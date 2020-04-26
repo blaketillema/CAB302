@@ -19,6 +19,15 @@ public class ScheduleManager{
     static JScrollPane stblCalendar; //The scrollpane
     static JPanel pnlCalendar;
     static int realYear, realMonth, realDay, currentYear, currentMonth;
+    private JRadioButton tuesdayRadioButton;
+    private JRadioButton fridayRadioButton;
+    private JRadioButton sundayRadioButton;
+    private JRadioButton saturdayRadioButton;
+    private JRadioButton wednesdayRadioButton;
+    private JRadioButton mondayRadioButton;
+    private JRadioButton thursdayRadioButton;
+    private JTextField textField1;
+    private JSpinner spinner1;
 
     public static void main (String args[]){
         //Look and feel
