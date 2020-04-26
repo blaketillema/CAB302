@@ -49,7 +49,7 @@ public class Database {
 
     }
 
-    private void connect() throws SQLException{
+    private void connect() throws SQLException{ // used to connect to the db before sending a query (this is mostly to cut down on repetitive code)
 
         conn = DriverManager.getConnection(url + "/" + schema, username, password);
         statement = conn.createStatement();
@@ -58,7 +58,6 @@ public class Database {
 
     private void setup() throws SQLException{ //Runs a setup SQL statement, creating the users table. This is run during construction TODO: actually make the right tables
 
-        dropDb(); //TODO TESTING REMOVE THIS LATER
         connect();
         statement.executeQuery(USERS_TABLE);
         statement.executeQuery(BILLBOARDS_TABLE);
@@ -67,14 +66,14 @@ public class Database {
 
     }
 
-    private String timeToDateTimeString(LocalTime time){
+    private String timeToDateTimeString(LocalTime time){ // convert a LocalTime object to a String of Date + Time
         String timeString = time.toString();
         LocalDate todayDate = LocalDate.now();
         String dateString = todayDate.toString();
         return dateString + ' ' + timeString;
     }
 
-    public void addUser(String name, String hash, String salt, String permissions) throws SQLException {
+    public void addUser(String name, String hash, String salt, String permissions) throws SQLException { // adds a user to the DB
         connect();
         pstmt = conn.prepareStatement(adduserStatement);
         pstmt.clearParameters();
@@ -85,7 +84,27 @@ public class Database {
         pstmt.execute();
     }
 
-    public void deleteUser(String name) throws SQLException{
+    public String[][] getUsers() throws SQLException{ // gets a 2D array of [users][name, hash, salt, perms]
+        connect();
+        ResultSet rs = statement.executeQuery("SELECT * FROM users");
+        int len = 0;
+        while(rs.next()){
+            len++;
+        }
+        String[][] users = new String[len][4];
+        rs.beforeFirst();
+        int i = 0;
+        while(rs.next()){
+            users[i][0] = rs.getString(1);
+            users[i][1] = rs.getString(2);
+            users[i][2] = rs.getString(3);
+            users[i][3] = rs.getString(4);
+            i++;
+        }
+        return users;
+    }
+
+    public void deleteUser(String name) throws SQLException{ // deletes a user
         connect();
         pstmt = conn.prepareStatement(deluserStatement);
         pstmt.clearParameters();
@@ -93,7 +112,7 @@ public class Database {
         pstmt.execute();
     }
 
-    public void addBillboard(String billboardName, String image) throws SQLException {
+    public void addBillboard(String billboardName, String image) throws SQLException { // adds a billboard
         connect();
         pstmt = conn.prepareStatement(addbilbStatement);
         pstmt.setString(1, billboardName);
@@ -101,14 +120,32 @@ public class Database {
         pstmt.execute();
     }
 
-    public void deleteBillboard(String billboardName) throws SQLException{
+    public String[][] getBillboards() throws SQLException{ // basically the same as getUsers but [billboard][billboardId (probably not needed), billboard name, image base64 or url]
+        connect();
+        ResultSet rs = statement.executeQuery("SELECT * FROM billboards");
+        int len = 0;
+        while(rs.next()){
+            len++;
+        }
+        String[][] billboards = new String[len][3];
+        rs.beforeFirst();
+        int i = 0;
+        while(rs.next()){
+            billboards[i][0] = rs.getString(1);
+            billboards[i][1] = rs.getString(2);
+            billboards[i][2] = rs.getString(3);
+        }
+        return billboards;
+    }
+
+    public void deleteBillboard(String billboardName) throws SQLException{ // deletes a billboard
         connect();
         pstmt = conn.prepareStatement(delbilbStatement);
         pstmt.setString(1, billboardName);
         pstmt.execute();
     }
 
-    public void addSchedule(String billboardName, LocalTime time) throws SQLException {
+    public void addSchedule(String billboardName, LocalTime time) throws SQLException { // adds a schedule using a billboard name to find a billboardId and using that as a foreign key
         connect();
         ResultSet rs = statement.executeQuery("SELECT billboardId FROM billboards WHERE billboardName=\""+billboardName+"\"");
         rs.next();
@@ -119,7 +156,25 @@ public class Database {
         pstmt.execute();
     }
 
-    public void deleteSchedule(LocalTime time) throws SQLException{
+    public String[][] getSchedule() throws SQLException { // returns a 2D array of [schedule][billboardId, time]
+        connect();
+        ResultSet rs = statement.executeQuery("SELECT * from schedules");
+        int len = 0;
+        while(rs.next()){
+            len++;
+        }
+        rs.beforeFirst();
+        String[][] schedules = new String[len][2];
+        int i = 0;
+        while(rs.next()){
+            schedules[i][0] = rs.getString(1);
+            schedules[i][1] = rs.getString(2);
+            i++;
+        }
+        return schedules;
+    }
+
+    public void deleteSchedule(LocalTime time) throws SQLException{ // deletes a schedule based off time
         connect();
         ResultSet rs = statement.executeQuery("SELECT billboardId from schedules WHERE time=\""+timeToDateTimeString(time)+"\"");
         rs.next();

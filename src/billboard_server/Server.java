@@ -21,15 +21,6 @@ public class Server {
             System.out.println("Server running on port " + svSocket.getLocalPort());
             Boolean svState = true;
 
-            //test functions
-            db.addUser("name", "hash", "salt", "permissions");
-            db.deleteUser("name");
-            db.addBillboard("bilby name", "12340987asdfhjkLIGFBWf=");
-            db.addSchedule("bilby name", LocalTime.parse("20:30"));
-            db.deleteSchedule(LocalTime.parse("20:30"));
-            db.deleteBillboard("bilby name");
-
-
             while (svState) { // this will keep running until the client sends an exit command
 
                 Socket socket = svSocket.accept(); //accept a connection
