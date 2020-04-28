@@ -8,7 +8,6 @@
       <excludeFolder url="file://$MODULE_DIR$/src/billboard_control_panel" />
       <excludeFolder url="file://$MODULE_DIR$/src/billboard_control_panel/SwingCalendar" />
       <excludeFolder url="file://$MODULE_DIR$/src/billboard_viewer" />
-      <excludeFolder url="file://$MODULE_DIR$/src/connections" />
     </content>
     <content url="file://$MODULE_DIR$/src/billboard_control_panel/SwingCalendar" />
     <orderEntry type="inheritedJdk" />

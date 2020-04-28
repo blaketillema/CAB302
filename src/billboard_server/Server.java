@@ -1,14 +1,15 @@
 package billboard_server;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
+import connections.ClientRequest;
+import connections.ServerResponse;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.*;
 import java.time.LocalTime;
 import java.util.Properties;
+import java.util.TreeMap;
 
 public class Server {
 
@@ -27,14 +28,23 @@ public class Server {
 
                 InputStream in = socket.getInputStream(); //setup input and output streams
                 ObjectInputStream ois = new ObjectInputStream(in);
+                OutputStream out = socket.getOutputStream();
+                ObjectOutputStream oos = new ObjectOutputStream(out);
+
+                ClientRequest cr = (ClientRequest) ois.readObject();
+                if(db.processRequest(cr)){
+                    //ServerResponse
+                }
 
                 in.close(); //close streams and sockets
                 ois.close();
+                out.close();
+                oos.close();
                 socket.close();
             }
         }
-        catch(SQLException sqle){
-            sqle.printStackTrace();
+        catch(SQLException | ClassNotFoundException e){
+            e.printStackTrace();
         }
 
     }

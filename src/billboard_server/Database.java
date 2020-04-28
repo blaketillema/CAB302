@@ -1,5 +1,7 @@
 package billboard_server;
 
+import connections.ClientRequest;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
@@ -10,15 +12,15 @@ import java.time.LocalTime;
 public class Database {
 
     private static final String USERS_TABLE = "CREATE TABLE IF NOT EXISTS users ( userName VARCHAR(255) PRIMARY KEY NOT NULL, hash VARCHAR(255) NOT NULL, salt VARCHAR(255) NOT NULL, permission VARCHAR(255) ) ";
-    private static final String BILLBOARDS_TABLE = "CREATE TABLE IF NOT EXISTS billboards ( billboardId INT NOT NULL PRIMARY KEY AUTO_INCREMENT, billboardName VARCHAR(255), image MEDIUMTEXT CHARACTER SET BINARY ) "; //TODO: write a proper statement to create the db
-    private static final String SCHEDULE_TABLE = "CREATE TABLE IF NOT EXISTS schedules ( billboardId INT, time DATETIME NOT NULL, FOREIGN KEY (billboardId) REFERENCES billboards(billboardId) ON DELETE CASCADE ) ";
+    private static final String BILLBOARDS_TABLE = "CREATE TABLE IF NOT EXISTS billboards ( billboardId INT NOT NULL AUTO_INCREMENT, billboardName VARCHAR(255), image MEDIUMTEXT CHARACTER SET BINARY, PRIMARY KEY (billboardID, billboardName) )";
+    private static final String SCHEDULE_TABLE = "CREATE TABLE IF NOT EXISTS schedules ( billboardId INT, billboardName VARCHAR(255), startTime DATETIME, duration INT, isRecurring BOOLEAN, recurFreqInMins INT, FOREIGN KEY (billboardId, billboardName) REFERENCES billboards(billboardId, billboardName) ON DELETE CASCADE ) ";
 
     private static final String adduserStatement = "INSERT INTO users (userName, hash, salt, permission) VALUES (?, ?, ?, ?)";
     private static final String deluserStatement = "DELETE FROM users WHERE userName=?";
     private static final String addbilbStatement = "INSERT INTO billboards (billboardName, image) VALUES (?, ?)";
     private static final String delbilbStatement = "DELETE FROM billboards WHERE billboardName=?";
-    private static final String addschedStatement = "INSERT INTO schedules (billboardId, time) VALUES (?, ?)";
-    private static final String delschedStatement = "DELETE FROM schedules WHERE billboardId=?";
+    private static final String addschedStatement = "INSERT INTO schedules (billboardId, billboardName, startTime, duration, isRecurring, recurFreqInMins) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String delschedStatement = "DELETE FROM schedules WHERE startTime=? AND billboardName=?";
 
     private String url;
     private String schema;
@@ -66,11 +68,40 @@ public class Database {
 
     }
 
-    private String timeToDateTimeString(LocalTime time){ // convert a LocalTime object to a String of Date + Time
-        String timeString = time.toString();
-        LocalDate todayDate = LocalDate.now();
-        String dateString = todayDate.toString();
-        return dateString + ' ' + timeString;
+    private String timeToDateTimeString(LocalDate date, LocalTime time){ // convert a LocalTime object to a String of Date + Time
+        return date.toString() + ' ' + time.toString();
+    }
+
+    public boolean processRequest(ClientRequest cr) throws SQLException{
+        if(cr.type == "POST"){
+            if(cr.path.contains("users")){
+                //add a user
+                return true;
+            }
+            else if(cr.path.contains("billboards")){
+                //add a billboard
+                return true;
+            }
+            else if(cr.path.contains("schedules")){
+                //add a schedule for the billboard
+                return true;
+            }
+        }
+        else if(cr.type == "GET"){
+            if(cr.path.contains("users")){
+                //get user info
+                return true;
+            }
+            else if(cr.path.contains("billboards")){
+                //get billboard info
+                return true;
+            }
+            else if(cr.path.contains("schedules")){
+                //get schedule info for the billboard
+                return true;
+            }
+        }
+        return false;
     }
 
     public void addUser(String name, String hash, String salt, String permissions) throws SQLException { // adds a user to the DB
@@ -145,18 +176,21 @@ public class Database {
         pstmt.execute();
     }
 
-    public void addSchedule(String billboardName, LocalTime time) throws SQLException { // adds a schedule using a billboard name to find a billboardId and using that as a foreign key
+    public void addSchedule(String billboardName, LocalDate scheduleStartDate, LocalTime scheduleStartTime, int scheduleDuration, boolean isRecurring, int recurFreqInMins) throws SQLException {
         connect();
-        ResultSet rs = statement.executeQuery("SELECT billboardId FROM billboards WHERE billboardName=\""+billboardName+"\"");
+        ResultSet rs = statement.executeQuery("SELECT billboardId FROM billboards WHERE billboardName=\"" + billboardName + "\"");
         rs.next();
         pstmt = conn.prepareStatement(addschedStatement);
         pstmt.setInt(1, rs.getInt(1));
-        String schedTime = timeToDateTimeString(time);
-        pstmt.setString(2, schedTime);
+        pstmt.setString(2, billboardName);
+        pstmt.setString(3, timeToDateTimeString(scheduleStartDate, scheduleStartTime));
+        pstmt.setInt(4, scheduleDuration);
+        pstmt.setBoolean(5, isRecurring);
+        pstmt.setInt(6, recurFreqInMins);
         pstmt.execute();
     }
 
-    public String[][] getSchedule() throws SQLException { // returns a 2D array of [schedule][billboardId, time]
+    public String[][] getSchedule() throws SQLException { // returns a 2D array of [schedule][billboardId, billboardName, startTime, isRecurring, recurFreqInMins]
         connect();
         ResultSet rs = statement.executeQuery("SELECT * from schedules");
         int len = 0;
@@ -164,22 +198,26 @@ public class Database {
             len++;
         }
         rs.beforeFirst();
-        String[][] schedules = new String[len][2];
+        String[][] schedules = new String[len][5];
         int i = 0;
         while(rs.next()){
-            schedules[i][0] = rs.getString(1);
-            schedules[i][1] = rs.getString(2);
+            schedules[i][0] = rs.getString(2);
+            schedules[i][1] = rs.getString(3);
+            schedules[i][2] = rs.getString(4);
+            schedules[i][3] = rs.getString(5);
+            schedules[i][4] = rs.getString(6);
             i++;
         }
         return schedules;
     }
 
-    public void deleteSchedule(LocalTime time) throws SQLException{ // deletes a schedule based off time
+    public void deleteSchedule(String billboardName, LocalDate date, LocalTime time) throws SQLException{ // deletes a schedule based off time
         connect();
-        ResultSet rs = statement.executeQuery("SELECT billboardId from schedules WHERE time=\""+timeToDateTimeString(time)+"\"");
+        ResultSet rs = statement.executeQuery("SELECT billboardName from schedules WHERE time=\""+timeToDateTimeString(date, time)+"\"");
         rs.next();
         pstmt = conn.prepareStatement(delschedStatement);
-        pstmt.setString(1, timeToDateTimeString(time));
+        pstmt.setString(1, timeToDateTimeString(date, time));
+        pstmt.setString(2, billboardName);
         pstmt.execute();
     }
 

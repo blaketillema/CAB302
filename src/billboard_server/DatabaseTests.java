@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class DatabaseTests {
 
@@ -61,11 +62,16 @@ public class DatabaseTests {
 
     @Test
     public void addSchedule() throws SQLException{
-        db.addBillboard("bilb", "");
-        db.addSchedule("bilb", LocalTime.MIDNIGHT);
-        String[][] res = new String[1][2];
-        res[0][0] = "1";
-        res[0][1] = LocalDate.now().toString() + " " + LocalTime.MIDNIGHT.toString() + ":00.0";
+        db.addBillboard("bilb", "img");
+        LocalTime testTime = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        db.addSchedule("bilb", LocalDate.now(), testTime, 120, false, 0);
+        String[][] res = new String[1][5];
+        res[0][0] = "bilb";
+        res[0][1] = LocalDate.now().toString() + ' ' + testTime.format(formatter) + ".0";
+        res[0][2] = "120";
+        res[0][3] = "0";
+        res[0][4] = "0";
         Assertions.assertArrayEquals(res, db.getSchedule());
     }
 
