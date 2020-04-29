@@ -40,7 +40,6 @@ public class TestClient { // dummy client used for testing network connection
             InputStream in = socket.getInputStream();
             ObjectInputStream ois = new ObjectInputStream(in);
             ServerResponse sr = (ServerResponse) ois.readObject();
-            System.out.println(sr.status);
 
             ois.close();
             oos.close();

@@ -7,7 +7,7 @@ import java.util.TreeMap;
 
 public class ServerResponse implements Serializable
 {
-    public String status = "UNKNOWN";
+    String status = "UNKNOWN";
     TreeMap<String, TreeMap<String, String>> data;
 
     public ServerResponse()

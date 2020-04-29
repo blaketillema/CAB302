@@ -41,7 +41,6 @@ public class Server {
                     OutputStream out = socket.getOutputStream();
                     ObjectOutputStream oos = new ObjectOutputStream(out);
                     ServerResponse sr = new ServerResponse();
-                    sr.status = "OK";
                     oos.writeObject(sr);
                     oos.flush();
                     oos.close();
