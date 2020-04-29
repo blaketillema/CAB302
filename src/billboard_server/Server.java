@@ -15,12 +15,20 @@ public class Server {
 
     public static void main(String[] args) throws IOException{
 
+        TreeMap<String, String> user = new TreeMap<>();
+        user.put("userName", "jeff");
+        user.put("hash", "brown");
+        user.put("salt", "pepper");
+        user.put("permission", "none");
+
         ServerSocket svSocket = new ServerSocket(42070); //opens server on port 42070
         Database db;
         try{
             db = new Database();
             System.out.println("Server running on port " + svSocket.getLocalPort());
             Boolean svState = true;
+
+            db.addUser(user);
 
             while (svState) { // this will keep running until the client sends an exit command
 

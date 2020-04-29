@@ -8,16 +8,38 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.Properties;
 import java.time.LocalTime;
+import java.util.TreeMap;
 
 public class Database {
 
-    private static final String USERS_TABLE = "CREATE TABLE IF NOT EXISTS users ( userName VARCHAR(255) PRIMARY KEY NOT NULL, hash VARCHAR(255) NOT NULL, salt VARCHAR(255) NOT NULL, permission VARCHAR(255) ) ";
-    private static final String BILLBOARDS_TABLE = "CREATE TABLE IF NOT EXISTS billboards ( billboardId INT NOT NULL AUTO_INCREMENT, billboardName VARCHAR(255), image MEDIUMTEXT CHARACTER SET BINARY, PRIMARY KEY (billboardID, billboardName) )";
-    private static final String SCHEDULE_TABLE = "CREATE TABLE IF NOT EXISTS schedules ( billboardId INT, billboardName VARCHAR(255), startTime DATETIME, duration INT, isRecurring BOOLEAN, recurFreqInMins INT, FOREIGN KEY (billboardId, billboardName) REFERENCES billboards(billboardId, billboardName) ON DELETE CASCADE ) ";
+    private static final String USERS_TABLE = "CREATE TABLE IF NOT EXISTS users ( " +
+            "userName VARCHAR(255) PRIMARY KEY NOT NULL,"+
+            "hash VARCHAR(255) NOT NULL,"+
+            "salt VARCHAR(255) NOT NULL,"+
+            "permission VARCHAR(255) ) ";
+    private static final String BILLBOARDS_TABLE = "CREATE TABLE IF NOT EXISTS billboards ( " +
+            "billboardId INT NOT NULL AUTO_INCREMENT,"+
+            "billboardName VARCHAR(255),"+
+            "billboardMessage VARCHAR(255)," +
+            "billboardInfo VARCHAR(255)," +
+            "billboardImg MEDIUMTEXT," +
+            "billboardBg VARCHAR(255)," +
+            "billboardMsgColour VARCHAR(255)," +
+            "billboardInfoColour VARCHAR(255)," +
+            "PRIMARY KEY(billboardId, billboardName))";
+    private static final String SCHEDULE_TABLE = "CREATE TABLE IF NOT EXISTS schedules ( " +
+            "billboardId INT, " +
+            "billboardName VARCHAR(255)," +
+            "startTime DATETIME, " +
+            "duration INT, " +
+            "isRecurring BOOLEAN, " +
+            "recurFreqInMins INT, " +
+            "FOREIGN KEY (billboardId, billboardName) REFERENCES billboards(billboardId, billboardName) ON DELETE CASCADE ) ";
 
     private static final String adduserStatement = "INSERT INTO users (userName, hash, salt, permission) VALUES (?, ?, ?, ?)";
     private static final String deluserStatement = "DELETE FROM users WHERE userName=?";
-    private static final String addbilbStatement = "INSERT INTO billboards (billboardName, image) VALUES (?, ?)";
+    private static final String addbilbStatement = "INSERT INTO billboards (billboardName, billboardMessage, billboardInfo, billboardImg, billboardBg, billboardMsgColour, billboardInfoColour)" +
+            " VALUES (?, ?, ?, ?, ?, ?, ?)";
     private static final String delbilbStatement = "DELETE FROM billboards WHERE billboardName=?";
     private static final String addschedStatement = "INSERT INTO schedules (billboardId, billboardName, startTime, duration, isRecurring, recurFreqInMins) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String delschedStatement = "DELETE FROM schedules WHERE startTime=? AND billboardName=?";
@@ -33,7 +55,7 @@ public class Database {
     public Database() throws SQLException{ // Reads the db.props file and sets the variables for the server to those props
         try{
             Properties props = new Properties();
-            FileInputStream in = new FileInputStream("../db.props");
+            FileInputStream in = new FileInputStream(System.getProperty("user.dir") + "/db.props");
             props.load(in);
             in.close();
 
@@ -68,10 +90,6 @@ public class Database {
 
     }
 
-    private String timeToDateTimeString(LocalDate date, LocalTime time){ // convert a LocalTime object to a String of Date + Time
-        return date.toString() + ' ' + time.toString();
-    }
-
     public boolean processRequest(ClientRequest cr) throws SQLException{
         if(cr.type == "POST"){
             if(cr.path.contains("users")){
@@ -104,14 +122,14 @@ public class Database {
         return false;
     }
 
-    public void addUser(String name, String hash, String salt, String permissions) throws SQLException { // adds a user to the DB
+    public void addUser(TreeMap<String, String> user) throws SQLException { // adds a user to the DB
         connect();
         pstmt = conn.prepareStatement(adduserStatement);
         pstmt.clearParameters();
-        pstmt.setString(1, name);
-        pstmt.setString(2, hash);
-        pstmt.setString(3, salt);
-        pstmt.setString(4, permissions);
+        pstmt.setString(1, user.get("userName"));
+        pstmt.setString(2, user.get("hash"));
+        pstmt.setString(3, user.get("salt"));
+        pstmt.setString(4, user.get("permissions"));
         pstmt.execute();
     }
 
@@ -143,11 +161,16 @@ public class Database {
         pstmt.execute();
     }
 
-    public void addBillboard(String billboardName, String image) throws SQLException { // adds a billboard
+    public void addBillboard(TreeMap<String, String> billboard) throws SQLException { // adds a billboard
         connect();
         pstmt = conn.prepareStatement(addbilbStatement);
-        pstmt.setString(1, billboardName);
-        pstmt.setString(2, image);
+        pstmt.setString(1, billboard.get("billboardName"));
+        pstmt.setString(2, billboard.get("billboardMessage"));
+        pstmt.setString(3, billboard.get("billboardInfo"));
+        pstmt.setString(4, billboard.get("billboardImg"));
+        pstmt.setString(5, billboard.get("billboardBg"));
+        pstmt.setString(6, billboard.get("billboardMsgColour"));
+        pstmt.setString(7, billboard.get("billboardInfoColour"));
         pstmt.execute();
     }
 
@@ -164,7 +187,7 @@ public class Database {
         while(rs.next()){
             billboards[i][0] = rs.getString(1);
             billboards[i][1] = rs.getString(2);
-            billboards[i][2] = rs.getString(3);
+            billboards[i][2] = rs.getString(5);
         }
         return billboards;
     }
@@ -176,17 +199,17 @@ public class Database {
         pstmt.execute();
     }
 
-    public void addSchedule(String billboardName, LocalDate scheduleStartDate, LocalTime scheduleStartTime, int scheduleDuration, boolean isRecurring, int recurFreqInMins) throws SQLException {
+    public void addSchedule(TreeMap<String, String> schedule) throws SQLException {
         connect();
-        ResultSet rs = statement.executeQuery("SELECT billboardId FROM billboards WHERE billboardName=\"" + billboardName + "\"");
+        ResultSet rs = statement.executeQuery("SELECT billboardId FROM billboards WHERE billboardName=\"" + schedule.get("billboardName") + "\"");
         rs.next();
         pstmt = conn.prepareStatement(addschedStatement);
         pstmt.setInt(1, rs.getInt(1));
-        pstmt.setString(2, billboardName);
-        pstmt.setString(3, timeToDateTimeString(scheduleStartDate, scheduleStartTime));
-        pstmt.setInt(4, scheduleDuration);
-        pstmt.setBoolean(5, isRecurring);
-        pstmt.setInt(6, recurFreqInMins);
+        pstmt.setString(2, schedule.get("billboardName"));
+        pstmt.setString(3, schedule.get("startDate") + ' ' + schedule.get("startTime"));
+        pstmt.setInt(4, Integer.parseInt(schedule.get("duration")));
+        pstmt.setBoolean(5, Boolean.parseBoolean(schedule.get("isRecurring")));
+        pstmt.setInt(6, Integer.parseInt(schedule.get("recurFreqInMins")));
         pstmt.execute();
     }
 
@@ -211,13 +234,13 @@ public class Database {
         return schedules;
     }
 
-    public void deleteSchedule(String billboardName, LocalDate date, LocalTime time) throws SQLException{ // deletes a schedule based off time
+    public void deleteSchedule(TreeMap<String, String> schedule) throws SQLException{ // deletes a schedule based off time
         connect();
-        ResultSet rs = statement.executeQuery("SELECT billboardName from schedules WHERE time=\""+timeToDateTimeString(date, time)+"\"");
+        ResultSet rs = statement.executeQuery("SELECT billboardName from schedules WHERE time=\""+schedule.get("startDate")+' '+schedule.get("startTime")+"\"");
         rs.next();
         pstmt = conn.prepareStatement(delschedStatement);
-        pstmt.setString(1, timeToDateTimeString(date, time));
-        pstmt.setString(2, billboardName);
+        pstmt.setString(1, schedule.get("startDate") +' '+ schedule.get("startTime"));
+        pstmt.setString(2, schedule.get("billboardName"));
         pstmt.execute();
     }
 
