@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class LoginManager extends JFrame {
     public JPanel LoginPanel;
@@ -20,18 +22,35 @@ public class LoginManager extends JFrame {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String username = usernameField1.getText();
-                String password = passwordField1.getText();
-
-                Component frame = null;
-                if (username.equals("admin") && password.equals("admin")) {
-                    new MainControl().main(null);
-
-                } else {
-                    JOptionPane.showMessageDialog(null, "Invalid username or password");
+                login(usernameField1.getText(),passwordField1.getText());
+            }
+        });
+        passwordField1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode()==KeyEvent.VK_ENTER){
+                    login(usernameField1.getText(),passwordField1.getText());
                 }
             }
         });
+        usernameField1.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode()==KeyEvent.VK_ENTER){
+                    login(usernameField1.getText(),passwordField1.getText());
+                }
+            }
+        });
+    }
+
+    public void login(String username, String password){
+        Component frame = null;
+        if (username.equals("admin") && password.equals("admin")) {
+            new MainControl().main(null);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Invalid username or password");
+        }
     }
 
     public static void main(String[] args) {
