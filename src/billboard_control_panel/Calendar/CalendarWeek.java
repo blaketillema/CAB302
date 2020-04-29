@@ -1,7 +1,4 @@
-package billboard_control_panel;
-import billboard_control_panel.CalendarViewer;
-import billboard_control_panel.SwingCalendar.CalendarEvent;
-import billboard_control_panel.SwingCalendar.Week;
+package billboard_control_panel.Calendar;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -30,11 +27,6 @@ public class CalendarWeek extends CalendarViewer {
         return 7;
     }
 
-    // TODO Change 100 to getDayWidth()
-    @Override
-    protected double dayToPixel(DayOfWeek dayOfWeek) {
-        return TIME_COL_WIDTH + getDayWidth() * (dayOfWeek.getValue() - 1);
-    }
 
     @Override
     protected DayOfWeek getStartDay() {
@@ -49,6 +41,12 @@ public class CalendarWeek extends CalendarViewer {
     @Override
     protected void setRangeToToday() {
         week = new Week(LocalDate.now());
+    }
+
+    // TODO Change 100 to getDayWidth()
+    @Override
+    protected double dayToPixel(DayOfWeek dayOfWeek) {
+        return TIME_COL_WIDTH + getDayWidth() * (dayOfWeek.getValue() - 1);
     }
 
     public void nextWeek() {

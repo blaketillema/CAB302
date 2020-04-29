@@ -1,6 +1,6 @@
-package billboard_control_panel;
+package billboard_control_panel.Calendar;
 
-import billboard_control_panel.SwingCalendar.*;
+import billboard_control_panel.schedulerController;
 
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
@@ -11,6 +11,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.TextStyle;
 import java.time.temporal.ChronoUnit;
@@ -52,7 +53,7 @@ public abstract class CalendarViewer extends JComponent {
     protected CalendarViewer(ArrayList<CalendarEvent> events) {
         this.events = events;
         setupEventListeners();
-        //setupTimer();
+        setupTimer();
     }
 
     // Get localtime and round to nearest minute
@@ -94,7 +95,7 @@ public abstract class CalendarViewer extends JComponent {
             y1 = timeToPixel(event.getEnd());
 
             if (p.getX() >= x0 && p.getX() <= x1 && p.getY() >= y0 && p.getY() <= y1) {
-                //fireCalendarEventClick(event);
+                fireCalendarEventClick(event);
                 return true;
             }
         }
@@ -110,7 +111,7 @@ public abstract class CalendarViewer extends JComponent {
 
         if (p.getX() >= x0 && p.getX() <= x1 && p.getY() >= y0 && p.getY() <= y1) {
             LocalDate date = getDateFromDay(pixelToDay(p.getX()));
-            //fireCalendarEmptyClick(LocalDateTime.of(date, pixelToTime(p.getY())));
+            fireCalendarEmptyClick(LocalDateTime.of(date, pixelToTime(p.getY())));
             return true;
         }
         return false;
@@ -135,6 +136,35 @@ public abstract class CalendarViewer extends JComponent {
 
     public void removeCalendarEmptyClickListener(CalendarEmptyClickListener l) {
         listenerList.remove(CalendarEmptyClickListener.class, l);
+    }
+
+    // Notify all listeners that have registered interest for
+    // notification on this event type.
+    private void fireCalendarEventClick(CalendarEvent calendarEvent) {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        CalendarEventClickEvent calendarEventClickEvent;
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CalendarEventClickListener.class) {
+                calendarEventClickEvent = new CalendarEventClickEvent(this, calendarEvent);
+                ((CalendarEventClickListener) listeners[i + 1]).calendarEventClick(calendarEventClickEvent);
+            }
+        }
+
+    }
+
+
+    private void fireCalendarEmptyClick(LocalDateTime dateTime) {
+        Object[] listeners = listenerList.getListenerList();
+        CalendarEmptyClickEvent calendarEmptyClickEvent;
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == CalendarEmptyClickListener.class) {
+                calendarEmptyClickEvent = new CalendarEmptyClickEvent(this, dateTime);
+                ((CalendarEmptyClickListener) listeners[i + 1]).calendarEmptyClick(calendarEmptyClickEvent);
+            }
+        }
     }
 
     private void calculateScaleVars() {
@@ -199,7 +229,7 @@ public abstract class CalendarViewer extends JComponent {
         drawTodayShade();
         drawGrid();
         drawTimes();
-        //drawEvents();
+        drawEvents();
         drawCurrentTimeLine();
     }
 
@@ -305,6 +335,46 @@ public abstract class CalendarViewer extends JComponent {
         }
     }
 
+    private void drawEvents() {
+        double x;
+        double y0;
+
+        for (CalendarEvent event : events) {
+            if (!dateInRange(event.getDate())) continue;
+
+            x = dayToPixel(event.getDate().getDayOfWeek());
+            y0 = timeToPixel(event.getStart());
+
+            Rectangle2D rect = new Rectangle2D.Double(x, y0, dayWidth, (timeToPixel(event.getEnd()) - timeToPixel(event.getStart())));
+            Color origColor = g2.getColor();
+            g2.setColor(event.getColor());
+            g2.fill(rect);
+            g2.setColor(origColor);
+
+            // Draw time header
+
+            // Store the current font state
+            Font origFont = g2.getFont();
+
+            final float fontSize = origFont.getSize() - 1.6F;
+
+            // Create a new font with same properties but bold
+            Font newFont = origFont.deriveFont(Font.BOLD, fontSize);
+            g2.setFont(newFont);
+
+            //g2.drawString(event.getStart() + " - " + event.getEnd(), (int) x + 5, (int) y0 + 11);
+
+            // Unbolden
+            g2.setFont(origFont.deriveFont(fontSize));
+
+            // Draw the event's text
+            g2.drawString(event.getText(), (int) x+ 5, (int) y0+11);
+
+            // Reset font
+            g2.setFont(origFont);
+        }
+    }
+
     protected double getDayWidth() {
         return dayWidth;
     }
@@ -337,72 +407,5 @@ public abstract class CalendarViewer extends JComponent {
         repaint();
     }
 
-    public static void main(String[] args) {
-        JFrame frm = new JFrame();
 
-        ArrayList<CalendarEvent> events = new ArrayList<>();
-        events.add(new CalendarEvent(LocalDate.of(2020, 4, 8), LocalTime.of(14, 0), LocalTime.of(14, 20), "BILLBOARD 1 11/11 14:00-14:20"));
-
-        CalendarWeek cal = new CalendarWeek(events);
-
-        cal.addCalendarEventClickListener(e -> System.out.println(e.getCalendarEvent()));
-        cal.addCalendarEmptyClickListener(e -> {
-            System.out.println(e.getDateTime());
-            System.out.println(Calendar.roundTime(e.getDateTime().toLocalTime(), 30));
-        });
-
-        // Calendar Week Controls (NORTH)
-        JButton goToTodayBtn = new JButton("Today");
-        goToTodayBtn.addActionListener(e -> cal.goToToday());
-
-        JButton nextWeekBtn = new JButton(">");
-        nextWeekBtn.addActionListener(e -> cal.nextWeek());
-
-        JButton prevWeekBtn = new JButton("<");
-        prevWeekBtn.addActionListener(e -> cal.prevWeek());
-
-        JButton nextMonthBtn = new JButton(">>");
-        nextMonthBtn.addActionListener(e -> cal.nextMonth());
-
-        JButton prevMonthBtn = new JButton("<<");
-        prevMonthBtn.addActionListener(e -> cal.prevMonth());
-
-        // Add the buttons into a JPanel
-        JPanel weekControls = new JPanel();
-        weekControls.add(prevMonthBtn);
-        weekControls.add(prevWeekBtn);
-        weekControls.add(goToTodayBtn);
-        weekControls.add(nextWeekBtn);
-        weekControls.add(nextMonthBtn);
-
-        // TODO Add functionality to these buttons, linking with database and server
-        // Calendar Week Controls (EAST)
-        JButton saveBtn = new JButton("Save");
-        //goToTodayBtn.addActionListener(e -> cal.goToToday());
-
-        JButton deleteBtn = new JButton("Delete");
-        //nextWeekBtn.addActionListener(e -> cal.nextWeek());
-
-        JButton cancelBtn = new JButton("Cancel");
-        //prevWeekBtn.addActionListener(e -> cal.prevWeek());
-
-        // create a object of JTextField with 16 columns and a given initial text
-        JTextField scheduleName = new JTextField("enter billboard schedule name", 16);
-
-        // Add the buttons into a JPanel
-        JPanel schedulePanel = new JPanel();
-
-        JPanel scheduleControls = new JPanel();
-        scheduleControls.add(scheduleName);
-        scheduleControls.add(deleteBtn);
-        scheduleControls.add(saveBtn);
-        scheduleControls.add(cancelBtn);
-
-        frm.add(weekControls, BorderLayout.NORTH);
-        frm.add(new schedulerController().schedulerPanel, BorderLayout.EAST);
-        frm.add(cal, BorderLayout.CENTER);
-        frm.setSize(1000, 900);
-        frm.setVisible(true);
-        frm.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    }
 }
