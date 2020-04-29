@@ -31,23 +31,24 @@ public class Server {
             db.addUser(user);
 
             while (svState) { // this will keep running until the client sends an exit command
-
                 Socket socket = svSocket.accept(); //accept a connection
 
                 InputStream in = socket.getInputStream(); //setup input and output streams
                 ObjectInputStream ois = new ObjectInputStream(in);
-                OutputStream out = socket.getOutputStream();
-                ObjectOutputStream oos = new ObjectOutputStream(out);
 
                 ClientRequest cr = (ClientRequest) ois.readObject();
                 if(db.processRequest(cr)){
-                    //ServerResponse
+                    OutputStream out = socket.getOutputStream();
+                    ObjectOutputStream oos = new ObjectOutputStream(out);
+                    ServerResponse sr = new ServerResponse();
+                    sr.status = "OK";
+                    oos.writeObject(sr);
+                    oos.flush();
+                    oos.close();
                 }
 
-                in.close(); //close streams and sockets
                 ois.close();
-                out.close();
-                oos.close();
+                in.close(); //close streams and sockets
                 socket.close();
             }
         }

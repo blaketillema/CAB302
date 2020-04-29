@@ -82,6 +82,7 @@ public class Database {
 
     private void setup() throws SQLException{ //Runs a setup SQL statement, creating the users table. This is run during construction TODO: actually make the right tables
 
+        dropDb();
         connect();
         statement.executeQuery(USERS_TABLE);
         statement.executeQuery(BILLBOARDS_TABLE);
@@ -91,32 +92,43 @@ public class Database {
     }
 
     public boolean processRequest(ClientRequest cr) throws SQLException{
-        if(cr.type == "POST"){
-            if(cr.path.contains("users")){
-                //add a user
-                return true;
-            }
-            else if(cr.path.contains("billboards")){
-                //add a billboard
-                return true;
-            }
-            else if(cr.path.contains("schedules")){
-                //add a schedule for the billboard
-                return true;
+        if(cr.type.equals("POST")){
+            switch (cr.path) {
+                case "users":
+                    addUser(cr.params);
+                    return true;
+                case "billboards":
+                    addBillboard(cr.params);
+                    return true;
+                case "schedules":
+                    addSchedule(cr.params);
+                    return true;
             }
         }
-        else if(cr.type == "GET"){
-            if(cr.path.contains("users")){
-                //get user info
-                return true;
+        else if(cr.type.equals("GET")){
+            switch (cr.path) {
+                case "users":
+                    getUsers();
+                    return true;
+                case "billboards":
+                    getBillboards();
+                    return true;
+                case "schedules":
+                    getSchedule();
+                    return true;
             }
-            else if(cr.path.contains("billboards")){
-                //get billboard info
-                return true;
-            }
-            else if(cr.path.contains("schedules")){
-                //get schedule info for the billboard
-                return true;
+        }
+        else if(cr.type.equals("DEL")){
+            switch (cr.path) {
+                case "users":
+                    //deleteUser()
+                    return true;
+                case "billboards":
+                    //deleteBillboard()
+                    return true;
+                case "schedule":
+                    //deleteSchedule
+                    return true;
             }
         }
         return false;
