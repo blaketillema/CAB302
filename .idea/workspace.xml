@@ -4,19 +4,6 @@
     <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/CAB302.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CAB302.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/DisplayBillboard$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/DisplayBillboard$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/DisplayBillboard$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/DisplayBillboard$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/MainRunDisplay.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/MainRunDisplay.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/ServerConnect.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/ServerConnect.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/BillboardDataHandler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/DisplayBillboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/DisplayBillboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/MainRunDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/MainRunDisplay.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/Methods.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/ServerConnect.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/ServerConnect.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/ClientMainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/types/ClientMainTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/ServerMainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/types/ServerMainTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/assets/salts.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/assets/salts.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/testing/User1AddBillboards.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/testing/User1AddBillboards.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,12 +113,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ServerMainTest (1)" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="connections.types.ServerMainTest" />
+    <configuration name="ServerMainTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="connections.ServerMainTest" />
       <module name="CAB302" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="connections.types.*" />
+          <option name="PATTERN" value="connections.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -139,12 +126,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ServerMainTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="ServerMainTest" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="connections.ServerMainTest" />
       <module name="CAB302" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="connections.types.*" />
+          <option name="PATTERN" value="connections.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -198,7 +185,6 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Android JUnit.Unnamed" />
       <item itemvalue="Application.MainRunDisplay" />
       <item itemvalue="Application.UserManagement" />
       <item itemvalue="Application.ServerMainTest" />
@@ -415,6 +401,10 @@
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
     <state x="664" y="409" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1920.1030@0.0.1920.1030" timestamp="1586669722466" />
+    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1588328474363">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1030@0.0.1920.1030" timestamp="1588328474363" />
     <state x="2993" y="0" width="854" height="1087" key="dock-window-1" timestamp="1585732302250">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
@@ -449,10 +439,10 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/CAB302$MainRunDisplay.ic" NAME="MainRunDisplay Coverage Results" MODIFIED="1585574155421" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/CAB302$RunDisplayBillboard.ic" NAME="RunDisplayBillboard Coverage Results" MODIFIED="1585481569110" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>Sandbox.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/CAB302$RunDisplayBillboard.ic" NAME="RunDisplayBillboard Coverage Results" MODIFIED="1585481569110" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/CAB302$MainRunDisplay.ic" NAME="MainRunDisplay Coverage Results" MODIFIED="1585574155421" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>Sandbox.*</FILTER>
     </SUITE>
   </component>

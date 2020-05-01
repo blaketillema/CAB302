@@ -4,23 +4,18 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-<<<<<<< HEAD
       <excludeFolder url="file://$MODULE_DIR$/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/src/Sandbox" />
       <excludeFolder url="file://$MODULE_DIR$/src/billboard_control_panel" />
-      <excludeFolder url="file://$MODULE_DIR$/src/billboard_server" />
-=======
-      <excludeFolder url="file://$MODULE_DIR$/src/Sandbox" />
-      <excludeFolder url="file://$MODULE_DIR$/src/billboard_control_panel" />
       <excludeFolder url="file://$MODULE_DIR$/src/billboard_control_panel/SwingCalendar" />
+      <excludeFolder url="file://$MODULE_DIR$/src/billboard_server" />
       <excludeFolder url="file://$MODULE_DIR$/src/billboard_viewer" />
->>>>>>> billboardServerDB
+      <excludeFolder url="file://$MODULE_DIR$/src/connections/old" />
+      <excludeFolder url="file://$MODULE_DIR$/src/connections/testing" />
     </content>
     <content url="file://$MODULE_DIR$/src/billboard_control_panel/SwingCalendar" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-<<<<<<< HEAD
-=======
     <orderEntry type="library" name="mariadb-java-client-2.6.0" level="project" />
     <orderEntry type="module-library">
       <library name="JUnit4">
@@ -32,7 +27,6 @@
         <SOURCES />
       </library>
     </orderEntry>
->>>>>>> billboardServerDB
     <orderEntry type="module-library">
       <library name="JUnit5.4">
         <CLASSES>

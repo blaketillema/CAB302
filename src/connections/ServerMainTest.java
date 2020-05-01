@@ -1,4 +1,4 @@
-package connections.types;
+package connections;
 
 import connections.engines.Server;
 
