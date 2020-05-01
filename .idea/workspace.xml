@@ -1,31 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="">
+    <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="added test functions to show how to use ClientServerInterface">
+      <change afterPath="$PROJECT_DIR$/src/connections/old/ClientServerInterface.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/connections/old/Protocol.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/connections/old/assets/network.props" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/connections/old/assets/salts.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/CAB302.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CAB302.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/connections/old/engines/Server.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/connections/old/engines/ServerClientConnection.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/connections/old/tools/UserAuth.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/connections/old/types/ClientRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/connections/old/types/ServerResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/Billboard.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/DisplayBillboard$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/DisplayBillboard$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/MainRunDisplay.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/Panel.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/production/CAB302/billboard_viewer/ServerConnect.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/MainRunDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/MainRunDisplay.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/ClientMainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/ClientMainTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/ClientServerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/ClientServerInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/Protocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/Protocol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/ClientServerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/ClientServerInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/Protocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/Protocol.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/README.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/README.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/ServerDatabaseInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/ServerDatabaseInterface.java.bak" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/ServerMainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/ServerMainTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/assets/network.props" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/assets/network.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/assets/salts.map" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/engines/ClientThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/engines/ClientThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/engines/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/engines/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/engines/ServerClientConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/engines/ServerClientConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/exceptions/IntentionException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/exceptions/PermissionException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/exceptions/PermissionException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/exceptions/UserException.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/testing/AdminAddUsers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/testing/AdminAddUsers.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/testing/AdminModifyUsers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/testing/AdminModifyUsers.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/testing/User1AddBillboards.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/testing/User1AddBillboards.java" afterDir="false" />
@@ -33,9 +26,8 @@
       <change beforePath="$PROJECT_DIR$/src/connections/testing/User3ScheduleBillboards.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/testing/User3ScheduleBillboards.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/testing/ViewerGetCurrent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/testing/ViewerGetCurrent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/tools/Tools.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/tools/Tools.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/tools/UserAuth.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/tools/UserAuth.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/types/ClientRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/types/ClientRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/types/ServerResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/types/ServerResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/types/ClientRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/types/ClientRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/types/ServerResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/types/ServerResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/types/TestDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/types/TestDatabase.java.bak" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -290,7 +282,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587136516743</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="can send TreeMap&lt;string, object&gt; and changed more stuff">
+      <created>1588320722319</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1588320722319</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -321,7 +320,8 @@
     <MESSAGE value="added ClientServerInterface for easier server calls and improved permission handling" />
     <MESSAGE value="added ServerDatabaseInterface and improved permission handling some more" />
     <MESSAGE value="added test functions to show how to use ClientServerInterface" />
-    <option name="LAST_COMMIT_MESSAGE" value="added test functions to show how to use ClientServerInterface" />
+    <MESSAGE value="can send TreeMap&lt;string, object&gt; and changed more stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="can send TreeMap&lt;string, object&gt; and changed more stuff" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -382,11 +382,11 @@
       <screen x="0" y="0" width="1739" height="939" />
     </state>
     <state x="655" y="272" key="#com.intellij.uiDesigner.palette.ComponentItemDialog/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585579096665" />
-    <state x="637" y="27" key="CommitChangelistDialog2" timestamp="1588320623617">
+    <state x="637" y="27" key="CommitChangelistDialog2" timestamp="1588320722019">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
     <state x="577" y="25" key="CommitChangelistDialog2/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585582372076" />
-    <state x="637" y="27" key="CommitChangelistDialog2/0.0.1920.1030@0.0.1920.1030" timestamp="1588320623617" />
+    <state x="637" y="27" key="CommitChangelistDialog2/0.0.1920.1030@0.0.1920.1030" timestamp="1588320722019" />
     <state x="1920" y="0" key="CommitChangelistDialog2/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585453971046" />
     <state x="2884" y="228" key="FileChooserDialogImpl" timestamp="1585733881900">
       <screen x="1920" y="0" width="1920" height="1080" />
@@ -432,14 +432,14 @@
     </state>
     <state width="1696" height="367" key="GridCell.Tab.1.right/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585582416068" />
     <state width="890" height="439" key="GridCell.Tab.1.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585484853583" />
-    <state x="672" y="234" key="MultipleFileMergeDialog" timestamp="1587641306081">
+    <state x="672" y="234" key="MultipleFileMergeDialog" timestamp="1588320962379">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state x="672" y="234" key="MultipleFileMergeDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1587641306081" />
-    <state x="556" y="249" key="Vcs.Push.Dialog.v2" timestamp="1587136522750">
+    <state x="672" y="234" key="MultipleFileMergeDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1588320962379" />
+    <state x="556" y="249" key="Vcs.Push.Dialog.v2" timestamp="1588320759164">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state x="556" y="249" key="Vcs.Push.Dialog.v2/0.0.1920.1030@0.0.1920.1030" timestamp="1587136522750" />
+    <state x="556" y="249" key="Vcs.Push.Dialog.v2/0.0.1920.1030@0.0.1920.1030" timestamp="1588320759164" />
     <state x="2015" y="277" key="com.intellij.ide.util.TipDialog" timestamp="1586409640760">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
@@ -448,10 +448,10 @@
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
     <state x="664" y="409" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1920.1030@0.0.1920.1030" timestamp="1586669722466" />
-    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1588320626896">
+    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1588320949142">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1030@0.0.1920.1030" timestamp="1588320626896" />
+    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1030@0.0.1920.1030" timestamp="1588320949142" />
     <state x="2993" y="0" width="854" height="1087" key="dock-window-1" timestamp="1585732302250">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
