@@ -1,8 +1,8 @@
-package connections.testing;
+package connections.old.testing;
 
-import connections.ClientServerInterface;
-import connections.Protocol;
-import connections.Protocol.*;
+import connections.old.ClientServerInterface;
+import connections.old.Protocol;
+import connections.old.Protocol.*;
 import connections.exceptions.ServerException;
 
 public class AdminAddUsers {
