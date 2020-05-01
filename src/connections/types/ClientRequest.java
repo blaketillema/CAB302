@@ -1,23 +1,23 @@
 package connections.types;
 
+import connections.Protocol;
+
 import java.io.Serializable;
 import java.util.TreeMap;
 
-public class ClientRequest implements Serializable
-{
-    public String type = null;
-    public String path = null;
-    public String sessionId = null;
-    public TreeMap<String, String> params = null;
-    public TreeMap<String, TreeMap<String, String>> data = null;
+public class ClientRequest implements Serializable {
+    public Protocol.Cmd cmd = Protocol.Cmd.NONE;
+    public long sessionId = 0;
+    public TreeMap<String, Object> data = null;
+
+    public ClientRequest() {
+        this.data = new TreeMap<>();
+    }
 
     // debugging
-    public String toString()
-    {
-        return "type: " + this.type +
-                "\npath: " + this.path +
+    public String toString() {
+        return "\ncmd: " + this.cmd +
                 "\nsessionId: " + this.sessionId +
-                "\nparams: " + this.params +
                 "\ndata: " + this.data +
                 "\n---------------------------";
     }

@@ -1,88 +1,42 @@
 package connections;
 
-public class Protocol
-{
-    public static final String LOCALHOST = "localHost";
+public final class Protocol {
+    public static final String TYPE = "type";
 
-    public static final String PERMISSION = "permission";
+    public static final String DATABASE_CMD = "dbcmd";
+    public static final String SERVER_CMD = "svcmd";
 
-    public static class Permission
-    {
-        // add permissions together
-        public static String combine(String ... permissions)
-        {
-            int total = 0;
-            for(String permission : permissions)
-            {
-                total += Integer.parseInt(permission);
-            }
-            return String.valueOf(total);
-        }
-
-        // check if permissions match exactly
-        public static boolean hasAll(String toCompare, String needed)
-        {
-            return toCompare.equals(needed);
-        }
-
-        // check if toCompare has more or equal to the permissions of needed
-        public static boolean hasOne(String toCompare, String needed)
-        {
-            int a = Integer.parseInt(toCompare, 2);
-            int b = Integer.parseInt(needed, 2);
-
-            return (a & b) != 0;
-        }
-
-        public static final String NONE = "0";
-        public static final String EDIT_ALL_BILLBOARDS = "1";
-        public static final String CREATE_BILLBOARDS = "10";
-        public static final String SCHEDULE_BILLBOARDS = "100";
-        public static final String EDIT_USERS = "1000";
-        public static final String ALL = "1111";
+    public enum Cmd {
+        NONE,
+        ADD_USERS,
+        DELETE_USERS,
+        GET_USERS,
+        ADD_BILLBOARDS,
+        DELETE_BILLBOARDS,
+        GET_BILLBOARDS,
+        GET_CURRENT_BILLBOARD,
+        ADD_SCHEDULES,
+        DELETE_SCHEDULES,
+        GET_SCHEDULES,
+        GET_SESSION_ID,
     }
 
-    public static final String PATH = "path";
+    public static final String PERMISSION = "permissions";
 
-    public static class Path
-    {
-        public static final String USERS = "/users/";
-        public static final String BILLBOARDS = "/billboards/";
-        public static final String NEW_SESSION_ID = "/cmd/newSessionId";
+    public static final class Permission {
+        public static final int NONE = 0b0;
+        public static final int EDIT_ALL_BILLBOARDS = 0b1;
+        public static final int CREATE_BILLBOARDS = 0b10;
+        public static final int SCHEDULE_BILLBOARDS = 0b100;
+        public static final int EDIT_USERS = 0b1000;
+        public static final int ALL = 0b1111;
     }
-
-    public static class Type
-    {
-        public static final String POST = "POST";
-        public static final String GET = "GET";
-        public static final String DELETE = "DELETE";
-    }
-
-    public static class Params {
-        public static final String SESSION_ID = "sessionId";
-        public static final String CURRENT_SCHEDULED = "currentScheduled";
-        public static final String INTENT = "intent";
-
-
-        public static class Intent {
-            public static final String EDIT_BILLBOARD = "editBoard";
-            public static final String ADD_BILLBOARD = "addBoard";
-            public static final String EDIT_SCHEDULE = "editSchedule";
-            public static final String EDIT_USERS = "editUsers";
-        }
-    }
-
-    public static class Schedule {
-        public static final char MIN = 'M';
-        public static final char HOUR = 'H';
-        public static final char DAY = 'D';
-        public static final char WEEK = 'W';
-    }
-
 
     public static final String HASH = "hash";
     public static final String SALT = "salt";
-    public static final String USER = "user";
-
+    public static final String USERNAME = "userName";
+    public static final String USERID = "userId";
+    public static final String BOARDNAME = "boardName";
+    public static final String BOARDID = "boardId";
+    public static final String SESSIONID = "sessionId";
 }
-
