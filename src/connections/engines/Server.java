@@ -1,40 +1,36 @@
 package connections.engines;
 
-import connections.ServerDatabaseInterface;
-import connections.exceptions.ServerException;
-import connections.types.TestDatabase;
-import connections.tools.Tools;
-import connections.tools.UserAuth;
-import connections.types.ClientRequest;
-import connections.Protocol;
-import connections.types.ServerResponse;
-
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.nio.file.Paths;
-import java.util.Properties;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
-
-import static connections.engines.Server.*;
+import java.lang.reflect.*;
 
 /****************
  * initialiser
  ****************/
+
+class UserInfo {
+    String userId;
+    long createdAt;
+}
+
 public class Server {
     private int port;
-    public static ServerDatabaseInterface database = null;
-    public static TreeMap<String, String[]> sessionIds = null;
-    public static long ONE_DAY_MS = 86400000;
-
+    public static TreeMap<Long, UserInfo> sessionIds = null;
+    public static final long ONE_DAY_MS = 86400000;
+    public static Database database = null;
 
     private static final String networkPath =
             Paths.get(System.getProperty("user.dir"), "src", "connections", "assets", "network.props").toString();
 
     public Server() {
         this.port = 1234;
-        database = new ServerDatabaseInterface();
         sessionIds = new TreeMap<>();
+        database = new Database();
     }
 
     public void run() {
@@ -43,12 +39,11 @@ public class Server {
 
             System.out.printf("server running @ localhost, port %d\n", this.port);
 
-            while(true)
-            {
+            while(true) {
                 Socket socket = serverSocket.accept();
 
-                ClientThread cThread = new ClientThread(socket);
-                Thread thread = new Thread(cThread);
+                ServerThread sThread = new ServerThread(socket);
+                Thread thread = new Thread(sThread);
                 thread.start();
             }
 
