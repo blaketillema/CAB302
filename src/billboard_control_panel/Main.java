@@ -1,5 +1,6 @@
 package billboard_control_panel;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Main {

@@ -4,26 +4,40 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+
+import billboard_control_panel.Calendar.*;
+import billboard_control_panel.Calendar.CalendarEvent;
+
 
 public class MainControl {
     private JTabbedPane mainControl;
-    private JList billboardList;
+    private JList usersList;
     private JButton createUserButton;
     private JButton modifyUserButton;
     private JButton deleteUserButton;
     private JButton logOutButton;
-    private JList userList;
+    private JList billboardsList;
     private JButton scheduleBillboardButton;
     private JButton createBillboardButton;
     private JButton editBillboardButton;
     private JButton previewBillboardButton;
     private JPanel controlPanel;
+    private JButton refreshUserButton;
+    private JButton refreshBillboardButton;
 
     public MainControl() {
         Window[] wns = LoginManager.getFrames();
         for (Window wn1 : wns) {
             wn1.setVisible(false);
         }
+        String[] BillboardNames = {"Bill1", "BillTwo", "BillThree"};
+        String[] UserNames = {"Lahiru", "Blake", "Max"};
+
+        refresh(billboardsList, BillboardNames);
+        refresh(usersList, UserNames);
 
         logOutButton.addActionListener(new ActionListener() {
             @Override
@@ -107,18 +121,42 @@ public class MainControl {
         previewBillboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new billboard_viewer.DisplayBillboard(null).displayCurrentBillboard();
             }
         });
         scheduleBillboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                Window[] wns = LoginManager.getFrames();
+                for (Window wn1 : wns) {
+                    wn1.dispose();
+                    wn1.setVisible(false);
+                }
+                new CalendarCreator().main(null);
+                //openCalendar();
             }
         });
 
+        refreshBillboardButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refresh(billboardsList, BillboardNames);
+            }
+        });
+        refreshUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refresh(usersList, UserNames);
+            }
+        });
+    }
 
-
+    public void refresh(JList list, String[] stringArray) {
+        final DefaultListModel model = new DefaultListModel();
+        for (int i = 0, n = stringArray.length; i < n; i++) {
+            model.addElement(stringArray[i]);
+            list.setModel(model);
+        }
     }
 
     public static void main(String[] args) {
