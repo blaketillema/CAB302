@@ -57,7 +57,7 @@ public class Server {
 
     }
 
-<<<<<<< HEAD
+    
     public void resetTables() throws SQLException{ //resets the tables. mostly for testing. TODO: probably remove this in the final product
         connect();
         statement.executeQuery("DROP table users");
@@ -83,9 +83,4 @@ public class Server {
     }
     // END Scheduler DB commands
 
-
-
-
-=======
->>>>>>> billboardServerDB
 }
