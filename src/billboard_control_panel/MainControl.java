@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import billboard_control_panel.Calendar.*;
 import billboard_control_panel.Calendar.CalendarEvent;
@@ -125,7 +126,34 @@ public class MainControl {
         previewBillboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new billboard_viewer.DisplayBillboard(null).displayCurrentBillboard();
+
+                // TODO - Implement preview of the selected existing billboard
+                System.out.println("Preview Billboard");
+
+                // TEST CODE
+                TreeMap<String, String> sampleBillboard = new TreeMap<>();
+
+                String billboardBackground = "#0000FF";
+                String message = "THIS IS A PREVIEW BUTTON TEST";
+                String messageColour = "#FFFF00";
+                String pictureUrl = "https://www.w3schools.com/html/pic_trulli.jpg";
+                String pictureData = null;
+                String information = "Be sure to check out https://example.com/ for more information." +
+                        "Longer Information string for testing: Hello world. Hello World. Hello World." +
+                        "Hello World. Hello World. Hello World. INFORMATION END";
+                String informationColour = "#00FFFF";
+
+                sampleBillboard.put("billboardBackground", billboardBackground);
+                sampleBillboard.put("message", message);
+                sampleBillboard.put("messageColour", messageColour);
+                sampleBillboard.put("pictureUrl", pictureUrl);
+                sampleBillboard.put("pictureData", pictureData);
+                sampleBillboard.put("information", information);
+                sampleBillboard.put("informationColour", informationColour);
+
+                // Preview billboard contents of current TreeMap
+                billboard_viewer.Billboard previewBillboard = new billboard_viewer.Billboard(sampleBillboard, true);
+
             }
         });
         scheduleBillboardButton.addActionListener(new ActionListener() {
