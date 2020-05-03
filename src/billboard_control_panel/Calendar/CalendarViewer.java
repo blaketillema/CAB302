@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
+import java.text.ParseException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -74,8 +75,16 @@ public abstract class CalendarViewer extends JComponent {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if (!checkCalendarEventClick(e.getPoint())) {
-                    checkCalendarEmptyClick(e.getPoint());
+                try {
+                    if (!checkCalendarEventClick(e.getPoint())) {
+                        try {
+                            checkCalendarEmptyClick(e.getPoint());
+                        } catch (ParseException ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
                 }
             }
         });
@@ -84,7 +93,7 @@ public abstract class CalendarViewer extends JComponent {
     protected abstract boolean dateInRange(LocalDate date);
 
     // Click on an already scheduled billboard
-    private boolean checkCalendarEventClick(Point p) {
+    private boolean checkCalendarEventClick(Point p) throws ParseException {
         double x0, x1, y0, y1;
         for (CalendarEvent event : events) {
             if (!dateInRange(event.getDate())) continue;
@@ -103,7 +112,7 @@ public abstract class CalendarViewer extends JComponent {
     }
 
     // Click on an empty billboard schedule slot
-    private boolean checkCalendarEmptyClick(Point p) {
+    private boolean checkCalendarEmptyClick(Point p) throws ParseException {
         final double x0 = dayToPixel(getStartDay());
         final double x1 = dayToPixel(getEndDay()) + dayWidth;
         final double y0 = timeToPixel(START_TIME);
@@ -140,7 +149,7 @@ public abstract class CalendarViewer extends JComponent {
 
     // Notify all listeners that have registered interest for
     // notification on this event type.
-    private void fireCalendarEventClick(CalendarEvent calendarEvent) {
+    private void fireCalendarEventClick(CalendarEvent calendarEvent) throws ParseException {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
         // Process the listeners last to first, notifying
@@ -156,7 +165,7 @@ public abstract class CalendarViewer extends JComponent {
     }
 
 
-    private void fireCalendarEmptyClick(LocalDateTime dateTime) {
+    private void fireCalendarEmptyClick(LocalDateTime dateTime) throws ParseException {
         Object[] listeners = listenerList.getListenerList();
         CalendarEmptyClickEvent calendarEmptyClickEvent;
         for (int i = listeners.length - 2; i >= 0; i -= 2) {

@@ -10,7 +10,6 @@ bin/
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
-*.iml
 
 # Generated files
 .idea/**/contentModel.xml
@@ -76,4 +75,3 @@ fabric.properties
 /bin/
 
 .idea/
-/.idea/
