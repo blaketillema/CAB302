@@ -17,8 +17,7 @@ import java.io.IOException;
 /**
  * This is the main GUI to display the current billboard
  */
-// TODO change this back to an abstract class and extend it for each billboard type ???
-public class DisplayBillboard {
+public class zz_DisplayBillboard_DELETE_LATER {
     JFrame frame = new JFrame("Billboard Frame");
     private double xRes; //Full screen width
     private double yRes; //Full screen height
@@ -35,10 +34,9 @@ public class DisplayBillboard {
     private Billboard billboardNow;
 
     /**
-     *
      * @param billboardNow
      */
-    public DisplayBillboard(Billboard billboardNow) {
+    public zz_DisplayBillboard_DELETE_LATER(Billboard billboardNow) {
         this.billboardNow = billboardNow;
     }
 

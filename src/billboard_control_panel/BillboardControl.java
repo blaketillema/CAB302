@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.TreeMap;
 
 public class BillboardControl {
     private JTextField textField1;
@@ -36,6 +37,35 @@ public class BillboardControl {
         previewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("Preview Billboard");
+
+                //TODO - properly implement preview, currently concept test code
+
+                System.out.println("Import XML");
+
+                // TEST CODE
+                TreeMap<String, String> sampleBillboard = new TreeMap<>();
+
+                String billboardBackground = "#0000FF";
+                String message = "THIS IS A PREVIEW BUTTON TEST";
+                String messageColour = "#FFFF00";
+                String pictureUrl = "https://www.w3schools.com/html/pic_trulli.jpg";
+                String pictureData = null;
+                String information = "Be sure to check out https://example.com/ for more information." +
+                        "Longer Information string for testing: Hello world. Hello World. Hello World." +
+                        "Hello World. Hello World. Hello World. INFORMATION END";
+                String informationColour = "#00FFFF";
+
+                sampleBillboard.put("billboardBackground", billboardBackground);
+                sampleBillboard.put("message", message);
+                sampleBillboard.put("messageColour", messageColour);
+                sampleBillboard.put("pictureUrl", pictureUrl);
+                sampleBillboard.put("pictureData", pictureData);
+                sampleBillboard.put("information", information);
+                sampleBillboard.put("informationColour", informationColour);
+
+                // Pass in TreeMap contents of a billboard to the Billboard class
+                billboard_viewer.Billboard previewBillboard = new billboard_viewer.Billboard(sampleBillboard, true);
 
             }
         });
