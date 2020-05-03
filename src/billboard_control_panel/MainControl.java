@@ -137,9 +137,10 @@ public class MainControl {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                CalendarCreator calendarCreator = new CalendarCreator(null);
-                CalendarCreator.main(null);
-                //openCalendar();
+                ArrayList<CalendarEvent> events = new ArrayList<>();
+                CalendarWeek cal = new CalendarWeek(events);
+                new CalendarCreator(cal).main(null);
+                events.add(new CalendarEvent(LocalDate.of(2020, 4, 28), LocalTime.of(14, 0), LocalTime.of(14, 20), "BILLBOARD 1"));
             }
         });
 

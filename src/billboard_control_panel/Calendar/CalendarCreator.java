@@ -148,28 +148,33 @@ public class CalendarCreator extends Frame {
 
         // Listeners
         cal.addCalendarEventClickListener(e -> {
-            System.out.println(e.getCalendarEvent());
+            //System.out.println(e.getCalendarEvent());
+            //System.out.println(e.getStartDateTime().toString());
 //            scheduleName.setText("K");
 //            enterScheduleNameTextField.setText("Enter Schedule Name");
-            enterScheduleNameTextField.setText(e.getCalendarEvent().toString());
-            String dateTimeName = String.valueOf(e.getCalendarEvent());
+            Date startDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getStartDateTime().toString());
+            startSpinner.setValue(startDate);
+            Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getEndDateTime().toString());
+            endSpinner.setValue(endDate);
+            enterScheduleNameTextField.setText(e.getBillboardName());
+            //String dateTimeName = String.valueOf(e.getCalendarEvent());
+            //Date startDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getStart().toString());
+            //startSpinner.setValue(startDate);
             //schedulerController.getValues(dateTimeName);
         });
 
         cal.addCalendarEmptyClickListener(e -> {
             System.out.println(e.getDateTime());
             System.out.println(CalendarViewer.roundTime(e.getDateTime().toLocalTime(), 30));
-            System.out.println(startSpinner.getValue());
-            //e.getDateTime().format()
-
-            //setupUi().enterScheduleNameTextField.setText();
-            //enterScheduleNameTextField.setText(CalendarViewer.roundTime(e.getDateTime().toLocalTime(), 30).toString());
-            //startSpinner.setValue(formattedDate);
-            //hourSpinner.setValue(CalendarViewer.roundTime(e.getDateTime().toLocalTime(), 30));
-            //scheduler.minuteSpinnerValue = 30;
-            //scheduler.minuteSpinner.setValue(30);
-
-            String dateTimeName = String.valueOf(e.getDateTime());
+            Date startDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getDateTime().toString());
+            //LocalDateTime endDateUnformatted = e.getDateTime().plusHours(Long.parseLong(occuranceSpinner.getValue().toString()));
+            LocalDateTime endDateUnformatted = e.getDateTime().plusHours(1);
+            Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(endDateUnformatted.toString());
+            System.out.println(endDate);
+            startSpinner.setValue(startDate);
+            endSpinner.setValue(endDate);
+            enterScheduleNameTextField.setText("Enter new schedule name...");
+            //String dateTimeName = String.valueOf(e.getDateTime());
         });
 
 

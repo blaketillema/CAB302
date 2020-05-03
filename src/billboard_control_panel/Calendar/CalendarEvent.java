@@ -2,6 +2,7 @@ package billboard_control_panel.Calendar;
 
 import java.awt.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 
@@ -10,6 +11,8 @@ public class CalendarEvent {
 
     private LocalDate date;
     private LocalTime start;
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
     private LocalTime end;
     private String text;
     private Color color;
@@ -36,6 +39,16 @@ public class CalendarEvent {
 
     public LocalTime getStart() {
         return start;
+    }
+
+    public LocalDateTime getStartDateTime() {
+        LocalDateTime startDateTime = start.atDate(date);
+        return startDateTime;
+    }
+
+    public LocalDateTime getEndDateTime() {
+        LocalDateTime endDateTime = end.atDate(date);
+        return endDateTime;
     }
 
     public void setStart(LocalTime start) {
