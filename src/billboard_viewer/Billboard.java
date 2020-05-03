@@ -30,8 +30,10 @@ public class Billboard {
     private JFrame billboardFrame = new JFrame("Billboard Frame");
     private boolean billboardClosed = false;
 
+    private boolean preview = false; // Indicates if called from the control panel to preview a billboard. Default value false.
+
     /**
-     *  Default constructor (No billboard to display)
+     * Default constructor (No billboard to display)
      */
     public Billboard() {
         // Start billboard as default if given no input TreeMap
@@ -44,9 +46,22 @@ public class Billboard {
 
     /**
      * Construct billboard with input TreeMap
+     *
      * @param billboardContents
      */
     public Billboard(TreeMap<String, String> billboardContents) {
+        this.billboardContents = billboardContents;
+        frameSetup();
+    }
+
+    /**
+     * Used for previewing billboard from control panel.
+     * Construct billboard with input TreeMap, with boolean overload for control panel preview
+     *
+     * @param billboardContents
+     */
+    public Billboard(TreeMap<String, String> billboardContents, boolean preview) {
+        this.preview = true;
         this.billboardContents = billboardContents;
         frameSetup();
     }
@@ -62,7 +77,14 @@ public class Billboard {
         billboardFrame.setExtendedState(JFrame.MAXIMIZED_BOTH); // Set Frame to Full Screen
         billboardFrame.setUndecorated(true); // Remove window bars for true full screen
 
-        billboardFrame.add(noBillboardPanel());
+        // Check if the billboard is a control panel preview
+        if (preview) {
+            Panel panel = new Panel(billboardContents);
+            JPanel billboardPanel = panel.getPanel();
+            billboardFrame.add(billboardPanel);
+        } else {
+            billboardFrame.add(noBillboardPanel());
+        }
 
         // Add listeners for left mouse or ESC key to exist program
         addMouseListener();
