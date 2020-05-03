@@ -10,11 +10,11 @@ import java.util.ArrayList;
 
 import billboard_control_panel.Calendar.*;
 import billboard_control_panel.Calendar.CalendarEvent;
-import billboard_viewer.DisplayBillboard;
-import connections.ClientServerInterface;
-import connections.Protocol;
-import connections.ServerMainTest;
-import connections.testing.AdminAddUsers;
+//import billboard_viewer.DisplayBillboard;
+//import connections.ClientServerInterface;
+//import connections.Protocol;
+//import connections.ServerMainTest;
+//import connections.testing.AdminAddUsers;
 
 
 public class MainControl {
@@ -126,7 +126,7 @@ public class MainControl {
         previewBillboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new DisplayBillboard(null).displayCurrentBillboard();
+                //new DisplayBillboard(null).displayCurrentBillboard();
             }
         });
         scheduleBillboardButton.addActionListener(new ActionListener() {

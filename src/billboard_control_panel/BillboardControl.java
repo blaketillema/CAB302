@@ -1,5 +1,7 @@
 package billboard_control_panel;
 
+//import billboard_viewer.Billboard;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -65,7 +67,7 @@ public class BillboardControl {
                 sampleBillboard.put("informationColour", informationColour);
 
                 // Pass in TreeMap contents of a billboard to the Billboard class
-                billboard_viewer.Billboard previewBillboard = new billboard_viewer.Billboard(sampleBillboard, true);
+                //Billboard previewBillboard = new Billboard(sampleBillboard, true);
 
             }
         });
@@ -196,4 +198,5 @@ public class BillboardControl {
     public JComponent $$$getRootComponent$$$() {
         return billboardControl;
     }
+
 }

@@ -1,8 +1,8 @@
 package billboard_control_panel;
 
-import connections.ClientServerInterface;
-import connections.Protocol;
-import connections.exceptions.ServerException;
+//import connections.ClientServerInterface;
+//import connections.Protocol;
+//import connections.exceptions.ServerException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,12 +31,8 @@ public class UserControl {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ClientServerInterface server = new ClientServerInterface();
-                try {
-                    server.addNewUser(textField1.getText(), passwordField1.getText(), Protocol.Permission.ALL);
-                } catch (ServerException ex) {
-                    ex.printStackTrace();
-                }
+                //ClientServerInterface server = new ClientServerInterface();
+                //server.addNewUser(textField1.getText(), passwordField1.getText(), Protocol.Permission.ALL);
 
             }
         });
