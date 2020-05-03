@@ -10,10 +10,9 @@ import java.util.*;
  * "schedule-add"
  * "schedule-delete"
  * "schedule-get"
- * "schedule-response:schedules"
- * "schedule-response:removed"
  * "schedule-response:added"
- *
+ * "schedule-response:removed"
+ * "schedule-response:schedules"
  */
 public class ScheduleController {
     private static String currentCommandName;
@@ -46,7 +45,7 @@ public class ScheduleController {
      * @param recurFreqInMins
      */
     public static void commandAddSchedule(String billboardName, OffsetDateTime schedStart, Integer schedDurationInMins,
-                                          Boolean isRecurring, Integer recurFreqInMins){
+                                          Boolean isRecurring, Integer recurFreqInMins, String creatorName){
         //
         String commandName = "schedule-add";
         ArrayList listOfObjects = new ArrayList();
@@ -56,6 +55,7 @@ public class ScheduleController {
         listOfObjects.add(schedDurationInMins);
         listOfObjects.add(isRecurring);
         listOfObjects.add(recurFreqInMins);
+        listOfObjects.add(creatorName);
         // Add command name & data
         addCommand(commandName, listOfObjects);
     }
@@ -77,74 +77,76 @@ public class ScheduleController {
         addCommand(commandName, listOfObjects);
     }
 
-
-
-
-
-
-    // --------------- SERVER SIDE  ---------------
-    // TODO FOR RECIEVING
-    // TODO move below to server
-    // COMMANDS RECEIVED FOR PROCESSING
-    public static void commandParser(String command, ArrayList<Object> data){
-        // check where to send data & do so
-        if ( command == "schedule-add" ) {
-            // Process adding Schedule
-            addCommand("schedule-response:added", addSchedule( data ));
+    // Control Panel Parser for response
+    // RESPONSE PROCESSING
+    public static void commandReplyParser(String command, ArrayList<Object> data){
+        // TODO REOVE TEMP VARIABLE ASSIGNMENT FOR COMMAND HERE:
+        addCommand(command, data);
+        // TODO add necessary calls for the control panel here
+        String successMessage;
+        // check reply
+        if ( command ==  "schedule-response:added"  ) {
+            String billboardName = (String) data.get(0);
+            OffsetDateTime schedStart = (OffsetDateTime) data.get(1);
+            // Process message
+            successMessage = "Billboard schedule has been successfully added for: "+
+                    billboardName + "to start at " + schedStart;
         }
-        else if (  command == "schedule-delete" ){
-            // process deletion from DB
-            addCommand("schedule-response:removed", removeSchedule( data ));
+        else if (  command == "schedule-response:removed" ){
+            // Process action required (if any)
+            String billboardName = (String) data.get(0);
+            OffsetDateTime schedStart = (OffsetDateTime) data.get(1);
+            // Process message
+            successMessage = "Billboard schedule has been successfully deleted for: "+
+                    billboardName + "which had a start time of " + schedStart;
         }
-        else if ( command ==  "schedule-get" ){
+        else if ( command == "schedule-response:schedules" ){
             // get current schedules from DB and respond to Control Panel
-            addCommand("schedule-response:schedules", getSchedules() );
+            successMessage = "The current list of schedules is: ";
+            for (Object schedule : data){
+                ArrayList<Object> scheduleArray = (ArrayList<Object>) schedule;
+                successMessage = scheduleToString(scheduleArray);
+            }
+            System.out.println(successMessage);
+            // call to display this on the GUI
         }
     }
 
-    // add
-    public static ArrayList<Object> addSchedule(ArrayList<Object> scheduleToAdd){
+
+
+
+
+
+
+
+
+
+
+
+
+    // --------------- HELPER METHODS  ---------------
+    // Schedule string message
+    public static String scheduleToString(ArrayList<Object> schedule){
         // seperate components
-        String billboardName = (String) scheduleToAdd.get(0);
-        OffsetDateTime schedStart = (OffsetDateTime) scheduleToAdd.get(1);
-        Integer schedDurationInMins  = (Integer) scheduleToAdd.get(2);
-        Boolean isRecurring  = (Boolean) scheduleToAdd.get(3);
-        Integer recurFreqInMins  = (Integer) scheduleToAdd.get(4);
-        // Check if okay to add
-
-        // TODO check logic
-
-
-
-        // Call to add this data to DB
-        // TODO replace this with DB call
-        System.out.println("Add schedule to DB is: " +
+        String billboardName = (String) schedule.get(0);
+        OffsetDateTime schedStart = (OffsetDateTime) schedule.get(1);
+        Integer schedDurationInMins  = (Integer) schedule.get(2);
+        Boolean isRecurring  = (Boolean) schedule.get(3);
+        Integer recurFreqInMins  = (Integer) schedule.get(4);
+        String creatorName = (String) schedule.get(5);
+        // add to string
+        String scheduleString = "Schedule is: " +
                 "\nbillboardName: " + billboardName +
                 "\nschedStart: " + schedStart +
                 "\nschedDurationInMins: " + schedDurationInMins +
                 "\nisRecurring: " + isRecurring +
-                "\nrecurFreqInMins: " + recurFreqInMins
-                );
-
-        return scheduleToAdd;
+                "\nrecurFreqInMins: " + recurFreqInMins +
+                "\nrecurFreqInMins: " + creatorName;
+        return scheduleString;
     }
 
-
-    // remove scheduled for billboard
-    public static ArrayList<Object> removeSchedule(ArrayList<Object> scheduleToRemove ) {
-        // seperate components
-        String billboardName = (String) scheduleToRemove.get(0);
-        OffsetDateTime schedStart = (OffsetDateTime) scheduleToRemove.get(1);
-        // TODO replace with DB call below
-        System.out.println("Delete schedule is for: " + billboardName + " starting at: " + schedStart);
-        //String SQL = "DELETE FROM schedule WHERE name = '" + billboardName + "' AND schedule_start = '" + scheduleStart + "';";
-        // delete row in database scheduling table corresponding to name and schedule start time
-        return scheduleToRemove;
-    }
-
-    public static ArrayList<Object> getSchedules() {
-        // get resultset from DB
-        // TODO - call DB here instead to get each schedule row instead of below
+    // returns a dummy list of schedules
+    public static ArrayList<Object> getDummySchedules() {
         // EXAMPLE DATA TO ADD
         OffsetDateTime timeNowPlus10Days = OffsetDateTime.now().plusDays(10);
         String billboardName = "Bilboard: ";
@@ -171,25 +173,8 @@ public class ScheduleController {
         ArrayList<Object> schedulesListExample = new ArrayList<>();
         schedulesListExample.add(scheduleAExampleA);
         schedulesListExample.add(scheduleAExampleB);
-        //TODO  change to real data below
-        // Add result set to List with list of objects
-        // Replace with resultset
-        ArrayList<Object> schedulesList = schedulesListExample;
-        ArrayList<Object> schedule = new ArrayList<>();
-        for (Object sched : schedulesList) {
-            schedule.add(sched);
-        }
-        return schedulesList;
+        return schedulesListExample;
     }
-
-
-
-
-
-
-
-
-
 
     // TODO calls will be from Control Panel GUI instead of main test here
     // TODO Test
@@ -201,18 +186,23 @@ public class ScheduleController {
         Integer duration = 60;
         Boolean recur = true;
         Integer recurFreqMins = 30;
+        String creatorName = "John";
 
-        // CHANGE CALL BELOW
-        // commandAddSchedule(billboardName, schedStart, duration, recur, recurFreqMins);
+        // CHANGE COMMAND CALL BELOW
+        // commandAddSchedule(billboardName, schedStart, duration, recur, recurFreqMins, creatorName);
         // commandRemoveSchedule(billboardName, schedStart);
         commandGetSchedules();
 
         // CHECK OUTPUT
-        System.out.println("From command sent: " + getCurrentCommandName() + ", the data is: "
+        System.out.println("Instructions from GUI for Command:  " + getCurrentCommandName() + ", the data is:\n"
+                + getCurrentCommandData().toString() +"\n" );
+        // --> POST to server from this Control Panel
+        Scheduler.commandParser( getCurrentCommandName(), getCurrentCommandData() );
+        System.out.println("Command data on server commandParser for Command:  "
+                + Scheduler.getCurrentCommandName() + "\n" + Scheduler.getCurrentCommandData().toString() +"\n"  );
+        // --> Get reply from server and parse
+        commandReplyParser( Scheduler.getCurrentCommandName(), Scheduler.getCurrentCommandData() );
+        System.out.println("Command data after commandReplyParser for Command:  " + getCurrentCommandName() + "\n"
                 + getCurrentCommandData().toString() );
-
-        System.out.println("Check if parser is working properly:\n" );
-        commandParser( getCurrentCommandName(), getCurrentCommandData() );
-        System.out.println("Command data after commandParser " + getCurrentCommandData().toString() );
     }
 }
