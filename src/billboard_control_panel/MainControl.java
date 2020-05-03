@@ -10,6 +10,10 @@ import java.util.ArrayList;
 
 import billboard_control_panel.Calendar.*;
 import billboard_control_panel.Calendar.CalendarEvent;
+import connections.ClientServerInterface;
+import connections.Protocol;
+import connections.ServerMainTest;
+import connections.testing.AdminAddUsers;
 
 
 public class MainControl {
@@ -132,7 +136,8 @@ public class MainControl {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new CalendarCreator().main(null);
+                CalendarCreator calendarCreator = new CalendarCreator(null);
+                CalendarCreator.main(null);
                 //openCalendar();
             }
         });
@@ -167,6 +172,7 @@ public class MainControl {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+
     }
 
     private void createUIComponents() {

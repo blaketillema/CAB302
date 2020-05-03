@@ -1,5 +1,9 @@
 package billboard_control_panel;
 
+import connections.ClientServerInterface;
+import connections.Protocol;
+import connections.exceptions.ServerException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -45,7 +49,17 @@ public class LoginManager extends JFrame {
 
     public void login(String username, String password){
         Component frame = null;
+        // TODO: Check for usernames and passwords stored in db
         if (username.equals("admin") && password.equals("admin")) {
+//            ClientServerInterface server = new ClientServerInterface();
+//            try {
+//                server.login(username,password);
+//                //server.addNewUser("lahiru", "password", Protocol.Permission.ALL);
+//            } catch (ServerException e) {
+//                e.printStackTrace();
+//            }
+
+
             new MainControl().main(null);
 
         } else {

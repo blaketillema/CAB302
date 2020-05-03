@@ -19,7 +19,7 @@ public class schedulerController {
     private JTextField enterScheduleNameTextField;
     public JPanel schedulerPanel;
     private JSpinner hourSpinner;
-    private JSpinner minuteSpinner;
+    public JSpinner minuteSpinner;
     private JRadioButton mondayRadioButton;
     private JRadioButton wednesdayRadioButton;
     private JRadioButton tuesdayRadioButton;
@@ -50,6 +50,7 @@ public class schedulerController {
     public schedulerController(JSpinner hourlySpinner) {
         this.hourlySpinner = hourlySpinner;
     }
+
 
     public static String getValues(String TimeString){
         System.out.println("time string is" + TimeString);
@@ -93,10 +94,10 @@ public class schedulerController {
                 int minutelySpinnerValue = (Integer) minutelySpinner.getValue();
                 int hourlySpinnerValue = (Integer) hourlySpinner.getValue();
                 System.out.println(minuteSpinnerValue);
-                //hourSpinner.setValue(2);
+                hourSpinner.setValue(2);
                 // TODO: ADD event according to user selected values
-                ArrayList<CalendarEvent> events = new ArrayList<>();
-                events.add(new CalendarEvent(LocalDate.of(2020, 4, 29), LocalTime.of(hourSpinnerValue, minuteSpinnerValue), LocalTime.of(minutelySpinnerValue, hourlySpinnerValue), "BILLBOARD 1"));
+                //ArrayList<CalendarEvent> events = new ArrayList<>();
+                //events.add(new CalendarEvent(LocalDate.of(2020, 4, 29), LocalTime.of(hourSpinnerValue, minuteSpinnerValue), LocalTime.of(minutelySpinnerValue, hourlySpinnerValue), "BILLBOARD 1"));
             }
         });
 
