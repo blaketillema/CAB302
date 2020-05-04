@@ -15,11 +15,12 @@ public class Scheduler {
     private TreeMap<Date, String> currentScheduledBillboardsTreeMap; // Start date-time, billboard name
     // TODO change getter methods to to update currentScheduledBillboardsTreeMap from result set
 
-    // TIME LOGIC NOTES
-    // START times are INCLUSIVE
-    // END times are EXCLUSIVE
+    // ------  TIME LOGIC NOTES  -----
+    // START    times are INCLUSIVE
+    // END      times are EXCLUSIVE
     // Database time format (at least for inputs): YYYY-MM-DD HH:mm:ss
     // format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    // Best modern java time to use to avoid zoning issues is OffsetDateTime
 
 
     /*
