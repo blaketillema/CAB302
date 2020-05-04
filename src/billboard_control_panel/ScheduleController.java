@@ -13,6 +13,7 @@ import java.util.*;
  * "schedule-response:added"
  * "schedule-response:removed"
  * "schedule-response:schedules"
+ * "schedule-response:error"
  */
 public class ScheduleController {
     private static String currentCommandName;
@@ -46,7 +47,6 @@ public class ScheduleController {
      */
     public static void commandAddSchedule(String billboardName, OffsetDateTime schedStart, Integer schedDurationInMins,
                                           Boolean isRecurring, Integer recurFreqInMins, String creatorName){
-        //
         String commandName = "schedule-add";
         ArrayList listOfObjects = new ArrayList();
         // save relevant objects to list
@@ -83,7 +83,7 @@ public class ScheduleController {
         // TODO REOVE TEMP VARIABLE ASSIGNMENT FOR COMMAND HERE:
         addCommand(command, data);
         // TODO add necessary calls for the control panel here
-        String successMessage;
+        String successMessage = null;
         // check reply
         if ( command ==  "schedule-response:added"  ) {
             String billboardName = (String) data.get(0);
@@ -100,23 +100,22 @@ public class ScheduleController {
             successMessage = "Billboard schedule has been successfully deleted for: "+
                     billboardName + "which had a start time of " + schedStart;
         }
-        else if ( command == "schedule-response:schedules" ){
+        else if ( command == "schedule-response:schedules" ) {
             // get current schedules from DB and respond to Control Panel
             successMessage = "The current list of schedules is: ";
-            for (Object schedule : data){
+            for (Object schedule : data) {
                 ArrayList<Object> scheduleArray = (ArrayList<Object>) schedule;
                 successMessage = scheduleToString(scheduleArray);
             }
-            System.out.println(successMessage);
-            // call to display this on the GUI
         }
+        else if ( command == "schedule-response:error"){
+                successMessage = (String) data.get(0);
+                // TODO Add an action here
+        }
+        System.out.println(successMessage);
+        // call to display this on the GUI
+
     }
-
-
-
-
-
-
 
 
 
@@ -155,27 +154,34 @@ public class ScheduleController {
         Boolean recur = true;
         Integer recurFreqMins = 30;
         String userName = "userExample";
-        ArrayList<Object> scheduleAExampleA = new ArrayList<>();
-        scheduleAExampleA.add(billboardName + "A");
-        scheduleAExampleA.add(schedStart);
-        scheduleAExampleA.add(duration);
-        scheduleAExampleA.add(recur);
-        scheduleAExampleA.add(recurFreqMins);
-        scheduleAExampleA.add(userName);
-        ArrayList<Object> scheduleAExampleB = new ArrayList<>();
-        scheduleAExampleB.add(billboardName + "B");
-        scheduleAExampleB.add(schedStart);
-        scheduleAExampleB.add(duration);
-        scheduleAExampleB.add(recur);
-        scheduleAExampleB.add(recurFreqMins);
-        scheduleAExampleB.add(userName);
+        OffsetDateTime scheduleAddedAt = OffsetDateTime.now().minusDays(10);
+        // Dummy schedules
+        ArrayList<Object> scheduleExampleA = new ArrayList<>();
+        scheduleExampleA.add(billboardName + "A");
+        scheduleExampleA.add(schedStart);
+        scheduleExampleA.add(duration);
+        scheduleExampleA.add(recur);
+        scheduleExampleA.add(recurFreqMins);
+        scheduleExampleA.add(userName);
+        scheduleExampleA.add(scheduleAddedAt);
+        ArrayList<Object> scheduleExampleB = new ArrayList<>();
+        scheduleExampleB.add(billboardName + "B");
+        scheduleExampleB.add(schedStart);
+        scheduleExampleB.add(duration);
+        scheduleExampleB.add(recur);
+        scheduleExampleB.add(recurFreqMins);
+        scheduleExampleB.add(userName);
+        scheduleAddedAt.plusDays(3); // change time added to give B precedence
+        scheduleExampleB.add(scheduleAddedAt);
         // EXAMPLE DATA - ADD to EXAMPLE list
         ArrayList<Object> schedulesListExample = new ArrayList<>();
-        schedulesListExample.add(scheduleAExampleA);
-        schedulesListExample.add(scheduleAExampleB);
+        schedulesListExample.add(scheduleExampleA);
+        schedulesListExample.add(scheduleExampleB);
         return schedulesListExample;
     }
 
+
+    // -------------- TEMPORARY MAIN -----------------
     // TODO calls will be from Control Panel GUI instead of main test here
     // TODO Test
     public static void main(String[] args) {

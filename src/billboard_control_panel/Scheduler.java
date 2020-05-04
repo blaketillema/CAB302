@@ -2,10 +2,12 @@ package billboard_control_panel;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 public class Scheduler {
     private static String currentCommandName;
     private static ArrayList<Object> currentCommandData = new ArrayList<>();
+    private static TreeMap<String, String> currentBillboardData = new TreeMap<>();
 
     // TODO change from map send these through connections methods to server Scheduler
     public static void addCommand(String command, ArrayList<Object> data) {
@@ -21,6 +23,18 @@ public class Scheduler {
     public static ArrayList<Object> getCurrentCommandData() {
         return currentCommandData;
     }
+
+    public static void setCurrentBillboardData(TreeMap<String, String> data){
+        currentBillboardData = data;
+    }
+
+    // TODO - Call this to send data to Billboard Viewer
+    public static TreeMap<String, String> getCurrentBillboardData(){
+        // update it before return
+        updateCurrentBillboardData();
+        return currentBillboardData;
+    }
+
 
 
     // --------------- SERVER SIDE  ---------------
@@ -39,7 +53,7 @@ public class Scheduler {
         }
         else if ( command ==  "schedule-get" ){
             // get current schedules from DB and respond to Control Panel
-            addCommand("schedule-response:schedules", getSchedules() );
+            addCommand("schedule-response:schedules", getSchedulesListOfObjects() );
         }
     }
 
@@ -52,14 +66,26 @@ public class Scheduler {
         Boolean isRecurring  = (Boolean) scheduleToAdd.get(3);
         Integer recurFreqInMins  = (Integer) scheduleToAdd.get(4);
         String creatorName = (String) scheduleToAdd.get(5);
-        // Check if okay to add
+        // Check to see if any problems first
+        // Start is in past
+        if( schedStart.isBefore(OffsetDateTime.now()) ) {
+            ArrayList<Object> errorMessage = new ArrayList<>();
+            errorMessage.add("Schedule start is in the past - please don't live in the past");
+            addCommand("schedule-response:error", errorMessage);
+        }
+        // Schedule is more frequent than duration of billboard
+        else if ( recurFreqInMins < schedDurationInMins) {
+            ArrayList<Object> errorMessage = new ArrayList<>();
+            errorMessage.add("Schedule frequency is more often than duration of schedule - recurrence is obsolete! Please try again.");
+            addCommand("schedule-response:error", errorMessage);
+        }
 
-        // TODO check logic
+        // TODO Double check if any other logic required
 
-
-        // Call to add this data to DB
-        // TODO replace this print with DB call
-        // System.out.println("Add schedule to DB is: " + scheduleToString(scheduleToAdd));
+        else {
+            // Call to add this data to DB
+            // TODO replace this print with DB call
+        }
         return scheduleToAdd;
     }
 
@@ -75,7 +101,7 @@ public class Scheduler {
         return scheduleToRemove;
     }
 
-    public static ArrayList<Object> getSchedules() {
+    public static ArrayList<Object> getSchedulesListOfObjects() {
         // get resultset from DB
         // TODO - call DB here instead to get each schedule row instead of below
 
@@ -90,5 +116,92 @@ public class Scheduler {
         }
         return schedulesList;
     }
+
+    private static String getScheduledBillboardWithCurrentPrecedence(){
+        ArrayList<Object> schedules = getSchedulesListOfObjects();
+        ArrayList<Object> schedulesCurrent = new ArrayList<Object>();
+        // Check which schedules would currently run and add to refined list: schedulesCurrent
+        for (Object sched : schedules) {
+            // cast to list
+            ArrayList<Object> schedNow = (ArrayList<Object>) sched;
+            // check if recurring
+            Boolean isRecurring = (Boolean) schedNow.get(3);
+            if ( !isRecurring ) {
+                OffsetDateTime schedStart = (OffsetDateTime) schedNow.get(1);
+                Integer durationMins = (Integer) schedNow.get(2);
+                OffsetDateTime schedFinish = schedStart.plusMinutes(durationMins);
+                if ( schedStart.isBefore( OffsetDateTime.now() ) &&  schedFinish.isAfter(OffsetDateTime.now()) ) {
+                    // this schedule is current, so add to list
+                    schedulesCurrent.add(schedNow);
+                }
+            }
+            else if ( isRecurring ) {
+
+                // TODO FINISH IMPLEMENTING RECURRING DURATION CHECKS FOR IF CURRENTLY RUNNING
+                //  Perhaps modulo start modulo finish and check for each if time now is between
+
+            }
+        }
+        // Check which schedule in this list takes precedence
+        ArrayList<Object> scheduleWithPrecedence = new ArrayList<>();
+        String billboardNameWithPredecence = "default";
+        if (schedulesCurrent.size() == 0){
+            // Nothing currently scheduled, so use default
+            billboardNameWithPredecence = "default";
+        }
+        else if (schedulesCurrent.size() == 1){
+            // This is the ONLY current schedule, so add it
+            scheduleWithPrecedence = (ArrayList<Object>) schedulesCurrent.get(0);
+            billboardNameWithPredecence = (String) scheduleWithPrecedence.get(0);
+        }
+        else if ( schedulesCurrent.size() > 1 ) {
+            // Init oldest time
+            OffsetDateTime mostRecentScheduleAddedAt = OffsetDateTime.MIN;
+            // check which one takes precedence (scheduled most recently)
+            for(Object schedule : schedulesCurrent) {
+                ArrayList<Object> sch = (ArrayList<Object>) schedule; // cast Object to List
+                String currentScheduleBillboardName = (String) sch.get(0); // billboardName
+                OffsetDateTime thisScheduleAddedAt = (OffsetDateTime) sch.get(6); // scheduleAddedAt
+                if ( thisScheduleAddedAt.isAfter(mostRecentScheduleAddedAt) ){
+                    billboardNameWithPredecence = currentScheduleBillboardName;
+                    mostRecentScheduleAddedAt = thisScheduleAddedAt;
+                }
+            }
+        }
+        return billboardNameWithPredecence;
+    }
+
+    public static void updateCurrentBillboardData(){
+        // Find out which billboard to grab
+        String billboardName = getScheduledBillboardWithCurrentPrecedence();
+        // For billboard data
+        TreeMap currentBillboard = new TreeMap<>();
+        // check if default
+        if( billboardName != "default" ){
+            // update details from the database using the billboard name
+
+            // TODO -  ADD call to DB here to update the curr
+
+            // save this to TreeMap currentBillboard
+
+        }
+        else {
+            // save default details
+            currentBillboard.put("message", "Advertise Here!!!");
+            currentBillboard.put("information", "Contact 1800 000 000 for more information, or visit www.example.com");
+            currentBillboard.put("billboardBackground", "#008080" );    // teal
+            currentBillboard.put("messageColour", "#FF0000");           // red
+            currentBillboard.put("informationColour", "#0000FF");       // blue
+        }
+        // clear current data in treeMap and save new data'
+        currentBillboardData.clear();
+        currentBillboardData = currentBillboard;
+    }
+
+
+
+
+
+    // ------------- HELPER METHODS -------------
 
 }
