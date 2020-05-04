@@ -1,5 +1,6 @@
 package billboard_control_panel;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -80,7 +81,7 @@ public class ScheduleController {
     // Control Panel Parser for response
     // RESPONSE PROCESSING
     public static void commandReplyParser(String command, ArrayList<Object> data){
-        // TODO REOVE TEMP VARIABLE ASSIGNMENT FOR COMMAND HERE:
+        // TODO REMOVE TEMP VARIABLE ASSIGNMENT FOR COMMAND HERE:
         addCommand(command, data);
         // TODO add necessary calls for the control panel here
         String successMessage = null;
@@ -181,6 +182,7 @@ public class ScheduleController {
     }
 
 
+
     // -------------- TEMPORARY MAIN -----------------
     // TODO calls will be from Control Panel GUI instead of main test here
     // TODO Test
@@ -210,5 +212,17 @@ public class ScheduleController {
         commandReplyParser( Scheduler.getCurrentCommandName(), Scheduler.getCurrentCommandData() );
         System.out.println("Command data after commandReplyParser for Command:  " + getCurrentCommandName() + "\n"
                 + getCurrentCommandData().toString() );
+
+
+
+
+        Duration d = Duration.ofDays(1);
+        Duration h = Duration.ofHours(1);
+        Duration dh = d.plus(h);
+        int durationInMins = (int) dh.toMinutes();
+        System.out.println("\n\nDuration in mins is: " + durationInMins);
+        System.out.println("Duration calculated 1day + 1hour in mins is: " + (24+1)*60 );
+
     }
+
 }

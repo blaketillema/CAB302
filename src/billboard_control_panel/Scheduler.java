@@ -4,13 +4,19 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+
+// TODO MOVE THIS CLASS TO SERVER
+
+
+
 public class Scheduler {
     private static String currentCommandName;
     private static ArrayList<Object> currentCommandData = new ArrayList<>();
     private static TreeMap<String, String> currentBillboardData = new TreeMap<>();
 
+    // ------------ GETTER / SETTER  ----------
     // TODO change from map send these through connections methods to server Scheduler
-    public static void addCommand(String command, ArrayList<Object> data) {
+    public static void setCommand(String command, ArrayList<Object> data) {
         // Add command name & list Data to map
         currentCommandName = command;
         currentCommandData = data;
@@ -28,7 +34,7 @@ public class Scheduler {
         currentBillboardData = data;
     }
 
-    // TODO - Call this to send data to Billboard Viewer
+    // TODO call this to send to VIEWER
     public static TreeMap<String, String> getCurrentBillboardData(){
         // update it before return
         updateCurrentBillboardData();
@@ -36,24 +42,45 @@ public class Scheduler {
     }
 
 
+    // --------------- DATABASE CALLS -----------------
+    public static TreeMap<String, String> getBillboardByNameFromDB(String billboardName){
+        TreeMap<String, String> billboardData = new TreeMap<>();
 
-    // --------------- SERVER SIDE  ---------------
-    // TODO FOR RECIEVING
-    // TODO move below to server
-    // COMMANDS RECEIVED FOR PROCESSING
+        // TODO -  ADD call to DB here to get this billboard
+
+        return billboardData;
+    }
+
+    public static void addScheduleToDB(String billboardName, OffsetDateTime schedStart, Integer schedDurationInMins,
+                                       Boolean isRecurring, Integer recurFreqInMins, String creatorName ){
+        // Add this to DB
+        // TODO -  ADD call to DB here to add this billboard
+    }
+
+    public static void deleteScheduleFromDB( ) {
+
+        // TODO -  ADD call to DB here to add this billboard
+
+    }
+
+
+
+    // --------------- METHODS  ---------------
+
+    // ----------- COMMAND PROCESSING VIA CONNECTIONS
     public static void commandParser(String command, ArrayList<Object> data){
         // check where to send data & do so
         if ( command == "schedule-add" ) {
             // Process adding Schedule
-            addCommand("schedule-response:added", addSchedule( data ));
+            setCommand("schedule-response:added", addSchedule( data ));
         }
         else if (  command == "schedule-delete" ){
             // process deletion from DB
-            addCommand("schedule-response:removed", removeSchedule( data ));
+            setCommand("schedule-response:removed", removeSchedule( data ));
         }
         else if ( command ==  "schedule-get" ){
             // get current schedules from DB and respond to Control Panel
-            addCommand("schedule-response:schedules", getSchedulesListOfObjects() );
+            setCommand("schedule-response:schedules", getSchedulesListOfObjects() );
         }
     }
 
@@ -71,20 +98,18 @@ public class Scheduler {
         if( schedStart.isBefore(OffsetDateTime.now()) ) {
             ArrayList<Object> errorMessage = new ArrayList<>();
             errorMessage.add("Schedule start is in the past - please don't live in the past");
-            addCommand("schedule-response:error", errorMessage);
+            setCommand("schedule-response:error", errorMessage);
         }
         // Schedule is more frequent than duration of billboard
         else if ( recurFreqInMins < schedDurationInMins) {
             ArrayList<Object> errorMessage = new ArrayList<>();
             errorMessage.add("Schedule frequency is more often than duration of schedule - recurrence is obsolete! Please try again.");
-            addCommand("schedule-response:error", errorMessage);
+            setCommand("schedule-response:error", errorMessage);
         }
-
-        // TODO Double check if any other logic required
-
         else {
-            // Call to add this data to DB
-            // TODO replace this print with DB call
+            // add this data to DB
+            addScheduleToDB(billboardName, schedStart, schedDurationInMins, isRecurring,
+                    recurFreqInMins, creatorName);
         }
         return scheduleToAdd;
     }
@@ -171,30 +196,25 @@ public class Scheduler {
         return billboardNameWithPredecence;
     }
 
+
     public static void updateCurrentBillboardData(){
         // Find out which billboard to grab
         String billboardName = getScheduledBillboardWithCurrentPrecedence();
         // For billboard data
-        TreeMap currentBillboard = new TreeMap<>();
+        TreeMap<String, String> currentBillboard = new TreeMap<>();
         // check if default
         if( billboardName != "default" ){
-            // update details from the database using the billboard name
-
-            // TODO -  ADD call to DB here to update the curr
-
-            // save this to TreeMap currentBillboard
-
+            // Get billboard by Name from DB
+            currentBillboard = getBillboardByNameFromDB(billboardName);
         }
-        else {
-            // save default details
+        else { // save default details
             currentBillboard.put("message", "Advertise Here!!!");
             currentBillboard.put("information", "Contact 1800 000 000 for more information, or visit www.example.com");
             currentBillboard.put("billboardBackground", "#008080" );    // teal
             currentBillboard.put("messageColour", "#FF0000");           // red
             currentBillboard.put("informationColour", "#0000FF");       // blue
         }
-        // clear current data in treeMap and save new data'
-        currentBillboardData.clear();
+        currentBillboardData.clear(); // clear current data in treeMap and save new data'
         currentBillboardData = currentBillboard;
     }
 
