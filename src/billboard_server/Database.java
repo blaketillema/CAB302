@@ -1,6 +1,6 @@
 package billboard_server;
 
-import connections.ClientRequest;
+//import connections.ClientRequest;
 import connections.types.ClientRequest;
 
 import java.io.FileInputStream;

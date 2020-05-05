@@ -17,21 +17,21 @@ import java.util.*;
  * "schedule-response:error"
  */
 public class ScheduleController {
-    private static String currentCommandName;
-    private static ArrayList<Object> currentCommandData = new ArrayList<>();
+    public static String currentCommandName;
+    public static ArrayList<Object> currentCommandData = new ArrayList<>();
 
     // TODO change from map send these through connections methods to server Scheduler
-    private static void addCommand(String command, ArrayList<Object> data) {
+    public static void addCommand(String command, ArrayList<Object> data) {
         // Add command name & list Data to map
         currentCommandName = command;
         currentCommandData = data;
     }
 
-    private static String getCurrentCommandName() {
+    public static String getCurrentCommandName() {
         return currentCommandName;
     }
 
-    private static ArrayList<Object> getCurrentCommandData() {
+    public static ArrayList<Object> getCurrentCommandData() {
         return currentCommandData;
     }
 
@@ -197,9 +197,9 @@ public class ScheduleController {
         String creatorName = "John";
 
         // CHANGE COMMAND CALL BELOW
-        // commandAddSchedule(billboardName, schedStart, duration, recur, recurFreqMins, creatorName);
-        // commandRemoveSchedule(billboardName, schedStart);
-        commandGetSchedules();
+        //commandAddSchedule(billboardName, schedStart, duration, recur, recurFreqMins, creatorName);
+        commandRemoveSchedule(billboardName, schedStart);
+        //commandGetSchedules();
 
         // CHECK OUTPUT
         System.out.println("Instructions from GUI for Command:  " + getCurrentCommandName() + ", the data is:\n"

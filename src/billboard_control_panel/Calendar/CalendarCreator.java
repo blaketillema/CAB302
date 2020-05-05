@@ -2,16 +2,17 @@ package billboard_control_panel.Calendar;
 
 import billboard_control_panel.LoginManager;
 import billboard_control_panel.MainControl;
+import billboard_control_panel.ScheduleController;
+import billboard_control_panel.Scheduler;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,97 +20,128 @@ import java.util.Date;
 import java.util.Locale;
 
 public class CalendarCreator extends Frame {
+    ArrayList<CalendarEvent> events = new ArrayList<>();
     public CalendarCreator(CalendarWeek cal) {
         setLayout(new GridLayout());
         JFrame frm = new JFrame();
-        //JPanel guiPanel = setupUi();
 
+        //JPanel
         JPanel schedulerPanel = new JPanel();
-        schedulerPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(14, 6, new Insets(0, 0, 0, 0), -1, -1));
+        schedulerPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(13, 6, new Insets(0, 0, 0, 0), -1, -1));
+
+        // Title
+        final JLabel label2 = new JLabel();
+        label2.setText("Billboard Scheduler Editor");
+        schedulerPanel.add(label2, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 16), null, 0, false));
+
+        // Schedule Name
         JTextField enterScheduleNameTextField = new JTextField();
         enterScheduleNameTextField.setText("Enter Schedule Name");
         schedulerPanel.add(enterScheduleNameTextField, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        JRadioButton mondayRadioButton = new JRadioButton();
-        mondayRadioButton.setText("Monday");
-        schedulerPanel.add(mondayRadioButton, new com.intellij.uiDesigner.core.GridConstraints(9, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(72, 18), null, 0, false));
-        JRadioButton tuesdayRadioButton = new JRadioButton();
-        tuesdayRadioButton.setText("Tuesday");
-        schedulerPanel.add(tuesdayRadioButton, new com.intellij.uiDesigner.core.GridConstraints(9, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 18), null, 0, false));
-        JRadioButton fridayRadioButton = new JRadioButton();
-        fridayRadioButton.setText("Friday");
-        schedulerPanel.add(fridayRadioButton, new com.intellij.uiDesigner.core.GridConstraints(10, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(72, 18), null, 0, false));
-        JRadioButton saturdayRadioButton = new JRadioButton();
-        saturdayRadioButton.setText("Saturday");
-        schedulerPanel.add(saturdayRadioButton, new com.intellij.uiDesigner.core.GridConstraints(10, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 18), null, 0, false));
+
+        // Start Time and Spinner
         final JLabel label1 = new JLabel();
-        label1.setText("Daily Recurrance:");
-        schedulerPanel.add(label1, new com.intellij.uiDesigner.core.GridConstraints(8, 1, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label2 = new JLabel();
-        label2.setText("Start time:");
-        schedulerPanel.add(label2, new com.intellij.uiDesigner.core.GridConstraints(2, 1, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        label1.setText("Start time:");
+        schedulerPanel.add(label1, new com.intellij.uiDesigner.core.GridConstraints(2, 1, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 
-        // Time Spinners
-        Date date = new Date();
-        SpinnerDateModel sm = new SpinnerDateModel(date,null,null, Calendar.HOUR_OF_DAY);
-        SpinnerDateModel em = new SpinnerDateModel(date,null,null, Calendar.HOUR_OF_DAY);
-        JSpinner startSpinner = new JSpinner(sm);
-        JSpinner.DateEditor de = new JSpinner.DateEditor(startSpinner, "EEE MMM dd HH:mm:ss Z yyyy");
-        schedulerPanel.add(startSpinner, new com.intellij.uiDesigner.core.GridConstraints(4, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 26), null, 0, false));
-
-        JSpinner endSpinner = new JSpinner(em);
-        JSpinner.DateEditor ee = new JSpinner.DateEditor(endSpinner, "EEE MMM dd HH:mm:ss Z yyyy");
-        schedulerPanel.add(endSpinner, new com.intellij.uiDesigner.core.GridConstraints(7, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 26), null, 0, false));
-
-        JSpinner occuranceSpinner = new JSpinner();
-        //de = new JSpinner.DateEditor(occuranceSpinner, "HH:MM");
-        schedulerPanel.add(occuranceSpinner, new com.intellij.uiDesigner.core.GridConstraints(11, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 26), null, 0, false));
-
-        //JSpinner minutelySpinner = new JSpinner(sm);
-        //JSpinner.DateEditor de = new JSpinner.DateEditor(minutelySpinner, "HH:MM");
-        //minutelySpinner.setEditor(de);
-
-
-        //schedulerPanel.add(minutelySpinner, new com.intellij.uiDesigner.core.GridConstraints(11, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 26), null, 0, false));
+        // Spacers
         final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
         schedulerPanel.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(1, 5, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer2 = new com.intellij.uiDesigner.core.Spacer();
         schedulerPanel.add(spacer2, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+        final com.intellij.uiDesigner.core.Spacer spacer3 = new com.intellij.uiDesigner.core.Spacer();
+        schedulerPanel.add(spacer3, new com.intellij.uiDesigner.core.GridConstraints(11, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        final JLabel label6 = new JLabel();
+        label6.setText("");
+        schedulerPanel.add(label6, new com.intellij.uiDesigner.core.GridConstraints(7, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+
+        // Bottom Buttons
         JButton deleteButton = new JButton();
         deleteButton.setText("Delete");
-        schedulerPanel.add(deleteButton, new com.intellij.uiDesigner.core.GridConstraints(13, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 24), null, 0, false));
-        final JLabel label4 = new JLabel();
-        label4.setText("Hourly recurrance:");
-        schedulerPanel.add(label4, new com.intellij.uiDesigner.core.GridConstraints(11, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(72, 16), null, 0, false));
-        final JLabel label6 = new JLabel();
-        label6.setText("Billboard Scheduler Editor");
-        schedulerPanel.add(label6, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 16), null, 0, false));
-        JRadioButton wednesdayRadioButton = new JRadioButton();
-        wednesdayRadioButton.setText("Wednesday");
-        schedulerPanel.add(wednesdayRadioButton, new com.intellij.uiDesigner.core.GridConstraints(9, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(32, 18), null, 0, false));
-        JRadioButton sundayRadioButton = new JRadioButton();
-        sundayRadioButton.setText("Sunday");
-        schedulerPanel.add(sundayRadioButton, new com.intellij.uiDesigner.core.GridConstraints(10, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(32, 18), null, 0, false));
-        JRadioButton thursdayRadioButton = new JRadioButton();
-        thursdayRadioButton.setText("Thursday");
-        schedulerPanel.add(thursdayRadioButton, new com.intellij.uiDesigner.core.GridConstraints(9, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(69, 18), null, 0, false));
-        final JLabel label7 = new JLabel();
+        schedulerPanel.add(deleteButton, new com.intellij.uiDesigner.core.GridConstraints(12, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 24), null, 0, false));
         JButton resetButton = new JButton();
         resetButton.setText("Reset");
-        schedulerPanel.add(resetButton, new com.intellij.uiDesigner.core.GridConstraints(13, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(32, 24), null, 0, false));
+        schedulerPanel.add(resetButton, new com.intellij.uiDesigner.core.GridConstraints(12, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(32, 24), null, 0, false));
         JButton exitButton = new JButton();
         exitButton.setText("Exit");
-        schedulerPanel.add(exitButton, new com.intellij.uiDesigner.core.GridConstraints(13, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        schedulerPanel.add(exitButton, new com.intellij.uiDesigner.core.GridConstraints(12, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         JButton saveButton = new JButton();
         saveButton.setText("Save");
-        schedulerPanel.add(saveButton, new com.intellij.uiDesigner.core.GridConstraints(13, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(69, 24), null, 0, false));
-        final com.intellij.uiDesigner.core.Spacer spacer3 = new com.intellij.uiDesigner.core.Spacer();
-        schedulerPanel.add(spacer3, new com.intellij.uiDesigner.core.GridConstraints(12, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        final JLabel label8 = new JLabel();
-        label8.setText("End time:");
-        schedulerPanel.add(label8, new com.intellij.uiDesigner.core.GridConstraints(5, 1, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        schedulerPanel.add(saveButton, new com.intellij.uiDesigner.core.GridConstraints(12, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(69, 24), null, 0, false));
+        final JLabel label3 = new JLabel();
 
-        //schedulerController scheduler = new schedulerController();
-        //JPanel schedulerPanel = new schedulerController().schedulerPanel;
+        // Reoccuring values
+        label3.setText("Duration:");
+        schedulerPanel.add(label3, new com.intellij.uiDesigner.core.GridConstraints(4, 1, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label4 = new JLabel();
+        label4.setText("Hours:");
+        schedulerPanel.add(label4, new com.intellij.uiDesigner.core.GridConstraints(5, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 16), null, 0, false));
+        final JLabel label5 = new JLabel();
+        label5.setText("Minutes:");
+        schedulerPanel.add(label5, new com.intellij.uiDesigner.core.GridConstraints(5, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(32, 16), null, 0, false));
+
+        JCheckBox recurringCheckBox = new JCheckBox();
+        recurringCheckBox.setText("Recurring");
+        schedulerPanel.add(recurringCheckBox, new com.intellij.uiDesigner.core.GridConstraints(8, 1, 1, 3, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+
+        final JRadioButton dailyButton = new JRadioButton();
+        dailyButton.setText("Daily");
+        dailyButton.setEnabled(false);
+        schedulerPanel.add(dailyButton, new com.intellij.uiDesigner.core.GridConstraints(9, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(72, 18), null, 0, false));
+
+        final JRadioButton hourlyButton = new JRadioButton();
+        hourlyButton.setText("Hourly");
+        hourlyButton.setEnabled(false);
+        schedulerPanel.add(hourlyButton, new com.intellij.uiDesigner.core.GridConstraints(9, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(72, 18), null, 0, false));
+
+        final JLabel label7 = new JLabel();
+        label7.setText("Minutely:");
+        label7.setEnabled(false);
+        schedulerPanel.add(label7, new com.intellij.uiDesigner.core.GridConstraints(10, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(32, 16), null, 0, false));
+
+        // Time Spinners
+        Date date = new Date();
+        SpinnerDateModel sm = new SpinnerDateModel(date,null,null, Calendar.HOUR_OF_DAY);
+
+        // Duration Spinners
+        final JSpinner durationMinutes = new JSpinner();
+        schedulerPanel.add(durationMinutes, new com.intellij.uiDesigner.core.GridConstraints(6, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(32, 26), null, 0, false));
+        final JSpinner durationHours = new JSpinner();
+        schedulerPanel.add(durationHours, new com.intellij.uiDesigner.core.GridConstraints(6, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 26), null, 0, false));
+
+        //SpinnerDateModel em = new SpinnerDateModel(date,null,null, Calendar.HOUR_OF_DAY);
+        JSpinner startSpinner = new JSpinner(sm);
+        JSpinner.DateEditor de = new JSpinner.DateEditor(startSpinner, "EEE MMM dd HH:mm:ss Z yyyy");
+        schedulerPanel.add(startSpinner, new com.intellij.uiDesigner.core.GridConstraints(3, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 26), null, 0, false));
+
+        int min = 0;
+        int max = 10080;
+        int val = min;
+        int step = 30;
+        SpinnerNumberModel mins = new SpinnerNumberModel(val,min,max,step);
+        final JSpinner minuteSpinner = new JSpinner(mins);
+        minuteSpinner.setEnabled(false);
+        schedulerPanel.add(minuteSpinner, new com.intellij.uiDesigner.core.GridConstraints(10, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 26), null, 0, false));
+
+
+        recurringCheckBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
+                    //do something...
+                    dailyButton.setEnabled(true);
+                    hourlyButton.setEnabled(true);
+                    minuteSpinner.setEnabled(true);
+                    label7.setEnabled(true);
+                } else {//checkbox has been deselected
+                    dailyButton.setEnabled(false);
+                    hourlyButton.setEnabled(false);
+                    minuteSpinner.setEnabled(false);
+                    label7.setEnabled(false);
+                };
+            }
+        });
+
         //TODO: Connect event adding with scheduler functions and buttons e.g. port the user select variables into the following function
         //TODO: Create a function to account for recurring schedules
         // Calendar Week Controls (NORTH)
@@ -148,33 +180,19 @@ public class CalendarCreator extends Frame {
 
         // Listeners
         cal.addCalendarEventClickListener(e -> {
-            //System.out.println(e.getCalendarEvent());
-            //System.out.println(e.getStartDateTime().toString());
-//            scheduleName.setText("K");
-//            enterScheduleNameTextField.setText("Enter Schedule Name");
             Date startDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getStartDateTime().toString());
             startSpinner.setValue(startDate);
-            Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getEndDateTime().toString());
-            endSpinner.setValue(endDate);
             enterScheduleNameTextField.setText(e.getBillboardName());
-            //String dateTimeName = String.valueOf(e.getCalendarEvent());
-            //Date startDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getStart().toString());
-            //startSpinner.setValue(startDate);
-            //schedulerController.getValues(dateTimeName);
+
         });
 
         cal.addCalendarEmptyClickListener(e -> {
             System.out.println(e.getDateTime());
             System.out.println(CalendarViewer.roundTime(e.getDateTime().toLocalTime(), 30));
             Date startDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getDateTime().toString());
-            //LocalDateTime endDateUnformatted = e.getDateTime().plusHours(Long.parseLong(occuranceSpinner.getValue().toString()));
-            LocalDateTime endDateUnformatted = e.getDateTime().plusHours(1);
-            Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(endDateUnformatted.toString());
-            System.out.println(endDate);
+            System.out.println(startDate);
             startSpinner.setValue(startDate);
-            endSpinner.setValue(endDate);
             enterScheduleNameTextField.setText("Enter new schedule name...");
-            //String dateTimeName = String.valueOf(e.getDateTime());
         });
 
 
@@ -182,16 +200,42 @@ public class CalendarCreator extends Frame {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String enterScheduleNameTextFieldValue = (String) enterScheduleNameTextField.getName();
-                //int minuteSpinnerValue = (Integer) minuteSpinner.getValue();
-                //int hourSpinnerValue = (Integer) hourSpinner.getValue();
-                //int minutelySpinnerValue = (Integer) minutelySpinner.getValue();
-                //int hourlySpinnerValue = (Integer) hourlySpinner.getValue();
-                //System.out.println(minuteSpinnerValue);
-                //hourSpinner.setValue(2);
+                String billboardName = (String) enterScheduleNameTextField.getText();
+                Date date1 = (Date) startSpinner.getValue();
+                int minuteSpinnerValue = (Integer) minuteSpinner.getValue();
+                int hourDurationValue = (Integer) durationHours.getValue();
+                int minutesDurationValue = (Integer) durationMinutes.getValue();
+                boolean recurring = (Boolean) recurringCheckBox.isSelected();
+                boolean recurringDaily = (Boolean) dailyButton.isSelected();
+                boolean recurringHourly = (Boolean) hourlyButton.isSelected();
+                int recurringEveryXminutes = 0;
+                if (recurringDaily == true){
+                    recurringEveryXminutes += 1440;
+                }
+                else {recurringEveryXminutes += 0;};
+
+                if (recurringHourly == true){
+                    recurringEveryXminutes += 60;
+                }
+                else {recurringEveryXminutes += 0;};
+                recurringEveryXminutes = recurringEveryXminutes + minuteSpinnerValue;
+
+                // TODO: CHANGE OFFSETDATETIME VALUE TO NORMAL DATETIME FOR EASE OF USE
+                OffsetDateTime offsetDateTime = date1.toInstant().atOffset(ZoneOffset.UTC);
+
+                ScheduleController.commandAddSchedule(billboardName,offsetDateTime,(minutesDurationValue +hourDurationValue*60), recurring,recurringEveryXminutes, "Lahiru" );
+                // CHECK OUTPUT
+                System.out.println("Instructions from GUI for Command:  " + ScheduleController.getCurrentCommandName() + ", the data is:\n"
+                        + ScheduleController.getCurrentCommandData().toString() +"\n" );
+
                 // TODO: ADD event according to user selected values
-                //ArrayList<CalendarEvent> events = new ArrayList<>();
-                //events.add(new CalendarEvent(LocalDate.of(2020, 4, 29), LocalTime.of(hourSpinnerValue, minuteSpinnerValue), LocalTime.of(minutelySpinnerValue, hourlySpinnerValue), "BILLBOARD 1"));
+                // TODO: THIS DOESNT DO THE CORRECT JOB, NEED TO FIGURE OUT HOW TO REFRESH SAME WINDOW WITH NEW SCHEDULE
+                //events.add(new CalendarEvent(LocalDate.of(2020, 5, 7), LocalTime.of(14, 0), LocalTime.of(14, 20), "BILLBOARD 1"));
+                CalendarWeek cal = new CalendarWeek(events);
+                CalendarCreator edit = new CalendarCreator(cal);
+                events.add(new CalendarEvent(LocalDate.of(2020, 5, 7), LocalTime.of(14, 0), LocalTime.of(14, 20), "BILLBOARD 1"));
+                //CalendarViewer view = new CalendarViewer();
+                repaint();
             }
         });
 
@@ -214,18 +258,32 @@ public class CalendarCreator extends Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //setValues();
+                String billboardName = (String) enterScheduleNameTextField.getText();
+                Date date1 = (Date) startSpinner.getValue();
+
+                // TODO: CHANGE OFFSETDATETIME VALUE TO NORMAL DATETIME FOR EASE OF USE
+                OffsetDateTime offsetDateTime = date1.toInstant().atOffset(ZoneOffset.UTC);
+                ScheduleController.commandRemoveSchedule(billboardName,offsetDateTime);
+                ScheduleController.commandReplyParser( Scheduler.getCurrentCommandName(), Scheduler.getCurrentCommandData() );
+                System.out.println("Instructions from GUI for Command:  " + ScheduleController.getCurrentCommandName() + ", the data is:\n"
+                        + ScheduleController.getCurrentCommandData().toString() +"\n" );
             }
         });
 
     }
 
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
+        // TODO: Store Calendar/Scheduled Events in Database which is where GUI retrieves data to display from
+        //i.e for each event in database, events.add(calendarevent ...)
         ArrayList<CalendarEvent> events = new ArrayList<>();
         CalendarWeek cal = new CalendarWeek(events);
         CalendarCreator edit = new CalendarCreator(cal);
-        events.add(new CalendarEvent(LocalDate.of(2020, 4, 28), LocalTime.of(14, 0), LocalTime.of(14, 20), "BILLBOARD 1"));
+        //events.add(new CalendarEvent(LocalDate.of(2020, 4, 28), LocalTime.of(14, 0), LocalTime.of(14, 20), "BILLBOARD 1"));
+        //CalendarViewer view = new CalendarViewer();
 
 
     }
+
+
 }
