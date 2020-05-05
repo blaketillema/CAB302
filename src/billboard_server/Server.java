@@ -68,19 +68,4 @@ public class Server {
 
 
 
-
-    // SCHEDULER DB COMMANDS
-    // TODO figure out best place to execute commands for scheduler
-    public void executeSQL(String SQLCommand) throws SQLException {
-        connect();
-        statement.executeQuery(SQLCommand);
-        conn.close();
-    }
-
-    public ResultSet getSQLResult(String SQLCommand) throws SQLException {
-        ResultSet rs = statement.executeQuery(SQLCommand);
-        return rs;
-    }
-    // END Scheduler DB commands
-
 }
