@@ -197,8 +197,8 @@ public class ScheduleController {
         String creatorName = "John";
 
         // CHANGE COMMAND CALL BELOW
-        // commandAddSchedule(billboardName, schedStart, duration, recur, recurFreqMins, creatorName);
-        // commandRemoveSchedule(billboardName, schedStart);
+        commandAddSchedule(billboardName, schedStart, duration, recur, recurFreqMins, creatorName);
+        commandRemoveSchedule(billboardName, schedStart);
         commandGetSchedules();
 
         // CHECK OUTPUT
