@@ -198,8 +198,8 @@ public class ScheduleController {
 
         // CHANGE COMMAND CALL BELOW
         //commandAddSchedule(billboardName, schedStart, duration, recur, recurFreqMins, creatorName);
-        commandRemoveSchedule(billboardName, schedStart);
-        //commandGetSchedules();
+        //commandRemoveSchedule(billboardName, schedStart);
+        commandGetSchedules();
 
         // CHECK OUTPUT
         System.out.println("Instructions from GUI for Command:  " + getCurrentCommandName() + ", the data is:\n"

@@ -11,16 +11,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 
 public class CalendarCreator extends Frame {
-    ArrayList<CalendarEvent> events = new ArrayList<>();
+    static ArrayList<CalendarEvent> events = new ArrayList<>();
+    static CalendarWeek tal = new CalendarWeek(events);
     public CalendarCreator(CalendarWeek cal) {
         setLayout(new GridLayout());
         JFrame frm = new JFrame();
@@ -102,6 +101,10 @@ public class CalendarCreator extends Frame {
         // Time Spinners
         Date date = new Date();
         SpinnerDateModel sm = new SpinnerDateModel(date,null,null, Calendar.HOUR_OF_DAY);
+        SpinnerDateModel em = new SpinnerDateModel(date,null,null, Calendar.HOUR_OF_DAY);
+        JSpinner endSpinner =new JSpinner(em);
+        JSpinner.DateEditor ee=new JSpinner.DateEditor(endSpinner,"EEE MMM ddHH:mm:ss Z yyyy");
+        schedulerPanel.add(endSpinner,new com.intellij.uiDesigner.core.GridConstraints(7,2,1,1,com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST,com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW,com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,null,new Dimension(58,26),null,0,false));
 
         // Duration Spinners
         final JSpinner durationMinutes = new JSpinner();
@@ -122,6 +125,7 @@ public class CalendarCreator extends Frame {
         final JSpinner minuteSpinner = new JSpinner(mins);
         minuteSpinner.setEnabled(false);
         schedulerPanel.add(minuteSpinner, new com.intellij.uiDesigner.core.GridConstraints(10, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 26), null, 0, false));
+
 
 
         recurringCheckBox.addItemListener(new ItemListener() {
@@ -181,7 +185,9 @@ public class CalendarCreator extends Frame {
         // Listeners
         cal.addCalendarEventClickListener(e -> {
             Date startDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getStartDateTime().toString());
+            Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getStartDateTime().plusHours(1).toString());
             startSpinner.setValue(startDate);
+            endSpinner.setValue(endDate);
             enterScheduleNameTextField.setText(e.getBillboardName());
 
         });
@@ -190,8 +196,10 @@ public class CalendarCreator extends Frame {
             System.out.println(e.getDateTime());
             System.out.println(CalendarViewer.roundTime(e.getDateTime().toLocalTime(), 30));
             Date startDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getDateTime().toString());
+            Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getDateTime().plusHours(1).toString());
             System.out.println(startDate);
             startSpinner.setValue(startDate);
+            endSpinner.setValue(endDate);
             enterScheduleNameTextField.setText("Enter new schedule name...");
         });
 
@@ -200,8 +208,18 @@ public class CalendarCreator extends Frame {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 String billboardName = (String) enterScheduleNameTextField.getText();
-                Date date1 = (Date) startSpinner.getValue();
+                Date startDateTime = (Date) startSpinner.getValue();
+                Date endDateTime = (Date) endSpinner.getValue();
+                Calendar calendar = new GregorianCalendar();
+                calendar.setTime(endDateTime);
+                int endHour = calendar.get(Calendar.HOUR_OF_DAY);
+                int endMinute = calendar.get(Calendar.MINUTE);
+                // Get msec from each, and subtract.
+                long diff = endDateTime.getTime() - startDateTime.getTime();
+                int diffMinutes = Math.toIntExact(diff / (60 * 1000));
+                System.out.println(diffMinutes);
                 int minuteSpinnerValue = (Integer) minuteSpinner.getValue();
                 int hourDurationValue = (Integer) durationHours.getValue();
                 int minutesDurationValue = (Integer) durationMinutes.getValue();
@@ -221,9 +239,9 @@ public class CalendarCreator extends Frame {
                 recurringEveryXminutes = recurringEveryXminutes + minuteSpinnerValue;
 
                 // TODO: CHANGE OFFSETDATETIME VALUE TO NORMAL DATETIME FOR EASE OF USE
-                OffsetDateTime offsetDateTime = date1.toInstant().atOffset(ZoneOffset.UTC);
+                OffsetDateTime offsetDateTime = startDateTime.toInstant().atOffset(ZoneOffset.UTC);
 
-                ScheduleController.commandAddSchedule(billboardName,offsetDateTime,(minutesDurationValue +hourDurationValue*60), recurring,recurringEveryXminutes, "Lahiru" );
+                ScheduleController.commandAddSchedule(billboardName,offsetDateTime,diffMinutes, recurring,recurringEveryXminutes, "Lahiru" );
                 // CHECK OUTPUT
                 System.out.println("Instructions from GUI for Command:  " + ScheduleController.getCurrentCommandName() + ", the data is:\n"
                         + ScheduleController.getCurrentCommandData().toString() +"\n" );
@@ -231,11 +249,29 @@ public class CalendarCreator extends Frame {
                 // TODO: ADD event according to user selected values
                 // TODO: THIS DOESNT DO THE CORRECT JOB, NEED TO FIGURE OUT HOW TO REFRESH SAME WINDOW WITH NEW SCHEDULE
                 //events.add(new CalendarEvent(LocalDate.of(2020, 5, 7), LocalTime.of(14, 0), LocalTime.of(14, 20), "BILLBOARD 1"));
-                CalendarWeek cal = new CalendarWeek(events);
-                CalendarCreator edit = new CalendarCreator(cal);
-                events.add(new CalendarEvent(LocalDate.of(2020, 5, 7), LocalTime.of(14, 0), LocalTime.of(14, 20), "BILLBOARD 1"));
-                //CalendarViewer view = new CalendarViewer();
-                repaint();
+                //CalendarWeek cal = new CalendarWeek(events);
+                // date2 = formatter.parseLocalDate(startDateTime);
+                Calendar calendarStart = new GregorianCalendar();
+                calendar.setTime(startDateTime);
+                int year = calendar.get(Calendar.YEAR);
+                //Add one to month {0 - 11}
+                int month = calendarStart.get(Calendar.MONTH) + 1;
+                int day = calendarStart.get(Calendar.DAY_OF_MONTH);
+                int hour = calendarStart.get(Calendar.HOUR_OF_DAY);
+                int minute = calendarStart.get(Calendar.MINUTE);
+                //int endHour = hour + hourDurationValue;
+                //int endMinute = minute + minutesDurationValue;
+
+                System.out.println(startDateTime);
+                System.out.println(year);
+                System.out.println(month);
+                System.out.println(day);
+                System.out.println(hour);
+                System.out.println(minute);
+                System.out.println(endHour);
+                System.out.println(endMinute);
+                events.add(new CalendarEvent(LocalDate.of(year, month, day), LocalTime.of(hour, minute), LocalTime.of(endHour, endMinute), billboardName));
+                cal.goToToday();
             }
         });
 
@@ -276,9 +312,21 @@ public class CalendarCreator extends Frame {
     public static void main(String[] args) {
         // TODO: Store Calendar/Scheduled Events in Database which is where GUI retrieves data to display from
         //i.e for each event in database, events.add(calendarevent ...)
-        ArrayList<CalendarEvent> events = new ArrayList<>();
-        CalendarWeek cal = new CalendarWeek(events);
-        CalendarCreator edit = new CalendarCreator(cal);
+        OffsetDateTime timeNowPlus10Days = OffsetDateTime.now().plusDays(10);
+        // TEST DATA
+        String billboardName = "Great Billboard!";
+        OffsetDateTime schedStart = timeNowPlus10Days;
+        Integer duration = 60;
+        Boolean recur = true;
+        Integer recurFreqMins = 30;
+        String creatorName = "John";
+        ScheduleController.commandAddSchedule(billboardName, schedStart, duration, recur, recurFreqMins, creatorName);
+        ScheduleController.commandGetSchedules();
+        System.out.println(ScheduleController.getCurrentCommandData().toString());
+
+        //ArrayList<CalendarEvent> events = new ArrayList<>();
+        //CalendarWeek cal = new CalendarWeek(events);
+        CalendarCreator edit = new CalendarCreator(tal);
         //events.add(new CalendarEvent(LocalDate.of(2020, 4, 28), LocalTime.of(14, 0), LocalTime.of(14, 20), "BILLBOARD 1"));
         //CalendarViewer view = new CalendarViewer();
 
