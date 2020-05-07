@@ -57,4 +57,15 @@ public class Server {
 
     }
 
+    
+    public void resetTables() throws SQLException{ //resets the tables. mostly for testing. TODO: probably remove this in the final product
+        connect();
+        statement.executeQuery("DROP table users");
+        statement.executeQuery("DROP table billboards");
+        statement.executeQuery("DROP table schedule");
+        conn.close();
+    }
+
+
+
 }
