@@ -1,17 +1,12 @@
 package billboard_server;
 
-import connections.ClientRequest;
-import connections.Protocol;
-import connections.exceptions.PermissionException;
-import connections.exceptions.ServerException;
-
+import connections.exceptions.*;
+import connections.*;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.Map;
 import java.util.Properties;
-import java.time.LocalTime;
 import java.util.TreeMap;
 
 public class Database {
@@ -23,17 +18,17 @@ public class Database {
             "salt VARCHAR(255) NOT NULL,"+
             "permission INT ) ";
     private static final String BILLBOARDS_TABLE = "CREATE TABLE IF NOT EXISTS billboards ( " +
-            "billboardId VARCHAR(255), PRIMARY KEY NOT NULL"+
-            "billboardName VARCHAR(255),"+
+            "billboardId VARCHAR(255) PRIMARY KEY NOT NULL," +
             "billboardMessage VARCHAR(255)," +
             "billboardInfo VARCHAR(255)," +
-            "billboardImg MEDIUMTEXT," +
+            "billboardPictureData MEDIUMTEXT," +
+            "billboardPictureUrl MEDIUMTEXT," +
             "billboardBg VARCHAR(255)," +
             "billboardMsgColour VARCHAR(255)," +
             "billboardInfoColour VARCHAR(255) )";
     private static final String SCHEDULE_TABLE = "CREATE TABLE IF NOT EXISTS schedules ( " +
-            "billboardId INT, " +
-            "billboardName VARCHAR(255)," +
+            "scheduleId VARCHAR(255) PRIMARY KEY NOT NULL," +
+            "billboardId VARCHAR(255), " +
             "startTime DATETIME, " +
             "duration INT, " +
             "isRecurring BOOLEAN, " +
@@ -41,12 +36,12 @@ public class Database {
             "FOREIGN KEY (billboardId) REFERENCES billboards(billboardId) ON DELETE CASCADE ) ";
 
     private static final String adduserStatement = "INSERT INTO users (userId, userName, hash, salt, permission) VALUES (?, ?, ?, ?, ?)";
-    private static final String deluserStatement = "DELETE FROM users WHERE userName=?";
-    private static final String addbilbStatement = "INSERT INTO billboards (billboardName, billboardMessage, billboardInfo, billboardImg, billboardBg, billboardMsgColour, billboardInfoColour)" +
-            " VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private static final String delbilbStatement = "DELETE FROM billboards WHERE billboardName=?";
-    private static final String addschedStatement = "INSERT INTO schedules (billboardId, billboardName, startTime, duration, isRecurring, recurFreqInMins) VALUES (?, ?, ?, ?, ?, ?)";
-    private static final String delschedStatement = "DELETE FROM schedules WHERE startTime=? AND billboardName=?";
+    private static final String deluserStatement = "DELETE FROM users WHERE userId=?";
+    private static final String addbilbStatement = "INSERT INTO billboards (billboardId, billboardMessage, billboardInfo, billboardPictureData, billboardPictureUrl, billboardBg, billboardMsgColour, billboardInfoColour)" +
+            " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String delbilbStatement = "DELETE FROM billboards WHERE billboardId=?";
+    private static final String addschedStatement = "INSERT INTO schedules (scheduleId, billboardId, startTime, scheduleDuration, isRecurring, recurFreqInMins) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String delschedStatement = "DELETE FROM schedules WHERE scheduleId=?";
 
     private String url;
     private String schema;
@@ -106,7 +101,7 @@ public class Database {
         }
     }
 
-    private void checkPermission(String userId, int permissionNeeded) throws SQLException, ServerException{
+    private void checkPermission(String userId, int permissionNeeded) throws SQLException, ServerException {
         if(userId == null){
             throw new ServerException("tried to check permissions for null user");
         }
@@ -126,7 +121,7 @@ public class Database {
         }
     }
 
-    private String getHash(String userId) throws SQLException{
+    public String getHash(String userId) throws SQLException{
         connect();
         ResultSet rs = statement.executeQuery("SELECT hash FROM users WHERE userId=\""+userId+"\"");
         if(rs.next()){
@@ -137,7 +132,7 @@ public class Database {
         }
     }
 
-    private String getSalt(String userId) throws SQLException{
+    public String getSalt(String userId) throws SQLException{
         connect();
         ResultSet rs = statement.executeQuery("SELECT salt FROM users WHERE userId=\""+userId+"\"");
         if(rs.next()){
@@ -176,6 +171,7 @@ public class Database {
                 if(newUsername == null || newHash == null || newSalt == null || newPermissions == -1) {
                     throw new ServerException("attempting to add user without all of the required information");
                 }
+                connect();
                 pstmt = conn.prepareStatement(adduserStatement);
                 pstmt.setString(1, newUserId);
                 pstmt.setString(2, newUsername);
@@ -186,132 +182,171 @@ public class Database {
 
                 /* else if user does exist, somehow modify the existing info for that userId */
             } else {
-                //if(username != null) pstmt.setString(2, username);
-                //if(getHash(user.getKey()) != null) pstmt.setString(3, hash);
-                //if(getSalt(user.getKey()) != null) pstmt.setString(4, salt);
-                //if(getPermission(user.getKey()) != -1) pstmt.setString(5, username);
+
             }
         }
     }
 
-    public String[][] getUsers() throws SQLException{ // gets a 2D array of [users][name, hash, salt, perms]
+    public TreeMap<String, Object> getUsers() throws SQLException{
         connect();
+        TreeMap<String, Object> users = new TreeMap<>();
+
         ResultSet rs = statement.executeQuery("SELECT * FROM users");
-        int len = 0;
+
         while(rs.next()){
-            len++;
+            TreeMap<String, Object> user = new TreeMap<>();
+            user.put("userName", rs.getString(2));
+            user.put("hash", rs.getString(3));
+            user.put("salt", rs.getString(4));
+            user.put("permissions", rs.getInt(5));
+
+            users.put(rs.getString(1), user);
         }
-        String[][] users = new String[len][4];
-        rs.beforeFirst();
-        int i = 0;
-        while(rs.next()){
-            users[i][0] = rs.getString(1);
-            users[i][1] = rs.getString(2);
-            users[i][2] = rs.getString(3);
-            users[i][3] = rs.getString(4);
-            i++;
-        }
+
         return users;
     }
 
-
-
-    public void deleteUser(String name) throws SQLException{ // deletes a user
+    public void deleteUsers(String userId, TreeMap<String, Object> data) throws SQLException, ServerException { // deletes a user
         connect();
-        pstmt = conn.prepareStatement(deluserStatement);
-        pstmt.clearParameters();
-        pstmt.setString(1, name);
-        pstmt.execute();
+        checkPermission(userId, Protocol.Permission.EDIT_USERS);
+        for(Map.Entry<String, Object> user : data.entrySet()){
+            pstmt = conn.prepareStatement(deluserStatement);
+            pstmt.setString(1, user.getKey());
+            pstmt.execute();
+        }
     }
 
-    public void addBillboard(TreeMap<String, String> billboard) throws SQLException { // adds a billboard
-        connect();
-        pstmt = conn.prepareStatement(addbilbStatement);
-        pstmt.setString(1, billboard.get("billboardName"));
-        pstmt.setString(2, billboard.get("billboardMessage"));
-        pstmt.setString(3, billboard.get("billboardInfo"));
-        pstmt.setString(4, billboard.get("billboardImg"));
-        pstmt.setString(5, billboard.get("billboardBg"));
-        pstmt.setString(6, billboard.get("billboardMsgColour"));
-        pstmt.setString(7, billboard.get("billboardInfoColour"));
-        pstmt.execute();
+    public void addBillboards(String userId, TreeMap<String, Object> data) throws ServerException, SQLException {
+
+        /* make sure user attempting to add new users has permissions */
+        checkPermission(userId, Protocol.Permission.CREATE_BILLBOARDS);
+
+        /* loop through each billboard in the treemap */
+        for(Map.Entry<String, Object> billboard : data.entrySet()) {
+
+            /* cast the value of the treemap entry and get the details of each billboard */
+            TreeMap<String, Object> billboardDetails = (TreeMap<String, Object>) billboard.getValue();
+
+            /* get all of the relevant values and cast to types */
+            String newId = billboard.getKey();
+            String newMessage = (String) billboardDetails.get("message");
+            String newInfo = (String) billboardDetails.get("information");
+            String newPictureData = (String) billboardDetails.get("pictureData");
+            String newPictureUrl = (String) billboardDetails.get("pictureUrl");
+            String newBillboardBackground = (String) billboardDetails.get("billboardBackground");
+            String newMessageColour = (String) billboardDetails.get("messageColour");
+            String newInformationColour = (String) billboardDetails.get("informationColour");
+
+            /* prepare and execute the statement to add the billboard:
+            billboardId, billboardMessage, billboardInfo, billboardPictureData,
+            billboardPictureUrl, billboardBg, billboardMsgColour, billboardInfoColour */
+            pstmt = conn.prepareStatement(addbilbStatement);
+            pstmt.setString(1, newId);
+            pstmt.setString(2, newMessage);
+            pstmt.setString(3, newInfo);
+            pstmt.setString(4, newPictureData);
+            pstmt.setString(5, newPictureUrl);
+            pstmt.setString(6, newBillboardBackground);
+            pstmt.setString(7, newMessageColour);
+            pstmt.setString(8, newInformationColour);
+            pstmt.execute();
+
+        }
     }
 
-    public String[][] getBillboards() throws SQLException{ // basically the same as getUsers but [billboard][billboardId (probably not needed), billboard name, image base64 or url]
+    public TreeMap<String, Object> getBillboards() throws SQLException{
         connect();
+        TreeMap<String, Object> billboards = new TreeMap<>();
+
         ResultSet rs = statement.executeQuery("SELECT * FROM billboards");
-        int len = 0;
+
         while(rs.next()){
-            len++;
+            TreeMap<String, Object> billboard = new TreeMap<>();
+            billboard.put("message", rs.getString(2));
+            billboard.put("information", rs.getString(3));
+            billboard.put("pictureData", rs.getString(4));
+            billboard.put("pictureUrl", rs.getString(5));
+            billboard.put("billboardBackground", rs.getString(6));
+            billboard.put("messageColour", rs.getString(7));
+            billboard.put("informationColour", rs.getString(8));
+
+            billboards.put(rs.getString(1), billboard);
         }
-        String[][] billboards = new String[len][3];
-        rs.beforeFirst();
-        int i = 0;
-        while(rs.next()){
-            billboards[i][0] = rs.getString(1);
-            billboards[i][1] = rs.getString(2);
-            billboards[i][2] = rs.getString(5);
-        }
+
         return billboards;
     }
 
-    public void deleteBillboard(String billboardName) throws SQLException{ // deletes a billboard
+    public void deleteBillboards(String userId, TreeMap<String, Object> data) throws SQLException, ServerException { // deletes a user
         connect();
-        pstmt = conn.prepareStatement(delbilbStatement);
-        pstmt.setString(1, billboardName);
-        pstmt.execute();
+        checkPermission(userId, Protocol.Permission.EDIT_ALL_BILLBOARDS);
+        for(Map.Entry<String, Object> billboard : data.entrySet()){
+            pstmt = conn.prepareStatement(delbilbStatement);
+            pstmt.setString(1, billboard.getKey());
+            pstmt.execute();
+        }
     }
 
-    public void addSchedule(TreeMap<String, String> schedule) throws SQLException {
+    public void addSchedule(String userId, TreeMap<String, Object> data) throws SQLException, ServerException {
         connect();
-        ResultSet rs = statement.executeQuery("SELECT billboardId FROM billboards WHERE billboardName=\"" + schedule.get("billboardName") + "\"");
-        rs.next();
-        pstmt = conn.prepareStatement(addschedStatement);
-        pstmt.setInt(1, rs.getInt(1));
-        pstmt.setString(2, schedule.get("billboardName"));
-        pstmt.setString(3, schedule.get("startDate") + ' ' + schedule.get("startTime"));
-        pstmt.setInt(4, Integer.parseInt(schedule.get("duration")));
-        pstmt.setBoolean(5, Boolean.parseBoolean(schedule.get("isRecurring")));
-        pstmt.setInt(6, Integer.parseInt(schedule.get("recurFreqInMins")));
-        pstmt.execute();
+        checkPermission(userId, Protocol.Permission.SCHEDULE_BILLBOARDS);
+
+        /*(scheduleId, billboardId, startTime, scheduleDuration, isRecurring, recurFreqInMins)*/
+        for(Map.Entry<String, Object> schedule : data.entrySet()){
+
+            TreeMap<String, Object> scheduleDetails = (TreeMap<String, Object>) schedule.getValue();
+
+            String scheduleId = schedule.getKey();
+            String billboardId = (String) scheduleDetails.get("billboardId");
+            String startTime = (String) scheduleDetails.get("startTime");
+            int duration = (Integer) scheduleDetails.get("scheduleDuration");
+            boolean isRecurring = (Boolean) scheduleDetails.get("isRecurring");
+            int recurFreqInMins = (Integer) scheduleDetails.get("recurFreqInMins");
+
+            pstmt = conn.prepareStatement(addschedStatement);
+            pstmt.setString(1, scheduleId);
+            pstmt.setString(2, billboardId);
+            pstmt.setString(3, startTime);
+            pstmt.setInt(4, duration);
+            pstmt.setBoolean(5, isRecurring);
+            pstmt.setInt(6, recurFreqInMins);
+            pstmt.execute();
+        }
     }
 
-    public String[][] getSchedule() throws SQLException { // returns a 2D array of [schedule][billboardId, billboardName, startTime, isRecurring, recurFreqInMins]
+    public TreeMap<String, Object> getSchedules() throws SQLException{
         connect();
-        ResultSet rs = statement.executeQuery("SELECT * from schedules");
-        int len = 0;
+        TreeMap<String, Object> schedules = new TreeMap<>();
+
+        ResultSet rs = statement.executeQuery("SELECT * FROM schedules");
+
         while(rs.next()){
-            len++;
+            TreeMap<String, Object> schedule = new TreeMap<>();
+            schedule.put("billboardId", rs.getString(2));
+            schedule.put("startTime", rs.getString(3));
+            schedule.put("scheduleDuration", rs.getInt(4));
+            schedule.put("isRecurring", rs.getBoolean(5));
+            schedule.put("recurFreqInMins", rs.getInt(6));
+
+            schedules.put(rs.getString(1), schedule);
         }
-        rs.beforeFirst();
-        String[][] schedules = new String[len][5];
-        int i = 0;
-        while(rs.next()){
-            schedules[i][0] = rs.getString(2);
-            schedules[i][1] = rs.getString(3);
-            schedules[i][2] = rs.getString(4);
-            schedules[i][3] = rs.getString(5);
-            schedules[i][4] = rs.getString(6);
-            i++;
-        }
+
         return schedules;
     }
 
-    public void deleteSchedule(TreeMap<String, String> schedule) throws SQLException{ // deletes a schedule based off time
+    public void deleteSchedules(String userId, TreeMap<String, Object> data) throws SQLException, ServerException { // deletes a user
         connect();
-        ResultSet rs = statement.executeQuery("SELECT billboardName from schedules WHERE time=\""+schedule.get("startDate")+' '+schedule.get("startTime")+"\"");
-        rs.next();
-        pstmt = conn.prepareStatement(delschedStatement);
-        pstmt.setString(1, schedule.get("startDate") +' '+ schedule.get("startTime"));
-        pstmt.setString(2, schedule.get("billboardName"));
-        pstmt.execute();
+        for(Map.Entry<String, Object> schedule : data.entrySet()){
+            pstmt = conn.prepareStatement(delschedStatement);
+            pstmt.setString(1, schedule.getKey());
+            pstmt.execute();
+        }
     }
 
     public void dropDb() throws SQLException { //TODO: REMOVE LATER THIS IS JUST FOR TESTING
         connect();
-        statement.executeQuery("DROP TABLE IF EXISTS users");
         statement.executeQuery("DROP TABLE IF EXISTS schedules");
         statement.executeQuery("DROP TABLE IF EXISTS billboards");
+        statement.executeQuery("DROP TABLE IF EXISTS users");
         conn.close();
     }
 
