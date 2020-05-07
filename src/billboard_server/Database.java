@@ -16,7 +16,7 @@ public class Database {
             "userName VARCHAR(255)," +
             "hash VARCHAR(255) NOT NULL,"+
             "salt VARCHAR(255) NOT NULL,"+
-            "permission INT ) ";
+            "permissions INT ) ";
     private static final String BILLBOARDS_TABLE = "CREATE TABLE IF NOT EXISTS billboards ( " +
             "billboardId VARCHAR(255) PRIMARY KEY NOT NULL," +
             "billboardMessage VARCHAR(255)," +
@@ -35,7 +35,7 @@ public class Database {
             "recurFreqInMins INT, " +
             "FOREIGN KEY (billboardId) REFERENCES billboards(billboardId) ON DELETE CASCADE ) ";
 
-    private static final String adduserStatement = "INSERT INTO users (userId, userName, hash, salt, permission) VALUES (?, ?, ?, ?, ?)";
+    private static final String adduserStatement = "INSERT INTO users (userId, userName, hash, salt, permissions) VALUES (?, ?, ?, ?, ?)";
     private static final String deluserStatement = "DELETE FROM users WHERE userId=?";
     private static final String addbilbStatement = "INSERT INTO billboards (billboardId, billboardMessage, billboardInfo, billboardPictureData, billboardPictureUrl, billboardBg, billboardMsgColour, billboardInfoColour)" +
             " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -81,7 +81,6 @@ public class Database {
 
     private void setup() throws SQLException{ //Runs a setup SQL statement, creating the users table. This is run during construction TODO: actually make the right tables
 
-        dropDb();
         connect();
         statement.executeQuery(USERS_TABLE);
         statement.executeQuery(BILLBOARDS_TABLE);
@@ -92,7 +91,7 @@ public class Database {
 
     private int getPermission(String userId) throws SQLException {
         connect();
-        ResultSet rs = statement.executeQuery("SELECT permission FROM users WHERE userId=\"" + userId + "\"");
+        ResultSet rs = statement.executeQuery("SELECT permissions FROM users WHERE userId=\"" + userId + "\"");
         if(rs.next()){
             return rs.getInt(1);
         }
@@ -342,12 +341,15 @@ public class Database {
         }
     }
 
-    public void dropDb() throws SQLException { //TODO: REMOVE LATER THIS IS JUST FOR TESTING
+    public void dropDb() throws SQLException {
         connect();
         statement.executeQuery("DROP TABLE IF EXISTS schedules");
         statement.executeQuery("DROP TABLE IF EXISTS billboards");
         statement.executeQuery("DROP TABLE IF EXISTS users");
-        conn.close();
     }
 
+    public void addTestAdmin() throws SQLException{
+        connect();
+        statement.executeQuery("INSERT INTO users (userId, userName, hash, salt, permissions) VALUES (\"admin12345\", \"adminname\", \"adminhash\", \"adminsalt\", 8)");
+    }
 }
