@@ -1,11 +1,15 @@
 package billboard_server;
 
 import connections.ClientRequest;
+import connections.Protocol;
+import connections.exceptions.PermissionException;
+import connections.exceptions.ServerException;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Properties;
 import java.time.LocalTime;
 import java.util.TreeMap;
@@ -13,20 +17,20 @@ import java.util.TreeMap;
 public class Database {
 
     private static final String USERS_TABLE = "CREATE TABLE IF NOT EXISTS users ( " +
-            "userName VARCHAR(255) PRIMARY KEY NOT NULL,"+
+            "userId VARCHAR(255) PRIMARY KEY NOT NULL,"+
+            "userName VARCHAR(255)," +
             "hash VARCHAR(255) NOT NULL,"+
             "salt VARCHAR(255) NOT NULL,"+
-            "permission VARCHAR(255) ) ";
+            "permission INT ) ";
     private static final String BILLBOARDS_TABLE = "CREATE TABLE IF NOT EXISTS billboards ( " +
-            "billboardId INT NOT NULL AUTO_INCREMENT,"+
+            "billboardId VARCHAR(255), PRIMARY KEY NOT NULL"+
             "billboardName VARCHAR(255),"+
             "billboardMessage VARCHAR(255)," +
             "billboardInfo VARCHAR(255)," +
             "billboardImg MEDIUMTEXT," +
             "billboardBg VARCHAR(255)," +
             "billboardMsgColour VARCHAR(255)," +
-            "billboardInfoColour VARCHAR(255)," +
-            "PRIMARY KEY(billboardId, billboardName))";
+            "billboardInfoColour VARCHAR(255) )";
     private static final String SCHEDULE_TABLE = "CREATE TABLE IF NOT EXISTS schedules ( " +
             "billboardId INT, " +
             "billboardName VARCHAR(255)," +
@@ -34,9 +38,9 @@ public class Database {
             "duration INT, " +
             "isRecurring BOOLEAN, " +
             "recurFreqInMins INT, " +
-            "FOREIGN KEY (billboardId, billboardName) REFERENCES billboards(billboardId, billboardName) ON DELETE CASCADE ) ";
+            "FOREIGN KEY (billboardId) REFERENCES billboards(billboardId) ON DELETE CASCADE ) ";
 
-    private static final String adduserStatement = "INSERT INTO users (userName, hash, salt, permission) VALUES (?, ?, ?, ?)";
+    private static final String adduserStatement = "INSERT INTO users (userId, userName, hash, salt, permission) VALUES (?, ?, ?, ?, ?)";
     private static final String deluserStatement = "DELETE FROM users WHERE userName=?";
     private static final String addbilbStatement = "INSERT INTO billboards (billboardName, billboardMessage, billboardInfo, billboardImg, billboardBg, billboardMsgColour, billboardInfoColour)" +
             " VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -91,58 +95,103 @@ public class Database {
 
     }
 
-    public boolean processRequest(ClientRequest cr) throws SQLException{
-        if(cr.type.equals("POST")){
-            switch (cr.path) {
-                case "users":
-                    addUser(cr.params);
-                    return true;
-                case "billboards":
-                    addBillboard(cr.params);
-                    return true;
-                case "schedules":
-                    addSchedule(cr.params);
-                    return true;
-            }
+    private int getPermission(String userId) throws SQLException {
+        connect();
+        ResultSet rs = statement.executeQuery("SELECT permission FROM users WHERE userId=\"" + userId + "\"");
+        if(rs.next()){
+            return rs.getInt(1);
         }
-        else if(cr.type.equals("GET")){
-            switch (cr.path) {
-                case "users":
-                    getUsers();
-                    return true;
-                case "billboards":
-                    getBillboards();
-                    return true;
-                case "schedules":
-                    getSchedule();
-                    return true;
-            }
+        else{
+            return 0;
         }
-        else if(cr.type.equals("DEL")){
-            switch (cr.path) {
-                case "users":
-                    //deleteUser()
-                    return true;
-                case "billboards":
-                    //deleteBillboard()
-                    return true;
-                case "schedule":
-                    //deleteSchedule
-                    return true;
-            }
-        }
-        return false;
     }
 
-    public void addUser(TreeMap<String, String> user) throws SQLException { // adds a user to the DB
+    private void checkPermission(String userId, int permissionNeeded) throws SQLException, ServerException{
+        if(userId == null){
+            throw new ServerException("tried to check permissions for null user");
+        }
+        if((getPermission(userId) & permissionNeeded) == 0){
+            throw new PermissionException(userId, getPermission(userId), permissionNeeded);
+        }
+    }
+
+    private boolean doesUserExist(String userId) throws SQLException {
         connect();
-        pstmt = conn.prepareStatement(adduserStatement);
-        pstmt.clearParameters();
-        pstmt.setString(1, user.get("userName"));
-        pstmt.setString(2, user.get("hash"));
-        pstmt.setString(3, user.get("salt"));
-        pstmt.setString(4, user.get("permissions"));
-        pstmt.execute();
+        ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE userId=\""+userId+"\"");
+        if(rs.next()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    private String getHash(String userId) throws SQLException{
+        connect();
+        ResultSet rs = statement.executeQuery("SELECT hash FROM users WHERE userId=\""+userId+"\"");
+        if(rs.next()){
+            return rs.getString(1);
+        }
+        else{
+            return null;
+        }
+    }
+
+    private String getSalt(String userId) throws SQLException{
+        connect();
+        ResultSet rs = statement.executeQuery("SELECT salt FROM users WHERE userId=\""+userId+"\"");
+        if(rs.next()){
+            return rs.getString(1);
+        }
+        else{
+            return null;
+        }
+    }
+
+    public void addUsers(String userId, TreeMap<String, Object> data) throws ServerException, SQLException {
+
+        /* make sure user attempting to add new users has permissions */
+        checkPermission(userId, Protocol.Permission.EDIT_USERS);
+
+        /* loop through each user in the treemap */
+        for(Map.Entry<String, Object> user : data.entrySet()) {
+
+            /* cast the value of the treemap entry and get the details of each user */
+            TreeMap<String, Object> userDetails = (TreeMap<String, Object>) user.getValue();
+
+            /* get all of the relevant values and cast to types */
+            String newUserId = user.getKey();
+            String newUsername = (String) userDetails.get("userName");
+            String newHash = (String) userDetails.get("hash");
+            String newSalt = (String) userDetails.get("salt");
+            int newPermissions = -1;
+            if(userDetails.containsKey("permissions"))
+                newPermissions = (int) userDetails.get("permissions");
+
+            /* check if the user to be added exists or not. */
+            boolean userExists = doesUserExist(user.getKey());
+
+            /* if user doesn't exist, make sure all user information has been provided and add it */
+            if(!userExists) {
+                if(newUsername == null || newHash == null || newSalt == null || newPermissions == -1) {
+                    throw new ServerException("attempting to add user without all of the required information");
+                }
+                pstmt = conn.prepareStatement(adduserStatement);
+                pstmt.setString(1, newUserId);
+                pstmt.setString(2, newUsername);
+                pstmt.setString(3, newHash);
+                pstmt.setString(4, newSalt);
+                pstmt.setInt(5, newPermissions);
+                pstmt.execute();
+
+                /* else if user does exist, somehow modify the existing info for that userId */
+            } else {
+                //if(username != null) pstmt.setString(2, username);
+                //if(getHash(user.getKey()) != null) pstmt.setString(3, hash);
+                //if(getSalt(user.getKey()) != null) pstmt.setString(4, salt);
+                //if(getPermission(user.getKey()) != -1) pstmt.setString(5, username);
+            }
+        }
     }
 
     public String[][] getUsers() throws SQLException{ // gets a 2D array of [users][name, hash, salt, perms]
@@ -164,6 +213,8 @@ public class Database {
         }
         return users;
     }
+
+
 
     public void deleteUser(String name) throws SQLException{ // deletes a user
         connect();
