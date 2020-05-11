@@ -72,12 +72,12 @@ public class CalendarCreator extends Frame {
         // Reoccuring values
         label3.setText("Duration:");
         schedulerPanel.add(label3, new com.intellij.uiDesigner.core.GridConstraints(4, 1, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label4 = new JLabel();
-        label4.setText("Hours:");
-        schedulerPanel.add(label4, new com.intellij.uiDesigner.core.GridConstraints(5, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 16), null, 0, false));
-        final JLabel label5 = new JLabel();
-        label5.setText("Minutes:");
-        schedulerPanel.add(label5, new com.intellij.uiDesigner.core.GridConstraints(5, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(32, 16), null, 0, false));
+//        final JLabel label4 = new JLabel();
+//        label4.setText("Hours:");
+//        schedulerPanel.add(label4, new com.intellij.uiDesigner.core.GridConstraints(5, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 16), null, 0, false));
+//        final JLabel label5 = new JLabel();
+//        label5.setText("Minutes:");
+//        schedulerPanel.add(label5, new com.intellij.uiDesigner.core.GridConstraints(5, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(32, 16), null, 0, false));
 
         JCheckBox recurringCheckBox = new JCheckBox();
         recurringCheckBox.setText("Recurring");
@@ -93,10 +93,11 @@ public class CalendarCreator extends Frame {
         hourlyButton.setEnabled(false);
         schedulerPanel.add(hourlyButton, new com.intellij.uiDesigner.core.GridConstraints(9, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(72, 18), null, 0, false));
 
-        final JLabel label7 = new JLabel();
-        label7.setText("Minutely:");
-        label7.setEnabled(false);
-        schedulerPanel.add(label7, new com.intellij.uiDesigner.core.GridConstraints(10, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(32, 16), null, 0, false));
+        final JRadioButton minutelyButton = new JRadioButton();
+        minutelyButton.setText("Per Minute(s):");
+        minutelyButton.setEnabled(false);
+        schedulerPanel.add(minutelyButton, new com.intellij.uiDesigner.core.GridConstraints(10, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(72, 18), null, 0, false));
+
 
         // Time Spinners
         Date date = new Date();
@@ -107,10 +108,10 @@ public class CalendarCreator extends Frame {
         schedulerPanel.add(endSpinner,new com.intellij.uiDesigner.core.GridConstraints(7,2,1,1,com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST,com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL,com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW,com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED,null,new Dimension(58,26),null,0,false));
 
         // Duration Spinners
-        final JSpinner durationMinutes = new JSpinner();
-        schedulerPanel.add(durationMinutes, new com.intellij.uiDesigner.core.GridConstraints(6, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(32, 26), null, 0, false));
-        final JSpinner durationHours = new JSpinner();
-        schedulerPanel.add(durationHours, new com.intellij.uiDesigner.core.GridConstraints(6, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 26), null, 0, false));
+//        final JSpinner durationMinutes = new JSpinner();
+//        schedulerPanel.add(durationMinutes, new com.intellij.uiDesigner.core.GridConstraints(6, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(32, 26), null, 0, false));
+//        final JSpinner durationHours = new JSpinner();
+//        schedulerPanel.add(durationHours, new com.intellij.uiDesigner.core.GridConstraints(6, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 26), null, 0, false));
 
         //SpinnerDateModel em = new SpinnerDateModel(date,null,null, Calendar.HOUR_OF_DAY);
         JSpinner startSpinner = new JSpinner(sm);
@@ -136,15 +137,70 @@ public class CalendarCreator extends Frame {
                     dailyButton.setEnabled(true);
                     hourlyButton.setEnabled(true);
                     minuteSpinner.setEnabled(true);
-                    label7.setEnabled(true);
+                    minutelyButton.setEnabled(true);
                 } else {//checkbox has been deselected
                     dailyButton.setEnabled(false);
                     hourlyButton.setEnabled(false);
                     minuteSpinner.setEnabled(false);
-                    label7.setEnabled(false);
+                    minutelyButton.setEnabled(false);
                 };
             }
         });
+
+        dailyButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
+                    //do something...
+                    dailyButton.setEnabled(true);
+                    hourlyButton.setEnabled(false);
+                    minuteSpinner.setEnabled(false);
+                    minutelyButton.setEnabled(false);
+                } else {//checkbox has been deselected
+                    dailyButton.setEnabled(true);
+                    hourlyButton.setEnabled(true);
+                    minuteSpinner.setEnabled(true);
+                    minutelyButton.setEnabled(true);
+                };
+            }
+        });
+
+        hourlyButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
+                    //do something...
+                    dailyButton.setEnabled(false);
+                    hourlyButton.setEnabled(true);
+                    minuteSpinner.setEnabled(false);
+                    minutelyButton.setEnabled(false);
+                } else {//checkbox has been deselected
+                    dailyButton.setEnabled(true);
+                    hourlyButton.setEnabled(true);
+                    minuteSpinner.setEnabled(true);
+                    minutelyButton.setEnabled(true);
+                };
+            }
+        });
+
+        minutelyButton.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
+                    //do something...
+                    dailyButton.setEnabled(false);
+                    hourlyButton.setEnabled(false);
+                } else {//checkbox has been deselected
+                    dailyButton.setEnabled(true);
+                    hourlyButton.setEnabled(true);
+                }
+                minuteSpinner.setEnabled(true);
+                minutelyButton.setEnabled(true);
+                ;
+            }
+        });
+
+
 
         //TODO: Connect event adding with scheduler functions and buttons e.g. port the user select variables into the following function
         //TODO: Create a function to account for recurring schedules
@@ -181,6 +237,18 @@ public class CalendarCreator extends Frame {
         frm.setVisible(true);
         frm.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
+        if (recurringCheckBox.isSelected()){
+            dailyButton.setEnabled(true);
+            hourlyButton.setEnabled(true);
+        }
+        else if (recurringCheckBox.isSelected() && hourlyButton.isSelected()){
+            dailyButton.setEnabled(false);
+            hourlyButton.setEnabled(true);
+        }
+        else if (recurringCheckBox.isSelected() && dailyButton.isSelected()){
+            dailyButton.setEnabled(true);
+            hourlyButton.setEnabled(false);
+        }
 
         // Listeners
         cal.addCalendarEventClickListener(e -> {
@@ -208,24 +276,37 @@ public class CalendarCreator extends Frame {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Calendar calendar = new GregorianCalendar();
+                // Get Values Entered:
 
                 String billboardName = (String) enterScheduleNameTextField.getText();
+
                 Date startDateTime = (Date) startSpinner.getValue();
+                calendar.setTime(startDateTime);
+                int startMinute = calendar.get(Calendar.MINUTE);
+                int startHour = calendar.get(Calendar.HOUR_OF_DAY);
+                int startDay = calendar.get(Calendar.DAY_OF_MONTH);
+                //Add one to month {0 - 11}
+                int startMonth = calendar.get(Calendar.MONTH) + 1;
+                int startYear = calendar.get(Calendar.YEAR);
+
+                // Get End Time Values (Hour and Minute)
                 Date endDateTime = (Date) endSpinner.getValue();
-                Calendar calendar = new GregorianCalendar();
                 calendar.setTime(endDateTime);
                 int endHour = calendar.get(Calendar.HOUR_OF_DAY);
                 int endMinute = calendar.get(Calendar.MINUTE);
-                // Get msec from each, and subtract.
+                // Get seconds from each, and subtract.
                 long diff = endDateTime.getTime() - startDateTime.getTime();
                 int diffMinutes = Math.toIntExact(diff / (60 * 1000));
-                System.out.println(diffMinutes);
+                //System.out.println(diffMinutes);
+
+                // Get recurring values
                 int minuteSpinnerValue = (Integer) minuteSpinner.getValue();
-                int hourDurationValue = (Integer) durationHours.getValue();
-                int minutesDurationValue = (Integer) durationMinutes.getValue();
                 boolean recurring = (Boolean) recurringCheckBox.isSelected();
                 boolean recurringDaily = (Boolean) dailyButton.isSelected();
                 boolean recurringHourly = (Boolean) hourlyButton.isSelected();
+
+                // Add recurring values
                 int recurringEveryXminutes = 0;
                 if (recurringDaily == true){
                     recurringEveryXminutes += 1440;
@@ -238,40 +319,43 @@ public class CalendarCreator extends Frame {
                 else {recurringEveryXminutes += 0;};
                 recurringEveryXminutes = recurringEveryXminutes + minuteSpinnerValue;
 
-                // TODO: CHANGE OFFSETDATETIME VALUE TO NORMAL DATETIME FOR EASE OF USE
-                OffsetDateTime offsetDateTime = startDateTime.toInstant().atOffset(ZoneOffset.UTC);
-
+                // Converting DateTime to LocalDateTime to OffsetDateTime for commandAddSchedule function
+                LocalDateTime convertedDate = Instant.ofEpochMilli(startDateTime.getTime()).atZone( ZoneId.systemDefault() )
+                        .toLocalDateTime();
+                ZoneOffset offset = OffsetDateTime.now().getOffset();
+                OffsetDateTime offsetDateTime = convertedDate.atOffset(offset);
                 ScheduleController.commandAddSchedule(billboardName,offsetDateTime,diffMinutes, recurring,recurringEveryXminutes, "Lahiru" );
+
                 // CHECK OUTPUT
                 System.out.println("Instructions from GUI for Command:  " + ScheduleController.getCurrentCommandName() + ", the data is:\n"
                         + ScheduleController.getCurrentCommandData().toString() +"\n" );
 
-                // TODO: ADD event according to user selected values
-                // TODO: THIS DOESNT DO THE CORRECT JOB, NEED TO FIGURE OUT HOW TO REFRESH SAME WINDOW WITH NEW SCHEDULE
-                //events.add(new CalendarEvent(LocalDate.of(2020, 5, 7), LocalTime.of(14, 0), LocalTime.of(14, 20), "BILLBOARD 1"));
-                //CalendarWeek cal = new CalendarWeek(events);
-                // date2 = formatter.parseLocalDate(startDateTime);
-                Calendar calendarStart = new GregorianCalendar();
-                calendar.setTime(startDateTime);
-                int year = calendar.get(Calendar.YEAR);
-                //Add one to month {0 - 11}
-                int month = calendarStart.get(Calendar.MONTH) + 1;
-                int day = calendarStart.get(Calendar.DAY_OF_MONTH);
-                int hour = calendarStart.get(Calendar.HOUR_OF_DAY);
-                int minute = calendarStart.get(Calendar.MINUTE);
-                //int endHour = hour + hourDurationValue;
-                //int endMinute = minute + minutesDurationValue;
-
-                System.out.println(startDateTime);
-                System.out.println(year);
-                System.out.println(month);
-                System.out.println(day);
-                System.out.println(hour);
-                System.out.println(minute);
-                System.out.println(endHour);
-                System.out.println(endMinute);
-                events.add(new CalendarEvent(LocalDate.of(year, month, day), LocalTime.of(hour, minute), LocalTime.of(endHour, endMinute), billboardName));
+                // ADD Schedule to Calendar View
+                events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
                 cal.goToToday();
+
+                //TODO: Add Recurring schedules to Viewer
+                //TODO: Convert total hours, minutes, days into useable format. i.e. >24 hours cant be used in a single day using LocalDate.of
+                if (recurringCheckBox.isSelected() && recurringHourly == true){
+                    int i =0;
+                    while (i <= 672 ){
+                        events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour + i, startMinute), LocalTime.of(endHour + i, endMinute), billboardName));
+                        i++;
+                    }
+                    cal.goToToday();
+                }
+                else if (recurringCheckBox.isSelected() && recurringDaily == true){
+                    int i =0;
+                    while (i <= 672 ){
+                        events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay+i), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
+                        i++;
+                    }
+                    cal.goToToday();
+                }
+
+                //TODO: Ensure schedules can't reoccur longer than its frequency
+
+                //TODO: Add Schedule to DB
             }
         });
 
@@ -293,16 +377,36 @@ public class CalendarCreator extends Frame {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //setValues();
+                Calendar calendar = new GregorianCalendar();
+                // Get Values Entered:
                 String billboardName = (String) enterScheduleNameTextField.getText();
-                Date date1 = (Date) startSpinner.getValue();
 
-                // TODO: CHANGE OFFSETDATETIME VALUE TO NORMAL DATETIME FOR EASE OF USE
-                OffsetDateTime offsetDateTime = date1.toInstant().atOffset(ZoneOffset.UTC);
+                Date startDateTime = (Date) startSpinner.getValue();
+                calendar.setTime(startDateTime);
+                int startMinute = calendar.get(Calendar.MINUTE);
+                int startHour = calendar.get(Calendar.HOUR_OF_DAY);
+                int startDay = calendar.get(Calendar.DAY_OF_MONTH);
+                //Add one to month {0 - 11}
+                int startMonth = calendar.get(Calendar.MONTH) + 1;
+                int startYear = calendar.get(Calendar.YEAR);
+
+                // Get End Time Values (Hour and Minute)
+                Date endDateTime = (Date) endSpinner.getValue();
+                calendar.setTime(endDateTime);
+                int endHour = calendar.get(Calendar.HOUR_OF_DAY);
+                int endMinute = calendar.get(Calendar.MINUTE);
+
+                // Converting DateTime to LocalDateTime to OffsetDateTime for commandAddSchedule function
+                LocalDateTime convertedDate = Instant.ofEpochMilli(startDateTime.getTime()).atZone( ZoneId.systemDefault() )
+                        .toLocalDateTime();
+                ZoneOffset offset = OffsetDateTime.now().getOffset();
+                OffsetDateTime offsetDateTime = convertedDate.atOffset(offset);
                 ScheduleController.commandRemoveSchedule(billboardName,offsetDateTime);
                 ScheduleController.commandReplyParser( Scheduler.getCurrentCommandName(), Scheduler.getCurrentCommandData() );
-                System.out.println("Instructions from GUI for Command:  " + ScheduleController.getCurrentCommandName() + ", the data is:\n"
-                        + ScheduleController.getCurrentCommandData().toString() +"\n" );
+                //System.out.println("Instructions from GUI for Command:  " + ScheduleController.getCurrentCommandName() + ", the data is:\n"
+                // + ScheduleController.getCurrentCommandData().toString() +"\n" );
+                events.remove(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
+                cal.goToToday();
             }
         });
 
@@ -310,28 +414,6 @@ public class CalendarCreator extends Frame {
 
 
     public static void main(String[] args) {
-        // TODO: Store Calendar/Scheduled Events in Database which is where GUI retrieves data to display from
-        //i.e for each event in database, events.add(calendarevent ...)
-        OffsetDateTime timeNowPlus10Days = OffsetDateTime.now().plusDays(10);
-        // TEST DATA
-        String billboardName = "Great Billboard!";
-        OffsetDateTime schedStart = timeNowPlus10Days;
-        Integer duration = 60;
-        Boolean recur = true;
-        Integer recurFreqMins = 30;
-        String creatorName = "John";
-        ScheduleController.commandAddSchedule(billboardName, schedStart, duration, recur, recurFreqMins, creatorName);
-        ScheduleController.commandGetSchedules();
-        System.out.println(ScheduleController.getCurrentCommandData().toString());
-
-        //ArrayList<CalendarEvent> events = new ArrayList<>();
-        //CalendarWeek cal = new CalendarWeek(events);
         CalendarCreator edit = new CalendarCreator(tal);
-        //events.add(new CalendarEvent(LocalDate.of(2020, 4, 28), LocalTime.of(14, 0), LocalTime.of(14, 20), "BILLBOARD 1"));
-        //CalendarViewer view = new CalendarViewer();
-
-
     }
-
-
 }
