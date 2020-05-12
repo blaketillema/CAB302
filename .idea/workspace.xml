@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/CAB302.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CAB302.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -24,6 +23,7 @@
   <component name="Git.Settings">
     <option name="PREVIOUS_COMMIT_AUTHORS">
       <list>
+        <option value="mferg00 &lt;mferg2@hotmail.com&gt;" />
         <option value="mferg00 &lt;53891115+mferg00@users.noreply.github.com&gt;" />
       </list>
     </option>
@@ -74,7 +74,7 @@
       <recent name="C:\Users\dnehl\OneDrive - Queensland University of Technology\CAB302\assignment\CAB302\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MainRunDisplay">
+  <component name="RunManager" selected="Application.ServerMainTest">
     <configuration name="Unnamed" type="AndroidJUnit" factoryName="Android JUnit" nameIsGenerated="true">
       <module name="CAB302" />
       <useClassPathOnly />
@@ -185,21 +185,19 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.MainRunDisplay" />
-      <item itemvalue="Application.UserManagement" />
-      <item itemvalue="Application.ServerMainTest" />
-      <item itemvalue="Application.ServerMainTest (1)" />
       <item itemvalue="Application.AdminAddUsers" />
+      <item itemvalue="Application.MainRunDisplay" />
+      <item itemvalue="Application.ServerMainTest" />
       <item itemvalue="Application.User1AddBillboards" />
       <item itemvalue="Application.User3ScheduleBillboards" />
+      <item itemvalue="Application.UserManagement" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.ServerMainTest" />
         <item itemvalue="Application.User3ScheduleBillboards" />
         <item itemvalue="Application.User1AddBillboards" />
         <item itemvalue="Application.AdminAddUsers" />
-        <item itemvalue="Application.ServerMainTest (1)" />
-        <item itemvalue="Application.ServerMainTest" />
       </list>
     </recent_temporary>
   </component>
@@ -249,7 +247,14 @@
       <option name="project" value="LOCAL" />
       <updated>1587093828084</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="random stuff">
+      <created>1588328514835</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1588328514835</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -279,7 +284,8 @@
     <MESSAGE value="Basic GUI for control panel login&#10;Extended billboard cases in the viewer" />
     <MESSAGE value="added ClientServerInterface for easier server calls and improved permission handling" />
     <MESSAGE value="added ServerDatabaseInterface and improved permission handling some more" />
-    <option name="LAST_COMMIT_MESSAGE" value="added ServerDatabaseInterface and improved permission handling some more" />
+    <MESSAGE value="random stuff" />
+    <option name="LAST_COMMIT_MESSAGE" value="random stuff" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -339,35 +345,35 @@
       <screen x="0" y="0" width="1739" height="939" />
     </state>
     <state x="655" y="272" key="#com.intellij.uiDesigner.palette.ComponentItemDialog/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585579096665" />
-    <state x="637" y="27" key="CommitChangelistDialog2" timestamp="1587093827984">
+    <state x="637" y="27" key="CommitChangelistDialog2" timestamp="1588328514776">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
     <state x="577" y="25" key="CommitChangelistDialog2/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585582372076" />
-    <state x="637" y="27" key="CommitChangelistDialog2/0.0.1920.1030@0.0.1920.1030" timestamp="1587093827984" />
+    <state x="637" y="27" key="CommitChangelistDialog2/0.0.1920.1030@0.0.1920.1030" timestamp="1588328514776" />
     <state x="1920" y="0" key="CommitChangelistDialog2/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585453971046" />
     <state x="2884" y="228" key="FileChooserDialogImpl" timestamp="1587606242469">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2884" y="228" key="FileChooserDialogImpl/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587606242469" />
-    <state width="1853" height="230" key="GridCell.Tab.0.bottom" timestamp="1587640322287">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state width="654" height="901" key="GridCell.Tab.0.bottom" timestamp="1588573804483">
+      <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state width="702" height="907" key="GridCell.Tab.0.bottom/0.0.1920.1030@0.0.1920.1030" timestamp="1587136092001" />
+    <state width="654" height="901" key="GridCell.Tab.0.bottom/0.0.1920.1030@0.0.1920.1030" timestamp="1588573804483" />
     <state width="1853" height="230" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="1853" height="230" key="GridCell.Tab.0.center" timestamp="1587640322287">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state width="654" height="901" key="GridCell.Tab.0.center" timestamp="1588573804482">
+      <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state width="702" height="907" key="GridCell.Tab.0.center/0.0.1920.1030@0.0.1920.1030" timestamp="1587136091998" />
+    <state width="654" height="901" key="GridCell.Tab.0.center/0.0.1920.1030@0.0.1920.1030" timestamp="1588573804482" />
     <state width="1853" height="230" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="1853" height="230" key="GridCell.Tab.0.left" timestamp="1587640322287">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state width="654" height="901" key="GridCell.Tab.0.left" timestamp="1588573804482">
+      <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state width="702" height="907" key="GridCell.Tab.0.left/0.0.1920.1030@0.0.1920.1030" timestamp="1587136091997" />
+    <state width="654" height="901" key="GridCell.Tab.0.left/0.0.1920.1030@0.0.1920.1030" timestamp="1588573804482" />
     <state width="1853" height="230" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="1853" height="230" key="GridCell.Tab.0.right" timestamp="1587640322287">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state width="654" height="901" key="GridCell.Tab.0.right" timestamp="1588573804483">
+      <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state width="702" height="907" key="GridCell.Tab.0.right/0.0.1920.1030@0.0.1920.1030" timestamp="1587136092000" />
+    <state width="654" height="901" key="GridCell.Tab.0.right/0.0.1920.1030@0.0.1920.1030" timestamp="1588573804483" />
     <state width="1853" height="230" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
     <state width="890" height="439" key="GridCell.Tab.1.bottom" timestamp="1585484853584">
       <screen x="1920" y="0" width="1920" height="1080" />
@@ -413,6 +419,10 @@
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
     <state x="730" y="220" key="git4idea.branch.GitSmartOperationDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1586937769061" />
+    <state x="663" y="308" width="591" height="410" key="git4idea.merge.GitPullDialog" timestamp="1589274680314">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="663" y="308" width="591" height="410" key="git4idea.merge.GitPullDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1589274680314" />
     <state x="1963" y="246" width="1009" height="1469" key="run.anything.popup" timestamp="1585711773521">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
