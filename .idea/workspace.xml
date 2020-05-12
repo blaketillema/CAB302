@@ -185,12 +185,12 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.AdminAddUsers" />
       <item itemvalue="Application.MainRunDisplay" />
+      <item itemvalue="Application.UserManagement" />
+      <item itemvalue="Application.AdminAddUsers" />
       <item itemvalue="Application.ServerMainTest" />
       <item itemvalue="Application.User1AddBillboards" />
       <item itemvalue="Application.User3ScheduleBillboards" />
-      <item itemvalue="Application.UserManagement" />
     </list>
     <recent_temporary>
       <list>
@@ -407,10 +407,10 @@
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
     <state x="664" y="409" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1920.1030@0.0.1920.1030" timestamp="1586669722466" />
-    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1588328474363">
+    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1589274812853">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1030@0.0.1920.1030" timestamp="1588328474363" />
+    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1030@0.0.1920.1030" timestamp="1589274812853" />
     <state x="2993" y="0" width="854" height="1087" key="dock-window-1" timestamp="1585732302250">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
@@ -419,10 +419,10 @@
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
     <state x="730" y="220" key="git4idea.branch.GitSmartOperationDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1586937769061" />
-    <state x="663" y="308" width="591" height="410" key="git4idea.merge.GitPullDialog" timestamp="1589274680314">
+    <state x="663" y="308" width="591" height="410" key="git4idea.merge.GitPullDialog" timestamp="1589274784827">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state x="663" y="308" width="591" height="410" key="git4idea.merge.GitPullDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1589274680314" />
+    <state x="663" y="308" width="591" height="410" key="git4idea.merge.GitPullDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1589274784827" />
     <state x="1963" y="246" width="1009" height="1469" key="run.anything.popup" timestamp="1585711773521">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
