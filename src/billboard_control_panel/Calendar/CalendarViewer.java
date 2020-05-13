@@ -1,7 +1,5 @@
 package billboard_control_panel.Calendar;
 
-import billboard_control_panel.schedulerController;
-
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
 import java.awt.*;
@@ -340,7 +338,7 @@ public abstract class CalendarViewer extends JComponent {
 
             y = (int) timeToPixel(time) + 15;
             g2.drawString(time.toString(), TIME_COL_WIDTH - (FONT_LETTER_PIXEL_WIDTH * time.toString().length()) - 5, y);
-            System.out.println(time);
+
             if (time.getHour() == 23){
                 break;
             }
