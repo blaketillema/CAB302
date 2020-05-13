@@ -11,23 +11,18 @@ public class CalendarEventClickEvent extends AWTEvent{
     public CalendarEventClickEvent(Object source, CalendarEvent calendarEvent) {
         super(source, 0);
         this.calendarEvent = calendarEvent;
-        //this.dateTime = dateTime;
-        //LocalTime startTime;
         this.startDateTime = calendarEvent.getStartDateTime();
         this.endDateTime = calendarEvent.getEndDateTime();
         this.billboardName = calendarEvent.getText();
-        //System.out.println(startDateTime);
     }
 
     public CalendarEvent getCalendarEvent() {
         return calendarEvent;
     }
     public LocalDateTime getStartDateTime() {
-        //System.out.println(startDateTime);
         return startDateTime;
     }
     public LocalDateTime getEndDateTime() {
-        //System.out.println(startDateTime);
         return endDateTime;
     }
 

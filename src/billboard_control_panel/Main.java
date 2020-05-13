@@ -19,11 +19,6 @@ public class Main {
 
     public static void main(String[] args) {
         /* Create and display the form */
-//            JFrame frame = new JFrame("UserLoginPanel");
-//            frame.setContentPane(new LoginManager().LoginPanel);
-//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            frame.pack();
-//            frame.setVisible(true);
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
