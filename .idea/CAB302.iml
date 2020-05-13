@@ -8,15 +8,13 @@
       <excludeFolder url="file://$MODULE_DIR$/src/Sandbox" />
       <excludeFolder url="file://$MODULE_DIR$/src/billboard_control_panel" />
       <excludeFolder url="file://$MODULE_DIR$/src/billboard_control_panel/SwingCalendar" />
-      <excludeFolder url="file://$MODULE_DIR$/src/billboard_server" />
       <excludeFolder url="file://$MODULE_DIR$/src/billboard_viewer" />
       <excludeFolder url="file://$MODULE_DIR$/src/connections/old" />
       <excludeFolder url="file://$MODULE_DIR$/src/connections/testing" />
     </content>
     <content url="file://$MODULE_DIR$/src/billboard_control_panel/SwingCalendar" />
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="13.0.2" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="mariadb-java-client-2.6.0" level="project" />
     <orderEntry type="module-library">
       <library name="JUnit4">
         <CLASSES>
@@ -43,5 +41,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" exported="" name="mariadb-java-client-2.6.0" level="project" />
   </component>
 </module>

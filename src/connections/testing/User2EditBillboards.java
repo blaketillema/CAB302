@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+@Deprecated
 public class User2EditBillboards {
     public static void main(String[] args) throws Exception {
         ClientServerInterface server = new ClientServerInterface();

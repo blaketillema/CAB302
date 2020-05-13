@@ -5,6 +5,7 @@ import connections.exceptions.ServerException;
 
 import java.util.TreeMap;
 
+@Deprecated
 public class User1AddBillboards {
     public static void main(String[] args) throws Exception {
         ClientServerInterface server = new ClientServerInterface();

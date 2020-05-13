@@ -27,8 +27,7 @@ public class ServerClientConnection implements Runnable {
         }
         ServerResponse response = server.getResponse();
 
-        if (response.status == null || !response.status.equals("OK"))
-        {
+        if (response == null || response.status == null || !response.status.equals("OK")) {
             throw new ServerException(response.status);
         }
 

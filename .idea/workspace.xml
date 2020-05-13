@@ -2,7 +2,28 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/CAB302.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CAB302.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_server/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/Database.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_server/DatabaseTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_server/Scheduler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_server/Server.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_server/TestClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/ClientServerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/ClientServerInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/Protocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/Protocol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/ServerMainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/ServerMainTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/assets/salts.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/engines/Database.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/engines/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/engines/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/engines/ServerClientConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/engines/ServerClientConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/engines/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/engines/ServerThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/exceptions/PermissionException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/exceptions/PermissionException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/testing/AdminModifyUsers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/testing/AdminModifyUsers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/testing/User1AddBillboards.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/testing/User1AddBillboards.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/testing/User2EditBillboards.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/testing/User2EditBillboards.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/testing/User3ScheduleBillboards.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/testing/User3ScheduleBillboards.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/testing/ViewerGetCurrent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/testing/ViewerGetCurrent.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,12 +79,16 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="398" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/connections" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/connections/assets" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/connections/assets" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="billboard_viewer" />
     </key>
@@ -74,7 +99,7 @@
       <recent name="C:\Users\dnehl\OneDrive - Queensland University of Technology\CAB302\assignment\CAB302\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ServerMainTest">
+  <component name="RunManager" selected="Application.ClientMainTests">
     <configuration name="Unnamed" type="AndroidJUnit" factoryName="Android JUnit" nameIsGenerated="true">
       <module name="CAB302" />
       <useClassPathOnly />
@@ -87,12 +112,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AdminAddUsers" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="connections.testing.AdminAddUsers" />
+    <configuration name="ClientMainTests" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="connections.ClientMainTests" />
       <module name="CAB302" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="connections.testing.*" />
+          <option name="PATTERN" value="connections.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GenAdminKeys" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="connections.types.GenAdminKeys" />
+      <module name="CAB302" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="connections.types.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -113,7 +151,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ServerMainTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="ServerMainTest" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="connections.ServerMainTest" />
       <module name="CAB302" />
       <extension name="coverage">
@@ -132,19 +170,6 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="connections.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="User1AddBillboards" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="connections.testing.User1AddBillboards" />
-      <module name="CAB302" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="connections.testing.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -184,20 +209,26 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="mariadb-java-client-2.6.0.jar" type="JarApplication" temporary="true">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/mariadb-java-client-2.6.0.jar" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Application.MainRunDisplay" />
       <item itemvalue="Application.UserManagement" />
-      <item itemvalue="Application.AdminAddUsers" />
       <item itemvalue="Application.ServerMainTest" />
-      <item itemvalue="Application.User1AddBillboards" />
       <item itemvalue="Application.User3ScheduleBillboards" />
+      <item itemvalue="Application.GenAdminKeys" />
+      <item itemvalue="JAR Application.mariadb-java-client-2.6.0.jar" />
+      <item itemvalue="Application.ClientMainTests" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.ClientMainTests" />
         <item itemvalue="Application.ServerMainTest" />
+        <item itemvalue="Application.GenAdminKeys" />
+        <item itemvalue="JAR Application.mariadb-java-client-2.6.0.jar" />
         <item itemvalue="Application.User3ScheduleBillboards" />
-        <item itemvalue="Application.User1AddBillboards" />
-        <item itemvalue="Application.AdminAddUsers" />
       </list>
     </recent_temporary>
   </component>
@@ -305,15 +336,16 @@
       <screen x="0" y="0" width="1739" height="939" />
     </state>
     <state x="650" y="147" key="#com.intellij.codeInsight.i18n.I18nizeQuickFixDialog_Form/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585581674764" />
-    <state x="2488" y="114" width="1225" height="830" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1587637561196">
-      <screen x="1920" y="0" width="1920" height="1080" />
-    </state>
-    <state x="387" y="97" width="1225" height="830" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585581662439" />
-    <state x="2488" y="114" width="1352" height="966" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587637561196" />
-    <state x="113" y="289" width="526" height="387" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1587109318819">
+    <state x="568" y="109" width="1225" height="830" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1589375836149">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state x="113" y="289" width="526" height="387" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1030@0.0.1920.1030" timestamp="1587109318819" />
+    <state x="387" y="97" width="1225" height="830" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585581662439" />
+    <state x="568" y="109" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1589375836149" />
+    <state x="2488" y="114" width="1352" height="966" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587637561196" />
+    <state x="113" y="289" width="551" height="387" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1589375645682">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="113" y="289" width="551" height="387" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1030@0.0.1920.1030" timestamp="1589375645681" />
     <state x="2033" y="303" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585226512752" />
     <state x="2909" y="170" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1585362813763">
       <screen x="1920" y="0" width="1920" height="1080" />
@@ -324,10 +356,11 @@
     </state>
     <state x="675" y="180" key="#com.intellij.ide.util.MemberChooser/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585581734316" />
     <state x="745" y="197" width="382" height="559" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1030@0.0.1920.1030" timestamp="1587030586635" />
-    <state x="828" y="257" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1585581660317">
-      <screen x="0" y="0" width="1739" height="939" />
+    <state x="914" y="282" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1589276850766">
+      <screen x="0" y="0" width="1920" height="1030" />
     </state>
     <state x="828" y="257" key="#com.intellij.ide.util.TreeClassChooserDialog/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585581660317" />
+    <state x="914" y="282" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1589276850766" />
     <state x="2834" y="296" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585464834616" />
     <state x="600" y="263" key="#com.intellij.ide.util.TreeFileChooserDialog" timestamp="1585579095602">
       <screen x="0" y="0" width="1739" height="939" />
@@ -345,35 +378,36 @@
       <screen x="0" y="0" width="1739" height="939" />
     </state>
     <state x="655" y="272" key="#com.intellij.uiDesigner.palette.ComponentItemDialog/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585579096665" />
-    <state x="637" y="27" key="CommitChangelistDialog2" timestamp="1588328514776">
+    <state x="637" y="27" key="CommitChangelistDialog2" timestamp="1589383014612">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
     <state x="577" y="25" key="CommitChangelistDialog2/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585582372076" />
-    <state x="637" y="27" key="CommitChangelistDialog2/0.0.1920.1030@0.0.1920.1030" timestamp="1588328514776" />
+    <state x="637" y="27" key="CommitChangelistDialog2/0.0.1920.1030@0.0.1920.1030" timestamp="1589383014612" />
     <state x="1920" y="0" key="CommitChangelistDialog2/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585453971046" />
-    <state x="2884" y="228" key="FileChooserDialogImpl" timestamp="1587606242469">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="964" y="217" key="FileChooserDialogImpl" timestamp="1589277268444">
+      <screen x="0" y="0" width="1920" height="1030" />
     </state>
+    <state x="964" y="217" key="FileChooserDialogImpl/0.0.1920.1030@0.0.1920.1030" timestamp="1589277268444" />
     <state x="2884" y="228" key="FileChooserDialogImpl/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587606242469" />
-    <state width="654" height="901" key="GridCell.Tab.0.bottom" timestamp="1588573804483">
+    <state width="818" height="901" key="GridCell.Tab.0.bottom" timestamp="1589382893881">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state width="654" height="901" key="GridCell.Tab.0.bottom/0.0.1920.1030@0.0.1920.1030" timestamp="1588573804483" />
+    <state width="818" height="901" key="GridCell.Tab.0.bottom/0.0.1920.1030@0.0.1920.1030" timestamp="1589382893881" />
     <state width="1853" height="230" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="654" height="901" key="GridCell.Tab.0.center" timestamp="1588573804482">
+    <state width="818" height="901" key="GridCell.Tab.0.center" timestamp="1589382893881">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state width="654" height="901" key="GridCell.Tab.0.center/0.0.1920.1030@0.0.1920.1030" timestamp="1588573804482" />
+    <state width="818" height="901" key="GridCell.Tab.0.center/0.0.1920.1030@0.0.1920.1030" timestamp="1589382893881" />
     <state width="1853" height="230" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="654" height="901" key="GridCell.Tab.0.left" timestamp="1588573804482">
+    <state width="818" height="901" key="GridCell.Tab.0.left" timestamp="1589382893881">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state width="654" height="901" key="GridCell.Tab.0.left/0.0.1920.1030@0.0.1920.1030" timestamp="1588573804482" />
+    <state width="818" height="901" key="GridCell.Tab.0.left/0.0.1920.1030@0.0.1920.1030" timestamp="1589382893881" />
     <state width="1853" height="230" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="654" height="901" key="GridCell.Tab.0.right" timestamp="1588573804483">
+    <state width="818" height="901" key="GridCell.Tab.0.right" timestamp="1589382893881">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state width="654" height="901" key="GridCell.Tab.0.right/0.0.1920.1030@0.0.1920.1030" timestamp="1588573804483" />
+    <state width="818" height="901" key="GridCell.Tab.0.right/0.0.1920.1030@0.0.1920.1030" timestamp="1589382893881" />
     <state width="1853" height="230" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
     <state width="890" height="439" key="GridCell.Tab.1.bottom" timestamp="1585484853584">
       <screen x="1920" y="0" width="1920" height="1080" />
@@ -395,6 +429,10 @@
     </state>
     <state width="1696" height="367" key="GridCell.Tab.1.right/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585582416068" />
     <state width="890" height="439" key="GridCell.Tab.1.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585484853583" />
+    <state x="444" y="94" width="1007" height="733" key="SettingsEditor" timestamp="1589373791314">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="444" y="94" width="1007" height="733" key="SettingsEditor/0.0.1920.1030@0.0.1920.1030" timestamp="1589373791314" />
     <state x="556" y="249" key="Vcs.Push.Dialog.v2" timestamp="1587093838839">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
@@ -407,10 +445,10 @@
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
     <state x="664" y="409" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1920.1030@0.0.1920.1030" timestamp="1586669722466" />
-    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1589274812853">
+    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1589382960553">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1030@0.0.1920.1030" timestamp="1589274812853" />
+    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1030@0.0.1920.1030" timestamp="1589382960553" />
     <state x="2993" y="0" width="854" height="1087" key="dock-window-1" timestamp="1585732302250">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
