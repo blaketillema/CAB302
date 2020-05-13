@@ -1,17 +1,16 @@
-package billboard_control_panel.SwingCalendar;
+package billboard_control_panel.Calendar;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class WeekCalendar extends Calendar {
-
+public class CalendarWeek extends CalendarViewer {
     private Week week;
 
-    public WeekCalendar(ArrayList<CalendarEvent> events) {
+    public CalendarWeek(ArrayList<CalendarEvent> events) {
         super(events);
         week = new Week(LocalDate.now());
     }
-
     @Override
     protected boolean dateInRange(LocalDate date) {
         return Week.getStartOfWeek(date).equals(week.getDay(DayOfWeek.MONDAY));
@@ -22,9 +21,12 @@ public class WeekCalendar extends Calendar {
         return week.getDay(day);
     }
 
+    // Adjust to show just weekdays, all days etc
+    @Override
     protected int numDaysToShow() {
         return 7;
     }
+
 
     @Override
     protected DayOfWeek getStartDay() {
@@ -41,6 +43,7 @@ public class WeekCalendar extends Calendar {
         week = new Week(LocalDate.now());
     }
 
+    // TODO Change 100 to getDayWidth()
     @Override
     protected double dayToPixel(DayOfWeek dayOfWeek) {
         return TIME_COL_WIDTH + getDayWidth() * (dayOfWeek.getValue() - 1);
@@ -65,5 +68,4 @@ public class WeekCalendar extends Calendar {
         week = new Week(week.getDay(DayOfWeek.MONDAY).minusWeeks(4));
         repaint();
     }
-
 }

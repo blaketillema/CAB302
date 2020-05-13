@@ -1,5 +1,8 @@
 package billboard_viewer;
 
+import billboard_control_panel.Main;
+import billboard_control_panel.MainControl;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
@@ -205,7 +208,15 @@ public class zz_DisplayBillboard_DELETE_LATER {
         JLabel imageLabel = new JLabel(new ImageIcon(scaledImage));
         frame.add(imageLabel);
     }
-
+//    public static void main(String[] args) {
+//        /* Create and display the form */
+//        JFrame frame = new JFrame("Preview Billboard");
+//        Main.centreWindow(frame);
+//        frame.setContentPane(new DisplayBillboard().controlPanel);
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.pack();
+//        frame.setVisible(true);
+//    }
 }
 
 

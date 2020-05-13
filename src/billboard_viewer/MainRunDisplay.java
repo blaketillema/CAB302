@@ -3,10 +3,10 @@ package billboard_viewer;
 import java.util.TreeMap;
 
 import connections.exceptions.ServerException;
-import connections.old.ClientServerInterface;
+import connections.ClientServerInterface;
 import connections.old.testing.AdminAddUsers;
-import connections.old.testing.User1AddBillboards;
-import connections.old.testing.User3ScheduleBillboards;
+//import connections.old.testing.User1AddBillboards;
+//import connections.old.testing.User3ScheduleBillboards;
 
 import static java.lang.Thread.sleep;
 
@@ -26,10 +26,10 @@ public class MainRunDisplay {
             AdminAddUsers.main(args);
 
             System.out.println("\n\nlogin as user1 and add billboards:\n");
-            User1AddBillboards.main(args);
+            //User1AddBillboards.main(args);
 
             System.out.println("\n\nlogin as user3 and schedule user 1's billboards (first billboard is scheduled to run now)\n");
-            User3ScheduleBillboards.main(args);
+            //User3ScheduleBillboards.main(args);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -48,13 +48,8 @@ public class MainRunDisplay {
         System.out.println("\n\nattempting to get current billboard: should print something like...");
         System.out.println("{createdBy=user1, default=Advertise here!!!, message=......, schedule=1234... 2345...}\n");
         TreeMap billboardNowData = new TreeMap();
-        try {
-            billboardNowData = server.getCurrentBillboard();
-            System.out.println("billboard from server = " + billboardNowData + "\n\n");
-        } catch (ServerException e) {
-            System.out.println(e.getMessage());
-        }
-
+        //billboardNowData = server.getCurrentBillboard();
+        System.out.println("billboard from server = " + billboardNowData + "\n\n");
 
 
         // TODO Remove old server connect below
@@ -121,7 +116,7 @@ public class MainRunDisplay {
         while(!billboardClosed) {
             try {
                 // NEW SERVER
-                billboardTemp = server.getCurrentBillboard();
+                //billboardTemp = server.getCurrentBillboard();
                 // TODO remove below
                 // OLD SERVER
                 //billboardTemp = connect.getBillboard();
@@ -139,7 +134,7 @@ public class MainRunDisplay {
                 }
                  */
 
-                billboardNowData = billboardTemp;
+                //billboardNowData = billboardTemp;
                 newBillboard.updateBillboard(billboardNowData);
 
                 //connect.printBillboard(); // DEBUG - print connect TreeMap

@@ -1,5 +1,12 @@
 package billboard_control_panel;
 
+//import connections.ClientServerInterface;
+//import connections.Protocol;
+//import connections.ServerMainTest;
+//import connections.exceptions.ServerException;
+//import connections.testing.AdminAddUsers;
+
+import javax.swing.*;
 import java.awt.*;
 
 public class Main {
@@ -12,21 +19,18 @@ public class Main {
 
     public static void main(String[] args) {
         /* Create and display the form */
-//            JFrame frame = new JFrame("UserLoginPanel");
-//            frame.setContentPane(new LoginManager().LoginPanel);
-//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            frame.pack();
-//            frame.setVisible(true);
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
                 new LoginManager();
                 LoginManager.main(null);
-//                    JFrame frame = new JFrame("LoginPanel");
-//                    frame.setContentPane(new LoginManager().LoginPanel);
-//                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//                    frame.pack();
-//                    frame.setVisible(true);
+
+//                ClientServerInterface server = new ClientServerInterface();
+//                try {
+//                    server.addNewUser("admin", "admin", Protocol.Permission.ALL);
+//                } catch (ServerException e) {
+//                    e.printStackTrace();
+//                }
             }
         });
     }
