@@ -4,10 +4,13 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 import java.lang.reflect.*;
+
+import billboard_server.Database;
 
 /****************
  * initialiser
@@ -27,7 +30,7 @@ public class Server {
     private static final String networkPath =
             Paths.get(System.getProperty("user.dir"), "src", "connections", "assets", "network.props").toString();
 
-    public Server() {
+    public Server() throws SQLException {
         this.port = 1234;
         sessionIds = new TreeMap<>();
         database = new Database();
