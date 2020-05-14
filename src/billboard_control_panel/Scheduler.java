@@ -160,7 +160,7 @@ public class Scheduler {
             setCommand(RESPONSE_ERROR, successMessage);
         }
         // Schedule is more frequent than duration of billboard
-        else if ( recurFreqInMins < schedDurationInMins) {
+        else if ( recurFreqInMins < schedDurationInMins && recurFreqInMins != 0) {
             successMessage.add("Schedule frequency is more often than duration of schedule - recurrence is obsolete! Please try again.");
             setCommand(RESPONSE_ERROR, successMessage);
         }

@@ -15,11 +15,11 @@ public class ScheduleController {
         currentCommandData = data;
     }
 
-    private static String getCurrentCommandName() {
+    public static String getCurrentCommandName() {
         return currentCommandName;
     }
 
-    private static ArrayList<Object> getCurrentCommandData() {
+    public static ArrayList<Object> getCurrentCommandData() {
         return currentCommandData;
     }
 
@@ -197,8 +197,8 @@ public class ScheduleController {
 
         // CHANGE COMMAND CALL BELOW
         commandAddSchedule(billboardName, schedStart, duration, recur, recurFreqMins, creatorName);
-        commandRemoveSchedule(billboardName, schedStart);
-        commandGetSchedules();
+//        commandRemoveSchedule(billboardName, schedStart);
+//        commandGetSchedules();
 
         // CHECK OUTPUT
         System.out.println("Instructions from GUI for Command:  " + getCurrentCommandName() + ", the data is:\n"

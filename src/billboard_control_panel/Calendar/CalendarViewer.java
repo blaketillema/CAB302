@@ -27,7 +27,7 @@ public abstract class CalendarViewer extends JComponent {
     protected static final int MIN_WIDTH = 600;
     protected static final int MIN_HEIGHT = 600;
 
-    protected static final int HEADER_HEIGHT = 10;
+    protected static final int HEADER_HEIGHT = 20;
     protected static final int TIME_COL_WIDTH = 50;
 
     // An estimate of the width of a single character (not exact but good

@@ -20,6 +20,8 @@ import java.util.*;
 public class CalendarCreator extends Frame {
     static ArrayList<CalendarEvent> events = new ArrayList<>();
     static CalendarWeek tal = new CalendarWeek(events);
+
+
     public CalendarCreator(CalendarWeek cal) {
         setLayout(new GridLayout());
         JFrame frm = new JFrame();
@@ -302,34 +304,170 @@ public class CalendarCreator extends Frame {
                 // Converting DateTime to LocalDateTime to OffsetDateTime for commandAddSchedule function
                 LocalDateTime convertedDate = Instant.ofEpochMilli(startDateTime.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
                 OffsetDateTime offsetDateTime = convertedDate.atOffset(OffsetDateTime.now().getOffset());
+
+                // TODO: Grab Current Signed-in User and input into function below
                 ScheduleController.commandAddSchedule(billboardName,offsetDateTime,diffMinutes, recurring,recurringEveryXminutes, "Lahiru" );
+                Scheduler.commandParser( ScheduleController.getCurrentCommandName(), ScheduleController.getCurrentCommandData() );
+                String CommandNow = Scheduler.getCurrentCommandName();
+                if (CommandNow == "schedule-response:error"){
+                    JOptionPane.showMessageDialog(null,
+                            ScheduleController.commandReplyParser( Scheduler.getCurrentCommandName(), Scheduler.getCurrentCommandData() ),
+                            "Error",
+                            JOptionPane.WARNING_MESSAGE);
 
-                // CHECK OUTPUT
-                System.out.println("Instructions from GUI for Command:  " + ScheduleController.getCurrentCommandName() + ", the data is:\n"
-                        + ScheduleController.getCurrentCommandData().toString() +"\n" );
+                }
+                else {
+                    //TODO: Add case where checkbox is ticked but no other buttons are selected
+                    if (!recurringCheckBox.isSelected()){
+                        events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
+                        cal.goToToday();
+                    }
+                    // Daily Recurrence
+                    else if (recurringDaily == true){
+                        int day = startDay;
+                        int month = startMonth;
+                        int days = 0;
+                        // TODO: Reschedules for a year (can specify this with a user-input value)
+                        while (days <= 365 ){
+                            events.add(new CalendarEvent(LocalDate.of(startYear, month, day), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
+                            day = (day + 1)%32;
+                            days++;
+                            if (day == 0){
+                                day++;
+                                month++;
+                            }
+                            // Year
+                            if (month == 13){
+                                month = 1;
+                                startYear++;
+                            }
+                            // Months with 30 days
+                            if ((day == 31) && (month == 4 || month  == 6 || month == 9|| month == 11)){
+                                day = 1;
+                                month++;
+                            }
+                            // February Non-Leap Year
+                            if (month == 2 && startYear%4 != 0 && day==29){
+                                day = 1;
+                                month++;
+                            }
+                            // February Leap Year
+                            if (month == 2 && startYear%4 != 0 && day==30){
+                                day = 1;
+                                month++;
+                            }
+                        }
+                        cal.goToToday();
+                    }
+                    // Hourly Recurrence
+                    else if (recurringHourly == true){
+                        int Shour = startHour;
+                        int Ehour = endHour;
+                        int day = startDay;
+                        int month = startMonth;
+                        int hours = 0;
 
-                // ADD Schedule to Calendar View
-                events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
-                cal.goToToday();
+                        while (hours <= 8760 ){
+                            events.add(new CalendarEvent(LocalDate.of(startYear, month, day), LocalTime.of(Shour , startMinute), LocalTime.of(Ehour, endMinute), billboardName));
+                            //day = (day+1)%31;
+                            Shour = (Shour + 1)%24;
+                            Ehour = (Ehour +1)%24;
+                            if (day == 0){
+                                day++;
+                                month++;
+                            }
+                            if (Ehour == 0){
+                                day++;
+                                Ehour++;
+                            }
+                        }
+                        cal.goToToday();
+                    }
+
+                    // Minutely Recurrence
+                    else if (recurringMinutely == true){
+                        int Shour = startHour;
+                        int Ehour = endHour;
+                        int Smin = startMinute;
+                        int Emin = endMinute;
+                        int day = startDay;
+                        int month = startMonth;
+                        int hours = 0;
+                        int days = 0;
+                        int Rminute = minuteSpinnerValue;
+                        int freqHours = Rminute/60%24;
+                        int remMins = (Rminute%60);
+                        int duration = diffMinutes;
+                        // TODO: Reschedules for a year (can specify this with a user-input value)
+                        while (days <= 365 ){
+                            events.add(new CalendarEvent(LocalDate.of(startYear, month, day), LocalTime.of(Shour, Smin), LocalTime.of(Ehour, Emin), billboardName));
+
+                            Smin = (Smin + remMins);
+                            if (Smin >= 60){
+                                Smin = Smin%60;
+                                Shour++;
+                            }
+                            Shour = (Shour + freqHours);
+                            if (Shour > 23){
+                                Shour = Shour%24;
+                                Smin = Smin%60;
+                                //day++;
+                            }
+                            Emin = (Emin + remMins);
+                            if (Emin >= 60){
+                                Emin = Emin%60;
+                                Ehour++;
+                            }
+                            Ehour = (Ehour + freqHours);
+                            if (Ehour > 23){
+                                Ehour = duration/60%24;
+                                Emin = duration%60;
+                                day++;
+                            }
+
+                            // Year
+                            if (month == 13){
+                                month = 1;
+                                startYear++;
+                            }
+                            // Months with 31 days
+                            if ((day == 32) && (month == 1 || month  == 3 || month == 5|| month == 7|| month == 8|| month == 10|| month == 12)){
+                                day = 1;
+                                month++;
+                            }
+                            // Months with 30 days
+                            if ((day >= 31) && (month == 4 || month  == 6 || month == 9|| month == 11)){
+                                day = 1;
+                                month++;
+                            }
+                            // February Non-Leap Year
+                            if (month == 2 && startYear%4 != 0 && day==29){
+                                day = 1;
+                                month++;
+                            }
+                            // February Leap Year
+                            if (month == 2 && startYear%4 != 0 && day==30){
+                                day = 1;
+                                month++;
+                            }
+                            System.out.println(Rminute/60%24); // Gives total hours
+                            System.out.println(Rminute%60); // Gives remaining minutes after total hours
+                            //System.out.println(Ehour);
+                            days++;
+
+                        }
+                        cal.goToToday();
+                    }
+//                    JOptionPane.showMessageDialog(null,
+//                            ScheduleController.commandReplyParser( Scheduler.getCurrentCommandName(), Scheduler.getCurrentCommandData() ),
+//                            "Success",
+//                            JOptionPane.PLAIN_MESSAGE);
+                }
+
 
                 //TODO: Add Recurring schedules to Viewer
                 //TODO: Convert total hours, minutes, days into useable format. i.e. >24 hours cant be used in a single day using LocalDate.of
-                if (recurringHourly == true){
-                    int i =0;
-                    while (i <= 672 ){
-                        events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour + i, startMinute), LocalTime.of(endHour + i, endMinute), billboardName));
-                        i++;
-                    }
-                    cal.goToToday();
-                }
-                else if (recurringDaily == true){
-                    int i =0;
-                    while (i <= 672 ){
-                        events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay+i), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
-                        i++;
-                    }
-                    cal.goToToday();
-                }
+
 
                 //TODO: Ensure schedules can't reoccur longer than its frequency
 
