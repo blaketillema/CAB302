@@ -65,7 +65,8 @@ public final class Protocol {
     public static final String SALT = "salt";
     public static final String USERNAME = "userName";
     public static final String USERID = "userId";
-    public static final String BOARDNAME = "boardName";
-    public static final String BOARDID = "boardId";
+    public static final String BOARDNAME = "billboardName";
+    public static final String BOARDCREATOR = "billboardCreator";
+    public static final String BOARDID = "billboardId";
     public static final String SESSIONID = "sessionId";
 }

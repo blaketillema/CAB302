@@ -166,6 +166,7 @@ public class ServerThread implements Runnable {
                     break;
             }
         } catch (Exception e) {
+            e.printStackTrace();
             response.status = e.getMessage();
         }
 
