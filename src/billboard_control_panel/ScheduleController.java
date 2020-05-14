@@ -5,7 +5,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
 /**
- * Contorls commands related to scheduling
+ * Controls commands related to scheduling
  *
  * Commands names sent by Control Panel:
  * "schedule-add"
