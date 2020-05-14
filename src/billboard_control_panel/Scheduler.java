@@ -1,6 +1,7 @@
 package billboard_control_panel;
 
 import java.sql.ResultSet;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.TreeMap;
@@ -217,6 +218,8 @@ public class Scheduler {
         else {
             // there has been an error, since schedules.get(0) == RESPONSE_ERROR
             String dbErrorMessage = (String) schedules.get(1);
+            // clear the list and add custom message to first index
+            schedules.clear();
             schedules.add("I'm sorry, an error has occurred retrieving schedules from the database, please try again later \n" +
                     "The message from the database is: " + dbErrorMessage);
             setCommand(RESPONSE_ERROR, schedules);
@@ -244,14 +247,18 @@ public class Scheduler {
         ArrayList<Object> schedules = getSchedules();
         ArrayList<Object> schedulesCurrent = new ArrayList<Object>();
         // Check which schedules would currently run and add to refined list: schedulesCurrent
+        // save time now to be fair when comparing
+        OffsetDateTime dateTimeNow = OffsetDateTime.now();
         for (Object sched : schedules) {
-            // cast to list
+            // cast current schedule object to list
             ArrayList<Object> schedNow = (ArrayList<Object>) sched;
-            // check if recurring
+            // save required details for this schedule
+            OffsetDateTime schedStart = (OffsetDateTime) schedNow.get(1);
+            Integer durationMins = (Integer) schedNow.get(2);
             Boolean isRecurring = (Boolean) schedNow.get(3);
+            Integer recurFreqInMins = (Integer) schedNow.get(4);
+            // if not recurring first for efficiency
             if ( !isRecurring ) {
-                OffsetDateTime schedStart = (OffsetDateTime) schedNow.get(1);
-                Integer durationMins = (Integer) schedNow.get(2);
                 OffsetDateTime schedFinish = schedStart.plusMinutes(durationMins);
                 if ( schedStart.isBefore( OffsetDateTime.now() ) &&  schedFinish.isAfter(OffsetDateTime.now()) ) {
                     // this schedule is current, so add to list
@@ -259,10 +266,14 @@ public class Scheduler {
                 }
             }
             else if ( isRecurring ) {
-
-                // TODO FINISH IMPLEMENTING RECURRING DURATION CHECKS FOR IF CURRENTLY RUNNING
-                //  Perhaps modulo start modulo finish and check for each if time now is between
-
+                Duration timeSinceScheduleStart = Duration.between(schedStart, dateTimeNow);
+                long timeSinceScheduleStartInMins = Math.round(timeSinceScheduleStart.toMinutes());
+                long minsSinceStartOfCurrentRecurrence = timeSinceScheduleStartInMins % recurFreqInMins;
+                // check if this current elapsed time is in the duration of each instance
+                if ( minsSinceStartOfCurrentRecurrence < durationMins ) {
+                    // this schedule is current, so add to list
+                    schedulesCurrent.add(schedNow);
+                }
             }
         }
         // Check which schedule in this list takes precedence

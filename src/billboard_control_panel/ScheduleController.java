@@ -4,7 +4,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.*;
 
-
 public class ScheduleController {
     private static String currentCommandName;
     private static ArrayList<Object> currentCommandData = new ArrayList<>();
@@ -80,11 +79,11 @@ public class ScheduleController {
 
     // Control Panel Parser for response
     // RESPONSE PROCESSING
-    public static void commandReplyParser(String command, ArrayList<Object> data){
+    public static String commandReplyParser(String command, ArrayList<Object> data){
         // TODO REMOVE TEMP VARIABLE ASSIGNMENT FOR COMMAND HERE:
         addCommand(command, data);
         // TODO add necessary calls for the control panel here
-        String successMessage = null;
+        String successMessage = "";
         // check reply
         if ( command == RESPONSE_ADDED  ) {
             String billboardName = (String) data.get(0);
@@ -106,16 +105,14 @@ public class ScheduleController {
             successMessage = "The current list of schedules is: ";
             for (Object schedule : data) {
                 ArrayList<Object> scheduleArray = (ArrayList<Object>) schedule;
-                successMessage = scheduleToString(scheduleArray);
+                successMessage += "\n" + scheduleToString(scheduleArray);
             }
         }
         else if ( command == RESPONSE_ERROR){
                 successMessage = (String) data.get(0);
-                // TODO Add an action here
         }
-        System.out.println(successMessage);
         // call to display this on the GUI
-
+        return successMessage;
     }
 
 
