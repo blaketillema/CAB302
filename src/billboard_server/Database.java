@@ -12,10 +12,17 @@ import java.util.*;
 public class Database {
 
     private static final String USERS_TABLE = "CREATE TABLE IF NOT EXISTS users ( " +
+<<<<<<< HEAD
             "userId VARCHAR(191) PRIMARY KEY NOT NULL," +
             "userName VARCHAR(191)," +
             "hash VARCHAR(191) NOT NULL," +
             "salt VARCHAR(191) NOT NULL," +
+=======
+            "userId VARCHAR(255) PRIMARY KEY NOT NULL,"+
+            "userName VARCHAR(255)," +
+            "hash VARCHAR(255) NOT NULL,"+
+            "salt VARCHAR(255) NOT NULL,"+
+>>>>>>> billboardServerDB
             "permissions INT ) ";
     private static final String BILLBOARDS_TABLE = "CREATE TABLE IF NOT EXISTS billboards ( " +
             "billboardId VARCHAR(191) PRIMARY KEY NOT NULL," +
@@ -84,12 +91,15 @@ public class Database {
 
     private void setup() throws SQLException { //Runs a setup SQL statement, creating the users table. This is run during construction TODO: actually make the right tables
 
+<<<<<<< HEAD
         dropDb();
 
         String adminUserID = "b220a053-91f1-48ee-acea-d1a145376e57";
         String adminSalt = "2219d4ec595ce93cabfe7c7941d7e274";
         String adminHash = UserAuth.hashAndSalt("7ec582cb6dda5f00485d4f3026c1309ba7c3eb255cdfbdcb4a3fb3646d74953d", adminSalt);
 
+=======
+>>>>>>> billboardServerDB
         connect();
         statement.executeQuery(USERS_TABLE);
         statement.executeQuery(BILLBOARDS_TABLE);
@@ -109,7 +119,11 @@ public class Database {
     private int getPermission(String userId) throws SQLException {
         connect();
         ResultSet rs = statement.executeQuery("SELECT permissions FROM users WHERE userId=\"" + userId + "\"");
+<<<<<<< HEAD
         if (rs.next()) {
+=======
+        if(rs.next()){
+>>>>>>> billboardServerDB
             return rs.getInt(1);
         } else {
             return 0;
@@ -457,4 +471,13 @@ public class Database {
         statement.executeQuery("DROP TABLE IF EXISTS billboards");
         statement.executeQuery("DROP TABLE IF EXISTS users");
     }
+<<<<<<< HEAD
 }
+=======
+
+    public void addTestAdmin() throws SQLException{
+        connect();
+        statement.executeQuery("INSERT INTO users (userId, userName, hash, salt, permissions) VALUES (\"admin12345\", \"adminname\", \"adminhash\", \"adminsalt\", 8)");
+    }
+}
+>>>>>>> billboardServerDB
