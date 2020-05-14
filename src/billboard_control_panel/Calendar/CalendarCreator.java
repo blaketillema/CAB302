@@ -5,7 +5,6 @@ import billboard_control_panel.MainControl;
 import billboard_control_panel.ScheduleController;
 import billboard_control_panel.Scheduler;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -232,7 +231,7 @@ public class CalendarCreator extends Frame {
         // Calendar Event Listeners
         cal.addCalendarEventClickListener(e -> {
             Date startDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getStartDateTime().toString());
-            Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getEndDateTime().toString());
+            Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getStartDateTime().plusHours(1).toString());
             startSpinner.setValue(startDate);
             endSpinner.setValue(endDate);
             enterScheduleNameTextField.setText(e.getBillboardName());
@@ -247,9 +246,7 @@ public class CalendarCreator extends Frame {
             System.out.println(startDate);
             startSpinner.setValue(startDate);
             endSpinner.setValue(endDate);
-            if (enterScheduleNameTextField.getText() != "Enter new schedule name..."){
-                //TODO: optional - check if ScheduleName exists in db
-            } else enterScheduleNameTextField.setText("Enter new schedule name...");
+            enterScheduleNameTextField.setText("Enter new schedule name...");
         });
 
         // User Save, Delete, Reset and Exit Button Listeners
@@ -283,7 +280,6 @@ public class CalendarCreator extends Frame {
                 boolean recurring = (Boolean) recurringCheckBox.isSelected();
                 boolean recurringDaily = (Boolean) dailyButton.isSelected();
                 boolean recurringHourly = (Boolean) hourlyButton.isSelected();
-                boolean recurringMinutely = (Boolean) minutelyButton.isSelected();
 
                 // Add recurring values
                 if (recurringDaily == true){
@@ -307,16 +303,12 @@ public class CalendarCreator extends Frame {
                         + ScheduleController.getCurrentCommandData().toString() +"\n" );
 
                 // ADD Schedule to Calendar View
-                if (startDateTime.compareTo(endDateTime) > 0){
-                    System.out.println("Invalid input");
-                }
-                enterScheduleNameTextField.setText("Enter new schedule name...");
                 events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
                 cal.goToToday();
 
                 //TODO: Add Recurring schedules to Viewer
                 //TODO: Convert total hours, minutes, days into useable format. i.e. >24 hours cant be used in a single day using LocalDate.of
-                if (recurringHourly == true){
+                if (recurringCheckBox.isSelected() && recurringHourly == true){
                     int i =0;
                     while (i <= 672 ){
                         events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour + i, startMinute), LocalTime.of(endHour + i, endMinute), billboardName));
@@ -324,52 +316,10 @@ public class CalendarCreator extends Frame {
                     }
                     cal.goToToday();
                 }
-                else if (recurringDaily == true){
+                else if (recurringCheckBox.isSelected() && recurringDaily == true){
                     int i =0;
                     while (i <= 672 ){
                         events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay+i), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
-                        i++;
-                    }
-                    cal.goToToday();
-                }
-                else if (recurringMinutely == true){
-                    int i =0;
-                    int nDays = minuteSpinnerValue/24/60;
-                    int nHours = minuteSpinnerValue/60%24;
-                    int nMinutes = minuteSpinnerValue%60;
-                    int sH = startHour;
-                    int sM = startMinute;
-                    int sTotalMinutes = (sH * 60) + sM;
-                    int eH = endHour;
-                    int eM = endMinute;
-                    int eTotalMinutes = (eH * 60) + eM;
-                    // Get seconds from each, and subtract.
-                    //long diff = endDateTime.getTime() - startDateTime.getTime();
-                    //int diffMinutes = Math.toIntExact(diff / (60 * 1000));
-                    int dHours = diffMinutes/60%24;
-                    int dMinutes = diffMinutes%60;
-                    //TODO: THIS NEEDS FIXING (RECURRING VALUES)
-                    while (i <= 5 ){
-                        events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(sH, sM), LocalTime.of(eH, eM), billboardName));
-                        LocalDateTime StartDateTime = LocalDateTime.of(startYear, startMonth, startDay, sH, sM);
-                        LocalDateTime EndDateTime = LocalDateTime.of(startYear, startMonth, startDay, eH, eM);
-                        long difference = EndDateTime.toEpochSecond(OffsetDateTime.now().getOffset()) - StartDateTime.toEpochSecond(OffsetDateTime.now().getOffset());
-                        long differenceMinute = difference/60%24;
-
-                        int durationMinutes = Math.toIntExact(difference / (60 * 1000));
-                        int x = (int)differenceMinute;
-                        nHours = (minuteSpinnerValue)/60%24;
-                        nMinutes = (minuteSpinnerValue)%60;
-                        //System.out.println(nHours);
-                        sH = (sTotalMinutes + nHours*60)%24/60;
-                        sM = (sTotalMinutes + nMinutes)%60;
-                        eH = (eTotalMinutes + nHours*60)%24/60;
-                        eM = (eTotalMinutes + nMinutes)%60;
-
-                        System.out.println(sH);
-                        System.out.println(sM);
-                        System.out.println(eH);
-                        System.out.println(eM);
                         i++;
                     }
                     cal.goToToday();
@@ -406,7 +356,6 @@ public class CalendarCreator extends Frame {
                 ScheduleController.commandRemoveSchedule(billboardName,offsetDateTime);
                 ScheduleController.commandReplyParser( Scheduler.getCurrentCommandName(), Scheduler.getCurrentCommandData() );
                 // Remove Schedule to Calendar View
-                enterScheduleNameTextField.setText("Enter new schedule name...");
                 events.remove(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
                 cal.goToToday();
             }
