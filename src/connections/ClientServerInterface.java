@@ -2,10 +2,7 @@ package connections;
 
 import java.io.*;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.TreeMap;
+import java.util.*;
 
 import connections.Protocol.*;
 import connections.engines.ServerClientConnection;
@@ -48,7 +45,7 @@ public class ClientServerInterface {
     }
 
     public void login(String userName, String password) throws ServerException {
-        System.out.printf("requesting to login user: %s ... ", userName);
+        System.out.printf("\nrequesting to login user: %s ... ", userName);
 
         ClientRequest request = new ClientRequest();
 
@@ -100,7 +97,7 @@ public class ClientServerInterface {
 
     public void addUser(String userName, String password, int permission) throws ServerException {
 
-        System.out.printf("requesting to add user: %s, with permission: %d ... ", userName, permission);
+        System.out.printf("\nrequesting to add user: %s, with permission: %d ... ", userName, permission);
 
         String salt = UserAuth.generateSalt();
         String hash = UserAuth.hashAndSalt(password, salt);
@@ -135,7 +132,7 @@ public class ClientServerInterface {
 
     public void deleteUser(String userId) throws ServerException {
 
-        System.out.printf("requesting to delete user: %s... ", userId);
+        System.out.printf("\nrequesting to delete user: %s... ", userId);
         ClientRequest request = new ClientRequest();
 
         request.cmd = Cmd.DELETE_USERS;
@@ -150,7 +147,7 @@ public class ClientServerInterface {
 
     public TreeMap<String, Object> getUsers() throws ServerException {
 
-        System.out.println("requesting to get all users ... ");
+        System.out.print("\nrequesting to get all users ... ");
 
         ClientRequest request = new ClientRequest();
 
@@ -166,7 +163,7 @@ public class ClientServerInterface {
 
     public TreeMap<String, Object> getUsers(List<String> userIds) throws ServerException {
 
-        System.out.println("requesting to get all users ... ");
+        System.out.print("\nrequesting to get all users ... ");
 
         ClientRequest request = new ClientRequest();
 
@@ -186,7 +183,7 @@ public class ClientServerInterface {
     }
 
     public void addBillboard(String billboardName, TreeMap<String, String> data) throws ServerException {
-        System.out.printf("requesting to add billboard: %s ... ", billboardName);
+        System.out.printf("\nrequesting to add billboard: %s ... ", billboardName);
 
         ClientRequest request = new ClientRequest();
 
@@ -194,7 +191,23 @@ public class ClientServerInterface {
         request.data = new TreeMap<>();
 
         data.put(Protocol.BOARDNAME, billboardName);
-        request.data.put(Protocol.BOARDID, data);
+        request.data.put(UUID.randomUUID().toString(), data);
+        request.sessionId = this.sessionId;
+
+        ServerClientConnection.request(this.ip, this.port, request);
+
+        System.out.println("done");
+    }
+
+    public void editBillboards(TreeMap<String, Object> data) throws ServerException {
+        System.out.print("\nrequesting to edit billboards ... ");
+
+        ClientRequest request = new ClientRequest();
+
+        request.cmd = Cmd.ADD_BILLBOARDS;
+        // request.data = new TreeMap<>();
+
+        request.data = data;
         request.sessionId = this.sessionId;
 
         ServerClientConnection.request(this.ip, this.port, request);
@@ -203,7 +216,7 @@ public class ClientServerInterface {
     }
 
     public void deleteBillboard(String billboardId) throws ServerException {
-        System.out.printf("requesting to delete billboard: %s... ", billboardId);
+        System.out.printf("\nrequesting to delete billboard: %s... ", billboardId);
         ClientRequest request = new ClientRequest();
 
         request.cmd = Cmd.DELETE_USERS;
@@ -218,7 +231,7 @@ public class ClientServerInterface {
 
     public TreeMap<String, Object> getBillboards() throws ServerException {
 
-        System.out.println("requesting to get all billboards ... ");
+        System.out.print("\nrequesting to get all billboards ... ");
 
         ClientRequest request = new ClientRequest();
 
@@ -234,7 +247,7 @@ public class ClientServerInterface {
 
     public TreeMap<String, Object> getCurrentBillboard() throws ServerException {
 
-        System.out.println("requesting to get current billboard ... ");
+        System.out.print("\nrequesting to get current billboard ... ");
 
         ClientRequest request = new ClientRequest();
 
@@ -247,9 +260,9 @@ public class ClientServerInterface {
         return response.data;
     }
 
-    public void addSchedule(TreeMap<String, Object> data) throws ServerException {
+    public void addSchedules(TreeMap<String, Object> data) throws ServerException {
 
-        System.out.println("requesting to add schedule: ... ");
+        System.out.print("\nrequesting to add schedules ... ");
 
         ClientRequest request = new ClientRequest();
 
@@ -265,7 +278,7 @@ public class ClientServerInterface {
 
     public void deleteSchedule(String billboardId) throws ServerException {
 
-        System.out.printf("requesting to delete schedule associated with billboardId: %s ", billboardId);
+        System.out.printf("\nrequesting to delete schedule associated with billboardId: %s ... ", billboardId);
         ClientRequest request = new ClientRequest();
 
         request.cmd = Cmd.DELETE_SCHEDULES;
@@ -278,13 +291,13 @@ public class ClientServerInterface {
         System.out.println("done");
     }
 
-    public TreeMap<String, Object> getSchedules(String userId) throws ServerException {
+    public TreeMap<String, Object> getSchedules() throws ServerException {
 
-        System.out.println("requesting to get all schedules ... ");
+        System.out.print("\nrequesting to get all schedules ... ");
 
         ClientRequest request = new ClientRequest();
 
-        request.cmd = Cmd.GET_BILLBOARDS;
+        request.cmd = Cmd.GET_SCHEDULES;
         request.sessionId = this.sessionId;
 
         ServerResponse response = ServerClientConnection.request(this.ip, this.port, request);

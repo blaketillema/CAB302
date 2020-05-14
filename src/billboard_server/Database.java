@@ -19,6 +19,8 @@ public class Database {
             "permissions INT ) ";
     private static final String BILLBOARDS_TABLE = "CREATE TABLE IF NOT EXISTS billboards ( " +
             "billboardId VARCHAR(191) PRIMARY KEY NOT NULL," +
+            "billboardName VARCHAR(191)," +
+            "billboardCreator VARCHAR(191)," +
             "billboardMessage VARCHAR(191)," +
             "billboardInfo VARCHAR(191)," +
             "billboardPictureData MEDIUMTEXT," +
@@ -26,10 +28,11 @@ public class Database {
             "billboardBg VARCHAR(191)," +
             "billboardMsgColour VARCHAR(191)," +
             "billboardInfoColour VARCHAR(191) )";
+    // TODO: add support for startTime as datetime object
     private static final String SCHEDULE_TABLE = "CREATE TABLE IF NOT EXISTS schedules ( " +
             "scheduleId VARCHAR(191) PRIMARY KEY NOT NULL," +
             "billboardId VARCHAR(191), " +
-            "startTime DATETIME, " +
+            "startTime VARCHAR(191), " +
             "duration INT, " +
             "isRecurring BOOLEAN, " +
             "recurFreqInMins INT, " +
@@ -37,10 +40,10 @@ public class Database {
 
     private static final String adduserStatement = "INSERT INTO users (userId, userName, hash, salt, permissions) VALUES (?, ?, ?, ?, ?)";
     private static final String deluserStatement = "DELETE FROM users WHERE userId=?";
-    private static final String addbilbStatement = "INSERT INTO billboards (billboardId, billboardMessage, billboardInfo, billboardPictureData, billboardPictureUrl, billboardBg, billboardMsgColour, billboardInfoColour)" +
-            " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    private static final String addbilbStatement = "INSERT INTO billboards (billboardId, billboardName, billboardCreator, billboardMessage, billboardInfo, billboardPictureData, billboardPictureUrl, billboardBg, billboardMsgColour, billboardInfoColour)" +
+            " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     private static final String delbilbStatement = "DELETE FROM billboards WHERE billboardId=?";
-    private static final String addschedStatement = "INSERT INTO schedules (scheduleId, billboardId, startTime, scheduleDuration, isRecurring, recurFreqInMins) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String addschedStatement = "INSERT INTO schedules (scheduleId, billboardId, startTime, duration, isRecurring, recurFreqInMins) VALUES (?, ?, ?, ?, ?, ?)";
     private static final String delschedStatement = "DELETE FROM schedules WHERE scheduleId=?";
 
     private String url;
@@ -50,7 +53,6 @@ public class Database {
     private Connection conn;
     private Statement statement;
     PreparedStatement pstmt;
-    private boolean noUsers;
 
     public Database() throws SQLException { // Reads the db.props file and sets the variables for the server to those props
         try {
@@ -59,7 +61,6 @@ public class Database {
             props.load(in);
             in.close();
 
-            this.noUsers = true;
             this.url = props.getProperty("jdbc.url");
             this.schema = props.getProperty("jdbc.schema");
             this.username = props.getProperty("jdbc.username");
@@ -163,11 +164,10 @@ public class Database {
     public void addUsers(String userId, TreeMap<String, Object> data) throws ServerException, SQLException {
 
         /* make sure user attempting to add new users has permissions */
-        if (!noUsers) checkPermission(userId, Protocol.Permission.EDIT_USERS);
+        checkPermission(userId, Protocol.Permission.EDIT_USERS);
 
         /* loop through each user in the treemap */
         for (Map.Entry<String, Object> user : data.entrySet()) {
-
 
             /* cast the value of the treemap entry and get the details of each user */
             TreeMap<String, Object> userDetails = (TreeMap<String, Object>) user.getValue();
@@ -202,11 +202,6 @@ public class Database {
             } else {
 
             }
-
-            if (noUsers) {
-                noUsers = false;
-                break;
-            }
         }
     }
 
@@ -239,7 +234,6 @@ public class Database {
         }
     }
 
-    // TODO: add "userId" key into each billboard table showing who created it. clientserverinterface will add it in originally
     public void addBillboards(String userId, TreeMap<String, Object> data) throws ServerException, SQLException {
 
         boolean addedAny = false;
@@ -250,30 +244,10 @@ public class Database {
             /* cast the value of the treemap entry and get the details of each billboard */
             TreeMap<String, Object> billboardDetails = (TreeMap<String, Object>) billboard.getValue();
 
-            // NOTE: permission EDIT_ALL_BILLBOARDS = edit and delete all billboards (from all users)
-            // NOTE: permission CREATE_BILLBOARDS = add your own billboards, but can only edit and delete your own billboards
-            // TODO: convert the commented out pseudocode below into actual code
-            /*
-            try {
-                if(billboard.getKey() is in billboard database) {
-                    if(billboardDetails.get("userId") matches the provided userId) {
-                        // userId wants to edit their own billboard, check their permission to
-                        checkPermission(userId, Protocol.Permission.CREATE_BILLBOARDS);
-                    } else {
-                        // userId wants to edit someone else's billboard, check their permission to
-                        checkPermissions(userId, Protocol.Permission.EDIT_ALL_BILLBOARDS);
-                    }
-                } else {
-                    // userId wants to create a new billboard, check their permission to
-                    checkPermission(userId, Protocol.Permission.CREATE_BILLBOARDS);
-            } catch (ServerException e) {
-                // if they don't have the right permissions, skip to their next provided billboard
-                continue;
-            }
-             */
-
             /* get all of the relevant values and cast to types */
             String newId = billboard.getKey();
+            String newName = (String) billboardDetails.get(Protocol.BOARDNAME);
+            String newCreator = null;
             String newMessage = (String) billboardDetails.get("message");
             String newInfo = (String) billboardDetails.get("information");
             String newPictureData = (String) billboardDetails.get("pictureData");
@@ -282,18 +256,58 @@ public class Database {
             String newMessageColour = (String) billboardDetails.get("messageColour");
             String newInformationColour = (String) billboardDetails.get("informationColour");
 
+            connect();
+            ResultSet rs = statement.executeQuery("SELECT * FROM billboards WHERE billboardId=\"" + newId + "\"");
+
+            boolean isAdding = false;
+            boolean isEditing = false;
+
+            try {
+                // if billboard is already in database
+                if (rs.next()) {
+                    newCreator = (String) billboardDetails.get(Protocol.BOARDCREATOR);
+                    // if userId provided matches userId of billboard, check if they can edit their own
+                    if (rs.getString(3).equals(userId)) {
+                        checkPermission(userId, Protocol.Permission.CREATE_BILLBOARDS);
+                    }
+                    // if userId doesn't match billboard userId, check if they have edit all permission
+                    else {
+                        checkPermission(userId, Protocol.Permission.EDIT_ALL_BILLBOARDS);
+                    }
+                    isEditing = true;
+                    throw new SQLException("editing billboards not implemented yet");
+                }
+                // if billboard isn't in database, check if they can add billboards
+                else {
+                    checkPermission(userId, Protocol.Permission.CREATE_BILLBOARDS);
+                    newCreator = userId;
+                    isAdding = true;
+                }
+            } catch (ServerException e) {
+                e.printStackTrace();
+                continue;
+            }
+
             /* prepare and execute the statement to add the billboard:
             billboardId, billboardMessage, billboardInfo, billboardPictureData,
             billboardPictureUrl, billboardBg, billboardMsgColour, billboardInfoColour */
-            pstmt = conn.prepareStatement(addbilbStatement);
-            pstmt.setString(1, newId);
-            pstmt.setString(2, newMessage);
-            pstmt.setString(3, newInfo);
-            pstmt.setString(4, newPictureData);
-            pstmt.setString(5, newPictureUrl);
-            pstmt.setString(6, newBillboardBackground);
-            pstmt.setString(7, newMessageColour);
-            pstmt.setString(8, newInformationColour);
+            // TODO: add modify billboard statement
+            if (isAdding) {
+                pstmt = conn.prepareStatement(addbilbStatement);
+                pstmt.setString(1, newId);
+            } else if (isEditing) {
+                // pstmt = conn.prepareStatement(modBilbStatment);
+            }
+
+            pstmt.setString(2, newName);
+            pstmt.setString(3, newCreator);
+            pstmt.setString(4, newMessage);
+            pstmt.setString(5, newInfo);
+            pstmt.setString(6, newPictureData);
+            pstmt.setString(7, newPictureUrl);
+            pstmt.setString(8, newBillboardBackground);
+            pstmt.setString(9, newMessageColour);
+            pstmt.setString(10, newInformationColour);
             pstmt.execute();
 
             addedAny = true;
@@ -312,13 +326,15 @@ public class Database {
 
         while (rs.next()) {
             TreeMap<String, String> billboard = new TreeMap<>();
-            billboard.put("message", rs.getString(2));
-            billboard.put("information", rs.getString(3));
-            billboard.put("pictureData", rs.getString(4));
-            billboard.put("pictureUrl", rs.getString(5));
-            billboard.put("billboardBackground", rs.getString(6));
-            billboard.put("messageColour", rs.getString(7));
-            billboard.put("informationColour", rs.getString(8));
+            billboard.put(Protocol.BOARDNAME, rs.getString(2));
+            billboard.put(Protocol.BOARDCREATOR, rs.getString(3));
+            billboard.put("message", rs.getString(4));
+            billboard.put("information", rs.getString(5));
+            billboard.put("pictureData", rs.getString(6));
+            billboard.put("pictureUrl", rs.getString(7));
+            billboard.put("billboardBackground", rs.getString(8));
+            billboard.put("messageColour", rs.getString(9));
+            billboard.put("informationColour", rs.getString(10));
 
             billboards.put(rs.getString(1), billboard);
         }
@@ -326,10 +342,30 @@ public class Database {
         return billboards;
     }
 
-    public void deleteBillboards(String userId, TreeMap<String, Object> data) throws SQLException, ServerException { // deletes a user
+    public void deleteBillboards(String userId, TreeMap<String, Object> data) throws SQLException, ServerException {
         connect();
-        checkPermission(userId, Protocol.Permission.EDIT_ALL_BILLBOARDS);
+
         for (Map.Entry<String, Object> billboard : data.entrySet()) {
+
+            ResultSet rs = statement.executeQuery("SELECT * FROM billboards WHERE billboardId=\"" + userId + "\"");
+
+            try {
+                // if billboard is in database
+                if (rs.next()) {
+                    // if userId provided matches userId of billboard, check if they can edit their own
+                    if (rs.getString(3).equals(userId)) {
+                        checkPermission(userId, Protocol.Permission.CREATE_BILLBOARDS);
+                    }
+                    // if userId doesn't match billboard userId, check if they have edit all permission
+                    else {
+                        checkPermission(userId, Protocol.Permission.EDIT_ALL_BILLBOARDS);
+                    }
+                }
+            } catch (ServerException e) {
+                e.printStackTrace();
+                continue;
+            }
+
             pstmt = conn.prepareStatement(delbilbStatement);
             pstmt.setString(1, billboard.getKey());
             pstmt.execute();
@@ -348,18 +384,41 @@ public class Database {
             String scheduleId = schedule.getKey();
             String billboardId = (String) scheduleDetails.get("billboardId");
             String startTime = (String) scheduleDetails.get("startTime");
-            int duration = (Integer) scheduleDetails.get("scheduleDuration");
-            boolean isRecurring = (Boolean) scheduleDetails.get("isRecurring");
-            int recurFreqInMins = (Integer) scheduleDetails.get("recurFreqInMins");
+            int duration = -1;
+            if (scheduleDetails.containsKey("duration")) {
+                duration = (Integer) scheduleDetails.get("duration");
+            }
 
-            pstmt = conn.prepareStatement(addschedStatement);
-            pstmt.setString(1, scheduleId);
-            pstmt.setString(2, billboardId);
-            pstmt.setString(3, startTime);
-            pstmt.setInt(4, duration);
-            pstmt.setBoolean(5, isRecurring);
-            pstmt.setInt(6, recurFreqInMins);
-            pstmt.execute();
+            boolean containsIsRecurring = false;
+            boolean isRecurring = false;
+            if (scheduleDetails.containsKey("isRecurring")) {
+                containsIsRecurring = true;
+                isRecurring = (Boolean) scheduleDetails.get("isRecurring");
+            }
+
+            int recurFreqInMins = -1;
+            if (scheduleDetails.containsKey("recurFreqInMins")) {
+                recurFreqInMins = (Integer) scheduleDetails.get("recurFreqInMins");
+            }
+
+            boolean scheduleExists = false;
+
+            if (!scheduleExists) {
+                if (scheduleId == null || billboardId == null || startTime == null || duration == -1 || !containsIsRecurring || recurFreqInMins == -1) {
+                    throw new ServerException("all schedule details not provided");
+                }
+
+                pstmt = conn.prepareStatement(addschedStatement);
+                pstmt.setString(1, scheduleId);
+                pstmt.setString(2, billboardId);
+                pstmt.setString(3, startTime);
+                pstmt.setInt(4, duration);
+                pstmt.setBoolean(5, isRecurring);
+                pstmt.setInt(6, recurFreqInMins);
+                pstmt.execute();
+            } else {
+
+            }
         }
     }
 
@@ -373,7 +432,7 @@ public class Database {
             TreeMap<String, Object> schedule = new TreeMap<>();
             schedule.put("billboardId", rs.getString(2));
             schedule.put("startTime", rs.getString(3));
-            schedule.put("scheduleDuration", rs.getInt(4));
+            schedule.put("duration", rs.getInt(4));
             schedule.put("isRecurring", rs.getBoolean(5));
             schedule.put("recurFreqInMins", rs.getInt(6));
 
@@ -397,10 +456,5 @@ public class Database {
         statement.executeQuery("DROP TABLE IF EXISTS schedules");
         statement.executeQuery("DROP TABLE IF EXISTS billboards");
         statement.executeQuery("DROP TABLE IF EXISTS users");
-    }
-
-    public void addTestAdmin() throws SQLException {
-        connect();
-        statement.executeQuery("INSERT INTO users (userId, userName, hash, salt, permissions) VALUES (\"admin12345\", \"adminname\", \"adminhash\", \"adminsalt\", 8)");
     }
 }

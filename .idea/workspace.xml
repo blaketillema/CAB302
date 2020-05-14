@@ -2,28 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/CAB302.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CAB302.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_server/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/Database.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_server/DatabaseTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_server/Scheduler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_server/Server.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_server/TestClient.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/ClientMainTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/ClientMainTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/ClientServerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/ClientServerInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/Protocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/Protocol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/ServerMainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/ServerMainTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/assets/salts.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/engines/Database.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/engines/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/engines/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/engines/ServerClientConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/engines/ServerClientConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/assets/salts.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/assets/salts.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/engines/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/engines/ServerThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/exceptions/PermissionException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/exceptions/PermissionException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/testing/AdminModifyUsers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/testing/AdminModifyUsers.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/testing/User1AddBillboards.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/testing/User1AddBillboards.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/testing/User2EditBillboards.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/testing/User2EditBillboards.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/testing/User3ScheduleBillboards.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/testing/User3ScheduleBillboards.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/testing/ViewerGetCurrent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/testing/ViewerGetCurrent.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -216,11 +201,11 @@
     <list>
       <item itemvalue="Application.MainRunDisplay" />
       <item itemvalue="Application.UserManagement" />
+      <item itemvalue="Application.ClientMainTests" />
+      <item itemvalue="Application.GenAdminKeys" />
       <item itemvalue="Application.ServerMainTest" />
       <item itemvalue="Application.User3ScheduleBillboards" />
-      <item itemvalue="Application.GenAdminKeys" />
       <item itemvalue="JAR Application.mariadb-java-client-2.6.0.jar" />
-      <item itemvalue="Application.ClientMainTests" />
     </list>
     <recent_temporary>
       <list>
@@ -389,25 +374,25 @@
     </state>
     <state x="964" y="217" key="FileChooserDialogImpl/0.0.1920.1030@0.0.1920.1030" timestamp="1589277268444" />
     <state x="2884" y="228" key="FileChooserDialogImpl/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587606242469" />
-    <state width="818" height="901" key="GridCell.Tab.0.bottom" timestamp="1589382893881">
+    <state width="1274" height="907" key="GridCell.Tab.0.bottom" timestamp="1589432780583">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state width="818" height="901" key="GridCell.Tab.0.bottom/0.0.1920.1030@0.0.1920.1030" timestamp="1589382893881" />
+    <state width="1274" height="907" key="GridCell.Tab.0.bottom/0.0.1920.1030@0.0.1920.1030" timestamp="1589432780583" />
     <state width="1853" height="230" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="818" height="901" key="GridCell.Tab.0.center" timestamp="1589382893881">
+    <state width="1274" height="907" key="GridCell.Tab.0.center" timestamp="1589432780583">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state width="818" height="901" key="GridCell.Tab.0.center/0.0.1920.1030@0.0.1920.1030" timestamp="1589382893881" />
+    <state width="1274" height="907" key="GridCell.Tab.0.center/0.0.1920.1030@0.0.1920.1030" timestamp="1589432780583" />
     <state width="1853" height="230" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="818" height="901" key="GridCell.Tab.0.left" timestamp="1589382893881">
+    <state width="1274" height="907" key="GridCell.Tab.0.left" timestamp="1589432780583">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state width="818" height="901" key="GridCell.Tab.0.left/0.0.1920.1030@0.0.1920.1030" timestamp="1589382893881" />
+    <state width="1274" height="907" key="GridCell.Tab.0.left/0.0.1920.1030@0.0.1920.1030" timestamp="1589432780583" />
     <state width="1853" height="230" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="818" height="901" key="GridCell.Tab.0.right" timestamp="1589382893881">
+    <state width="1274" height="907" key="GridCell.Tab.0.right" timestamp="1589432780583">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state width="818" height="901" key="GridCell.Tab.0.right/0.0.1920.1030@0.0.1920.1030" timestamp="1589382893881" />
+    <state width="1274" height="907" key="GridCell.Tab.0.right/0.0.1920.1030@0.0.1920.1030" timestamp="1589432780583" />
     <state width="1853" height="230" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
     <state width="890" height="439" key="GridCell.Tab.1.bottom" timestamp="1585484853584">
       <screen x="1920" y="0" width="1920" height="1080" />
@@ -445,10 +430,10 @@
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
     <state x="664" y="409" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1920.1030@0.0.1920.1030" timestamp="1586669722466" />
-    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1589382960553">
+    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1589432806142">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1030@0.0.1920.1030" timestamp="1589382960553" />
+    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1030@0.0.1920.1030" timestamp="1589432806142" />
     <state x="2993" y="0" width="854" height="1087" key="dock-window-1" timestamp="1585732302250">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
