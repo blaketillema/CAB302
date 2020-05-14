@@ -3,6 +3,7 @@ package connections.testing;
 import connections.ClientServerInterface;
 import connections.exceptions.ServerException;
 
+@Deprecated
 public class ViewerGetCurrent {
     public static void main(String[] args) throws ClassNotFoundException, InterruptedException {
 

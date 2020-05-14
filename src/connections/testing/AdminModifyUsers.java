@@ -7,6 +7,7 @@ import connections.exceptions.ServerException;
 import java.util.Map;
 import java.util.TreeMap;
 
+@Deprecated
 public class AdminModifyUsers {
     public static void main(String[] args) throws Exception {
 
