@@ -5,18 +5,6 @@ import java.time.OffsetDateTime;
 import java.time.*;
 import java.util.*;
 
-/**
- * Contorls commands related to scheduling
- *
- * Commands names sent by Control Panel:
- * "schedule-add"
- * "schedule-delete"
- * "schedule-get"
- * "schedule-response:added"
- * "schedule-response:removed"
- * "schedule-response:schedules"
- * "schedule-response:error"
- */
 public class ScheduleController {
     public static String currentCommandName;
     public static ArrayList<Object> currentCommandData = new ArrayList<>();
@@ -36,6 +24,17 @@ public class ScheduleController {
         return currentCommandData;
     }
 
+    // ----------- STANDARD COMMANDS  ----------
+    // Sent by Control Panel
+    private static final String SCHEDULE_ADD = "schedule-add";
+    private static final String SCHEDULE_DELETE = "schedule-delete";
+    private static final String SCHEDULE_GET = "schedule-get";
+    // Sent by Scheduler on Server
+    private static final String RESPONSE_ADDED = "schedule-response:added";
+    private static final String RESPONSE_REMOVED = "schedule-response:removed";
+    private static final String RESPONSE_SCHEDULES = "schedule-response:schedules";
+    private static final String RESPONSE_ERROR = "schedule-response:error";
+
 
     // --------------- CONTROL PANEL SIDE  ---------------
     // COMMANDS FROM CONTROL PANEL GUI
@@ -49,7 +48,7 @@ public class ScheduleController {
      */
     public static void commandAddSchedule(String billboardName, OffsetDateTime schedStart, Integer schedDurationInMins,
                                           Boolean isRecurring, Integer recurFreqInMins, String creatorName){
-        String commandName = "schedule-add";
+        String commandName = SCHEDULE_ADD;
         ArrayList listOfObjects = new ArrayList();
         // save relevant objects to list
         listOfObjects.add(billboardName);
@@ -63,7 +62,7 @@ public class ScheduleController {
     }
 
     public static void commandRemoveSchedule(String billboardName, OffsetDateTime schedStart){
-        String commandName = "schedule-delete";
+        String commandName = SCHEDULE_DELETE;
         ArrayList listOfObjects = new ArrayList();
         // save relevant objects to list
         listOfObjects.add(billboardName);
@@ -73,7 +72,7 @@ public class ScheduleController {
     }
 
     public static void commandGetSchedules(){
-        String commandName = "schedule-get";
+        String commandName = SCHEDULE_GET;
         ArrayList listOfObjects = new ArrayList();
         listOfObjects.add("Empty list");
         addCommand(commandName, listOfObjects);
@@ -81,20 +80,20 @@ public class ScheduleController {
 
     // Control Panel Parser for response
     // RESPONSE PROCESSING
-    public static void commandReplyParser(String command, ArrayList<Object> data){
+    public static String commandReplyParser(String command, ArrayList<Object> data){
         // TODO REMOVE TEMP VARIABLE ASSIGNMENT FOR COMMAND HERE:
         addCommand(command, data);
         // TODO add necessary calls for the control panel here
-        String successMessage = null;
+        String successMessage = "";
         // check reply
-        if ( command ==  "schedule-response:added"  ) {
+        if ( command == RESPONSE_ADDED  ) {
             String billboardName = (String) data.get(0);
             OffsetDateTime schedStart = (OffsetDateTime) data.get(1);
             // Process message
             successMessage = "Billboard schedule has been successfully added for: "+
                     billboardName + "to start at " + schedStart;
         }
-        else if (  command == "schedule-response:removed" ){
+        else if (  command == RESPONSE_REMOVED ){
             // Process action required (if any)
             String billboardName = (String) data.get(0);
             OffsetDateTime schedStart = (OffsetDateTime) data.get(1);
@@ -102,22 +101,22 @@ public class ScheduleController {
             successMessage = "Billboard schedule has been successfully deleted for: "+
                     billboardName + "which had a start time of " + schedStart;
         }
-        else if ( command == "schedule-response:schedules" ) {
+        else if ( command == RESPONSE_SCHEDULES ) {
             // get current schedules from DB and respond to Control Panel
             successMessage = "The current list of schedules is: ";
             for (Object schedule : data) {
                 ArrayList<Object> scheduleArray = (ArrayList<Object>) schedule;
-                successMessage = scheduleToString(scheduleArray);
+                successMessage += "\n" + scheduleToString(scheduleArray);
             }
         }
-        else if ( command == "schedule-response:error"){
+        else if ( command == RESPONSE_ERROR){
                 successMessage = (String) data.get(0);
-                // TODO Add an action here
         }
-        System.out.println(successMessage);
         // call to display this on the GUI
-
+        return successMessage;
     }
+
+
 
 
 
@@ -198,8 +197,8 @@ public class ScheduleController {
         String creatorName = "John";
 
         // CHANGE COMMAND CALL BELOW
-        //commandAddSchedule(billboardName, schedStart, duration, recur, recurFreqMins, creatorName);
-        //commandRemoveSchedule(billboardName, schedStart);
+        commandAddSchedule(billboardName, schedStart, duration, recur, recurFreqMins, creatorName);
+        commandRemoveSchedule(billboardName, schedStart);
         commandGetSchedules();
 
         // CHECK OUTPUT
