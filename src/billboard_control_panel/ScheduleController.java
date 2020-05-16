@@ -2,15 +2,14 @@ package billboard_control_panel;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.time.*;
 import java.util.*;
 
 public class ScheduleController {
-    public static String currentCommandName;
-    public static ArrayList<Object> currentCommandData = new ArrayList<>();
+    private static String currentCommandName;
+    private static ArrayList<Object> currentCommandData = new ArrayList<>();
 
     // TODO change from map send these through connections methods to server Scheduler
-    public static void addCommand(String command, ArrayList<Object> data) {
+    private static void addCommand(String command, ArrayList<Object> data) {
         // Add command name & list Data to map
         currentCommandName = command;
         currentCommandData = data;
@@ -110,7 +109,7 @@ public class ScheduleController {
             }
         }
         else if ( command == RESPONSE_ERROR){
-                successMessage = (String) data.get(0);
+            successMessage = (String) data.get(0);
         }
         // call to display this on the GUI
         return successMessage;
@@ -197,8 +196,8 @@ public class ScheduleController {
         String creatorName = "John";
 
         // CHANGE COMMAND CALL BELOW
-        commandAddSchedule(billboardName, schedStart, duration, recur, recurFreqMins, creatorName);
-        commandRemoveSchedule(billboardName, schedStart);
+        //commandAddSchedule(billboardName, schedStart, duration, recur, recurFreqMins, creatorName);
+        //commandRemoveSchedule(billboardName, schedStart);
         commandGetSchedules();
 
         // CHECK OUTPUT
@@ -209,9 +208,9 @@ public class ScheduleController {
         System.out.println("Command data on server commandParser for Command:  "
                 + Scheduler.getCurrentCommandName() + "\n" + Scheduler.getCurrentCommandData().toString() +"\n"  );
         // --> Get reply from server and parse
-        commandReplyParser( Scheduler.getCurrentCommandName(), Scheduler.getCurrentCommandData() );
-        System.out.println("Command data after commandReplyParser for Command:  " + getCurrentCommandName() + "\n"
-                + getCurrentCommandData().toString() );
+//        commandReplyParser( Scheduler.getCurrentCommandName(), Scheduler.getCurrentCommandData() );
+//        System.out.println("Command data after commandReplyParser for Command:  " + getCurrentCommandName() + "\n"
+//                + getCurrentCommandData().toString() );
 
 
 

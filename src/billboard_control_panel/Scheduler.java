@@ -66,7 +66,7 @@ public class Scheduler {
     }
 
     public static String addScheduleToDB(String billboardName, OffsetDateTime schedStart, Integer schedDurationInMins,
-                                       Boolean isRecurring, Integer recurFreqInMins, String creatorName ){
+                                         Boolean isRecurring, Integer recurFreqInMins, String creatorName ){
         String successMessage = "";
         Boolean isAdded = true;
         // Add this to DB
@@ -160,7 +160,7 @@ public class Scheduler {
             setCommand(RESPONSE_ERROR, successMessage);
         }
         // Schedule is more frequent than duration of billboard
-        else if ( recurFreqInMins < schedDurationInMins) {
+        else if ( recurFreqInMins < schedDurationInMins && recurFreqInMins != 0) {
             successMessage.add("Schedule frequency is more often than duration of schedule - recurrence is obsolete! Please try again.");
             setCommand(RESPONSE_ERROR, successMessage);
         }
@@ -168,7 +168,7 @@ public class Scheduler {
             // try to add this data to DB
             String successMessageString =
                     addScheduleToDB(billboardName, schedStart, schedDurationInMins, isRecurring,
-                        recurFreqInMins, creatorName);
+                            recurFreqInMins, creatorName);
             // return message if successfully added
             if (successMessageString == RESPONSE_ADDED) {
                 setCommand(RESPONSE_ADDED, scheduleToAdd); // include schedule added in response
