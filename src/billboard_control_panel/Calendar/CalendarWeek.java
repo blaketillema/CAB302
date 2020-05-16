@@ -43,7 +43,6 @@ public class CalendarWeek extends CalendarViewer {
         week = new Week(LocalDate.now());
     }
 
-    // TODO Change 100 to getDayWidth()
     @Override
     protected double dayToPixel(DayOfWeek dayOfWeek) {
         return TIME_COL_WIDTH + getDayWidth() * (dayOfWeek.getValue() - 1);

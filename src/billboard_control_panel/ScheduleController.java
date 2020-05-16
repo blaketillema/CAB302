@@ -196,9 +196,9 @@ public class ScheduleController {
         String creatorName = "John";
 
         // CHANGE COMMAND CALL BELOW
-        commandAddSchedule(billboardName, schedStart, duration, recur, recurFreqMins, creatorName);
-//        commandRemoveSchedule(billboardName, schedStart);
-//        commandGetSchedules();
+        //commandAddSchedule(billboardName, schedStart, duration, recur, recurFreqMins, creatorName);
+        //commandRemoveSchedule(billboardName, schedStart);
+        commandGetSchedules();
 
         // CHECK OUTPUT
         System.out.println("Instructions from GUI for Command:  " + getCurrentCommandName() + ", the data is:\n"
@@ -208,9 +208,9 @@ public class ScheduleController {
         System.out.println("Command data on server commandParser for Command:  "
                 + Scheduler.getCurrentCommandName() + "\n" + Scheduler.getCurrentCommandData().toString() +"\n"  );
         // --> Get reply from server and parse
-        commandReplyParser( Scheduler.getCurrentCommandName(), Scheduler.getCurrentCommandData() );
-        System.out.println("Command data after commandReplyParser for Command:  " + getCurrentCommandName() + "\n"
-                + getCurrentCommandData().toString() );
+//        commandReplyParser( Scheduler.getCurrentCommandName(), Scheduler.getCurrentCommandData() );
+//        System.out.println("Command data after commandReplyParser for Command:  " + getCurrentCommandName() + "\n"
+//                + getCurrentCommandData().toString() );
 
 
 
