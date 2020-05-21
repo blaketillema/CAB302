@@ -13,16 +13,16 @@ public class DatabaseTest {
         String scheduleId = java.util.UUID.randomUUID().toString();
 
         db.addUser(userId, "test", "test", "test", 8);
-        db.addBillboard(billboardId, "test", userId, "msg", "info", "", "url", "bg", "msgCol", "infoCol");
+        db.addBillboard(billboardId, "test", userId, "msg", "info", null, "url", "bg", null, "infoCol");
         db.addSchedule(scheduleId, billboardId, date, 120, true, 3600);
 
         System.out.println(db.getUsers());
         System.out.println(db.getBillboards());
         System.out.println(db.getSchedules());
 
-        db.deleteUser(userId);
-        db.deleteBillboard(billboardId);
-        db.deleteSchedule(scheduleId);
+        db.editUser(userId, "jeff", null, null, 0);
+        db.editBillboard(billboardId, "updateTest", null, "hello", null, null, "google", null, null, null);
+        db.editSchedule(scheduleId, null, null, 10, false, 0);
 
         System.out.println(db.getUsers());
         System.out.println(db.getBillboards());
