@@ -1,7 +1,5 @@
 package billboard_control_panel.Calendar;
 
-import billboard_control_panel.schedulerController;
-
 import javax.swing.*;
 import javax.swing.event.EventListenerList;
 import java.awt.*;
@@ -27,7 +25,7 @@ public abstract class CalendarViewer extends JComponent {
     protected static final LocalTime END_TIME = LocalTime.of(23, 59);
 
     protected static final int MIN_WIDTH = 600;
-    protected static final int MIN_HEIGHT = 500;
+    protected static final int MIN_HEIGHT = 600;
 
     protected static final int HEADER_HEIGHT = 20;
     protected static final int TIME_COL_WIDTH = 50;
@@ -41,6 +39,11 @@ public abstract class CalendarViewer extends JComponent {
     private Graphics2D g2;
 
     private EventListenerList listenerList = new EventListenerList();
+    private JButton deleteButton;
+    private JTextField enterBillboardScheduleNameTextField;
+    private JButton saveButton;
+    private JButton cancelButton;
+    private JPanel schedulePanel;
 
     public CalendarViewer() {
         this(new ArrayList<>());
@@ -159,6 +162,7 @@ public abstract class CalendarViewer extends JComponent {
 
     }
 
+
     private void fireCalendarEmptyClick(LocalDateTime dateTime) throws ParseException {
         Object[] listeners = listenerList.getListenerList();
         CalendarEmptyClickEvent calendarEmptyClickEvent;
@@ -275,8 +279,7 @@ public abstract class CalendarViewer extends JComponent {
         // Draw horizontal grid lines
         double y;
         int x1;
-        for (LocalTime time = START_TIME; time.compareTo(END_TIME) < 0; time = time.plusMinutes(30)) {
-
+        for (LocalTime time = START_TIME; time.compareTo(END_TIME) <= 0; time = time.plusMinutes(30)) {
             y = timeToPixel(time);
             if (time.getMinute() == 0) {
                 g2.setColor(alphaGray);
@@ -337,10 +340,8 @@ public abstract class CalendarViewer extends JComponent {
     private void drawTimes() {
         int y;
         for (LocalTime time = START_TIME; time.compareTo(END_TIME) < 0; time = time.plusHours(1)) {
-
             y = (int) timeToPixel(time) + 15;
             g2.drawString(time.toString(), TIME_COL_WIDTH - (FONT_LETTER_PIXEL_WIDTH * time.toString().length()) - 5, y);
-            System.out.println(time);
             if (time.getHour() == 23){
                 break;
             }
