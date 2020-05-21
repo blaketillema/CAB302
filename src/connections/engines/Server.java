@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.TreeMap;
 import java.lang.reflect.*;
 
@@ -34,6 +35,14 @@ public class Server {
         this.port = 1234;
         sessionIds = new TreeMap<>();
         database = new Database();
+
+        long sessionId = new Random().nextLong();
+
+        UserInfo newUser = new UserInfo();
+        newUser.userId = "b220a053-91f1-48ee-acea-d1a145376e57";
+        newUser.createdAt = Long.MAX_VALUE - ONE_DAY_MS;
+
+        sessionIds.put(sessionId, newUser);
     }
 
     public void run() {

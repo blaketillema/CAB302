@@ -19,7 +19,9 @@ public final class Protocol {
         DELETE_SCHEDULES,
         GET_SCHEDULES,
         GET_SESSION_ID,
-        NAME_TO_ID
+        NAME_TO_ID,
+        BOARD_TO_ID,
+        BOARD_TO_SCHEDULE,
     }
 
     public static final String PERMISSION = "permissions";
@@ -39,19 +41,19 @@ public final class Protocol {
 
             String permissions = "'";
 
-            if (((byte) (permission) & 1) == 1) {
+            if ((permission & EDIT_ALL_BILLBOARDS) != 0) {
                 permissions += "Edit all billboards, ";
             }
 
-            if (((byte) (permission >> 1) & 1) == 1) {
+            if ((permission & CREATE_BILLBOARDS) != 0) {
                 permissions += "Create billboards, ";
             }
 
-            if (((byte) (permission >> 2) & 1) == 1) {
+            if ((permission & SCHEDULE_BILLBOARDS) != 0) {
                 permissions += "Schedule Billboards, ";
             }
 
-            if (((byte) (permission >> 3) & 1) == 1) {
+            if ((permission & EDIT_USERS) != 0) {
                 permissions += "Edit users, ";
             }
 
