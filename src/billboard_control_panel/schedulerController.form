@@ -8,16 +8,6 @@
     <properties/>
     <border type="none"/>
     <children>
-      <component id="f055b" class="javax.swing.JTextField" binding="enterScheduleNameTextField" default-binding="true">
-        <constraints>
-          <grid row="1" column="1" row-span="1" col-span="4" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-        </constraints>
-        <properties>
-          <text value="Enter Schedule Name"/>
-        </properties>
-      </component>
       <component id="8bc20" class="javax.swing.JLabel">
         <constraints>
           <grid row="2" column="1" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -197,6 +187,25 @@
           </grid>
         </constraints>
         <properties/>
+      </component>
+      <component id="f055b" class="javax.swing.JTextField" binding="enterScheduleNameTextField" default-binding="true">
+        <constraints>
+          <grid row="1" column="3" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+        </constraints>
+        <properties>
+          <text value="Enter Schedule Name"/>
+        </properties>
+      </component>
+      <component id="36289" class="javax.swing.JComboBox" binding="billboardDropdown" custom-create="true">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <model/>
+          <toolTipText value=""/>
+        </properties>
       </component>
     </children>
   </grid>

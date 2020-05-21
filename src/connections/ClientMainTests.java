@@ -175,7 +175,7 @@ public class ClientMainTests {
 
 
     // helper functions
-    static TreeMap<String, String> randomNewBillboard() {
+    public static TreeMap<String, String> randomNewBillboard() {
         Random r = new Random();
 
         TreeMap<String, String> body = new TreeMap<>();

@@ -7,9 +7,11 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import billboard_control_panel.Calendar.*;
 import billboard_control_panel.Calendar.CalendarEvent;
+import connections.exceptions.ServerException;
 //import billboard_viewer.DisplayBillboard;
 //import connections.ClientServerInterface;
 //import connections.Protocol;
@@ -38,6 +40,13 @@ public class MainControl {
         for (Window wn1 : wns) {
             wn1.setVisible(false);
         }
+        // Get Current Users in Database
+        try {
+            TreeMap<String, Object> users = LoginManager.server.getUsers();
+        } catch (ServerException e) {
+            e.printStackTrace();
+        }
+        //TODO Put users from db into string array to display in GUI
         String[] BillboardNames = {"Bill1", "BillTwo", "BillThree"};
         String[] UserNames = {"Lahiru", "Blake", "Max"};
 
@@ -153,7 +162,14 @@ public class MainControl {
         refreshUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                refresh(usersList, UserNames);
+                TreeMap<String, Object> users = null;
+                try {
+                    users = LoginManager.server.getUsers();
+                } catch (ServerException z) {
+                    z.printStackTrace();
+                }
+                System.out.println(users.toString());
+                //refresh(usersList, UserNames);
             }
         });
     }
@@ -164,6 +180,7 @@ public class MainControl {
             model.addElement(stringArray[i]);
             list.setModel(model);
         }
+
     }
 
     public static void main(String[] args) {

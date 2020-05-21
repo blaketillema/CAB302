@@ -4,6 +4,7 @@ import billboard_control_panel.LoginManager;
 import billboard_control_panel.MainControl;
 import billboard_control_panel.ScheduleController;
 import billboard_control_panel.Scheduler;
+import connections.exceptions.ServerException;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -41,8 +42,11 @@ public class CalendarCreator extends Frame {
         // Schedule Name
         JTextField enterScheduleNameTextField = new JTextField();
         enterScheduleNameTextField.setText("Enter Schedule Name");
-        schedulerPanel.add(enterScheduleNameTextField, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-
+        schedulerPanel.add(enterScheduleNameTextField, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension( 150, -1), null, 0, false));
+        // Billboard Drop down
+        String s1[] = { "Bill1", "Bill2", "Bill3", "Bill4", "Bill4" };
+        JComboBox billboardDropdown = new JComboBox(s1);
+        schedulerPanel.add(billboardDropdown, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         // Start Time Label
         final JLabel label1 = new JLabel();
         label1.setText("Start time:");
@@ -177,6 +181,7 @@ public class CalendarCreator extends Frame {
 
         });
         //</editor-fold>
+
 
         //<editor-fold desc="Scheduler Option Listeners">
         endSpinner.addChangeListener(new ChangeListener() {
@@ -489,6 +494,8 @@ public class CalendarCreator extends Frame {
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+
                 Calendar calendar = new GregorianCalendar();
                 // Get Values Entered:
                 String billboardName = (String) enterScheduleNameTextField.getText();
@@ -516,6 +523,20 @@ public class CalendarCreator extends Frame {
 
                 ScheduleController.commandRemoveSchedule(billboardName,offsetDateTime);
                 Scheduler.commandParser( ScheduleController.getCurrentCommandName(), ScheduleController.getCurrentCommandData() );
+
+                // Deleting Billboard using ClientServer Interface
+                //TODO: Ensure this is deleting a schedule of a billboard, not a billboard
+                String scheduleId = null;
+                try {
+                    scheduleId = LoginManager.server.getScheduleId(LoginManager.server.getBillboardId(billboardName));
+                } catch (ServerException ex) {
+                    ex.printStackTrace();
+                }
+                try {
+                    LoginManager.server.deleteSchedule(scheduleId);
+                } catch (ServerException ex) {
+                    ex.printStackTrace();
+                }
 
                 JOptionPane.showMessageDialog(null, Scheduler.getCurrentCommandData().toString(),
                         "Success",

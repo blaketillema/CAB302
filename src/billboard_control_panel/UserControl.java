@@ -4,6 +4,9 @@ package billboard_control_panel;
 //import connections.Protocol;
 //import connections.exceptions.ServerException;
 
+import connections.Protocol;
+import connections.exceptions.ServerException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,31 +15,86 @@ import java.awt.event.ActionListener;
 public class UserControl {
     private JTextField textField1;
     private JPasswordField passwordField1;
-    private JCheckBox checkBox1;
-    private JCheckBox checkBox2;
-    private JCheckBox checkBox3;
-    private JCheckBox checkBox4;
+    private JCheckBox ScheduleBBCheckBox;
+    private JCheckBox editUsersCheckBox;
+    private JCheckBox EditBBCheckBox;
+    private JCheckBox CreateBBCheckBox;
     private JButton removeButton;
     private JButton saveButton;
-    private JButton saveAndExitButton;
+    private JButton exitButton;
     private JPanel userControl;
 
     public UserControl() {
+        // Get newly created user's userID to edit the user's permissions
+        String userId = null;
+        try {
+            userId = LoginManager.server.getUserId(textField1.getText());
+        } catch (ServerException ex) {
+            ex.printStackTrace();
+        }
+        String finalUserId = userId;
+
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    LoginManager.server.deleteUser(finalUserId);
+                } catch (ServerException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //ClientServerInterface server = new ClientServerInterface();
-                //server.addNewUser(textField1.getText(), passwordField1.getText(), Protocol.Permission.ALL);
+                // Start with creating the user with no permissions
+                try {
+                    LoginManager.server.addUser(textField1.getText(), passwordField1.getText(), Protocol.Permission.NONE);
+                } catch (ServerException ex) {
+                    ex.printStackTrace();
+                }
+
+                // Now check each box and use the editUser function to give certain permissions
+                if (ScheduleBBCheckBox.isSelected()){
+                    try {
+                        LoginManager.server.editUser(finalUserId, textField1.getText(), passwordField1.getText(), Protocol.Permission.SCHEDULE_BILLBOARDS);
+                    } catch (ServerException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                if (EditBBCheckBox.isSelected()){
+                    try {
+                        LoginManager.server.editUser(finalUserId, textField1.getText(), passwordField1.getText(), Protocol.Permission.EDIT_ALL_BILLBOARDS);
+                    } catch (ServerException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                if (CreateBBCheckBox.isSelected()){
+                    try {
+                        LoginManager.server.editUser(finalUserId, textField1.getText(), passwordField1.getText(), Protocol.Permission.CREATE_BILLBOARDS);
+                    } catch (ServerException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                if (editUsersCheckBox.isSelected()){
+                    try {
+                        LoginManager.server.editUser(finalUserId, textField1.getText(), passwordField1.getText(), Protocol.Permission.EDIT_USERS);
+                    } catch (ServerException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+                if (editUsersCheckBox.isSelected() && ScheduleBBCheckBox.isSelected() && CreateBBCheckBox.isSelected() && EditBBCheckBox.isSelected() ){
+                    try {
+                        LoginManager.server.editUser(finalUserId, textField1.getText(), passwordField1.getText(), Protocol.Permission.ALL);
+                    } catch (ServerException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
 
             }
         });
-        saveAndExitButton.addActionListener(new ActionListener() {
+        exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Window[] wns = LoginManager.getFrames();
@@ -92,28 +150,28 @@ public class UserControl {
         userControl.add(textField1, new com.intellij.uiDesigner.core.GridConstraints(2, 2, 1, 3, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         passwordField1 = new JPasswordField();
         userControl.add(passwordField1, new com.intellij.uiDesigner.core.GridConstraints(3, 2, 1, 3, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        checkBox2 = new JCheckBox();
-        checkBox2.setText("CheckBox");
-        userControl.add(checkBox2, new com.intellij.uiDesigner.core.GridConstraints(5, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(78, 18), null, 0, false));
-        checkBox1 = new JCheckBox();
-        checkBox1.setText("CheckBox");
-        userControl.add(checkBox1, new com.intellij.uiDesigner.core.GridConstraints(5, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        editUsersCheckBox = new JCheckBox();
+        editUsersCheckBox.setText("CheckBox");
+        userControl.add(editUsersCheckBox, new com.intellij.uiDesigner.core.GridConstraints(5, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(78, 18), null, 0, false));
+        ScheduleBBCheckBox = new JCheckBox();
+        ScheduleBBCheckBox.setText("CheckBox");
+        userControl.add(ScheduleBBCheckBox, new com.intellij.uiDesigner.core.GridConstraints(5, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label5 = new JLabel();
         label5.setText("Credentials");
         userControl.add(label5, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        checkBox3 = new JCheckBox();
-        checkBox3.setText("CheckBox");
-        userControl.add(checkBox3, new com.intellij.uiDesigner.core.GridConstraints(5, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        EditBBCheckBox = new JCheckBox();
+        EditBBCheckBox.setText("CheckBox");
+        userControl.add(EditBBCheckBox, new com.intellij.uiDesigner.core.GridConstraints(5, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
         userControl.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(2, 5, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
         final com.intellij.uiDesigner.core.Spacer spacer2 = new com.intellij.uiDesigner.core.Spacer();
         userControl.add(spacer2, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        checkBox4 = new JCheckBox();
-        checkBox4.setText("CheckBox");
-        userControl.add(checkBox4, new com.intellij.uiDesigner.core.GridConstraints(5, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        saveAndExitButton = new JButton();
-        saveAndExitButton.setText("Save and Exit");
-        userControl.add(saveAndExitButton, new com.intellij.uiDesigner.core.GridConstraints(6, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(78, 24), null, 0, false));
+        CreateBBCheckBox = new JCheckBox();
+        CreateBBCheckBox.setText("CheckBox");
+        userControl.add(CreateBBCheckBox, new com.intellij.uiDesigner.core.GridConstraints(5, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        exitButton = new JButton();
+        exitButton.setText("Save and Exit");
+        userControl.add(exitButton, new com.intellij.uiDesigner.core.GridConstraints(6, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(78, 24), null, 0, false));
         saveButton = new JButton();
         saveButton.setText("Save");
         userControl.add(saveButton, new com.intellij.uiDesigner.core.GridConstraints(6, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
