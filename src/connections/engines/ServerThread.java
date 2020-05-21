@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.sql.SQLException;
+import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 
+import com.sun.source.tree.Tree;
 import connections.Protocol;
 import connections.exceptions.ServerException;
 import connections.types.*;
@@ -14,6 +17,7 @@ import connections.Protocol.*;
 import connections.tools.UserAuth;
 
 import static connections.engines.Server.*;
+import static connections.engines.ServerFunctions.*;
 
 public class ServerThread implements Runnable {
     ObjectOutputStream outStream = null;
@@ -24,132 +28,79 @@ public class ServerThread implements Runnable {
         this.socket = socket;
     }
 
-    private long newSessionId(String userId, String hash) throws ServerException {
-        String dbSalt = null;
-        String dbHash = null;
-
-        if (userId == null || hash == null) {
-            throw new ServerException("userId and/or hash not provided");
-        }
-
-        try {
-            dbHash = database.getUserHash(userId);
-            dbSalt = database.getUserSalt(userId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ServerException(e.getMessage());
-        }
-
-        long sessionId;
-
-        if (UserAuth.hashAndSalt(hash, dbSalt).equals(dbHash)) {
-            sessionId = new Random().nextLong();
-
-            UserInfo newUser = new UserInfo();
-            newUser.userId = userId;
-            newUser.createdAt = System.currentTimeMillis();
-
-            sessionIds.put(sessionId, newUser);
-        } else {
-            throw new ServerException("couldn't get session id - invalid username or password");
-        }
-
-        return sessionId;
-    }
-
-    private String sessionToUserId(long sessionId) throws ServerException {
-
-        if (!sessionIds.containsKey(sessionId)) {
-            throw new ServerException("user doesn't have session ID");
-        }
-
-        UserInfo info = sessionIds.get(sessionId);
-
-        if (info.createdAt + ONE_DAY_MS < System.currentTimeMillis()) {
-            throw new ServerException("user session ID has expired");
-        }
-
-        return sessionIds.get(sessionId).userId;
-    }
-
     private ServerResponse parseRequest(ClientRequest request) {
 
-        ServerResponse response = new ServerResponse();
-        response.status = "OK";
-
+        ServerResponse response = null;
         String userId = null;
-
-        if (request.cmd == Cmd.GET_SESSION_ID) {
-            String userName = (String) request.data.get(Protocol.USERNAME);
-            userId = database.getUserId(userName);
-            String hash = (String) request.data.get(Protocol.HASH);
-
-            try {
-                long sessionId = newSessionId(userId, hash);
-                response.data = new TreeMap<>();
-                response.data.put("sessionId", sessionId);
-            } catch (ServerException e) {
-                e.printStackTrace();
-                response.status = e.getMessage();
-            }
-
-            return response;
-        }
-
-        if (request.cmd != Cmd.GET_CURRENT_BILLBOARD) {
-            try {
-                userId = sessionToUserId(request.sessionId);
-            } catch (ServerException e) {
-                response.status = e.getMessage();
-                return response;
-            }
-        }
 
         try {
             switch (request.cmd) {
+                case GET_SESSION_ID:
+                    response = getSessionId(request.data);
+                    break;
+
                 case ADD_BILLBOARDS:
-                    database.addBillboards(userId, request.data);
+                    response = addBillboards(request.sessionId, request.data);
                     break;
 
                 case DELETE_BILLBOARDS:
-                    database.deleteBillboards(userId, request.data);
-                    break;
-
-                case GET_BILLBOARDS:
-                    response.data = database.getBillboards(userId);
-                    break;
-
-                case ADD_SCHEDULES:
-                    database.addSchedules(userId, request.data);
-                    break;
-
-                case DELETE_SCHEDULES:
-                    database.deleteSchedules(userId, request.data);
-                    break;
-
-                case GET_SCHEDULES:
-                    response.data = database.getSchedules(userId);
-                    break;
-
-                case ADD_USERS:
-                    database.addUsers(userId, request.data);
-                    break;
-
-                case DELETE_USERS:
-                    database.deleteUsers(userId, request.data);
-                    break;
-
-                case GET_USERS:
-                    response.data = database.getUsers(userId);
+                    response = deleteBillboards(request.sessionId, request.data);
                     break;
 
                 case GET_CURRENT_BILLBOARD:
-                    response.data = database.getCurrentBillboard();
                     break;
 
+                case GET_BILLBOARDS:
+                    response = getBillboards(request.data);
+                    break;
+
+                case ADD_SCHEDULES:
+                    response = addSchedules(request.sessionId, request.data);
+                    break;
+
+                case DELETE_SCHEDULES:
+                    response = deleteSchedules(request.sessionId, request.data);
+                    break;
+
+                case GET_SCHEDULES:
+                    response = getSchedules(request.data);
+                    break;
+
+                case ADD_USERS:
+                    response = addUsers(request.sessionId, request.data);
+                    break;
+
+                case DELETE_USERS:
+                    response = deleteUsers(request.sessionId, request.data);
+                    break;
+
+                case GET_USERS:
+                    response = getUsers(request.data);
+                    break;
+
+                case NAME_TO_ID:
+                    response = new ServerResponse();
+                    response.data = new TreeMap<>();
+                    response.data.put("userId", database.userNameToId((String) request.data.get("userName")));
+                    break;
+
+                case BOARD_TO_ID:
+                    response = new ServerResponse();
+                    response.data = new TreeMap<>();
+                    response.data.put("billboardId", database.billboardNameToId((String) request.data.get("billboardName")));
+                    break;
+
+                case BOARD_TO_SCHEDULE:
+                    response = new ServerResponse();
+                    response.data = new TreeMap<>();
+                    response.data.put("scheduleId", database.billboardToScheduleId((String) request.data.get("billboardId")));
+                    break;
             }
-        } catch (ServerException e) {
+        } catch (Exception e) {
+            response = new ServerResponse();
+            e.printStackTrace();
             response.status = e.getMessage();
+            response.success = false;
         }
 
         return response;

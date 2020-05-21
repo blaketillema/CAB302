@@ -3,21 +3,19 @@ package connections.types;
 import java.io.Serializable;
 import java.util.TreeMap;
 
-public class ServerResponse implements Serializable
-{
-    public String status = "UNKNOWN";
+public class ServerResponse implements Serializable {
+    public boolean success = true;
+    public String status = "OK";
     public TreeMap<String, Object> data;
 
-    public ServerResponse()
-    {
+    public ServerResponse() {
         this.data = new TreeMap<>();
     }
 
     // debugging
-    public String toString()
-    {
-        return String.format("status: %s\ndata: %s\n-------------------------",
-                this.status, this.data);
+    public String toString() {
+        return String.format("success: %s, status: %s\ndata: %s\n-------------------------",
+                this.success, this.status, this.data);
     }
 
     public void print()
