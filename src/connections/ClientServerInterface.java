@@ -6,7 +6,6 @@ import java.util.*;
 
 import connections.Protocol.*;
 import connections.engines.ServerClientConnection;
-import connections.exceptions.PermissionException;
 import connections.exceptions.ServerException;
 import connections.tools.UserAuth;
 import connections.types.ClientRequest;
@@ -95,6 +94,22 @@ public class ClientServerInterface {
         System.out.println("done");
     }
 
+    public String getUserId(String userName) throws ServerException {
+        System.out.printf("\nrequesting to get userId of %s ...", userName);
+
+        ClientRequest request = new ClientRequest();
+
+        request.cmd = Cmd.NAME_TO_ID;
+        request.data.put("userName", userName);
+        request.sessionId = this.sessionId;
+
+        ServerResponse response = ServerClientConnection.request(this.ip, this.port, request);
+
+        System.out.println("done");
+
+        return (String) response.data.get("userId");
+    }
+
     public void addUser(String userName, String password, int permission) throws ServerException {
 
         System.out.printf("\nrequesting to add user: %s, with permission: %d ... ", userName, permission);
@@ -106,7 +121,6 @@ public class ClientServerInterface {
         ClientRequest request = new ClientRequest();
 
         request.cmd = Cmd.ADD_USERS;
-        request.data = new TreeMap<>();
 
         TreeMap<String, Object> data = new TreeMap<>();
         data.put(Protocol.USERNAME, userName);
@@ -130,19 +144,64 @@ public class ClientServerInterface {
         System.out.println("done");
     }
 
-    public void deleteUser(String userId) throws ServerException {
+    public void editUser(String userId, String userName, String password, Integer permission) throws ServerException {
+        System.out.printf("\nrequesting to edit user: %s, with permission: %d ... ", userName, permission);
 
-        System.out.printf("\nrequesting to delete user: %s... ", userId);
+        ClientRequest request = new ClientRequest();
+
+        request.cmd = Cmd.ADD_USERS;
+        request.data = new TreeMap<>();
+
+        TreeMap<String, Object> data = new TreeMap<>();
+        data.put(Protocol.USERNAME, userName);
+        data.put(Protocol.PERMISSION, permission);
+
+        String salt = null;
+        String hash = null;
+        if (password != null) {
+            salt = UserAuth.generateSalt();
+            hash = UserAuth.hashAndSalt(password, salt);
+            data.put(Protocol.HASH, hash);
+            data.put(Protocol.SALT, salt);
+        }
+
+        request.data.put(userId, data);
+        request.sessionId = this.sessionId;
+
+        ServerClientConnection.request(this.ip, this.port, request);
+
+        if (password != null) {
+            // add salt to salts.map
+            try {
+                saveUserSalt(userId, salt);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
+            }
+        }
+
+        System.out.println("done");
+    }
+
+    public void deleteUsers(ArrayList<String> userIds) throws ServerException {
+
+        System.out.printf("\nrequesting to delete user: %s... ", userIds.toString());
         ClientRequest request = new ClientRequest();
 
         request.cmd = Cmd.DELETE_USERS;
         request.data = new TreeMap<>();
-        request.data.put(userId, null);
+        request.data.put("userList", userIds);
         request.sessionId = this.sessionId;
 
         ServerClientConnection.request(this.ip, this.port, request);
 
         System.out.println("done");
+    }
+
+    public void deleteUser(String userId) throws ServerException {
+        ArrayList<String> userList = new ArrayList<>();
+        userList.add(userId);
+        deleteUsers(userList);
     }
 
     public TreeMap<String, Object> getUsers() throws ServerException {
@@ -163,7 +222,7 @@ public class ClientServerInterface {
 
     public TreeMap<String, Object> getUsers(List<String> userIds) throws ServerException {
 
-        System.out.print("\nrequesting to get all users ... ");
+        System.out.printf("\nrequesting to get users %s ... ", userIds.toString());
 
         ClientRequest request = new ClientRequest();
 
@@ -171,15 +230,35 @@ public class ClientServerInterface {
         request.sessionId = this.sessionId;
         request.data = new TreeMap<>();
 
-        for (String userId : userIds) {
-            request.data.put(userId, null);
-        }
+        request.data.put("userList", userIds);
 
         ServerResponse response = ServerClientConnection.request(this.ip, this.port, request);
 
         System.out.println("done");
 
         return response.data;
+    }
+
+    public TreeMap<String, Object> getUser(String userId) throws ServerException {
+        ArrayList<String> userList = new ArrayList<>();
+        userList.add(userId);
+        return (TreeMap<String, Object>) getUsers(userList).get(userId);
+    }
+
+    public String getBillboardId(String boardName) throws ServerException {
+        System.out.printf("\nrequesting to get billboardId of %s ...", boardName);
+
+        ClientRequest request = new ClientRequest();
+
+        request.cmd = Cmd.BOARD_TO_ID;
+        request.data.put("billboardName", boardName);
+        request.sessionId = this.sessionId;
+
+        ServerResponse response = ServerClientConnection.request(this.ip, this.port, request);
+
+        System.out.println("done");
+
+        return (String) response.data.get("billboardId");
     }
 
     public void addBillboard(String billboardName, TreeMap<String, String> data) throws ServerException {
@@ -200,12 +279,11 @@ public class ClientServerInterface {
     }
 
     public void editBillboards(TreeMap<String, Object> data) throws ServerException {
-        System.out.print("\nrequesting to edit billboards ... ");
+        System.out.printf("\nrequesting to edit billboards: %s ... ", data.toString());
 
         ClientRequest request = new ClientRequest();
 
         request.cmd = Cmd.ADD_BILLBOARDS;
-        // request.data = new TreeMap<>();
 
         request.data = data;
         request.sessionId = this.sessionId;
@@ -215,13 +293,19 @@ public class ClientServerInterface {
         System.out.println("done");
     }
 
-    public void deleteBillboard(String billboardId) throws ServerException {
-        System.out.printf("\nrequesting to delete billboard: %s... ", billboardId);
+    public void editBillboard(String billboardId, TreeMap<String, String> newData) throws ServerException {
+        TreeMap<String, Object> editedBoard = new TreeMap<>();
+        editedBoard.put(billboardId, newData);
+        editBillboards(editedBoard);
+    }
+
+    public void deleteBillboards(ArrayList<String> billboardIds) throws ServerException {
+        System.out.printf("\nrequesting to delete billboards: %s... ", billboardIds.toString());
         ClientRequest request = new ClientRequest();
 
-        request.cmd = Cmd.DELETE_USERS;
+        request.cmd = Cmd.DELETE_BILLBOARDS;
         request.data = new TreeMap<>();
-        request.data.put(billboardId, null);
+        request.data.put("billboardList", billboardIds);
         request.sessionId = this.sessionId;
 
         ServerClientConnection.request(this.ip, this.port, request);
@@ -229,8 +313,13 @@ public class ClientServerInterface {
         System.out.println("done");
     }
 
-    public TreeMap<String, Object> getBillboards() throws ServerException {
+    public void deleteBillboard(String billboardId) throws ServerException {
+        ArrayList<String> billboardList = new ArrayList<>();
+        billboardList.add(billboardId);
+        deleteBillboards(billboardList);
+    }
 
+    public TreeMap<String, Object> getBillboards() throws ServerException {
         System.out.print("\nrequesting to get all billboards ... ");
 
         ClientRequest request = new ClientRequest();
@@ -245,8 +334,29 @@ public class ClientServerInterface {
         return response.data;
     }
 
-    public TreeMap<String, Object> getCurrentBillboard() throws ServerException {
+    public TreeMap<String, Object> getBillboards(ArrayList<String> billboardIds) throws ServerException {
+        System.out.printf("\nrequesting to get billboards: %s ... ", billboardIds.toString());
 
+        ClientRequest request = new ClientRequest();
+
+        request.cmd = Cmd.GET_BILLBOARDS;
+        request.sessionId = this.sessionId;
+        request.data.put("billboardList", billboardIds);
+
+        ServerResponse response = ServerClientConnection.request(this.ip, this.port, request);
+
+        System.out.println("done");
+
+        return response.data;
+    }
+
+    public TreeMap<String, String> getBillboard(String billboardId) throws ServerException {
+        ArrayList<String> billboardList = new ArrayList<>(1);
+        billboardList.add(billboardId);
+        return (TreeMap<String, String>) getBillboards(billboardList).get(billboardId);
+    }
+
+    public TreeMap<String, Object> getCurrentBillboard() throws ServerException {
         System.out.print("\nrequesting to get current billboard ... ");
 
         ClientRequest request = new ClientRequest();
@@ -260,14 +370,29 @@ public class ClientServerInterface {
         return response.data;
     }
 
-    public void addSchedules(TreeMap<String, Object> data) throws ServerException {
+    public String getScheduleId(String billboardId) throws ServerException {
+        System.out.printf("\nrequesting to get scheduleId of %s ...", billboardId);
 
-        System.out.print("\nrequesting to add schedules ... ");
+        ClientRequest request = new ClientRequest();
+
+        request.cmd = Cmd.BOARD_TO_SCHEDULE;
+        request.data.put("billboardId", billboardId);
+        request.sessionId = this.sessionId;
+
+        ServerResponse response = ServerClientConnection.request(this.ip, this.port, request);
+
+        System.out.println("done");
+
+        return (String) response.data.get("scheduleId");
+    }
+
+    public void addSchedule(TreeMap<String, Object> data) throws ServerException {
+        System.out.printf("\nrequesting to add schedule: %s... ", data.toString());
 
         ClientRequest request = new ClientRequest();
 
         request.cmd = Cmd.ADD_SCHEDULES;
-        request.data = data;
+        request.data.put(UUID.randomUUID().toString(), data);
 
         request.sessionId = this.sessionId;
 
@@ -276,14 +401,29 @@ public class ClientServerInterface {
         System.out.println("done");
     }
 
-    public void deleteSchedule(String billboardId) throws ServerException {
+    public void editSchedule(String scheduleId, TreeMap<String, Object> data) throws ServerException {
+        System.out.printf("\nrequesting to edit schedule: %s... ", scheduleId);
 
-        System.out.printf("\nrequesting to delete schedule associated with billboardId: %s ... ", billboardId);
+        ClientRequest request = new ClientRequest();
+
+        request.cmd = Cmd.ADD_SCHEDULES;
+        request.data.put(scheduleId, data);
+
+        request.sessionId = this.sessionId;
+
+        ServerClientConnection.request(this.ip, this.port, request);
+
+        System.out.println("done");
+    }
+
+
+    public void deleteSchedules(ArrayList<String> scheduleIds) throws ServerException {
+        System.out.printf("\nrequesting to delete schedules: %s ... ", scheduleIds.toString());
         ClientRequest request = new ClientRequest();
 
         request.cmd = Cmd.DELETE_SCHEDULES;
         request.data = new TreeMap<>();
-        request.data.put(billboardId, null);
+        request.data.put("scheduleList", scheduleIds);
         request.sessionId = this.sessionId;
 
         ServerClientConnection.request(this.ip, this.port, request);
@@ -291,8 +431,13 @@ public class ClientServerInterface {
         System.out.println("done");
     }
 
-    public TreeMap<String, Object> getSchedules() throws ServerException {
+    public void deleteSchedule(String scheduleId) throws ServerException {
+        ArrayList<String> scheduleIds = new ArrayList<>(1);
+        scheduleIds.add(scheduleId);
+        deleteSchedules(scheduleIds);
+    }
 
+    public TreeMap<String, Object> getSchedules() throws ServerException {
         System.out.print("\nrequesting to get all schedules ... ");
 
         ClientRequest request = new ClientRequest();
@@ -305,6 +450,29 @@ public class ClientServerInterface {
         System.out.println("done");
 
         return response.data;
+    }
+
+    public TreeMap<String, Object> getSchedules(ArrayList<String> scheduleIds) throws ServerException {
+        System.out.printf("\nrequesting to get schedules: %s ... ", scheduleIds);
+
+        ClientRequest request = new ClientRequest();
+
+        request.cmd = Cmd.GET_SCHEDULES;
+        request.sessionId = this.sessionId;
+        request.data = new TreeMap<>();
+        request.data.put("scheduleList", scheduleIds);
+
+        ServerResponse response = ServerClientConnection.request(this.ip, this.port, request);
+
+        System.out.println("done");
+
+        return response.data;
+    }
+
+    public TreeMap<String, Object> getSchedule(String scheduleId) throws ServerException {
+        ArrayList<String> scheduleIds = new ArrayList<>(1);
+        scheduleIds.add(scheduleId);
+        return (TreeMap<String, Object>) getSchedules(scheduleIds).get(scheduleId);
     }
 
 

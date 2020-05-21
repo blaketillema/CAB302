@@ -2,24 +2,31 @@ package connections;
 
 import connections.exceptions.ServerException;
 
-import java.util.Map;
-import java.util.Random;
-import java.util.TreeMap;
-import java.util.UUID;
+import java.time.OffsetDateTime;
+import java.util.*;
 
 public class ClientMainTests {
     public static void main(String[] args) throws ServerException {
         Test1_LoginAdmin();
 
-        Test2_LoginAdminAddUser();
+        // ALL PERMISSIONS: adding/editing/deleting users (as admin)
+        Test2a_LoginAdminAddUsers();
+        Test2b_LoginAdminEditJack();
+        Test2c_LoginAdminDeleteHarry();
 
-        Test3_LoginJoeAddBillboard();
+        // CREATE_BILLBOARDS: adding/editing/deleting own billboards (as joe)
+        Test3a_LoginJoeAddBillboard();
+        Test3b_LoginJoeEditBillboard();
+        Test3c_LoginJoeDeleteBillboard();
 
-        Test4_GetBillboards();
+        // EDIT_SCHEDULES: adding/editing/deleting schedules (as bob)
+        Test4a_LoginBobScheduleBillboards();
+        Test4b_LoginBobEditSchedules();
+        Test4c_LoginBobDeleteSchedules();
 
-        Test7_LoginBobScheduleBillboards();
-
-        Test8_getSchedules();
+        // EDIT_ALL_BILLBOARDS: editing/deleting other billboards (as jack)
+        Test5a_LoginJackEditBillboard();
+        Test5b_LoginJackDeleteBillboard();
     }
 
     static void Test1_LoginAdmin() throws ServerException {
@@ -28,87 +35,142 @@ public class ClientMainTests {
         server.login("admin", "cab203");
     }
 
-    static void Test2_LoginAdminAddUser() throws ServerException {
+    static void Test2a_LoginAdminAddUsers() throws ServerException {
         ClientServerInterface server = new ClientServerInterface();
 
         server.login("admin", "cab203");
         server.addUser("joe", "1234", Protocol.Permission.CREATE_BILLBOARDS);
         server.addUser("bob", "2345", Protocol.Permission.SCHEDULE_BILLBOARDS);
-        server.addUser("jack", "3456", Protocol.Permission.EDIT_ALL_BILLBOARDS);
+        server.addUser("jack", "", Protocol.Permission.NONE);
+        server.addUser("harry", "", Protocol.Permission.NONE);
+
+        TreeMap<String, Object> confirmed = server.getUsers();
+        System.out.println(confirmed);
     }
 
-    static void Test3_LoginJoeAddBillboard() throws ServerException {
+    static void Test2b_LoginAdminEditJack() throws ServerException {
         ClientServerInterface server = new ClientServerInterface();
-
-        server.login("joe", "1234");
-        server.addBillboard("joe's billboard", randomNewBillboard());
-    }
-
-    static void Test4_GetBillboards() throws ServerException {
-        ClientServerInterface server = new ClientServerInterface();
-
-        TreeMap<String, Object> billboards = server.getBillboards();
-
-        for (Map.Entry<String, Object> billboard : billboards.entrySet()) {
-            TreeMap<String, String> data = (TreeMap<String, String>) billboard.getValue();
-            System.out.println(billboard.getKey() + ": " + data);
-        }
-    }
-
-    @Deprecated
-    static void Test5_LoginJoeEditOwn() throws ServerException {
-        ClientServerInterface server = new ClientServerInterface();
-
-        server.login("joe", "1234");
-
-        TreeMap<String, Object> edited = new TreeMap<>();
-        TreeMap<String, Object> billboards = server.getBillboards();
-
-        for (Map.Entry<String, Object> billboard : billboards.entrySet()) {
-            TreeMap<String, String> data = (TreeMap<String, String>) billboard.getValue();
-            edited.put(billboard.getKey(), randomEditBillboard(data));
-        }
-
-        server.editBillboards(edited);
-    }
-
-    @Deprecated
-    static void Test6_LoginAdminModifyJoe() throws ServerException {
-        ClientServerInterface server = new ClientServerInterface();
-
         server.login("admin", "cab203");
+
+        String userId = server.getUserId("jack");
+        server.editUser(userId, "jack", "3456", Protocol.Permission.EDIT_ALL_BILLBOARDS);
+
+        TreeMap<String, Object> user = server.getUser(userId);
+        System.out.println(user.toString());
     }
 
-    static void Test7_LoginBobScheduleBillboards() throws ServerException {
+    static void Test2c_LoginAdminDeleteHarry() throws ServerException {
         ClientServerInterface server = new ClientServerInterface();
+        server.login("admin", "cab203");
 
+        String userId = server.getUserId("harry");
+        server.deleteUser(userId);
+
+        TreeMap<String, Object> users = server.getUsers();
+        System.out.println(users.toString());
+    }
+
+
+    static void Test3a_LoginJoeAddBillboard() throws ServerException {
+        ClientServerInterface server = new ClientServerInterface();
+        server.login("joe", "1234");
+
+        server.addBillboard("joe's billboard 1", randomNewBillboard());
+        server.addBillboard("joe's billboard 2", randomNewBillboard());
+
+
+        TreeMap<String, Object> confirmed = server.getBillboards();
+        System.out.println(confirmed);
+    }
+
+    static void Test3b_LoginJoeEditBillboard() throws ServerException {
+        ClientServerInterface server = new ClientServerInterface();
+        server.login("joe", "1234");
+
+        String billboardId = server.getBillboardId("joe's billboard 1");
+        TreeMap<String, String> billboard = server.getBillboard(billboardId);
+
+        billboard.put("message", "new updated message");
+
+        server.editBillboard(billboardId, billboard);
+
+
+        TreeMap<String, String> editedBillboard = server.getBillboard(billboardId);
+        System.out.println(editedBillboard);
+    }
+
+    static void Test3c_LoginJoeDeleteBillboard() throws ServerException {
+        ClientServerInterface server = new ClientServerInterface();
+        server.login("joe", "1234");
+
+        server.deleteBillboard(server.getBillboardId("joe's billboard 1"));
+
+
+        TreeMap<String, Object> billboards = server.getBillboards();
+        System.out.println(billboards);
+    }
+
+    static void Test4a_LoginBobScheduleBillboards() throws ServerException {
+        ClientServerInterface server = new ClientServerInterface();
         server.login("bob", "2345");
 
-        TreeMap<String, Object> schedule = new TreeMap<>();
-        TreeMap<String, Object> billboards = server.getBillboards();
+        String billboardId = server.getBillboardId("joe's billboard 2");
+        server.addSchedule(randomNewSchedule(billboardId));
 
-        for (Map.Entry<String, Object> billboard : billboards.entrySet()) {
-            schedule.put(java.util.UUID.randomUUID().toString(), randomNewSchedule(billboard.getKey()));
-        }
+        String scheduleId = server.getScheduleId(billboardId);
 
-        server.addSchedules(schedule);
+        TreeMap<String, Object> confirmed = server.getSchedule(scheduleId);
+        System.out.println(confirmed);
     }
 
-    static void Test8_getSchedules() throws ServerException {
+    static void Test4b_LoginBobEditSchedules() throws ServerException {
         ClientServerInterface server = new ClientServerInterface();
+        server.login("bob", "2345");
 
-        TreeMap<String, Object> schedules = server.getSchedules();
+        String billboardId = server.getBillboardId("joe's billboard 2");
+        String scheduleId = server.getScheduleId(billboardId);
+        server.editSchedule(scheduleId, randomNewSchedule(billboardId));
 
-        for (Map.Entry<String, Object> billboard : schedules.entrySet()) {
-            TreeMap<String, Object> data = (TreeMap<String, Object>) billboard.getValue();
-            System.out.println(billboard.getKey() + ": ");
 
-            System.out.println((String) data.get("billboardId"));
-            System.out.println((String) data.get("startTime"));
-            System.out.println((Integer) data.get("duration"));
-            System.out.println((Boolean) data.get("isRecurring"));
-            System.out.println((Integer) data.get("recurFreqInMins"));
-        }
+        TreeMap<String, Object> confirmed = server.getSchedule(scheduleId);
+        System.out.println(confirmed);
+    }
+
+    static void Test4c_LoginBobDeleteSchedules() throws ServerException {
+        ClientServerInterface server = new ClientServerInterface();
+        server.login("bob", "2345");
+
+        String scheduleId = server.getScheduleId(server.getBillboardId("joe's billboard 2"));
+        server.deleteSchedule(scheduleId);
+
+        TreeMap<String, Object> confirmed = server.getSchedules();
+        System.out.println(confirmed);
+    }
+
+    static void Test5a_LoginJackEditBillboard() throws ServerException {
+        ClientServerInterface server = new ClientServerInterface();
+        server.login("jack", "3456");
+
+        String billboardId = server.getBillboardId("joe's billboard 2");
+        TreeMap<String, String> billboard = server.getBillboard(billboardId);
+        billboard.replace("message", "updated by jack");
+        server.editBillboard(billboardId, billboard);
+
+
+        TreeMap<String, String> confirmed = server.getBillboard(billboardId);
+        System.out.println(confirmed);
+    }
+
+    static void Test5b_LoginJackDeleteBillboard() throws ServerException {
+        ClientServerInterface server = new ClientServerInterface();
+        server.login("jack", "3456");
+
+        String billboardId = server.getBillboardId("joe's billboard 2");
+        server.deleteBillboard(billboardId);
+
+
+        TreeMap<String, Object> confirmed = server.getBillboards();
+        System.out.println(confirmed);
     }
 
 
@@ -135,7 +197,7 @@ public class ClientMainTests {
         TreeMap<String, Object> body = new TreeMap<>();
 
         body.put("billboardId", billboardId);
-        body.put("startTime", "01/01/2000 01:01:01");
+        body.put("startTime", OffsetDateTime.now());
         body.put("duration", r.nextInt());
         body.put("isRecurring", r.nextBoolean());
         body.put("recurFreqInMins", r.nextInt());

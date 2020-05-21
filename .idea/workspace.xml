@@ -2,11 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/CAB302.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CAB302.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_server/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/Database.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/ClientMainTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/ClientMainTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/old/testing/AdminAddUsers.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/old/testing/AdminAddUsers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/ClientServerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/ClientServerInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/Protocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/Protocol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/assets/salts.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/assets/salts.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/engines/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/engines/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/engines/ServerClientConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/engines/ServerClientConnection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/engines/ServerFunctions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/engines/ServerFunctions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/engines/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/engines/ServerThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/testing/AdminModifyUsers.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/testing/User1AddBillboards.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/testing/User2EditBillboards.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/testing/User3ScheduleBillboards.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/testing/ViewerGetCurrent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/connections/types/ServerResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/types/ServerResponse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,7 +45,7 @@
     </option>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="connections" />
+        <entry key="$PROJECT_DIR$" value="develop" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -62,8 +74,8 @@
     <property name="Repository.Attach.Sources" value="false" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH" value="398" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/connections/assets" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
@@ -95,12 +107,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CalendarCreator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="billboard_control_panel.Calendar.CalendarCreator" />
+    <configuration name="ClientMainTests" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="connections.ClientMainTests" />
       <module name="CAB302" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="billboard_control_panel.Calendar.*" />
+          <option name="PATTERN" value="connections.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -108,12 +120,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ClientMainTests" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="connections.ClientMainTests" />
+    <configuration name="GenAdminKeys" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="connections.types.GenAdminKeys" />
       <module name="CAB302" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="connections.*" />
+          <option name="PATTERN" value="connections.types.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -197,22 +209,21 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Android JUnit.Unnamed" />
       <item itemvalue="Application.MainRunDisplay" />
       <item itemvalue="Application.UserManagement" />
+      <item itemvalue="Application.ClientMainTests" />
+      <item itemvalue="Application.GenAdminKeys" />
       <item itemvalue="Application.ServerMainTest" />
       <item itemvalue="Application.User3ScheduleBillboards" />
       <item itemvalue="JAR Application.mariadb-java-client-2.6.0.jar" />
-      <item itemvalue="Application.CalendarCreator" />
-      <item itemvalue="Application.ClientMainTests" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.ClientMainTests" />
-        <item itemvalue="Application.CalendarCreator" />
+        <item itemvalue="Application.ServerMainTest" />
         <item itemvalue="JAR Application.mariadb-java-client-2.6.0.jar" />
         <item itemvalue="Application.User3ScheduleBillboards" />
-        <item itemvalue="Application.ServerMainTest" />
+        <item itemvalue="Application.GenAdminKeys" />
       </list>
     </recent_temporary>
   </component>
@@ -269,14 +280,7 @@
       <option name="project" value="LOCAL" />
       <updated>1588328514835</updated>
     </task>
-    <task id="LOCAL-00007" summary="can now add billboards/users/schedules">
-      <created>1589432836432</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1589432836432</updated>
-    </task>
-    <option name="localTasksCounter" value="8" />
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.History.Properties">
@@ -307,8 +311,7 @@
     <MESSAGE value="added ClientServerInterface for easier server calls and improved permission handling" />
     <MESSAGE value="added ServerDatabaseInterface and improved permission handling some more" />
     <MESSAGE value="random stuff" />
-    <MESSAGE value="can now add billboards/users/schedules" />
-    <option name="LAST_COMMIT_MESSAGE" value="can now add billboards/users/schedules" />
+    <option name="LAST_COMMIT_MESSAGE" value="random stuff" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -370,41 +373,36 @@
       <screen x="0" y="0" width="1739" height="939" />
     </state>
     <state x="655" y="272" key="#com.intellij.uiDesigner.palette.ComponentItemDialog/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585579096665" />
-    <state x="637" y="27" key="CommitChangelistDialog2" timestamp="1589433025345">
+    <state x="637" y="27" key="CommitChangelistDialog2" timestamp="1589383014612">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
     <state x="577" y="25" key="CommitChangelistDialog2/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585582372076" />
-    <state x="637" y="27" key="CommitChangelistDialog2/0.0.1920.1030@0.0.1920.1030" timestamp="1589433025345" />
+    <state x="637" y="27" key="CommitChangelistDialog2/0.0.1920.1030@0.0.1920.1030" timestamp="1589383014612" />
     <state x="1920" y="0" key="CommitChangelistDialog2/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585453971046" />
-    <state x="873" y="198" key="FileChooserDialogImpl" timestamp="1589640224521">
-      <screen x="0" y="0" width="1739" height="939" />
+    <state x="964" y="217" key="FileChooserDialogImpl" timestamp="1589277268444">
+      <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state x="873" y="198" key="FileChooserDialogImpl/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1589640224521" />
     <state x="964" y="217" key="FileChooserDialogImpl/0.0.1920.1030@0.0.1920.1030" timestamp="1589277268444" />
     <state x="2884" y="228" key="FileChooserDialogImpl/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587606242469" />
-    <state width="1696" height="166" key="GridCell.Tab.0.bottom" timestamp="1589641148915">
-      <screen x="0" y="0" width="1739" height="939" />
+    <state width="681" height="907" key="GridCell.Tab.0.bottom" timestamp="1590037243681">
+      <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state width="1696" height="166" key="GridCell.Tab.0.bottom/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1589641148915" />
-    <state width="1274" height="907" key="GridCell.Tab.0.bottom/0.0.1920.1030@0.0.1920.1030" timestamp="1589432891520" />
+    <state width="681" height="907" key="GridCell.Tab.0.bottom/0.0.1920.1030@0.0.1920.1030" timestamp="1590037243681" />
     <state width="1853" height="230" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="1696" height="166" key="GridCell.Tab.0.center" timestamp="1589641148915">
-      <screen x="0" y="0" width="1739" height="939" />
+    <state width="681" height="907" key="GridCell.Tab.0.center" timestamp="1590037243679">
+      <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state width="1696" height="166" key="GridCell.Tab.0.center/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1589641148915" />
-    <state width="1274" height="907" key="GridCell.Tab.0.center/0.0.1920.1030@0.0.1920.1030" timestamp="1589432891519" />
+    <state width="681" height="907" key="GridCell.Tab.0.center/0.0.1920.1030@0.0.1920.1030" timestamp="1590037243679" />
     <state width="1853" height="230" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="1696" height="166" key="GridCell.Tab.0.left" timestamp="1589641148915">
-      <screen x="0" y="0" width="1739" height="939" />
+    <state width="681" height="907" key="GridCell.Tab.0.left" timestamp="1590037243678">
+      <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state width="1696" height="166" key="GridCell.Tab.0.left/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1589641148915" />
-    <state width="1274" height="907" key="GridCell.Tab.0.left/0.0.1920.1030@0.0.1920.1030" timestamp="1589432891518" />
+    <state width="681" height="907" key="GridCell.Tab.0.left/0.0.1920.1030@0.0.1920.1030" timestamp="1590037243678" />
     <state width="1853" height="230" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="1696" height="166" key="GridCell.Tab.0.right" timestamp="1589641148915">
-      <screen x="0" y="0" width="1739" height="939" />
+    <state width="681" height="907" key="GridCell.Tab.0.right" timestamp="1590037243680">
+      <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state width="1696" height="166" key="GridCell.Tab.0.right/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1589641148915" />
-    <state width="1274" height="907" key="GridCell.Tab.0.right/0.0.1920.1030@0.0.1920.1030" timestamp="1589432891520" />
+    <state width="681" height="907" key="GridCell.Tab.0.right/0.0.1920.1030@0.0.1920.1030" timestamp="1590037243680" />
     <state width="1853" height="230" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
     <state width="890" height="439" key="GridCell.Tab.1.bottom" timestamp="1585484853584">
       <screen x="1920" y="0" width="1920" height="1080" />
@@ -426,48 +424,34 @@
     </state>
     <state width="1696" height="367" key="GridCell.Tab.1.right/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585582416068" />
     <state width="890" height="439" key="GridCell.Tab.1.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585484853583" />
-    <state x="672" y="234" key="MultipleFileMergeDialog" timestamp="1589432962161">
+    <state x="444" y="94" width="1007" height="733" key="SettingsEditor" timestamp="1589373791314">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state x="672" y="234" key="MultipleFileMergeDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1589432962161" />
-    <state x="658" y="192" key="RollbackChangesDialog" timestamp="1589640633632">
-      <screen x="0" y="0" width="1739" height="939" />
-    </state>
-    <state x="658" y="192" key="RollbackChangesDialog/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1589640633632" />
-    <state x="402" y="86" width="1007" height="733" key="SettingsEditor" timestamp="1589640239904">
-      <screen x="0" y="0" width="1739" height="939" />
-    </state>
-    <state x="402" y="86" key="SettingsEditor/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1589640239904" />
     <state x="444" y="94" width="1007" height="733" key="SettingsEditor/0.0.1920.1030@0.0.1920.1030" timestamp="1589373791314" />
-    <state x="556" y="249" key="Vcs.Push.Dialog.v2" timestamp="1589432928628">
+    <state x="556" y="249" key="Vcs.Push.Dialog.v2" timestamp="1587093838839">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state x="556" y="249" key="Vcs.Push.Dialog.v2/0.0.1920.1030@0.0.1920.1030" timestamp="1589432928628" />
+    <state x="556" y="249" key="Vcs.Push.Dialog.v2/0.0.1920.1030@0.0.1920.1030" timestamp="1587093838839" />
     <state x="2015" y="277" key="com.intellij.ide.util.TipDialog" timestamp="1586409640760">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2015" y="277" key="com.intellij.ide.util.TipDialog/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1586409640760" />
-    <state x="601" y="373" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1589640256767">
-      <screen x="0" y="0" width="1739" height="939" />
-    </state>
-    <state x="601" y="373" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1589640256767" />
-    <state x="664" y="409" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1920.1030@0.0.1920.1030" timestamp="1586669722466" />
-    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1589433035013">
+    <state x="664" y="409" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1586669722466">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1030@0.0.1920.1030" timestamp="1589433035013" />
+    <state x="664" y="409" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.0.1920.1030@0.0.1920.1030" timestamp="1586669722466" />
+    <state x="753" y="436" width="414" height="157" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1590037277143">
+      <screen x="0" y="0" width="1920" height="1030" />
+    </state>
+    <state x="753" y="436" width="414" height="157" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1030@0.0.1920.1030" timestamp="1590037277143" />
     <state x="2993" y="0" width="854" height="1087" key="dock-window-1" timestamp="1585732302250">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2993" y="0" width="854" height="1087" key="dock-window-1/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585732302250" />
-    <state x="730" y="220" key="git4idea.branch.GitSmartOperationDialog" timestamp="1589432959987">
+    <state x="730" y="220" key="git4idea.branch.GitSmartOperationDialog" timestamp="1586937769061">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
-    <state x="730" y="220" key="git4idea.branch.GitSmartOperationDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1589432959987" />
-    <state x="746" y="310" key="git4idea.merge.GitMergeDialog" timestamp="1589433047804">
-      <screen x="0" y="0" width="1920" height="1030" />
-    </state>
-    <state x="746" y="310" key="git4idea.merge.GitMergeDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1589433047804" />
+    <state x="730" y="220" key="git4idea.branch.GitSmartOperationDialog/0.0.1920.1030@0.0.1920.1030" timestamp="1586937769061" />
     <state x="663" y="308" width="591" height="410" key="git4idea.merge.GitPullDialog" timestamp="1589274784827">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
@@ -498,10 +482,10 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/CAB302$MainRunDisplay.ic" NAME="MainRunDisplay Coverage Results" MODIFIED="1585574155421" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/CAB302$RunDisplayBillboard.ic" NAME="RunDisplayBillboard Coverage Results" MODIFIED="1585481569110" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>Sandbox.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/CAB302$RunDisplayBillboard.ic" NAME="RunDisplayBillboard Coverage Results" MODIFIED="1585481569110" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/CAB302$MainRunDisplay.ic" NAME="MainRunDisplay Coverage Results" MODIFIED="1585574155421" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>Sandbox.*</FILTER>
     </SUITE>
   </component>
