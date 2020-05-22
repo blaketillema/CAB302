@@ -2,17 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7eae25d1-c1e5-4a80-bf19-be8529e48af4" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/CAB302.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/CAB302.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/BillboardControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/BillboardControl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/Calendar/CalendarCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/Calendar/CalendarCreator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/LoginManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/LoginManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/MainControl.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/MainControl.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/MainControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/MainControl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/UserControl.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/UserControl.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/UserControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/UserControl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/schedulerController.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/schedulerController.form" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/schedulerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/schedulerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_viewer/MainRunDisplay.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_viewer/MainRunDisplay.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/ClientMainTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/ClientMainTests.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/assets/salts.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/assets/salts.map" afterDir="false" />
     </list>
@@ -47,7 +43,7 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
-  <component name="RunManager" selected="Application.CalendarCreator">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="CalendarCreator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="billboard_control_panel.Calendar.CalendarCreator" />
       <module name="CAB302" />
@@ -61,8 +57,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="LoginManager" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="billboard_control_panel.LoginManager" />
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="billboard_control_panel.Main" />
       <module name="CAB302" />
       <extension name="coverage">
         <pattern>
@@ -74,8 +70,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="billboard_control_panel.Main" />
+    <configuration name="MainControl" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="billboard_control_panel.MainControl" />
       <module name="CAB302" />
       <extension name="coverage">
         <pattern>
@@ -115,11 +111,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Main" />
+        <item itemvalue="Application.ServerMainTest" />
+        <item itemvalue="Application.MainControl" />
         <item itemvalue="Application.CalendarCreator" />
         <item itemvalue="Application.schedulerController" />
-        <item itemvalue="Application.Main" />
-        <item itemvalue="Application.LoginManager" />
-        <item itemvalue="Application.ServerMainTest" />
       </list>
     </recent_temporary>
   </component>
@@ -137,26 +133,34 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="675" y="-900" key="#com.intellij.ide.util.MemberChooser" timestamp="1590146821095">
+      <screen x="0" y="-1080" width="1739" height="939" />
+    </state>
+    <state x="675" y="-900" key="#com.intellij.ide.util.MemberChooser/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590146821095" />
     <state x="650" y="212" key="FileChooserDialogImpl" timestamp="1590070386084">
       <screen x="0" y="0" width="1739" height="939" />
     </state>
     <state x="650" y="212" key="FileChooserDialogImpl/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590070386084" />
-    <state width="1696" height="217" key="GridCell.Tab.0.bottom" timestamp="1590080246729">
+    <state width="1696" height="261" key="GridCell.Tab.0.bottom" timestamp="1590157592637">
       <screen x="0" y="0" width="1739" height="939" />
     </state>
-    <state width="1696" height="217" key="GridCell.Tab.0.bottom/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590080246729" />
-    <state width="1696" height="217" key="GridCell.Tab.0.center" timestamp="1590080246729">
+    <state width="1696" height="113" key="GridCell.Tab.0.bottom/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590149377333" />
+    <state width="1696" height="261" key="GridCell.Tab.0.bottom/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590157592637" />
+    <state width="1696" height="261" key="GridCell.Tab.0.center" timestamp="1590157592637">
       <screen x="0" y="0" width="1739" height="939" />
     </state>
-    <state width="1696" height="217" key="GridCell.Tab.0.center/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590080246729" />
-    <state width="1696" height="217" key="GridCell.Tab.0.left" timestamp="1590080246729">
+    <state width="1696" height="113" key="GridCell.Tab.0.center/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590149377333" />
+    <state width="1696" height="261" key="GridCell.Tab.0.center/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590157592637" />
+    <state width="1696" height="261" key="GridCell.Tab.0.left" timestamp="1590157592637">
       <screen x="0" y="0" width="1739" height="939" />
     </state>
-    <state width="1696" height="217" key="GridCell.Tab.0.left/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590080246729" />
-    <state width="1696" height="217" key="GridCell.Tab.0.right" timestamp="1590080246729">
+    <state width="1696" height="113" key="GridCell.Tab.0.left/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590149377333" />
+    <state width="1696" height="261" key="GridCell.Tab.0.left/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590157592637" />
+    <state width="1696" height="261" key="GridCell.Tab.0.right" timestamp="1590157592637">
       <screen x="0" y="0" width="1739" height="939" />
     </state>
-    <state width="1696" height="217" key="GridCell.Tab.0.right/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590080246729" />
+    <state width="1696" height="113" key="GridCell.Tab.0.right/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590149377333" />
+    <state width="1696" height="261" key="GridCell.Tab.0.right/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590157592637" />
     <state x="350" y="45" key="SettingsEditor" timestamp="1590070619291">
       <screen x="0" y="0" width="1739" height="939" />
     </state>
@@ -165,14 +169,28 @@
       <screen x="0" y="0" width="1739" height="939" />
     </state>
     <state x="750" y="265" key="UIDesigner.ListEditorDialog/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590079649166" />
-    <state x="595" y="364" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1590070229020">
-      <screen x="0" y="0" width="1739" height="939" />
-    </state>
-    <state x="595" y="364" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590070229020" />
-    <state x="284" y="-1080" width="1276" height="775" maximized="true" key="dock-window-1" timestamp="1590072415867">
+    <state x="595" y="-716" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD" timestamp="1590148259521">
       <screen x="0" y="-1080" width="1739" height="939" />
     </state>
-    <state x="284" y="-1080" width="1276" height="775" maximized="true" key="dock-window-1/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590072415867" />
+    <state x="595" y="-716" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590148259521" />
+    <state x="595" y="364" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590070229020" />
+    <state x="657" y="351" key="com.intellij.uiDesigner.propertyInspector.editors.string.StringEditorDialog" timestamp="1590138072120">
+      <screen x="0" y="0" width="1739" height="939" />
+    </state>
+    <state x="657" y="351" key="com.intellij.uiDesigner.propertyInspector.editors.string.StringEditorDialog/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590138072120" />
+    <state x="0" y="0" width="1271" height="621" key="dock-window-1" timestamp="1590142550598">
+      <screen x="0" y="0" width="1739" height="939" />
+    </state>
+    <state x="0" y="0" width="1271" height="621" key="dock-window-1/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590142550598" />
+    <state x="82" y="-1107" width="1276" height="775" maximized="true" key="dock-window-1/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590138246894" />
+    <state x="810" y="297" width="1271" height="785" key="dock-window-2" timestamp="1590150990497">
+      <screen x="0" y="0" width="1739" height="939" />
+    </state>
+    <state x="810" y="297" width="1271" height="785" key="dock-window-2/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590150990497" />
+    <state x="577" y="99" key="refactoring.ChangeSignatureDialog" timestamp="1590143300611">
+      <screen x="0" y="0" width="1739" height="939" />
+    </state>
+    <state x="577" y="99" key="refactoring.ChangeSignatureDialog/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590143300611" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/CAB302$MainRunDisplay.ic" NAME="MainRunDisplay Coverage Results" MODIFIED="1585574155421" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">

@@ -1,6 +1,8 @@
 package billboard_control_panel;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,25 +36,37 @@ public class MainControl {
     private JPanel controlPanel;
     private JButton refreshUserButton;
     private JButton refreshBillboardButton;
+    private JLabel Title;
 
     public MainControl() {
+
         Window[] wns = LoginManager.getFrames();
         for (Window wn1 : wns) {
             wn1.setVisible(false);
         }
         // Get Current Users in Database
-        try {
-            TreeMap<String, Object> users = LoginManager.server.getUsers();
-        } catch (ServerException e) {
-            e.printStackTrace();
-        }
-        //TODO Put users from db into string array to display in GUI
-        String[] BillboardNames = {"Bill1", "BillTwo", "BillThree"};
-        String[] UserNames = {"Lahiru", "Blake", "Max"};
+        //TODO Put users from db into string array to display in GU
+        refreshBillboards();
+        refreshUsers();
+        usersList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    String selectedUsername = usersList.getSelectedValue().toString();
+                    System.out.println(selectedUsername);
+                    modifyUserButton.setEnabled(true);
+                    try {
+                        String userId = LoginManager.server.getUserId(selectedUsername);
+                        TreeMap<String, Object> selectedUser = LoginManager.server.getUser(userId);
+                        System.out.println(selectedUser.toString());
+                        //System.out.println(LoginManager.server.getUser(usersList.getSelectedValue().toString()).toString());
+                    } catch (ServerException ex) {
+                        ex.printStackTrace();
+                    }
+                }
 
-        refresh(billboardsList, BillboardNames);
-        refresh(usersList, UserNames);
-
+            }
+        });
         logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -103,6 +117,7 @@ public class MainControl {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
+                System.out.println(usersList.getSelectedValue());
                 new UserControl().main(null);
             }
         });
@@ -146,41 +161,93 @@ public class MainControl {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                ArrayList<CalendarEvent> events = new ArrayList<>();
-                CalendarWeek cal = new CalendarWeek(events);
-                new CalendarCreator(cal).main(null);
-                events.add(new CalendarEvent(LocalDate.of(2020, 4, 28), LocalTime.of(14, 0), LocalTime.of(14, 20), "BILLBOARD 1"));
+                new CalendarCreator().main(null);
             }
         });
 
         refreshBillboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                refresh(billboardsList, BillboardNames);
+                TreeMap<String, Object> billboards = null;
+                try {
+                    billboards = LoginManager.server.getBillboards();
+                } catch (ServerException z) {
+                    z.printStackTrace();
+                }
+                //TreeMap<String, Object> userDetails = (TreeMap<String, Object>) users.get("userName");
+                ArrayList<String> bbList = new ArrayList<String>();
+                billboards.forEach((k, v) -> {
+                    //System.out.println("Key: " + k + ", Value: " + v);
+                    String bbString = v.toString();
+                    bbString = bbString.substring(bbString.indexOf("billboardName=") + 14);
+                    bbString = bbString.substring(0, bbString.indexOf(","));
+                    bbList.add(bbString);
+                });
+                refresh(billboardsList, bbList);
             }
         });
         refreshUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TreeMap<String, Object> users = null;
-                try {
-                    users = LoginManager.server.getUsers();
-                } catch (ServerException z) {
-                    z.printStackTrace();
-                }
-                System.out.println(users.toString());
-                //refresh(usersList, UserNames);
+                refreshUsers();
             }
         });
+
     }
 
-    public void refresh(JList list, String[] stringArray) {
+    //TODO: FIx the bug, sometimes it refreshes, sometimes it doesnt?
+    public void refresh(JList list, ArrayList<String> stringArray) {
+        list.removeAll();
+        list.clearSelection();
+
         final DefaultListModel model = new DefaultListModel();
-        for (int i = 0, n = stringArray.length; i < n; i++) {
-            model.addElement(stringArray[i]);
+        model.clear();
+        model.removeAllElements();
+        for (int i = 0, n = stringArray.size(); i < n; i++) {
+            model.addElement(stringArray.get(i));
             list.setModel(model);
         }
+    }
 
+    public void refreshBillboards(){
+        TreeMap<String, Object> billboards = null;
+        try {
+            billboards = LoginManager.server.getBillboards();
+        } catch (ServerException z) {
+            z.printStackTrace();
+        }
+        //TreeMap<String, Object> userDetails = (TreeMap<String, Object>) users.get("userName");
+        ArrayList<String> bbList = new ArrayList<String>();
+        billboards.forEach((k, v) -> {
+            System.out.println("Key: " + k + ", Value: " + v);
+            String bbString = v.toString();
+            bbString = bbString.substring(bbString.indexOf("billboardName=") + 14);
+            bbString = bbString.substring(0, bbString.indexOf(","));
+            bbList.add(bbString);
+        });
+        refresh(billboardsList, bbList);
+    }
+
+    public void refreshUsers(){
+        usersList.removeAll();
+        TreeMap<String, Object> users = null;
+        try {
+            users = LoginManager.server.getUsers();
+        } catch (ServerException z) {
+            z.printStackTrace();
+        }
+        //TreeMap<String, Object> userDetails = (TreeMap<String, Object>) users.get("userName");
+        ArrayList<String> userNameList = new ArrayList<String>();
+        TreeMap<String, Object> finalUsers = users;
+        users.forEach((k, v) -> {
+            //System.out.println("Key: " + k + ", Value: " + v);
+            String userString = v.toString().substring(v.toString().lastIndexOf("=") + 1);
+            userString = userString.replace("}","");
+            userNameList.add(userString);
+        });
+        refresh(usersList, userNameList);
+        System.out.println(userNameList);
+        //refresh(usersList, UserNames);
     }
 
     public static void main(String[] args) {

@@ -191,7 +191,7 @@ public class ClientMainTests {
         return body;
     }
 
-    static TreeMap<String, Object> randomNewSchedule(String billboardId) {
+    public static TreeMap<String, Object> randomNewSchedule(String billboardId) {
         Random r = new Random();
 
         TreeMap<String, Object> body = new TreeMap<>();

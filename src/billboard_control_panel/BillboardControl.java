@@ -118,8 +118,18 @@ public class BillboardControl {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                TreeMap<String, String> body = new TreeMap<>();
+                body.put("message",""+messageArea.getText());
+                body.put("information",""+informationArea.getText());
+                body.put("pictureData",""+pictureDataArea.getText());
+                body.put("pictureUrl",""+pictureUrlArea.getText());
+                body.put("billboardBackground",""+backgroundColourArea.getText());
+                body.put("messageColour",""+messageColourArea.getText());
+                body.put("informationColour",""+informationColourArea.getText());
+                System.out.println(body);
                 try {
-                    LoginManager.server.addBillboard(billboardNameArea.getText(), ClientMainTests.randomNewBillboard());
+                    LoginManager.server.addBillboard(billboardNameArea.getText(), body);
+                    //LoginManager.server.addBillboard(billboardNameArea.getText(), ClientMainTests.randomNewBillboard());
                 } catch (ServerException ex) {
                     ex.printStackTrace();
                 }

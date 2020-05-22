@@ -4,6 +4,7 @@ import billboard_control_panel.LoginManager;
 import billboard_control_panel.MainControl;
 import billboard_control_panel.ScheduleController;
 import billboard_control_panel.Scheduler;
+import connections.ClientMainTests;
 import connections.exceptions.ServerException;
 
 import javax.swing.*;
@@ -21,11 +22,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class CalendarCreator extends Frame {
-    static ArrayList<CalendarEvent> events = new ArrayList<>();
-    static CalendarWeek tal = new CalendarWeek(events);
+    public CalendarCreator() {
 
-
-    public CalendarCreator(CalendarWeek cal) {
         //<editor-fold desc="Schedule Controller Panel (Right Panel of GUI)">
         setLayout(new GridLayout());
         JFrame frm = new JFrame();
@@ -40,13 +38,36 @@ public class CalendarCreator extends Frame {
         schedulerPanel.add(label2, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 16), null, 0, false));
 
         // Schedule Name
-        JTextField enterScheduleNameTextField = new JTextField();
-        enterScheduleNameTextField.setText("Enter Schedule Name");
-        schedulerPanel.add(enterScheduleNameTextField, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension( 150, -1), null, 0, false));
+//        JTextField enterScheduleNameTextField = new JTextField();
+//        enterScheduleNameTextField.setText("Enter Schedule Name");
+//        schedulerPanel.add(enterScheduleNameTextField, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension( 150, -1), null, 0, false));
+
         // Billboard Drop down
-        String s1[] = { "Bill1", "Bill2", "Bill3", "Bill4", "Bill4" };
-        JComboBox billboardDropdown = new JComboBox(s1);
+        TreeMap<String, Object> billboards = null;
+        try {
+            billboards = LoginManager.server.getBillboards();
+        } catch (ServerException z) {
+            z.printStackTrace();
+        }
+        //TreeMap<String, Object> userDetails = (TreeMap<String, Object>) users.get("userName");
+        ArrayList<String> bbList = new ArrayList<String>();
+        billboards.forEach((k, v) -> {
+            System.out.println("Key: " + k + ", Value: " + v);
+            String bbString = v.toString();
+            bbString = bbString.substring(bbString.indexOf("billboardName=") + 14);
+            bbString = bbString.substring(0, bbString.indexOf(","));
+            bbList.add(bbString);
+        });
+        // Convert ArrayList to String Array (This could be done better tbh)
+        String bbArray[] = new String[bbList.size()];
+        for (int j = 0; j < bbList.size(); j++) {
+
+            // Assign each value to String array
+            bbArray[j] = bbList.get(j);
+        }
+        JComboBox billboardDropdown = new JComboBox(bbArray);
         schedulerPanel.add(billboardDropdown, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+
         // Start Time Label
         final JLabel label1 = new JLabel();
         label1.setText("Start time:");
@@ -121,6 +142,29 @@ public class CalendarCreator extends Frame {
         schedulerPanel.add(saveButton, new com.intellij.uiDesigner.core.GridConstraints(12, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(69, 24), null, 0, false));
         //</editor-fold>
 
+        //<editor-fold desc="Print existing schedules from db">
+        //Ok
+        ArrayList<CalendarEvent> events = new ArrayList<>();
+        CalendarWeek cal = new CalendarWeek(events);
+
+        TreeMap<String, Object> confirmed = null;
+        try {
+            confirmed = LoginManager.server.getSchedules();
+        } catch (ServerException e) {
+            e.printStackTrace();
+        }
+        //System.out.println(confirmed);
+        for(Map.Entry<String,Object> entry : confirmed.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            System.out.println(key + " => " + value);
+        }
+        //TODO: Paint existing schedules
+        //Pseudo code - for number of objects in schedule table, add new calendar event. If reoccuring is true, make proper adjustments
+        //add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
+        //</editor-fold>
+
+
         //<editor-fold desc="Calendar Viewer w/ buttons">
         ////////////////// Calendar Week Controls (NORTH) ////////////////////////////
         JButton goToTodayBtn = new JButton("Today");
@@ -164,7 +208,8 @@ public class CalendarCreator extends Frame {
             Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getEndDateTime().toString());
             startSpinner.setValue(startDate);
             endSpinner.setValue(endDate);
-            enterScheduleNameTextField.setText(e.getBillboardName());
+            //enterScheduleNameTextField.setText(e.getBillboardName());
+            billboardDropdown.setSelectedItem(e.getBillboardName());
         });
 
         cal.addCalendarEmptyClickListener(e -> {
@@ -175,9 +220,9 @@ public class CalendarCreator extends Frame {
             System.out.println(startDate);
             startSpinner.setValue(startDate);
             endSpinner.setValue(endDate);
-            if (enterScheduleNameTextField.getText() != "Enter new schedule name..."){
-                //TODO: optional - check if ScheduleName exists in db
-            } else enterScheduleNameTextField.setText("Enter new schedule name...");
+//            if (enterScheduleNameTextField.getText() != "Enter new schedule name..."){
+//                //TODO: optional - check if ScheduleName exists in db
+//            } else enterScheduleNameTextField.setText("Enter new schedule name...");
 
         });
         //</editor-fold>
@@ -284,7 +329,10 @@ public class CalendarCreator extends Frame {
             public void actionPerformed(ActionEvent e) {
                 Calendar calendar = new GregorianCalendar();
                 // Get Values Entered:
-                String billboardName = (String) enterScheduleNameTextField.getText();
+                //String scheduleName = (String) enterScheduleNameTextField.getText();
+                String billboardName = (String) billboardDropdown.getSelectedItem().toString();
+                //String billboardName = ((JTextField)billboardDropdown.getEditor().getEditorComponent()).getText();
+                System.out.println(billboardName);
                 // Get Start Time Values
                 Date startDateTime = (Date) startSpinner.getValue();
                 calendar.setTime(startDateTime);
@@ -301,12 +349,15 @@ public class CalendarCreator extends Frame {
                 // Get seconds from each, and subtract.
                 long diff = endDateTime.getTime() - startDateTime.getTime();
                 int diffMinutes = Math.toIntExact(diff / (60 * 1000));
+                System.out.println("diff " + diff);
+                System.out.println("diffMinutes: " + diffMinutes);
                 // Get recurring values
                 int minuteSpinnerValue = (Integer) minuteSpinner.getValue();
                 boolean recurring = (Boolean) recurringCheckBox.isSelected();
                 boolean recurringDaily = (Boolean) dailyButton.isSelected();
                 boolean recurringHourly = (Boolean) hourlyButton.isSelected();
                 boolean recurringMinutely = (Boolean) minutelyButton.isSelected();
+
 
                 // Add recurring values
                 int recurringEveryXminutes = 0;
@@ -321,9 +372,29 @@ public class CalendarCreator extends Frame {
                 else {recurringEveryXminutes += 0;};
                 recurringEveryXminutes = recurringEveryXminutes + minuteSpinnerValue;
 
+
                 // Converting DateTime to LocalDateTime to OffsetDateTime for commandAddSchedule function
                 LocalDateTime convertedDate = Instant.ofEpochMilli(startDateTime.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
                 OffsetDateTime offsetDateTime = convertedDate.atOffset(OffsetDateTime.now().getOffset());
+                String billboardId = null;
+                try {
+                    billboardId = LoginManager.server.getBillboardId(billboardName);
+                } catch (ServerException ex) {
+                    ex.printStackTrace();
+                }
+                //TODO: Add Schedule to DB.
+                TreeMap<String, Object> body = new TreeMap<>();
+                try {
+                    body.put("billboardId", billboardId);
+                    body.put("startTime", offsetDateTime);
+                    body.put("duration", diffMinutes);
+                    body.put("isRecurring", recurring);
+                    body.put("recurFreqInMins", recurringEveryXminutes);
+                    LoginManager.server.addSchedule(body);
+                    //LoginManager.server.addSchedule(ClientMainTests.randomNewSchedule(billboardId));
+                } catch (ServerException ex) {
+                    ex.printStackTrace();
+                }
 
                 // TODO: Grab Current Signed-in User and input into function below
                 ScheduleController.commandAddSchedule(billboardName,offsetDateTime,diffMinutes, recurring,recurringEveryXminutes, "Lahiru" );
@@ -485,20 +556,20 @@ public class CalendarCreator extends Frame {
                         }
                         cal.goToToday();
                     }
-                    enterScheduleNameTextField.setText("Enter new schedule name...");
+                    //enterScheduleNameTextField.setText("Enter new schedule name...");
                 }
-                //TODO: Add Schedule to DB
+
+
             }
         });
 
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-
                 Calendar calendar = new GregorianCalendar();
                 // Get Values Entered:
-                String billboardName = (String) enterScheduleNameTextField.getText();
+                String billboardName = (String) billboardDropdown.getSelectedItem().toString();
+                //String billboardName = (String) enterScheduleNameTextField.getText();
                 // Get Start Time Values (Hour and Minute)
                 Date startDateTime = (Date) startSpinner.getValue();
                 calendar.setTime(startDateTime);
@@ -517,7 +588,7 @@ public class CalendarCreator extends Frame {
                 OffsetDateTime offsetDateTime = convertedDate.atOffset(OffsetDateTime.now().getOffset());
 
 
-                enterScheduleNameTextField.setText("Enter new schedule name...");
+                //enterScheduleNameTextField.setText("Enter new schedule name...");
                 events.remove(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
                 cal.goToToday();
 
@@ -561,6 +632,7 @@ public class CalendarCreator extends Frame {
 
 
     public static void main(String[] args) {
-        CalendarCreator edit = new CalendarCreator(tal);
+        // Either keep one at the top, or this one below.
+        // CalendarCreator edit = new CalendarCreator(tal);
     }
 }

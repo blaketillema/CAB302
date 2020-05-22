@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class UserControl {
-    private JTextField textField1;
+    private JTextField userNameField;
     private JPasswordField passwordField1;
     private JCheckBox ScheduleBBCheckBox;
     private JCheckBox editUsersCheckBox;
@@ -28,7 +28,7 @@ public class UserControl {
         // Get newly created user's userID to edit the user's permissions
         String userId = null;
         try {
-            userId = LoginManager.server.getUserId(textField1.getText());
+            userId = LoginManager.server.getUserId(userNameField.getText());
         } catch (ServerException ex) {
             ex.printStackTrace();
         }
@@ -49,7 +49,7 @@ public class UserControl {
             public void actionPerformed(ActionEvent e) {
                 // Start with creating the user with no permissions
                 try {
-                    LoginManager.server.addUser(textField1.getText(), passwordField1.getText(), Protocol.Permission.NONE);
+                    LoginManager.server.addUser(userNameField.getText(), passwordField1.getText(), Protocol.Permission.NONE);
                 } catch (ServerException ex) {
                     ex.printStackTrace();
                 }
@@ -57,35 +57,35 @@ public class UserControl {
                 // Now check each box and use the editUser function to give certain permissions
                 if (ScheduleBBCheckBox.isSelected()){
                     try {
-                        LoginManager.server.editUser(finalUserId, textField1.getText(), passwordField1.getText(), Protocol.Permission.SCHEDULE_BILLBOARDS);
+                        LoginManager.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.SCHEDULE_BILLBOARDS);
                     } catch (ServerException ex) {
                         ex.printStackTrace();
                     }
                 }
                 if (EditBBCheckBox.isSelected()){
                     try {
-                        LoginManager.server.editUser(finalUserId, textField1.getText(), passwordField1.getText(), Protocol.Permission.EDIT_ALL_BILLBOARDS);
+                        LoginManager.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.EDIT_ALL_BILLBOARDS);
                     } catch (ServerException ex) {
                         ex.printStackTrace();
                     }
                 }
                 if (CreateBBCheckBox.isSelected()){
                     try {
-                        LoginManager.server.editUser(finalUserId, textField1.getText(), passwordField1.getText(), Protocol.Permission.CREATE_BILLBOARDS);
+                        LoginManager.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.CREATE_BILLBOARDS);
                     } catch (ServerException ex) {
                         ex.printStackTrace();
                     }
                 }
                 if (editUsersCheckBox.isSelected()){
                     try {
-                        LoginManager.server.editUser(finalUserId, textField1.getText(), passwordField1.getText(), Protocol.Permission.EDIT_USERS);
+                        LoginManager.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.EDIT_USERS);
                     } catch (ServerException ex) {
                         ex.printStackTrace();
                     }
                 }
                 if (editUsersCheckBox.isSelected() && ScheduleBBCheckBox.isSelected() && CreateBBCheckBox.isSelected() && EditBBCheckBox.isSelected() ){
                     try {
-                        LoginManager.server.editUser(finalUserId, textField1.getText(), passwordField1.getText(), Protocol.Permission.ALL);
+                        LoginManager.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.ALL);
                     } catch (ServerException ex) {
                         ex.printStackTrace();
                     }
@@ -146,8 +146,8 @@ public class UserControl {
         final JLabel label4 = new JLabel();
         label4.setText("Permissions");
         userControl.add(label4, new com.intellij.uiDesigner.core.GridConstraints(4, 1, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        textField1 = new JTextField();
-        userControl.add(textField1, new com.intellij.uiDesigner.core.GridConstraints(2, 2, 1, 3, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        userNameField = new JTextField();
+        userControl.add(userNameField, new com.intellij.uiDesigner.core.GridConstraints(2, 2, 1, 3, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         passwordField1 = new JPasswordField();
         userControl.add(passwordField1, new com.intellij.uiDesigner.core.GridConstraints(3, 2, 1, 3, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         editUsersCheckBox = new JCheckBox();
