@@ -37,6 +37,7 @@ public class MainControl {
     private JButton refreshUserButton;
     private JButton refreshBillboardButton;
     private JLabel Title;
+    private JTabbedPane tabbedPane;
 
     public MainControl() {
 
@@ -48,25 +49,25 @@ public class MainControl {
         //TODO Put users from db into string array to display in GU
         refreshBillboards();
         refreshUsers();
-        usersList.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    String selectedUsername = usersList.getSelectedValue().toString();
-                    System.out.println(selectedUsername);
-                    modifyUserButton.setEnabled(true);
-                    try {
-                        String userId = LoginManager.server.getUserId(selectedUsername);
-                        TreeMap<String, Object> selectedUser = LoginManager.server.getUser(userId);
-                        System.out.println(selectedUser.toString());
-                        //System.out.println(LoginManager.server.getUser(usersList.getSelectedValue().toString()).toString());
-                    } catch (ServerException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-
-            }
-        });
+//        usersList.addListSelectionListener(new ListSelectionListener() {
+//            @Override
+//            public void valueChanged(ListSelectionEvent e) {
+//                if (!e.getValueIsAdjusting()) {
+//                    String selectedUsername = usersList.getSelectedValue().toString();
+//                    System.out.println(selectedUsername);
+//                    modifyUserButton.setEnabled(true);
+//                    try {
+//                        String userId = LoginManager.server.getUserId(selectedUsername);
+//                        TreeMap<String, Object> selectedUser = LoginManager.server.getUser(userId);
+//                        System.out.println(selectedUser.toString());
+//                        //System.out.println(LoginManager.server.getUser(usersList.getSelectedValue().toString()).toString());
+//                    } catch (ServerException ex) {
+//                        ex.printStackTrace();
+//                    }
+//                }
+//
+//            }
+//        });
         logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,12 +90,18 @@ public class MainControl {
         deleteUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Window[] wns = LoginManager.getFrames();
-                for (Window wn1 : wns) {
-                    wn1.dispose();
-                    wn1.setVisible(false);
+                String userId = null;
+                try {
+                    userId = LoginManager.server.getUserId(usersList.getSelectedValue().toString());
+                    int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + usersList.getSelectedValue().toString() +"?");
+                    if (n == JOptionPane.YES_OPTION) {
+                        LoginManager.server.deleteUser(userId);
+                    } else if (n == JOptionPane.NO_OPTION) {
+                    }
+                } catch (ServerException ex) {
+                    ex.printStackTrace();
                 }
-                new UserControl().main(null);
+                refreshUsers();
             }
         });
 
@@ -229,6 +236,7 @@ public class MainControl {
     }
 
     public void refreshUsers(){
+        usersList.clearSelection();
         usersList.removeAll();
         TreeMap<String, Object> users = null;
         try {

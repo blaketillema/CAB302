@@ -153,12 +153,109 @@ public class CalendarCreator extends Frame {
         } catch (ServerException e) {
             e.printStackTrace();
         }
+
         //System.out.println(confirmed);
         for(Map.Entry<String,Object> entry : confirmed.entrySet()) {
             String key = entry.getKey();
             Object value = entry.getValue();
+            TreeMap<String, Object> scheduleDetails = (TreeMap<String, Object>) entry.getValue();
             System.out.println(key + " => " + value);
+            OffsetDateTime offsetStartDateTime = (OffsetDateTime) scheduleDetails.get("startTime");
+            Integer duration = (Integer) scheduleDetails.get("duration");
+            Boolean isRecurring = (Boolean) scheduleDetails.get("isRecurring");
+            Integer recurFreqInMins = (Integer) scheduleDetails.get("recurFreqInMins");
+            String scheduleId = (String) scheduleDetails.get("scheduleId");
+            String billboardId = (String) scheduleDetails.get("billboardId");
+
+            try {
+                TreeMap<String, String> billboard = LoginManager.server.getBillboard(billboardId);
+                //System.out.println(billboard.toString());
+                String billboardName = (String) billboard.get("billboardName");
+                int startMinute = offsetStartDateTime.getMinute();
+                int startHour = offsetStartDateTime.getHour();
+                int startDay = offsetStartDateTime.getDayOfMonth();
+                int startMonth = offsetStartDateTime.getMonthValue();
+                int startYear = offsetStartDateTime.getYear();
+                int endHour = startHour + 1;
+                int endMinute = startMinute;
+
+
+                // Minutely Recurrence
+                if (isRecurring == true) {
+                    int months = 0;
+                    int Rminute = recurFreqInMins;
+                    int freqHours = Rminute / 60 % 24;
+                    int remMins = (Rminute % 60);
+                    // TODO: Reschedules for a year (can specify this with a user-input value)
+                    while (months <= 1) {
+                        // Add the first event
+                        events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
+                        // For the next event: Add the user inputted minutes e.g. 90 minutes, to Start Time (2.30pm) + (userinputted) 90 min = (4.00pm)
+                        startMinute = (startMinute + remMins);
+                        startHour = (startHour + freqHours);
+                        endMinute = (endMinute + remMins);
+                        endHour = (endHour + freqHours);
+                        // First add remainder minutes (90 minutes -> 30minutes and 1 hour)
+                        if (startMinute >= 60) {
+                            startMinute = startMinute % 60;
+                            startHour++;
+                        }
+                        if (endMinute >= 60) {
+                            endMinute = endMinute % 60;
+                            endHour++;
+                        }
+                        if (startHour > 23) {
+                            startHour = startHour % 24;
+                            startDay++;
+                        }
+
+                        if (endHour > 23) {
+                            endHour = endHour % 24;
+                        }
+
+                        // Months with 31 days
+                        if ((startDay == 32) && (startMonth == 1 || startMonth == 3 || startMonth == 5 || startMonth == 7 || startMonth == 8 || startMonth == 10 || startMonth == 12)) {
+                            startDay = 1;
+                            startMonth++;
+                            months++;
+                        }
+                        // Months with 30 days
+                        if ((startDay >= 31) && (startMonth == 4 || startMonth == 6 || startMonth == 9 || startMonth == 11)) {
+                            startDay = 1;
+                            startMonth++;
+                            months++;
+                        }
+
+                        // Year
+                        if (startMonth == 13) {
+                            startMonth = 1;
+                            startYear++;
+                        }
+                        // February Non-Leap Year
+                        if (startMonth == 2 && startYear % 4 != 0 && startDay == 29) {
+                            startDay = 1;
+                            startMonth++;
+                            months++;
+                        }
+                        // February Leap Year
+                        if (startMonth == 2 && startYear % 4 == 0 && startDay == 30) {
+                            startDay = 1;
+                            startMonth++;
+                            months++;
+                        }
+                    }
+                }
+                else{
+                    events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
+                }
+
+            } catch (ServerException e) {
+                e.printStackTrace();
+            }
         }
+
+
+        //System.out.println(confirmed.values().toArray(Object[0]));
         //TODO: Paint existing schedules
         //Pseudo code - for number of objects in schedule table, add new calendar event. If reoccuring is true, make proper adjustments
         //add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
@@ -358,6 +455,13 @@ public class CalendarCreator extends Frame {
                 boolean recurringHourly = (Boolean) hourlyButton.isSelected();
                 boolean recurringMinutely = (Boolean) minutelyButton.isSelected();
 
+                // If recurring checkbox is selected but no values are inputted:
+                if (recurring == true && recurringDaily == false && recurringHourly == false && minuteSpinnerValue == 0){
+                    JOptionPane.showMessageDialog(null, "Must input recurring value",
+                            "Fail",
+                            JOptionPane.PLAIN_MESSAGE);
+                    return;
+                }
 
                 // Add recurring values
                 int recurringEveryXminutes = 0;

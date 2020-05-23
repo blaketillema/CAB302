@@ -10,6 +10,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.TreeMap;
+
 import connections.*;
 import connections.exceptions.ServerException;
 
@@ -52,6 +54,17 @@ public class LoginManager extends JFrame {
     public void login(String username, String password) {
         Component frame = null;
         // TODO: Check for usernames and passwords stored in db
+        TreeMap<String, Object> currentUsers = null;
+        try {
+            currentUsers = LoginManager.server.getUsers();
+        } catch (ServerException e) {
+            e.printStackTrace();
+        }
+
+        currentUsers.forEach((k,v) ->{
+            System.out.println("Key: " + k + ", Value: " + v);
+        });
+
         if (username.equals("admin") && password.equals("cab203")) {
             //ClientServerInterface server = new ClientServerInterface();
             try {
