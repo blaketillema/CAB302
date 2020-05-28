@@ -21,12 +21,16 @@ public class schedulerController {
     private JSpinner hourlySpinner;
     private JSpinner minutelySpinner;
     private JCheckBox recurringCheckBox;
+    private JComboBox billboardDropdown;
 
-
+    //TODO: Make scheduleController NameTextField a dropdown list of current billboards in db
     int min = 0;
     int max = 10;
     int step = 1;
     int initValue = 5;
+
+    String s1[] = { "Jalpaiguri", "Mumbai", "Noida", "Kolkata", "New Delhi" };
+
     //JSpinner hourSpinner = new JSpinner(value);
 
 
@@ -60,6 +64,7 @@ public class schedulerController {
     }
 
     public schedulerController() {
+
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -195,5 +200,12 @@ public class schedulerController {
      */
     public JComponent $$$getRootComponent$$$() {
         return schedulerPanel;
+    }
+
+    private void createUIComponents() {
+        //TODO: replace with billboards from db
+        billboardDropdown = new JComboBox(s1);
+
+        // TODO: place custom component creation code here
     }
 }

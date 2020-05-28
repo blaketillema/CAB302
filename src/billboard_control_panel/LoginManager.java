@@ -10,13 +10,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.TreeMap;
+
+import connections.*;
+import connections.exceptions.ServerException;
 
 public class LoginManager extends JFrame {
     public JPanel LoginPanel;
     public JButton loginButton;
     public JPasswordField passwordField1;
     public JTextField usernameField1;
-
+    public static ClientServerInterface server = new ClientServerInterface();
 
     public LoginManager() {
 
@@ -50,18 +54,27 @@ public class LoginManager extends JFrame {
     public void login(String username, String password) {
         Component frame = null;
         // TODO: Check for usernames and passwords stored in db
-        if (username.equals("admin") && password.equals("admin")) {
-//            ClientServerInterface server = new ClientServerInterface();
-//            try {
-//                server.login(username,password);
-//                //server.addNewUser("lahiru", "password", Protocol.Permission.ALL);
-//            } catch (ServerException e) {
-//                e.printStackTrace();
-//            }
+        TreeMap<String, Object> currentUsers = null;
+        try {
+            currentUsers = LoginManager.server.getUsers();
+        } catch (ServerException e) {
+            e.printStackTrace();
+        }
 
+        currentUsers.forEach((k,v) ->{
+            System.out.println("Key: " + k + ", Value: " + v);
+        });
 
-            new MainControl().main(null);
+        if (username.equals("admin") && password.equals("cab203")) {
+            //ClientServerInterface server = new ClientServerInterface();
+            try {
 
+                server.login(username,password);
+                //server.addNewUser("lahiru", "password", Protocol.Permission.ALL);
+                new MainControl().main(null);
+            } catch (ServerException e) {
+                e.printStackTrace();
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Invalid username or password");
         }

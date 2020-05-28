@@ -1,6 +1,6 @@
-package connections.types;
+package billboard_server.types;
 
-import connections.Protocol;
+import billboard_server.Protocol;
 
 import java.io.Serializable;
 import java.util.TreeMap;

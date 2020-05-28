@@ -1,8 +1,8 @@
-package connections.engines;
+package billboard_server.engines;
 
-import connections.types.ClientRequest;
-import connections.exceptions.ServerException;
-import connections.types.ServerResponse;
+import billboard_server.types.ClientRequest;
+import billboard_server.exceptions.ServerException;
+import billboard_server.types.ServerResponse;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -27,8 +27,16 @@ public class ServerClientConnection implements Runnable {
         }
         ServerResponse response = server.getResponse();
 
-        if (response == null || response.status == null || !response.status.equals("OK")) {
-            throw new ServerException(response.status);
+        if (response == null) {
+            throw new ServerException("request failed: server response is null");
+        }
+
+        if (!response.success) {
+            if (response.status == null) {
+                throw new ServerException("request failed: no error msg provided");
+            } else {
+                throw new ServerException("request failed: " + response.status);
+            }
         }
 
         return response;
@@ -40,8 +48,7 @@ public class ServerClientConnection implements Runnable {
         this.request = request;
     }
 
-    public ServerResponse getResponse()
-    {
+    public ServerResponse getResponse() {
         return this.response;
     }
 
