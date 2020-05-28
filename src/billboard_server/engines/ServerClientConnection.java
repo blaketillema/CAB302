@@ -1,8 +1,8 @@
-package connections.engines;
+package billboard_server.engines;
 
-import connections.types.ClientRequest;
-import connections.exceptions.ServerException;
-import connections.types.ServerResponse;
+import billboard_server.types.ClientRequest;
+import billboard_server.exceptions.ServerException;
+import billboard_server.types.ServerResponse;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
