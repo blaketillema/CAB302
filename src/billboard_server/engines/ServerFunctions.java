@@ -1,17 +1,18 @@
-package connections.engines;
+package billboard_server.engines;
 
 import java.sql.SQLException;
 import java.time.OffsetDateTime;
 import java.util.*;
 
-import connections.Protocol;
-import connections.Protocol.*;
-import connections.exceptions.PermissionException;
-import connections.exceptions.ServerException;
-import connections.types.ServerResponse;
-import connections.tools.UserAuth;
+import billboard_server.Protocol;
+import billboard_server.Protocol.*;
+import billboard_server.engines.UserInfo;
+import billboard_server.exceptions.PermissionException;
+import billboard_server.exceptions.ServerException;
+import billboard_server.types.ServerResponse;
+import billboard_server.tools.UserAuth;
 
-import static connections.engines.Server.*;
+import static billboard_server.engines.Server.*;
 
 public class ServerFunctions {
 

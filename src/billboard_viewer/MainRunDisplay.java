@@ -1,10 +1,11 @@
 package billboard_viewer;
 
+import java.rmi.ServerException;
 import java.util.TreeMap;
 
-import connections.exceptions.ServerException;
-import connections.ClientServerInterface;
-import connections.old.testing.AdminAddUsers;
+//import connections.exceptions.ServerException;
+//import connections.ClientServerInterface;
+//import connections.old.testing.AdminAddUsers;
 //import connections.old.testing.User1AddBillboards;
 //import connections.old.testing.User3ScheduleBillboards;
 
@@ -23,7 +24,7 @@ public class MainRunDisplay {
         try
         {
             System.out.println("admin adding users: user1 with create billboard permission, user3 with schedule permission:\n");
-            AdminAddUsers.main(args);
+           //AdminAddUsers.main(args);
 
             System.out.println("\n\nlogin as user1 and add billboards:\n");
             //User1AddBillboards.main(args);
@@ -39,7 +40,7 @@ public class MainRunDisplay {
          * Every 15 seconds, refresh billboard data
          */
         // TODO may need to set this up to run every 15 seconds - thread or something
-        ClientServerInterface server = new ClientServerInterface();
+        //ClientServerInterface server = new ClientServerInterface();
         /**
          * Refresh the billboard display (if new data)
          */

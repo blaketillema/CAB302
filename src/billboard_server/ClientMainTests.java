@@ -1,6 +1,6 @@
-package connections;
+package billboard_server;
 
-import connections.exceptions.ServerException;
+import billboard_server.exceptions.ServerException;
 
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -175,7 +175,7 @@ public class ClientMainTests {
 
 
     // helper functions
-    static TreeMap<String, String> randomNewBillboard() {
+    public static TreeMap<String, String> randomNewBillboard() {
         Random r = new Random();
 
         TreeMap<String, String> body = new TreeMap<>();
@@ -191,7 +191,7 @@ public class ClientMainTests {
         return body;
     }
 
-    static TreeMap<String, Object> randomNewSchedule(String billboardId) {
+    public static TreeMap<String, Object> randomNewSchedule(String billboardId) {
         Random r = new Random();
 
         TreeMap<String, Object> body = new TreeMap<>();

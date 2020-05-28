@@ -1,15 +1,12 @@
-package connections;
+package billboard_server;
 
-import connections.engines.Server;
-import billboard_server.Database;
+import billboard_server.engines.Server;
 
 import java.sql.SQLException;
 
-public class ServerMainTest {
+public class ServerMain {
     public static void main(String[] args) throws SQLException {
-
         Server server = new Server();
-
         server.run();
     }
 }

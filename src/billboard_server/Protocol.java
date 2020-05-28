@@ -1,4 +1,4 @@
-package connections;
+package billboard_server;
 
 public final class Protocol {
     public static final String TYPE = "type";

@@ -1,4 +1,4 @@
-package connections.types;
+package billboard_server.types;
 
 import java.io.Serializable;
 import java.util.TreeMap;

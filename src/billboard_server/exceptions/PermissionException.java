@@ -1,6 +1,6 @@
-package connections.exceptions;
+package billboard_server.exceptions;
 
-import connections.Protocol;
+import billboard_server.Protocol;
 
 public class PermissionException extends ServerException {
     public PermissionException(String user, int has, int needs) {

@@ -21,6 +21,10 @@ import java.util.Set;
 import java.util.TreeMap;
 
 //import billboard_viewer.*;
+
+import connections.ClientMainTests;
+import connections.ClientServerInterface;
+import connections.exceptions.ServerException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -29,6 +33,7 @@ import org.xml.sax.SAXException;
 import org.w3c.dom.Element;
 
 import org.w3c.dom.*;
+
 
 // TODO - cleanup and documentation of BillboardControl class
 // TODO - cleanup of unused UI elements and appropriate element wrapping/visual presentation
@@ -113,7 +118,21 @@ public class BillboardControl {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                TreeMap<String, String> body = new TreeMap<>();
+                body.put("message",""+messageArea.getText());
+                body.put("information",""+informationArea.getText());
+                body.put("pictureData",""+pictureDataArea.getText());
+                body.put("pictureUrl",""+pictureUrlArea.getText());
+                body.put("billboardBackground",""+backgroundColourArea.getText());
+                body.put("messageColour",""+messageColourArea.getText());
+                body.put("informationColour",""+informationColourArea.getText());
+                System.out.println(body);
+                try {
+                    LoginManager.server.addBillboard(billboardNameArea.getText(), body);
+                    //LoginManager.server.addBillboard(billboardNameArea.getText(), ClientMainTests.randomNewBillboard());
+                } catch (ServerException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
         exitButton.addActionListener(new ActionListener() {
