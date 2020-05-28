@@ -22,8 +22,8 @@ public class Database {
             "billboardId VARCHAR(191) PRIMARY KEY NOT NULL," +
             "billboardName VARCHAR(191)," +
             "billboardCreator VARCHAR(191)," +
-            "billboardMessage VARCHAR(191)," +
-            "billboardInfo VARCHAR(191)," +
+            "billboardMessage TEXT," +
+            "billboardInfo TEXT," +
             "billboardPictureData MEDIUMTEXT," +
             "billboardPictureUrl MEDIUMTEXT," +
             "billboardBg VARCHAR(191)," +
@@ -128,8 +128,6 @@ public class Database {
         }
     }
 
-<<<<<<< HEAD
-=======
     public String billboardNameToId(String billboardName) throws SQLException {
         connect();
         ResultSet rs = statement.executeQuery("SELECT billboardId FROM billboards WHERE billboardName=\"" + billboardName + "\"");
@@ -150,7 +148,6 @@ public class Database {
         }
     }
 
->>>>>>> develop
     public boolean doesBillboardExist(String billboardId) throws SQLException {
         connect();
         ResultSet rs = statement.executeQuery("SELECT * FROM billboards WHERE billboardId=\"" + billboardId + "\"");
@@ -210,43 +207,23 @@ public class Database {
     public void editUser(String userId, String userName, String hash, String salt, Integer permissions) throws SQLException {
         connect();
         String editStatement = "UPDATE users SET ";
-<<<<<<< HEAD
-        if(userName != null) editStatement += "userName=\""+userName+"\", ";
-        if(hash != null) editStatement += "hash=\""+hash+"\", ";
-        if(salt != null) editStatement += "salt=\""+salt+"\", ";
-        if(permissions != null) editStatement += "permissions=\""+permissions+"\", ";
-        editStatement = editStatement.substring(0, editStatement.length() - 2);
-        String endEditStatement = " WHERE userId=\""+userId+"\"";
-=======
         if (userName != null) editStatement += "userName=\"" + userName + "\", ";
         if (hash != null) editStatement += "hash=\"" + hash + "\", ";
         if (salt != null) editStatement += "salt=\"" + salt + "\", ";
         if (permissions != null) editStatement += "permissions=\"" + permissions + "\", ";
         editStatement = editStatement.substring(0, editStatement.length() - 2);
         String endEditStatement = " WHERE userId=\"" + userId + "\"";
->>>>>>> develop
         editStatement += endEditStatement;
         //System.out.println(editStatement);
         statement.executeQuery(editStatement);
         conn.close();
     }
 
-<<<<<<< HEAD
-    public TreeMap<String, Object> getUser(String userId) throws SQLException{
-=======
     public TreeMap<String, Object> getUser(String userId) throws SQLException {
->>>>>>> develop
         connect();
         ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE userId=\"" + userId + "\"");
 
         TreeMap<String, Object> user = new TreeMap<>();
-<<<<<<< HEAD
-        user.put("userId", rs.getString(1));
-        user.put("userName", rs.getString(2));
-        // user.put("hash", rs.getString(3));
-        user.put("salt", rs.getString(4));
-        user.put("permissions", rs.getInt(5));
-=======
 
         if (rs.next()) {
             TreeMap<String, Object> body = new TreeMap<>();
@@ -258,32 +235,15 @@ public class Database {
             user.put(rs.getString(1), body);
         }
 
->>>>>>> develop
         conn.close();
         return user;
     }
 
-<<<<<<< HEAD
-    public TreeMap<String, Object> getUsers(ArrayList<String> userIds) throws SQLException{
-=======
     public TreeMap<String, Object> getUsers(ArrayList<String> userIds) throws SQLException {
->>>>>>> develop
         connect();
 
         TreeMap<String, Object> users = new TreeMap<>();
 
-<<<<<<< HEAD
-        for(String userId : userIds) {
-            TreeMap<String, Object> body = new TreeMap<>();
-
-            ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE userId=\""+userId+"\"");
-            body.put("userName", rs.getString(2));
-            body.put("hash", rs.getString(3));
-            body.put("salt", rs.getString(4));
-            body.put("permissions", rs.getInt(5));
-
-            users.put(rs.getString(1), body);
-=======
         for (String userId : userIds) {
             TreeMap<String, Object> body = new TreeMap<>();
 
@@ -297,7 +257,6 @@ public class Database {
 
                 users.put(rs.getString(1), body);
             }
->>>>>>> develop
         }
 
         conn.close();
@@ -338,15 +297,6 @@ public class Database {
         conn.close();
     }
 
-    public void deleteUsers(ArrayList<String> userIds) throws SQLException {
-        connect();
-
-        for(String userId : userIds) {
-            statement.executeQuery("DELETE FROM users WHERE userId=\""+userId+"\"");
-        }
-        conn.close();
-    }
-
     public void addBillboard(String billboardId, String billboardName, String billboardCreator,
                              String billboardMessage, String billboardInfo, String billboardPictureData,
                              String billboardPictureUrl, String billboardBg, String billboardMsgColour,
@@ -371,50 +321,6 @@ public class Database {
     public void editBillboard(String billboardId, String billboardName, String billboardCreator,
                               String billboardMessage, String billboardInfo, String billboardPictureData,
                               String billboardPictureUrl, String billboardBg, String billboardMsgColour,
-<<<<<<< HEAD
-                              String billboardInfoColour) throws SQLException{
-        connect();
-        String editStatement = "UPDATE billboards SET ";
-        if(billboardName != null) editStatement += "billboardName=\""+billboardName+"\", ";
-        if(billboardMessage != null) editStatement += "billboardMessage=\""+billboardMessage+"\", ";
-        if(billboardInfo != null) editStatement += "billboardInfo=\""+billboardInfo+"\", ";
-        if(billboardPictureData != null) editStatement += "billboardPictureData=\""+billboardPictureData+"\", ";
-        if(billboardPictureUrl != null) editStatement += "billboardPictureUrl=\""+billboardPictureUrl+"\", ";
-        if(billboardBg != null) editStatement += "billboardBg=\""+billboardBg+"\", ";
-        if(billboardMsgColour != null) editStatement += "billboardMsgColour=\""+billboardMsgColour+"\", ";
-        if(billboardInfoColour != null) editStatement += "billboardInfoColour=\""+billboardInfoColour+"\", ";
-        editStatement = editStatement.substring(0, editStatement.length() - 2);
-        String endEditStatement = " WHERE billboardId=\""+billboardId+"\"";
-        editStatement += endEditStatement;
-        //System.out.println(editStatement);
-        statement.executeQuery(editStatement);
-        conn.close();
-    }
-
-    public TreeMap<String, Object> getBillboards(ArrayList<String> billboardIds) throws SQLException {
-
-        connect();
-        TreeMap<String, Object> billboards = new TreeMap<>();
-
-        for(String billboardId : billboardIds) {
-            TreeMap<String, String> body = new TreeMap<>();
-
-            ResultSet rs = statement.executeQuery("SELECT * FROM billboards WHERE billboardId=\""+billboardId+"\"");
-            body.put("bodyName", rs.getString(2));
-            body.put("bodyCreator", rs.getString(3));
-            body.put("bodyMessage", rs.getString(4));
-            body.put("bodyInfo", rs.getString(5));
-            body.put("bodyPictureData", rs.getString(6));
-            body.put("bodyPictureUrl", rs.getString(7));
-            body.put("bodyBg", rs.getString(8));
-            body.put("bodyMsgColour", rs.getString(9));
-            body.put("bodyInfoColour", rs.getString(10));
-
-            billboards.put(rs.getString(1), body);
-        }
-
-        conn.close();
-=======
                               String billboardInfoColour) throws SQLException {
         connect();
         String editStatement = "UPDATE billboards SET ";
@@ -459,7 +365,6 @@ public class Database {
         }
 
         conn.close();
->>>>>>> develop
         return billboards;
     }
 
@@ -487,38 +392,22 @@ public class Database {
         return billboards;
     }
 
-<<<<<<< HEAD
-    public void deleteBillboards(ArrayList<String> billboardIds) throws SQLException{
-        connect();
-
-        for(String billboardId : billboardIds) {
-            statement.executeQuery("DELETE FROM billboards WHERE billboardId=\""+billboardId+"\"");
-=======
     public void deleteBillboards(ArrayList<String> billboardIds) throws SQLException {
         connect();
 
         for (String billboardId : billboardIds) {
             statement.executeQuery("DELETE FROM billboards WHERE billboardId=\"" + billboardId + "\"");
->>>>>>> develop
         }
         conn.close();
     }
 
-<<<<<<< HEAD
-    public void deleteBillboard(String billboardId) throws SQLException{
-=======
     public void deleteBillboard(String billboardId) throws SQLException {
->>>>>>> develop
         connect();
         statement.executeQuery("DELETE FROM billboards WHERE billboardId=\"" + billboardId + "\"");
         conn.close();
     }
 
-<<<<<<< HEAD
-    public void addSchedule(String scheduleId, String billboardId, OffsetDateTime startTime, Integer duration, Boolean isRecurring, Integer recurFreqInMins) throws SQLException{
-=======
     public void addSchedule(String scheduleId, String billboardId, OffsetDateTime startTime, Integer duration, Boolean isRecurring, Integer recurFreqInMins) throws SQLException {
->>>>>>> develop
         connect();
         pstmt = conn.prepareStatement(addschedStatement);
         pstmt.setString(1, scheduleId);
@@ -532,18 +421,6 @@ public class Database {
     }
 
     // TODO:
-<<<<<<< HEAD
-    public void editSchedule(String scheduleId, String billboardId, OffsetDateTime startTime, Integer duration, Boolean isRecurring, Integer recurFreqInMins) throws SQLException{
-        connect();
-        String editStatement = "UPDATE schedules SET ";
-        if(billboardId != null) editStatement += "billboardId=\""+billboardId+"\", ";
-        if(startTime != null) editStatement += "startTime=\""+startTime+"\", ";
-        if(duration != null) editStatement += "duration=\""+duration+"\", ";
-        if(isRecurring != null) editStatement += "isRecurring="+isRecurring+", ";
-        if(recurFreqInMins != null) editStatement += "recurFreqInMins=\""+recurFreqInMins+"\", ";
-        editStatement = editStatement.substring(0, editStatement.length() - 2);
-        String endEditStatement = " WHERE scheduleId=\""+scheduleId+"\"";
-=======
     public void editSchedule(String scheduleId, String billboardId, OffsetDateTime startTime, Integer duration, Boolean isRecurring, Integer recurFreqInMins) throws SQLException {
         connect();
         String editStatement = "UPDATE schedules SET ";
@@ -555,7 +432,6 @@ public class Database {
         if (recurFreqInMins != null) editStatement += "recurFreqInMins=\"" + recurFreqInMins + "\", ";
         editStatement = editStatement.substring(0, editStatement.length() - 2);
         String endEditStatement = " WHERE scheduleId=\"" + scheduleId + "\"";
->>>>>>> develop
         editStatement += endEditStatement;
         //System.out.println(editStatement);
         statement.executeQuery(editStatement);
@@ -586,19 +462,6 @@ public class Database {
         connect();
         TreeMap<String, Object> schedules = new TreeMap<>();
 
-<<<<<<< HEAD
-        for(String scheduleId : scheduleIds) {
-            ResultSet rs = statement.executeQuery("SELECT * FROM schedules WHERE scheduleId=\""+scheduleId+"\"");
-
-            TreeMap<String, Object> schedule = new TreeMap<>();
-            schedule.put("scheduleId", rs.getString(1));
-            schedule.put("billboardId", rs.getString(2));
-            schedule.put("startTime", OffsetDateTime.of(rs.getTimestamp(3).toLocalDateTime(), ZoneOffset.of("+10:00")));
-            schedule.put("duration", rs.getInt(4));
-            schedule.put("isRecurring", rs.getBoolean(5));
-            schedule.put("recurFreqInMins", rs.getInt(6));
-            schedules.put(rs.getString(1), schedule);
-=======
         for (String scheduleId : scheduleIds) {
             ResultSet rs = statement.executeQuery("SELECT * FROM schedules WHERE scheduleId=\"" + scheduleId + "\"");
 
@@ -612,7 +475,6 @@ public class Database {
                 schedule.put("recurFreqInMins", rs.getInt(6));
                 schedules.put(rs.getString(1), schedule);
             }
->>>>>>> develop
         }
 
         conn.close();
@@ -628,13 +490,8 @@ public class Database {
     public void deleteSchedules(ArrayList<String> scheduleIds) throws SQLException { // deletes a user
         connect();
 
-<<<<<<< HEAD
-        for(String scheduleId : scheduleIds) {
-            statement.executeQuery("DELETE FROM schedules WHERE scheduleId=\""+scheduleId+"\"");
-=======
         for (String scheduleId : scheduleIds) {
             statement.executeQuery("DELETE FROM schedules WHERE scheduleId=\"" + scheduleId + "\"");
->>>>>>> develop
         }
         conn.close();
     }
