@@ -22,9 +22,9 @@ import java.util.TreeMap;
 
 //import billboard_viewer.*;
 
-import connections.ClientMainTests;
-import connections.ClientServerInterface;
-import connections.exceptions.ServerException;
+import billboard_server.ClientMainTests;
+import billboard_server.ClientServerInterface;
+import billboard_server.exceptions.ServerException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
