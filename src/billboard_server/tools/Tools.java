@@ -1,4 +1,4 @@
-package connections.tools;
+package billboard_server.tools;
 
 import java.io.Console;
 import java.util.Arrays;

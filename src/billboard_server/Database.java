@@ -1,7 +1,6 @@
 package billboard_server;
 
-import connections.Protocol;
-import connections.tools.UserAuth;
+import billboard_server.tools.UserAuth;
 
 import java.io.FileInputStream;
 import java.io.IOException;
