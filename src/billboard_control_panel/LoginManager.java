@@ -20,7 +20,7 @@ public class LoginManager extends JFrame {
     public JButton loginButton;
     public JPasswordField passwordField1;
     public JTextField usernameField1;
-    public static ClientServerInterface server = new ClientServerInterface();
+
 
     public LoginManager() {
 
@@ -56,7 +56,7 @@ public class LoginManager extends JFrame {
         // TODO: Check for usernames and passwords stored in db
         TreeMap<String, Object> currentUsers = null;
         try {
-            currentUsers = LoginManager.server.getUsers();
+            currentUsers = Main.server.getUsers();
         } catch (ServerException e) {
             e.printStackTrace();
         }
@@ -69,7 +69,7 @@ public class LoginManager extends JFrame {
             //ClientServerInterface server = new ClientServerInterface();
             try {
 
-                server.login(username,password);
+                Main.server.login(username,password);
                 //server.addNewUser("lahiru", "password", Protocol.Permission.ALL);
                 new MainControl().main(null);
             } catch (ServerException e) {

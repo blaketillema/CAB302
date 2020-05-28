@@ -6,10 +6,13 @@ package billboard_control_panel;
 //import connections.exceptions.ServerException;
 //import connections.testing.AdminAddUsers;
 
+import connections.ClientServerInterface;
+import connections.exceptions.ServerException;
 import javax.swing.*;
 import java.awt.*;
 
 public class Main {
+    public static ClientServerInterface server = new ClientServerInterface();
     public static void centreWindow(Window frame) {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
         int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);

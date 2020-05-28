@@ -3,10 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="7eae25d1-c1e5-4a80-bf19-be8529e48af4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/BillboardControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/BillboardControl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/Calendar/CalendarCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/Calendar/CalendarCreator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/LoginManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/LoginManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/MainControl.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/MainControl.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/MainControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/MainControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/UserControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/UserControl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/connections/assets/salts.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/connections/assets/salts.map" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -54,6 +56,19 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="LoginManager" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="billboard_control_panel.LoginManager" />
+      <module name="CAB302" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="billboard_control_panel.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="billboard_control_panel.Main" />
       <module name="CAB302" />
@@ -80,19 +95,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainRunDisplay" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="billboard_viewer.MainRunDisplay" />
-      <module name="CAB302" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="billboard_viewer.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ServerMainTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="connections.ServerMainTest" />
       <module name="CAB302" />
@@ -109,10 +111,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
-        <item itemvalue="Application.MainRunDisplay" />
         <item itemvalue="Application.ServerMainTest" />
-        <item itemvalue="Application.MainControl" />
         <item itemvalue="Application.CalendarCreator" />
+        <item itemvalue="Application.MainControl" />
+        <item itemvalue="Application.LoginManager" />
       </list>
     </recent_temporary>
   </component>
@@ -138,26 +140,26 @@
       <screen x="0" y="0" width="1739" height="939" />
     </state>
     <state x="650" y="212" key="FileChooserDialogImpl/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590070386084" />
-    <state width="1696" height="146" key="GridCell.Tab.0.bottom" timestamp="1590221872751">
-      <screen x="0" y="0" width="1739" height="939" />
+    <state width="1696" height="146" key="GridCell.Tab.0.bottom" timestamp="1590654147700">
+      <screen x="0" y="-1080" width="1739" height="939" />
     </state>
-    <state width="1696" height="317" key="GridCell.Tab.0.bottom/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590209986322" />
-    <state width="1696" height="146" key="GridCell.Tab.0.bottom/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590221872751" />
-    <state width="1696" height="146" key="GridCell.Tab.0.center" timestamp="1590221872751">
-      <screen x="0" y="0" width="1739" height="939" />
+    <state width="1696" height="146" key="GridCell.Tab.0.bottom/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590654147700" />
+    <state width="1696" height="146" key="GridCell.Tab.0.bottom/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590223597006" />
+    <state width="1696" height="146" key="GridCell.Tab.0.center" timestamp="1590654147700">
+      <screen x="0" y="-1080" width="1739" height="939" />
     </state>
-    <state width="1696" height="317" key="GridCell.Tab.0.center/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590209986322" />
-    <state width="1696" height="146" key="GridCell.Tab.0.center/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590221872751" />
-    <state width="1696" height="146" key="GridCell.Tab.0.left" timestamp="1590221872751">
-      <screen x="0" y="0" width="1739" height="939" />
+    <state width="1696" height="146" key="GridCell.Tab.0.center/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590654147700" />
+    <state width="1696" height="146" key="GridCell.Tab.0.center/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590223597006" />
+    <state width="1696" height="146" key="GridCell.Tab.0.left" timestamp="1590654147699">
+      <screen x="0" y="-1080" width="1739" height="939" />
     </state>
-    <state width="1696" height="317" key="GridCell.Tab.0.left/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590209986322" />
-    <state width="1696" height="146" key="GridCell.Tab.0.left/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590221872751" />
-    <state width="1696" height="146" key="GridCell.Tab.0.right" timestamp="1590221872751">
-      <screen x="0" y="0" width="1739" height="939" />
+    <state width="1696" height="146" key="GridCell.Tab.0.left/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590654147699" />
+    <state width="1696" height="146" key="GridCell.Tab.0.left/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590223597006" />
+    <state width="1696" height="146" key="GridCell.Tab.0.right" timestamp="1590654147700">
+      <screen x="0" y="-1080" width="1739" height="939" />
     </state>
-    <state width="1696" height="317" key="GridCell.Tab.0.right/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590209986322" />
-    <state width="1696" height="146" key="GridCell.Tab.0.right/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590221872751" />
+    <state width="1696" height="146" key="GridCell.Tab.0.right/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590654147700" />
+    <state width="1696" height="146" key="GridCell.Tab.0.right/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590223597006" />
     <state x="350" y="45" key="SettingsEditor" timestamp="1590070619291">
       <screen x="0" y="0" width="1739" height="939" />
     </state>
@@ -184,10 +186,10 @@
     </state>
     <state x="533" y="-1031" width="1266" height="779" key="dock-window-1/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590210211879" />
     <state x="396" y="-1080" width="1266" height="779" maximized="true" key="dock-window-1/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590208005046" />
-    <state x="404" y="103" width="1266" height="752" key="dock-window-2" timestamp="1590218290385">
+    <state x="404" y="103" width="1266" height="752" key="dock-window-2" timestamp="1590223007089">
       <screen x="0" y="0" width="1739" height="939" />
     </state>
-    <state x="327" y="-1105" width="1266" height="752" key="dock-window-2/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590217737575" />
+    <state x="404" y="103" width="1266" height="752" key="dock-window-2/0.-1080.1739.939/0.0.1739.939@0.-1080.1739.939" timestamp="1590223007089" />
     <state x="404" y="103" width="1266" height="752" key="dock-window-2/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590218290385" />
     <state x="577" y="99" key="refactoring.ChangeSignatureDialog" timestamp="1590143300611">
       <screen x="0" y="0" width="1739" height="939" />

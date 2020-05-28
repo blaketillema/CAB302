@@ -28,7 +28,7 @@ public class UserControl {
         // Get newly created user's userID to edit the user's permissions
         String userId = null;
         try {
-            userId = LoginManager.server.getUserId(userNameField.getText());
+            userId = Main.server.getUserId(userNameField.getText());
         } catch (ServerException ex) {
             ex.printStackTrace();
         }
@@ -38,7 +38,7 @@ public class UserControl {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    LoginManager.server.deleteUser(finalUserId);
+                    Main.server.deleteUser(finalUserId);
                 } catch (ServerException ex) {
                     ex.printStackTrace();
                 }
@@ -49,7 +49,7 @@ public class UserControl {
             public void actionPerformed(ActionEvent e) {
                 // Start with creating the user with no permissions
                 try {
-                    LoginManager.server.addUser(userNameField.getText(), passwordField1.getText(), Protocol.Permission.NONE);
+                    Main.server.addUser(userNameField.getText(), passwordField1.getText(), Protocol.Permission.NONE);
                 } catch (ServerException ex) {
                     ex.printStackTrace();
                 }
@@ -57,35 +57,35 @@ public class UserControl {
                 // Now check each box and use the editUser function to give certain permissions
                 if (ScheduleBBCheckBox.isSelected()){
                     try {
-                        LoginManager.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.SCHEDULE_BILLBOARDS);
+                        Main.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.SCHEDULE_BILLBOARDS);
                     } catch (ServerException ex) {
                         ex.printStackTrace();
                     }
                 }
                 if (EditBBCheckBox.isSelected()){
                     try {
-                        LoginManager.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.EDIT_ALL_BILLBOARDS);
+                        Main.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.EDIT_ALL_BILLBOARDS);
                     } catch (ServerException ex) {
                         ex.printStackTrace();
                     }
                 }
                 if (CreateBBCheckBox.isSelected()){
                     try {
-                        LoginManager.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.CREATE_BILLBOARDS);
+                        Main.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.CREATE_BILLBOARDS);
                     } catch (ServerException ex) {
                         ex.printStackTrace();
                     }
                 }
                 if (editUsersCheckBox.isSelected()){
                     try {
-                        LoginManager.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.EDIT_USERS);
+                        Main.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.EDIT_USERS);
                     } catch (ServerException ex) {
                         ex.printStackTrace();
                     }
                 }
                 if (editUsersCheckBox.isSelected() && ScheduleBBCheckBox.isSelected() && CreateBBCheckBox.isSelected() && EditBBCheckBox.isSelected() ){
                     try {
-                        LoginManager.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.ALL);
+                        Main.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.ALL);
                     } catch (ServerException ex) {
                         ex.printStackTrace();
                     }
