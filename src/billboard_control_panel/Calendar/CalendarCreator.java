@@ -4,8 +4,8 @@ import billboard_control_panel.LoginManager;
 import billboard_control_panel.MainControl;
 import billboard_control_panel.ScheduleController;
 import billboard_control_panel.Scheduler;
-import connections.ClientMainTests;
-import connections.exceptions.ServerException;
+import billboard_server.ClientMainTests;
+import billboard_server.exceptions.ServerException;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
