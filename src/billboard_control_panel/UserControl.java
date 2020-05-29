@@ -40,6 +40,7 @@ public class UserControl {
                 try {
                     Main.server.deleteUser(finalUserId);
                 } catch (ServerException ex) {
+                    JOptionPane.showMessageDialog(null, "You do not have permission to remove users.");
                     ex.printStackTrace();
                 }
             }
@@ -47,53 +48,72 @@ public class UserControl {
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Start with creating the user with no permissions
+                // Start with check if the user exists within the system
+                String userIDcheck = null;
                 try {
-                    Main.server.addUser(userNameField.getText(), passwordField1.getText(), Protocol.Permission.NONE);
+                    userIDcheck = Main.server.getUserId(userNameField.getText());
                 } catch (ServerException ex) {
                     ex.printStackTrace();
                 }
-
-                // Now check each box and use the editUser function to give certain permissions
-                if (ScheduleBBCheckBox.isSelected()){
+                String finalUserIdCheck = userIDcheck;
+                // If new user, create(add) new user
+                if (finalUserIdCheck == null){
                     try {
-                        Main.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.SCHEDULE_BILLBOARDS);
+                        Main.server.addUser(userNameField.getText(), passwordField1.getText(), Protocol.Permission.NONE);
+                        JOptionPane.showMessageDialog(null, "New user created");
                     } catch (ServerException ex) {
+                        JOptionPane.showMessageDialog(null, "You do not have permission to create users.");
                         ex.printStackTrace();
                     }
                 }
-                if (EditBBCheckBox.isSelected()){
-                    try {
-                        Main.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.EDIT_ALL_BILLBOARDS);
-                    } catch (ServerException ex) {
-                        ex.printStackTrace();
+                // If existing user, edit existing user
+                else{
+                    // Now check each box and use the editUser function to give certain permissions
+                    if (ScheduleBBCheckBox.isSelected()){
+                        try {
+                            Main.server.editUser(finalUserIdCheck, userNameField.getText(), passwordField1.getText(), Protocol.Permission.SCHEDULE_BILLBOARDS);
+                            JOptionPane.showMessageDialog(null, "User successfully edited");
+                        } catch (ServerException ex) {
+                            JOptionPane.showMessageDialog(null, "You do not have permission to create users.");
+                            ex.printStackTrace();
+                        }
+                    }
+                    if (EditBBCheckBox.isSelected()){
+                        try {
+                            Main.server.editUser(finalUserIdCheck, userNameField.getText(), passwordField1.getText(), Protocol.Permission.EDIT_ALL_BILLBOARDS);
+                        } catch (ServerException ex) {
+                            JOptionPane.showMessageDialog(null, "You do not have permission to create users.");
+                            ex.printStackTrace();
+                        }
+                    }
+                    if (CreateBBCheckBox.isSelected()){
+                        try {
+                            Main.server.editUser(finalUserIdCheck, userNameField.getText(), passwordField1.getText(), Protocol.Permission.CREATE_BILLBOARDS);
+                        } catch (ServerException ex) {
+                            JOptionPane.showMessageDialog(null, "You do not have permission to create users.");
+                            ex.printStackTrace();
+                        }
+                    }
+                    if (editUsersCheckBox.isSelected()){
+                        try {
+                            Main.server.editUser(finalUserIdCheck, userNameField.getText(), passwordField1.getText(), Protocol.Permission.EDIT_USERS);
+                        } catch (ServerException ex) {
+                            JOptionPane.showMessageDialog(null, "You do not have permission to create users.");
+                            ex.printStackTrace();
+                        }
+                    }
+                    if (editUsersCheckBox.isSelected() && ScheduleBBCheckBox.isSelected() && CreateBBCheckBox.isSelected() && EditBBCheckBox.isSelected() ){
+                        try {
+                            Main.server.editUser(finalUserIdCheck, userNameField.getText(), passwordField1.getText(), Protocol.Permission.ALL);
+                        } catch (ServerException ex) {
+                            JOptionPane.showMessageDialog(null, "You do not have permission to create users.");
+                            ex.printStackTrace();
+                        }
                     }
                 }
-                if (CreateBBCheckBox.isSelected()){
-                    try {
-                        Main.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.CREATE_BILLBOARDS);
-                    } catch (ServerException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-                if (editUsersCheckBox.isSelected()){
-                    try {
-                        Main.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.EDIT_USERS);
-                    } catch (ServerException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-                if (editUsersCheckBox.isSelected() && ScheduleBBCheckBox.isSelected() && CreateBBCheckBox.isSelected() && EditBBCheckBox.isSelected() ){
-                    try {
-                        Main.server.editUser(finalUserId, userNameField.getText(), passwordField1.getText(), Protocol.Permission.ALL);
-                    } catch (ServerException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-
-
             }
         });
+
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

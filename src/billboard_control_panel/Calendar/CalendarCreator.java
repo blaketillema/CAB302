@@ -494,6 +494,7 @@ public class CalendarCreator extends Frame {
                     Main.server.addSchedule(body);
                     //Main.server.addSchedule(ClientMainTests.randomNewSchedule(billboardId));
                 } catch (ServerException ex) {
+                    JOptionPane.showMessageDialog(null, "You do not have permission to schedule billboards.");
                     ex.printStackTrace();
                 }
 
@@ -707,6 +708,7 @@ public class CalendarCreator extends Frame {
                 try {
                     Main.server.deleteSchedule(scheduleId);
                 } catch (ServerException ex) {
+                    JOptionPane.showMessageDialog(null, "You do not have permission to delete billboard schedules.");
                     ex.printStackTrace();
                 }
 

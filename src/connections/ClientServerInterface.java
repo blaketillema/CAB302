@@ -480,7 +480,7 @@ public class ClientServerInterface {
 
      private functions
      **********************/
-    private static String getUserSalt(String userId) throws IOException, ClassNotFoundException {
+    public static String getUserSalt(String userId) throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream(saltMapPath);
         ObjectInputStream ois = new ObjectInputStream(fis);
 
