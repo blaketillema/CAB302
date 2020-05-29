@@ -12,8 +12,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.TreeMap;
 
-import connections.*;
-import connections.exceptions.ServerException;
+import billboard_server.*;
+import billboard_server.exceptions.ServerException;
 
 public class LoginManager extends JFrame {
     public JPanel LoginPanel;
