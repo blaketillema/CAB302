@@ -167,10 +167,10 @@ public class Billboard {
     /**
      * DEBUG Method, print TreeMap to check contents
      */
-    public void printBillboard() {
+    private void printBillboard() {
         //System.out.println("Billboard: Printing Billboard...");
         Set<String> set1 = billboardContents.keySet();
-        for (String key: set1) {
+        for (String key : set1) {
             //System.out.println("Billboard Key : "  + key + "\t\t" + "Value : "  + billboardContents.get(key));
         }
     }
