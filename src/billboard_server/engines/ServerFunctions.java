@@ -119,6 +119,25 @@ public class ServerFunctions {
         return billboardIds;
     }
 
+    private static ArrayList<String> fixUserList(String userId, ArrayList<String> userIds) throws SQLException {
+        for (Iterator<String> iterator = userIds.iterator(); iterator.hasNext(); ) {
+            String loopUserId = iterator.next();
+            if (!database.doesUserExist(loopUserId)) {
+                iterator.remove();
+            } else {
+                if(!loopUserId.equals(userId)) {
+                    try {
+                        checkPermission(userId, Permission.EDIT_USERS);
+                    } catch (ServerException ignored) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+
+        return userIds;
+    }
+
     /*
         SERVERTHREAD CALLS
      */
@@ -184,14 +203,21 @@ public class ServerFunctions {
         return response;
     }
 
-    public static ServerResponse getUsers(TreeMap<String, Object> data) throws ServerException, SQLException {
+    public static ServerResponse getUsers(long sessionId, TreeMap<String, Object> data) throws ServerException, SQLException {
         ServerResponse response = new ServerResponse();
+        String userId = sessionToUserId(sessionId);
 
         if (data.containsKey("userList")) {
-            // ArrayList<String> userIds = fixUserList((ArrayList<String>) data.get("userList"));
-            response.data = database.getUsers((ArrayList<String>) data.get("userList"));
+            ArrayList<String> userIds = fixUserList(userId, (ArrayList<String>) data.get("userList"));
+            response.data = database.getUsers(userIds);
         } else {
-            response.data = database.getUsers();
+            try {
+                checkPermission(userId, Permission.EDIT_USERS);
+                response.data = database.getUsers();
+            } catch (ServerException ignored) {
+                ArrayList<String> userIdList = new ArrayList<>(1);
+                response.data = database.getUsers(userIdList);
+            }
         }
 
         return response;
@@ -201,7 +227,6 @@ public class ServerFunctions {
         ServerResponse response = new ServerResponse();
 
         String userId = sessionToUserId(sessionId);
-
         checkPermission(userId, Permission.EDIT_USERS);
 
         if (data.containsKey("userList")) {
@@ -335,7 +360,11 @@ public class ServerFunctions {
         return response;
     }
 
-    public static ServerResponse getSchedules(TreeMap<String, Object> data) throws ServerException, SQLException {
+    public static ServerResponse getSchedules(long sessionId, TreeMap<String, Object> data) throws ServerException, SQLException {
+
+        String userId = sessionToUserId(sessionId);
+        checkPermission(userId, Protocol.Permission.SCHEDULE_BILLBOARDS);
+
         ServerResponse response = new ServerResponse();
         if (data.containsKey("scheduleList")) {
             // ArrayList<String> scheduleIds = fixScheduleList((ArrayList<String>) data.get("scheduleList"));
