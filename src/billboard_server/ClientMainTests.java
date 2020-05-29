@@ -21,12 +21,17 @@ public class ClientMainTests {
 
         // EDIT_SCHEDULES: adding/editing/deleting schedules (as bob)
         Test4a_LoginBobScheduleBillboards();
+        // get current schedule
+        getCurrentScheduledBB();
+        //
         Test4b_LoginBobEditSchedules();
         Test4c_LoginBobDeleteSchedules();
 
         // EDIT_ALL_BILLBOARDS: editing/deleting other billboards (as jack)
         Test5a_LoginJackEditBillboard();
         Test5b_LoginJackDeleteBillboard();
+
+
     }
 
     static void Test1_LoginAdmin() throws ServerException {
@@ -77,7 +82,7 @@ public class ClientMainTests {
 
         server.addBillboard("joe's billboard 1", randomNewBillboard());
         server.addBillboard("joe's billboard 2", randomNewBillboard());
-
+        server.addBillboard("B2", randomNewBillboard());
 
         TreeMap<String, Object> confirmed = server.getBillboards();
         System.out.println(confirmed);
@@ -116,6 +121,9 @@ public class ClientMainTests {
 
         String billboardId = server.getBillboardId("joe's billboard 2");
         server.addSchedule(randomNewSchedule(billboardId));
+
+        String billboardIdB2 = server.getBillboardId("B2");
+        server.addSchedule(randomNewSchedule(billboardIdB2));
 
         String scheduleId = server.getScheduleId(billboardId);
 
@@ -198,8 +206,8 @@ public class ClientMainTests {
 
         body.put("billboardId", billboardId);
         body.put("startTime", OffsetDateTime.now());
-        body.put("duration", r.nextInt());
-        body.put("isRecurring", r.nextBoolean());
+        body.put("duration", 60);
+        body.put("isRecurring", false);
         body.put("recurFreqInMins", r.nextInt());
 
         return body;
@@ -219,4 +227,14 @@ public class ClientMainTests {
 
         return original;
     }
+
+    // get current billboard
+    static void getCurrentScheduledBB() throws ServerException {
+        ClientServerInterface server = new ClientServerInterface();
+        System.out.println(server.getCurrentBillboard().toString());
+
+    }
+
+
+
 }

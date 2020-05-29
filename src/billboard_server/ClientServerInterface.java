@@ -2,6 +2,7 @@ package billboard_server;
 
 import java.io.*;
 import java.nio.file.Paths;
+import java.time.OffsetDateTime;
 import java.util.*;
 
 import billboard_server.Protocol.*;
@@ -356,7 +357,7 @@ public class ClientServerInterface {
         return (TreeMap<String, String>) getBillboards(billboardList).get(billboardId);
     }
 
-    public TreeMap<String, Object> getCurrentBillboard() throws ServerException {
+    public TreeMap<String, String> getCurrentBillboard() throws ServerException {
         System.out.print("\nrequesting to get current billboard ... ");
 
         ClientRequest request = new ClientRequest();
@@ -367,7 +368,7 @@ public class ClientServerInterface {
 
         System.out.println("done");
 
-        return response.data;
+        return (TreeMap<String, String>) response.data.get( response.data.firstKey() );
     }
 
     public String getScheduleId(String billboardId) throws ServerException {
@@ -400,6 +401,60 @@ public class ClientServerInterface {
 
         System.out.println("done");
     }
+
+    public void addSchedule(String billboardName, OffsetDateTime schedStart, Integer schedDurationInMins,
+                            Boolean isRecurring, Integer recurFreqInMins, String creatorName) throws ServerException {
+        System.out.printf("\nrequesting to add schedule: %s... ", billboardName);
+
+
+        ClientRequest request = new ClientRequest();
+
+        request.cmd = Cmd.ADD_SCHEDULES;
+
+        TreeMap<String, Object> body = new TreeMap<>();
+
+        body.put("billboardId", getBillboardId(billboardName));
+        body.put("startTime", schedStart);
+        body.put("duration", schedDurationInMins);
+        body.put("isRecurring", isRecurring);
+        body.put("recurFreqInMins", recurFreqInMins);
+        body.put("creatorName", creatorName);
+
+        request.data.put(UUID.randomUUID().toString(), body);
+
+        request.sessionId = this.sessionId;
+
+        ServerClientConnection.request(this.ip, this.port, request);
+
+        System.out.println("done");
+    }
+
+    /*
+    public void scheduleCommand(String command, ArrayList<Object> data) throws ServerException {
+        System.out.printf("\nrequesting schedule command: %s... ", command);
+
+
+        ClientRequest request = new ClientRequest();
+
+
+        TreeMap<String, Object> body = new TreeMap<>();
+
+        body.put("billboardId", getBillboardId(billboardName));
+        body.put("startTime", schedStart);
+        body.put("duration", schedDurationInMins);
+        body.put("isRecurring", isRecurring);
+        body.put("recurFreqInMins", recurFreqInMins);
+        body.put("creatorName", creatorName);
+
+        request.data.put(UUID.randomUUID().toString(), body);
+
+        request.sessionId = this.sessionId;
+
+        ServerClientConnection.request(this.ip, this.port, request);
+
+        System.out.println("done");
+    }
+    */
 
     public void editSchedule(String scheduleId, TreeMap<String, Object> data) throws ServerException {
         System.out.printf("\nrequesting to edit schedule: %s... ", scheduleId);
