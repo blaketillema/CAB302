@@ -3,28 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_server/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/Database.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/ClientMainTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/ClientMainTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/ClientServerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/ClientServerInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/Protocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/Protocol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/README.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/ServerMainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/ServerMain.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/assets/network.props" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/assets/network.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/assets/salts.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/assets/salts.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/engines/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/engines/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/engines/ServerClientConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/engines/ServerClientConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/engines/ServerFunctions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/engines/ServerFunctions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/engines/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/engines/ServerThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/exceptions/BillboardException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/exceptions/BillboardException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/exceptions/PermissionException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/exceptions/PermissionException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/exceptions/ServerException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/exceptions/ServerException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/old/assets/salts.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/old/testing/AdminAddUsers.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/tools/Tools.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/tools/Tools.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/tools/UserAuth.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/tools/UserAuth.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/types/ClientRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/types/ClientRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/connections/types/ServerResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/types/ServerResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/BillboardControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/BillboardControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/Calendar/CalendarCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/Calendar/CalendarCreator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/LoginManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/LoginManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/MainControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/MainControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/UserControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/UserControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_server/assets/salts.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/assets/salts.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_server/engines/ServerFunctions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/engines/ServerFunctions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_server/engines/ServerThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/engines/ServerThread.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +83,7 @@
       <recent name="C:\Users\dnehl\OneDrive - Queensland University of Technology\CAB302\assignment\CAB302\src" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ClientMainTests">
+  <component name="RunManager" selected="Application.Main">
     <configuration name="Unnamed" type="AndroidJUnit" factoryName="Android JUnit" nameIsGenerated="true">
       <module name="CAB302" />
       <useClassPathOnly />
@@ -115,6 +102,32 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="billboard_server.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="billboard_control_panel.Main" />
+      <module name="CAB302" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="billboard_control_panel.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MainControl" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="billboard_control_panel.MainControl" />
+      <module name="CAB302" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="billboard_control_panel.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -174,32 +187,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="User1AddBillboards" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="connections.testing.User1AddBillboards" />
-      <module name="CAB302" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="connections.testing.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="User3ScheduleBillboards" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="connections.testing.User3ScheduleBillboards" />
-      <module name="CAB302" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="connections.testing.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="UserManagement" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="billboard_control_panel.UserManagement" />
       <module name="CAB302" />
@@ -220,21 +207,22 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Android JUnit.Unnamed" />
       <item itemvalue="Application.MainRunDisplay" />
       <item itemvalue="Application.UserManagement" />
       <item itemvalue="Application.ServerMainTest" />
-      <item itemvalue="Application.User1AddBillboards" />
-      <item itemvalue="Application.User3ScheduleBillboards" />
       <item itemvalue="Application.ServerMain" />
       <item itemvalue="Application.ClientMainTests" />
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.MainControl" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.ClientMainTests" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.ServerMain" />
+        <item itemvalue="Application.MainControl" />
+        <item itemvalue="Application.ClientMainTests" />
         <item itemvalue="Application.ServerMainTest" />
-        <item itemvalue="Application.User3ScheduleBillboards" />
-        <item itemvalue="Application.User1AddBillboards" />
       </list>
     </recent_temporary>
   </component>
@@ -408,24 +396,28 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2884" y="228" key="FileChooserDialogImpl/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587606242469" />
-    <state width="681" height="901" key="GridCell.Tab.0.bottom" timestamp="1590629281184">
-      <screen x="0" y="0" width="1920" height="1030" />
+    <state width="1696" height="156" key="GridCell.Tab.0.bottom" timestamp="1590758313720">
+      <screen x="0" y="0" width="1739" height="939" />
     </state>
+    <state width="1696" height="156" key="GridCell.Tab.0.bottom/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590758313720" />
     <state width="681" height="901" key="GridCell.Tab.0.bottom/0.0.1920.1030@0.0.1920.1030" timestamp="1590629281184" />
     <state width="1853" height="230" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="681" height="901" key="GridCell.Tab.0.center" timestamp="1590629281183">
-      <screen x="0" y="0" width="1920" height="1030" />
+    <state width="1696" height="156" key="GridCell.Tab.0.center" timestamp="1590758313720">
+      <screen x="0" y="0" width="1739" height="939" />
     </state>
+    <state width="1696" height="156" key="GridCell.Tab.0.center/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590758313720" />
     <state width="681" height="901" key="GridCell.Tab.0.center/0.0.1920.1030@0.0.1920.1030" timestamp="1590629281183" />
     <state width="1853" height="230" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="681" height="901" key="GridCell.Tab.0.left" timestamp="1590629281182">
-      <screen x="0" y="0" width="1920" height="1030" />
+    <state width="1696" height="156" key="GridCell.Tab.0.left" timestamp="1590758313720">
+      <screen x="0" y="0" width="1739" height="939" />
     </state>
+    <state width="1696" height="156" key="GridCell.Tab.0.left/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590758313720" />
     <state width="681" height="901" key="GridCell.Tab.0.left/0.0.1920.1030@0.0.1920.1030" timestamp="1590629281182" />
     <state width="1853" height="230" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="681" height="901" key="GridCell.Tab.0.right" timestamp="1590629281183">
-      <screen x="0" y="0" width="1920" height="1030" />
+    <state width="1696" height="156" key="GridCell.Tab.0.right" timestamp="1590758313720">
+      <screen x="0" y="0" width="1739" height="939" />
     </state>
+    <state width="1696" height="156" key="GridCell.Tab.0.right/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590758313720" />
     <state width="681" height="901" key="GridCell.Tab.0.right/0.0.1920.1030@0.0.1920.1030" timestamp="1590629281183" />
     <state width="1853" height="230" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
     <state width="890" height="439" key="GridCell.Tab.1.bottom" timestamp="1585484853584">
@@ -464,9 +456,10 @@
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
     <state x="753" y="436" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1030@0.0.1920.1030" timestamp="1590629288587" />
-    <state x="2993" y="0" width="854" height="1087" key="dock-window-1" timestamp="1585732302250">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="260" y="-1029" width="1363" height="590" key="dock-window-1" timestamp="1590752638381">
+      <screen x="0" y="-1080" width="1739" height="939" />
     </state>
+    <state x="260" y="-1029" width="1363" height="590" key="dock-window-1/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590752638381" />
     <state x="2993" y="0" width="854" height="1087" key="dock-window-1/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585732302250" />
     <state x="730" y="220" key="git4idea.branch.GitSmartOperationDialog" timestamp="1586937769061">
       <screen x="0" y="0" width="1920" height="1030" />
@@ -502,10 +495,10 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/CAB302$RunDisplayBillboard.ic" NAME="RunDisplayBillboard Coverage Results" MODIFIED="1585481569110" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/CAB302$MainRunDisplay.ic" NAME="MainRunDisplay Coverage Results" MODIFIED="1585574155421" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>Sandbox.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/CAB302$MainRunDisplay.ic" NAME="MainRunDisplay Coverage Results" MODIFIED="1585574155421" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/CAB302$RunDisplayBillboard.ic" NAME="RunDisplayBillboard Coverage Results" MODIFIED="1585481569110" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>Sandbox.*</FILTER>
     </SUITE>
   </component>

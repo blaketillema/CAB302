@@ -6,6 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.TreeMap;
 
+import billboard_server.exceptions.ServerException;
 import billboard_server.types.*;
 
 import static billboard_server.engines.Server.*;
@@ -55,7 +56,7 @@ public class ServerThread implements Runnable {
                     break;
 
                 case GET_SCHEDULES:
-                    response = getSchedules(request.data);
+                    response = getSchedules(request.sessionId, request.data);
                     break;
 
                 case ADD_USERS:
@@ -67,7 +68,7 @@ public class ServerThread implements Runnable {
                     break;
 
                 case GET_USERS:
-                    response = getUsers(request.data);
+                    response = getUsers(request.sessionId, request.data);
                     break;
 
                 case NAME_TO_ID:
@@ -87,6 +88,9 @@ public class ServerThread implements Runnable {
                     response.data = new TreeMap<>();
                     response.data.put("scheduleId", database.billboardToScheduleId((String) request.data.get("billboardId")));
                     break;
+
+                default:
+                    throw new ServerException("unknown command");
             }
         } catch (Exception e) {
             response = new ServerResponse();

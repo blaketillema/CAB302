@@ -132,6 +132,7 @@ public class BillboardControl {
                     Main.server.addBillboard(billboardNameArea.getText(), body);
                     //Main.server.addBillboard(billboardNameArea.getText(), ClientMainTests.randomNewBillboard());
                 } catch (ServerException ex) {
+                    JOptionPane.showMessageDialog(null, "You do not have permission to create billboards");
                     ex.printStackTrace();
                 }
             }
@@ -139,18 +140,15 @@ public class BillboardControl {
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit without saving?");
-                if (n == JOptionPane.YES_OPTION) {
                     Window[] wns = LoginManager.getFrames();
                     for (Window wn1 : wns) {
                         wn1.dispose();
                         wn1.setVisible(false);
                     }
                     new MainControl().main(null);
-                } else if (n == JOptionPane.NO_OPTION) {
-                }
             }
         });
+
         unused1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

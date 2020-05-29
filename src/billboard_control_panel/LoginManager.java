@@ -1,9 +1,5 @@
 package billboard_control_panel;
 
-//import connections.ClientServerInterface;
-//import connections.Protocol;
-//import connections.exceptions.ServerException;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,7 +8,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.TreeMap;
 
-import billboard_server.*;
+
 import billboard_server.exceptions.ServerException;
 
 public class LoginManager extends JFrame {
@@ -26,13 +22,15 @@ public class LoginManager extends JFrame {
 
         setTitle("Login Form");
 
-
+        // Login Button Action Listener
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 login(usernameField1.getText(), passwordField1.getText());
             }
         });
+
+        // Pressing 'Enter/Return' acts as clicking the Login Button
         passwordField1.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -51,34 +49,22 @@ public class LoginManager extends JFrame {
         });
     }
 
+    // Login function which calls upon the server.login function
     public void login(String username, String password) {
-        Component frame = null;
-        // TODO: Check for usernames and passwords stored in db
-        TreeMap<String, Object> currentUsers = null;
-        try {
-            currentUsers = Main.server.getUsers();
-        } catch (ServerException e) {
-            e.printStackTrace();
-        }
-
-        currentUsers.forEach((k,v) ->{
-            System.out.println("Key: " + k + ", Value: " + v);
-        });
-
         // TODO: Change password of cab203 to cab302 in db
         // Case 1: First time login for admin (Admin username = admin, password = cab203"
-        if (username.equals("admin") && password.equals("cab203")) {
-            //ClientServerInterface server = new ClientServerInterface();
-            try {
-                Main.server.login(username,password);
-                new MainControl().main(null);
-            } catch (ServerException e) {
-                JOptionPane.showMessageDialog(null, "Invalid username or password");
-                e.printStackTrace();
-            }
-        }
+//        if (username.equals("admin") && password.equals("cab203")) {
+//            //ClientServerInterface server = new ClientServerInterface();
+//            try {
+//                Main.server.login(username,password);
+//                new MainControl().main(null);
+//            } catch (ServerException e) {
+//                JOptionPane.showMessageDialog(null, "Invalid username or password");
+//                e.printStackTrace();
+//            }
+//        }
         // Case 2: Logging in with different user credentials:
-        else {
+
             try {
                 Main.server.login(username,password);
                 new MainControl().main(null);
@@ -87,7 +73,7 @@ public class LoginManager extends JFrame {
                 e.printStackTrace();
             }
 
-        }
+
     }
 
     public static void main(String[] args) {

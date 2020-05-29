@@ -102,6 +102,7 @@ public class MainControl {
                     } else if (n == JOptionPane.NO_OPTION) {
                     }
                 } catch (ServerException ex) {
+                    JOptionPane.showMessageDialog(null, "You do not have permission to delete this user");
                     ex.printStackTrace();
                 }
                 refreshUsers();
@@ -168,14 +169,14 @@ public class MainControl {
                 System.out.println("Preview selected billboard: " + billboardsList.getSelectedValue());
                 String selectedBillboardName = (String) billboardsList.getSelectedValue();
                 try {
-                    billboardKey = LoginManager.server.getBillboardId(selectedBillboardName);
+                    billboardKey = Main.server.getBillboardId(selectedBillboardName);
                 } catch (ServerException ex) {
                     ex.printStackTrace();
                 }
                 System.out.println("Billboard Key:" + billboardKey);
 
                 try {
-                    billBoard = LoginManager.server.getBillboard(billboardKey);
+                    billBoard = Main.server.getBillboard(billboardKey);
                 } catch (ServerException ex) {
                     ex.printStackTrace();
                 }
