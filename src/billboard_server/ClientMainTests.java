@@ -1,6 +1,6 @@
-package connections;
+package billboard_server;
 
-import connections.exceptions.ServerException;
+import billboard_server.exceptions.ServerException;
 
 import java.time.OffsetDateTime;
 import java.util.*;

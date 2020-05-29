@@ -9,11 +9,14 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.TreeMap;
 
 import billboard_control_panel.Calendar.*;
 import billboard_control_panel.Calendar.CalendarEvent;
-import connections.exceptions.ServerException;
+import billboard_server.ClientServerInterface;
+import billboard_server.exceptions.ServerException;
+import billboard_viewer.Billboard;
 //import billboard_viewer.DisplayBillboard;
 //import connections.ClientServerInterface;
 //import connections.Protocol;
@@ -158,6 +161,37 @@ public class MainControl {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //new DisplayBillboard(null).displayCurrentBillboard();
+
+                String billboardKey = null;
+                TreeMap billBoard = new TreeMap<String, String>();
+
+                System.out.println("Preview selected billboard: " + billboardsList.getSelectedValue());
+                String selectedBillboardName = (String) billboardsList.getSelectedValue();
+                try {
+                    billboardKey = LoginManager.server.getBillboardId(selectedBillboardName);
+                } catch (ServerException ex) {
+                    ex.printStackTrace();
+                }
+                System.out.println("Billboard Key:" + billboardKey);
+
+                try {
+                    billBoard = LoginManager.server.getBillboard(billboardKey);
+                } catch (ServerException ex) {
+                    ex.printStackTrace();
+                }
+
+                //printBillboard
+                System.out.println("Outputing treemap contents:");
+
+                Set<String> set1 = billBoard.keySet();
+                for (String key : set1) {
+                    System.out.println("Billboard Key : " + key + "\t\t" + "Value : " + billBoard.get(key));
+                }
+
+                System.out.println("Previewing Billboard...");
+                Billboard previewBillboard = new Billboard(billBoard, true);
+
+
             }
         });
         scheduleBillboardButton.addActionListener(new ActionListener() {

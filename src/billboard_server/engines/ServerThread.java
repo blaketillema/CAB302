@@ -1,23 +1,15 @@
-package connections.engines;
+package billboard_server.engines;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.sql.SQLException;
-import java.util.Map;
-import java.util.Random;
 import java.util.TreeMap;
 
-import com.sun.source.tree.Tree;
-import connections.Protocol;
-import connections.exceptions.ServerException;
-import connections.types.*;
-import connections.Protocol.*;
-import connections.tools.UserAuth;
+import billboard_server.types.*;
 
-import static connections.engines.Server.*;
-import static connections.engines.ServerFunctions.*;
+import static billboard_server.engines.Server.*;
+import static billboard_server.engines.ServerFunctions.*;
 
 public class ServerThread implements Runnable {
     ObjectOutputStream outStream = null;

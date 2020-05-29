@@ -1,15 +1,15 @@
-package connections;
+package billboard_server;
 
 import java.io.*;
 import java.nio.file.Paths;
 import java.util.*;
 
-import connections.Protocol.*;
-import connections.engines.ServerClientConnection;
-import connections.exceptions.ServerException;
-import connections.tools.UserAuth;
-import connections.types.ClientRequest;
-import connections.types.ServerResponse;
+import billboard_server.Protocol.*;
+import billboard_server.engines.ServerClientConnection;
+import billboard_server.exceptions.ServerException;
+import billboard_server.tools.UserAuth;
+import billboard_server.types.ClientRequest;
+import billboard_server.types.ServerResponse;
 
 public class ClientServerInterface {
 
@@ -17,10 +17,10 @@ public class ClientServerInterface {
     private int port;
     private long sessionId;
     private static final String saltMapPath =
-            Paths.get(System.getProperty("user.dir"), "src", "connections", "assets", "salts.map").toString();
+            Paths.get(System.getProperty("user.dir"), "src", "billboard_server", "assets", "salts.map").toString();
 
     private static final String networkPath =
-            Paths.get(System.getProperty("user.dir"), "src", "connections", "assets", "network.props").toString();
+            Paths.get(System.getProperty("user.dir"), "src", "billboard_server", "assets", "network.props").toString();
 
     /****************
      * initialiser (reads network.prop)

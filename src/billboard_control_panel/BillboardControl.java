@@ -20,11 +20,11 @@ import java.io.UnsupportedEncodingException;
 import java.util.Set;
 import java.util.TreeMap;
 
-//import billboard_viewer.*;
+import billboard_viewer.Billboard; // Viewer billboard class required for previewing the billboard
 
-import connections.ClientMainTests;
-import connections.ClientServerInterface;
-import connections.exceptions.ServerException;
+import billboard_server.ClientMainTests;
+import billboard_server.ClientServerInterface;
+import billboard_server.exceptions.ServerException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -62,6 +62,7 @@ public class BillboardControl {
     TreeMap<String, String> currentBillboard = new TreeMap<>(); // Initialize an empty TreeMap
 
     public BillboardControl() {
+
         importXMLButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -111,7 +112,7 @@ public class BillboardControl {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Preview Billboard");
 
-                //Billboard previewBillboard = new Billboard(currentBillboard, true);
+                Billboard previewBillboard = new Billboard(currentBillboard, true);
 
             }
         });

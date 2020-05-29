@@ -100,7 +100,7 @@
         </configuration>
         <configuration name="ClientMainTests" type="Application" factoryName="Application" temporary="true"
                        nameIsGenerated="true">
-            <option name="MAIN_CLASS_NAME" value="connections.ClientMainTests"/>
+            <option name="MAIN_CLASS_NAME" value="billboard_server.ClientMainTests"/>
             <module name="CAB302"/>
             <extension name="coverage">
                 <pattern>
@@ -114,11 +114,11 @@
         </configuration>
         <configuration name="GenAdminKeys" type="Application" factoryName="Application" temporary="true"
                        nameIsGenerated="true">
-            <option name="MAIN_CLASS_NAME" value="connections.types.GenAdminKeys"/>
+            <option name="MAIN_CLASS_NAME" value="billboard_server.types.GenAdminKeys"/>
             <module name="CAB302"/>
             <extension name="coverage">
                 <pattern>
-                    <option name="PATTERN" value="connections.types.*"/>
+                    <option name="PATTERN" value="billboard_server.types.*"/>
                     <option name="ENABLED" value="true"/>
                 </pattern>
             </extension>

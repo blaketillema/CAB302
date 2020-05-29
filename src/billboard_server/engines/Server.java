@@ -1,17 +1,14 @@
-package connections.engines;
+package billboard_server.engines;
+
+import billboard_server.Database;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.TreeMap;
-import java.lang.reflect.*;
-
-import billboard_server.Database;
 
 /****************
  * initialiser
@@ -29,7 +26,7 @@ public class Server {
     public static Database database = null;
 
     private static final String networkPath =
-            Paths.get(System.getProperty("user.dir"), "src", "connections", "assets", "network.props").toString();
+            Paths.get(System.getProperty("user.dir"), "src", "billboard_server", "assets", "network.props").toString();
 
     public Server() throws SQLException {
         this.port = 1234;

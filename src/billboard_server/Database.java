@@ -1,7 +1,6 @@
 package billboard_server;
 
-import connections.Protocol;
-import connections.tools.UserAuth;
+import billboard_server.tools.UserAuth;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -354,7 +353,7 @@ public class Database {
                 billboard.put("billboardName", rs.getString(2));
                 billboard.put("billboardCreator", rs.getString(3));
                 billboard.put("message", rs.getString(4));
-                billboard.put("info", rs.getString(5));
+                billboard.put("information", rs.getString(5));
                 billboard.put("pictureData", rs.getString(6));
                 billboard.put("pictureUrl", rs.getString(7));
                 billboard.put("billboardBackground", rs.getString(8));
@@ -380,7 +379,7 @@ public class Database {
             billboard.put("billboardName", rs.getString(2));
             billboard.put("billboardCreator", rs.getString(3));
             billboard.put("message", rs.getString(4));
-            billboard.put("info", rs.getString(5));
+            billboard.put("information", rs.getString(5));
             billboard.put("pictureData", rs.getString(6));
             billboard.put("pictureUrl", rs.getString(7));
             billboard.put("billboardBackground", rs.getString(8));

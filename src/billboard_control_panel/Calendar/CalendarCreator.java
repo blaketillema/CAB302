@@ -1,8 +1,11 @@
 package billboard_control_panel.Calendar;
 
-import billboard_control_panel.*;
-import connections.ClientMainTests;
-import connections.exceptions.ServerException;
+import billboard_control_panel.LoginManager;
+import billboard_control_panel.MainControl;
+import billboard_control_panel.ScheduleController;
+import billboard_control_panel.Scheduler;
+import billboard_server.ClientMainTests;
+import billboard_server.exceptions.ServerException;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -42,7 +45,7 @@ public class CalendarCreator extends Frame {
         // Billboard Drop down
         TreeMap<String, Object> billboards = null;
         try {
-            billboards = Main.server.getBillboards();
+            billboards = LoginManager.server.getBillboards();
         } catch (ServerException z) {
             z.printStackTrace();
         }
@@ -146,7 +149,7 @@ public class CalendarCreator extends Frame {
 
         TreeMap<String, Object> confirmed = null;
         try {
-            confirmed = Main.server.getSchedules();
+            confirmed = LoginManager.server.getSchedules();
         } catch (ServerException e) {
             e.printStackTrace();
         }
@@ -165,7 +168,7 @@ public class CalendarCreator extends Frame {
             String billboardId = (String) scheduleDetails.get("billboardId");
 
             try {
-                TreeMap<String, String> billboard = Main.server.getBillboard(billboardId);
+                TreeMap<String, String> billboard = LoginManager.server.getBillboard(billboardId);
                 //System.out.println(billboard.toString());
                 String billboardName = (String) billboard.get("billboardName");
                 int startMinute = offsetStartDateTime.getMinute();
@@ -479,7 +482,7 @@ public class CalendarCreator extends Frame {
                 OffsetDateTime offsetDateTime = convertedDate.atOffset(OffsetDateTime.now().getOffset());
                 String billboardId = null;
                 try {
-                    billboardId = Main.server.getBillboardId(billboardName);
+                    billboardId = LoginManager.server.getBillboardId(billboardName);
                 } catch (ServerException ex) {
                     ex.printStackTrace();
                 }
@@ -491,10 +494,9 @@ public class CalendarCreator extends Frame {
                     body.put("duration", diffMinutes);
                     body.put("isRecurring", recurring);
                     body.put("recurFreqInMins", recurringEveryXminutes);
-                    Main.server.addSchedule(body);
-                    //Main.server.addSchedule(ClientMainTests.randomNewSchedule(billboardId));
+                    LoginManager.server.addSchedule(body);
+                    //LoginManager.server.addSchedule(ClientMainTests.randomNewSchedule(billboardId));
                 } catch (ServerException ex) {
-                    JOptionPane.showMessageDialog(null, "You do not have permission to schedule billboards.");
                     ex.printStackTrace();
                 }
 
@@ -701,14 +703,13 @@ public class CalendarCreator extends Frame {
                 //TODO: Ensure this is deleting a schedule of a billboard, not a billboard
                 String scheduleId = null;
                 try {
-                    scheduleId = Main.server.getScheduleId(Main.server.getBillboardId(billboardName));
+                    scheduleId = LoginManager.server.getScheduleId(LoginManager.server.getBillboardId(billboardName));
                 } catch (ServerException ex) {
                     ex.printStackTrace();
                 }
                 try {
-                    Main.server.deleteSchedule(scheduleId);
+                    LoginManager.server.deleteSchedule(scheduleId);
                 } catch (ServerException ex) {
-                    JOptionPane.showMessageDialog(null, "You do not have permission to delete billboard schedules.");
                     ex.printStackTrace();
                 }
 

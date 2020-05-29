@@ -4,8 +4,8 @@ package billboard_control_panel;
 //import connections.Protocol;
 //import connections.exceptions.ServerException;
 
-import connections.Protocol;
-import connections.exceptions.ServerException;
+import billboard_server.Protocol;
+import billboard_server.exceptions.ServerException;
 
 import javax.swing.*;
 import java.awt.*;
