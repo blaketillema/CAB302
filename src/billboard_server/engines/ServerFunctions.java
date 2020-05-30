@@ -122,7 +122,9 @@ public class ServerFunctions {
 
     private static ArrayList<String> fixUserList(String userId, ArrayList<String> userIds) throws SQLException {
         for (Iterator<String> iterator = userIds.iterator(); iterator.hasNext(); ) {
+
             String loopUserId = iterator.next();
+
             if (!database.doesUserExist(loopUserId)) {
                 iterator.remove();
             } else {
@@ -207,7 +209,6 @@ public class ServerFunctions {
     public static ServerResponse getUsers(long sessionId, TreeMap<String, Object> data) throws ServerException, SQLException {
         ServerResponse response = new ServerResponse();
         String userId = sessionToUserId(sessionId);
-
         if (data.containsKey("userList")) {
             ArrayList<String> userIds = fixUserList(userId, (ArrayList<String>) data.get("userList"));
             response.data = database.getUsers(userIds);
@@ -217,10 +218,10 @@ public class ServerFunctions {
                 response.data = database.getUsers();
             } catch (ServerException ignored) {
                 ArrayList<String> userIdList = new ArrayList<>(1);
+                userIdList.add(userId);
                 response.data = database.getUsers(userIdList);
             }
         }
-
         return response;
     }
 

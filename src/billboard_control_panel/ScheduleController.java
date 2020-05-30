@@ -42,11 +42,11 @@ public class ScheduleController {
 
 
         // SEND COMMAND AND WAIT FOR REPLY
-        scheduleCommand()
-        String commandReceived = (String) clientData.get("command");
-        ArrayList<Object> dataReceived = (ArrayList<Object>) clientData.get("data");
-
-        commandReplyParser()
+//        scheduleCommand()
+//        String commandReceived = (String) clientData.get("command");
+//        ArrayList<Object> dataReceived = (ArrayList<Object>) clientData.get("data");
+//
+//        commandReplyParser()
     }
 
     /**

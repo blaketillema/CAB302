@@ -44,6 +44,10 @@ public class ClientServerInterface {
         }
     }
 
+    public void logout(){
+        this.sessionId = 0;
+    }
+
     public void login(String userName, String password) throws ServerException {
         System.out.printf("\nrequesting to login user: %s ... ", userName);
 

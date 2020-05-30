@@ -66,7 +66,9 @@ public class MainControl {
                         wn1.dispose();
                         wn1.setVisible(false);
                     }
+                    Main.server.logout();
                     new LoginManager().main(null);
+
                 } else if (n == JOptionPane.NO_OPTION) {
                 }
             }
@@ -86,7 +88,7 @@ public class MainControl {
                     } else if (n == JOptionPane.NO_OPTION) {
                     }
                 } catch (ServerException ex) {
-                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
                 }
                 refreshUsers();
             }
@@ -333,6 +335,7 @@ public class MainControl {
         } catch (ServerException z) {
             z.printStackTrace();
         }
+
         //TreeMap<String, Object> userDetails = (TreeMap<String, Object>) users.get("userName");
         ArrayList<String> userNameList = new ArrayList<String>();
         TreeMap<String, Object> finalUsers = users;
