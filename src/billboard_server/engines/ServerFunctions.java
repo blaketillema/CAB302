@@ -264,7 +264,7 @@ public class ServerFunctions {
             String messageColour = (String) billboardDetails.get("messageColour");
             String informationColour = (String) billboardDetails.get("informationColour");
 
-            boolean isAdding = creator == null;
+            //boolean isAdding = creator == null;
 
             try {
                 creator = checkBillboardPermission(userId, billboardId);
@@ -273,7 +273,7 @@ public class ServerFunctions {
                 continue;
             }
 
-            if (isAdding) {
+            if (!database.doesBillboardExist(billboardId)) {
                 if (billboardId == null || name == null || creator == null || message == null || info == null ||
                         pictureData == null || pictureUrl == null || billboardBackground == null || messageColour == null || informationColour == null) {
                     response.status += "couldn't add " + billboardId + ", not all data provided. ";

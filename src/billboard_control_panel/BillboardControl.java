@@ -34,7 +34,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.*;
 
 // TODO - cleanup and documentation of BillboardControl class
-// TODO - cleanup of unused UI elements and appropriate element wrapping/visual presentation
 
 public class BillboardControl {
     private JTextField billboardNameArea;
@@ -109,6 +108,7 @@ public class BillboardControl {
 
             }
         });
+
         exportXMLButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -118,6 +118,7 @@ public class BillboardControl {
 
             }
         });
+
         previewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -130,76 +131,99 @@ public class BillboardControl {
 
             }
         });
+
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 TreeMap<String, String> body = new TreeMap<>();
 
-                String nullString = ""; // for easily changing between null or "" depending on implementation elsewhere (DB side)
+                //Apply changed fields
+                boolean valid = applyChanges();
+                if (!valid) {
+                    // Not valid - Do nothing. applyChanges will have popped an error dialog.
+                    System.out.println("Billboard not saved due to an invalid format.");
 
-                if (messageArea.getText().length() > 0) {
-                    body.put("message", "" + messageArea.getText());
                 } else {
-                    body.put("message", nullString);
-                }
+                    String nullString = ""; // for easily changing between null or "" depending on implementation elsewhere (DB side)
 
-                if (informationArea.getText().length() > 0) {
-                    body.put("information", "" + informationArea.getText());
-                } else {
-                    body.put("information", nullString);
-                }
+                    if (messageArea.getText().length() > 0) {
+                        body.put("message", "" + messageArea.getText());
+                    } else {
+                        body.put("message", nullString);
+                    }
 
-                if (pictureDataArea.getText().length() > 0) {
-                    body.put("pictureData", "" + pictureDataArea.getText());
-                } else {
-                    body.put("pictureData", nullString);
-                }
+                    if (informationArea.getText().length() > 0) {
+                        body.put("information", "" + informationArea.getText());
+                    } else {
+                        body.put("information", nullString);
+                    }
 
-                if (pictureUrlArea.getText().length() > 0) {
-                    body.put("pictureUrl", "" + pictureUrlArea.getText());
-                } else {
-                    body.put("pictureUrl", nullString);
-                }
+                    if (pictureDataArea.getText().length() > 0) {
+                        body.put("pictureData", "" + pictureDataArea.getText());
+                    } else {
+                        body.put("pictureData", nullString);
+                    }
 
-                if (backgroundColourArea.getText().length() > 0) {
-                    body.put("billboardBackground", "" + backgroundColourArea.getText());
-                } else {
-                    body.put("billboardBackground", nullString);
-                }
+                    if (pictureUrlArea.getText().length() > 0) {
+                        body.put("pictureUrl", "" + pictureUrlArea.getText());
+                    } else {
+                        body.put("pictureUrl", nullString);
+                    }
 
-                if (messageColourArea.getText().length() > 0) {
-                    body.put("messageColour", "" + messageColourArea.getText());
-                } else {
-                    body.put("messageColour", nullString);
-                }
+                    if (backgroundColourArea.getText().length() > 0) {
+                        body.put("billboardBackground", "" + backgroundColourArea.getText());
+                    } else {
+                        body.put("billboardBackground", nullString);
+                    }
 
-                if (informationColourArea.getText().length() > 0) {
-                    body.put("informationColour", "" + informationColourArea.getText());
-                } else {
-                    body.put("informationColour", nullString);
-                }
+                    if (messageColourArea.getText().length() > 0) {
+                        body.put("messageColour", "" + messageColourArea.getText());
+                    } else {
+                        body.put("messageColour", nullString);
+                    }
 
-                System.out.println(body);
+                    if (informationColourArea.getText().length() > 0) {
+                        body.put("informationColour", "" + informationColourArea.getText());
+                    } else {
+                        body.put("informationColour", nullString);
+                    }
 
-                printBillboard(body);
+                    System.out.println(body);
 
-                // Check for a billboard Name
-                if (billboardNameArea.getText().length() < 1) {
-                    // Throw error warning for no name
-                    System.out.println("Billboard Name length smaller than 1!");
-                    throwDialog("Please enter a Billboard Name", "No Billboard Name");
-                } else {
-                    // Allow saving
-                    try {
-                        Main.server.addBillboard(billboardNameArea.getText(), body);
-                        //Main.server.addBillboard(billboardNameArea.getText(), ClientMainTests.randomNewBillboard());
-                    } catch (ServerException ex) {
-                        ex.printStackTrace();
+                    printBillboard(body);
+
+                    // Check for a billboard Name
+                    if (billboardNameArea.getText().length() < 1) {
+                        // Throw error warning for no name
+                        System.out.println("Billboard Name length smaller than 1!");
+                        throwDialog("Please enter a Billboard Name", "No Billboard Name");
+                    } else {
+
+                        try {
+                            // Check if the billboard exists
+                            String existingID = Main.server.getBillboardId(billboardNameArea.getText());
+
+                            if (existingID == null) {
+                                // Billboard with this name does not exist, create new billboard
+                                System.out.println("Creating new billboard...");
+                                Main.server.addBillboard(billboardNameArea.getText(), body);
+                                throwDialog("Newly created Billboard " + billboardNameArea.getText() + " has been saved.", "Billboard Created");
+                            } else {
+                                // This billboard name already exists, edit existing billboard
+                                body.put("billboardName", billboardNameArea.getText());
+                                System.out.println("Editing existing billboard with ID: " + existingID + " ...");
+                                Main.server.editBillboard(existingID, body);
+                                throwDialog("Existing Billboard with name " + billboardNameArea.getText() + " has been saved.", "Billboard Edited");
+                            }
+                        } catch (ServerException ex) {
+                            System.out.println("Exception getting billboard ID");
+                            ex.printStackTrace();
+                        }
                     }
                 }
-
             }
         });
+
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -216,7 +240,6 @@ public class BillboardControl {
             }
         });
 
-        // TODO - Implement image upload and conversion to BASE64
         /**
          * Convert provided image file (png,jpg) to BASE64 Format
          */
@@ -252,7 +275,6 @@ public class BillboardControl {
                     // File chooser encountered an error
                     System.out.println("File Chooser was not approved");
                 }
-
             }
         });
         applyButton.addActionListener(new ActionListener() {
@@ -376,7 +398,6 @@ public class BillboardControl {
 
         return xmlExport;
     }
-
     private TreeMap parseBillboard(Document doc) {
         // implementation attempt
         // Initialize possible variables;
