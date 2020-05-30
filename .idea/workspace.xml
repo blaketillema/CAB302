@@ -2,34 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b100533d-3147-4c09-bd0e-be1df36634ff" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/billboard_server/assets/salts-back.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/BillboardControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/BillboardControl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/Calendar/CalendarCreator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/Calendar/CalendarCreator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/Calendar/CalendarViewer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/Calendar/CalendarViewer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/LoginManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/LoginManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/MainControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/MainControl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/ScheduleController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/Scheduler.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/SwingCalendar/Calendar.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/SwingCalendar/CalendarEmptyClickEvent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/SwingCalendar/CalendarEmptyClickListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/SwingCalendar/CalendarEvent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/SwingCalendar/CalendarEventClickEvent.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/SwingCalendar/CalendarEventClickListener.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/SwingCalendar/DayCalendar.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/SwingCalendar/DayCalendarTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/SwingCalendar/Week.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/SwingCalendar/WeekCalendar.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/SwingCalendar/WeekCalendarTest.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/UserControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_control_panel/UserControl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/schedulerController.form" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_control_panel/schedulerController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_server/ClientServerInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/ClientServerInterface.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_server/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/Database.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_server/assets/salts.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/billboard_server/assets/salts.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/assets/salts.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/billboard_server/engines/ServerFunctions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/engines/ServerFunctions.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/billboard_server/types/ServerResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/billboard_server/types/ServerResponse.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -419,42 +398,43 @@
     <state x="577" y="25" key="CommitChangelistDialog2/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585582372076" />
     <state x="637" y="27" key="CommitChangelistDialog2/0.0.1920.1030@0.0.1920.1030" timestamp="1589275042982" />
     <state x="1920" y="0" key="CommitChangelistDialog2/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585453971046" />
-    <state x="2884" y="228" key="FileChooserDialogImpl" timestamp="1587606242469">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="873" y="198" key="FileChooserDialogImpl" timestamp="1590847891161">
+      <screen x="0" y="0" width="1739" height="939" />
     </state>
     <state x="2884" y="228" key="FileChooserDialogImpl/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587606242469" />
-    <state width="1696" height="279" key="GridCell.Tab.0.bottom" timestamp="1590843670250">
+    <state x="873" y="198" key="FileChooserDialogImpl/4.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590847891161" />
+    <state width="1696" height="206" key="GridCell.Tab.0.bottom" timestamp="1590847495083">
       <screen x="0" y="0" width="1739" height="939" />
     </state>
     <state width="1696" height="147" key="GridCell.Tab.0.bottom/-1920.0.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590834560728" />
     <state width="1696" height="123" key="GridCell.Tab.0.bottom/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590821642551" />
     <state width="681" height="901" key="GridCell.Tab.0.bottom/0.0.1920.1030@0.0.1920.1030" timestamp="1590629281184" />
     <state width="1853" height="230" key="GridCell.Tab.0.bottom/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="1696" height="279" key="GridCell.Tab.0.bottom/4.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590843670250" />
-    <state width="1696" height="279" key="GridCell.Tab.0.center" timestamp="1590843670250">
+    <state width="1696" height="206" key="GridCell.Tab.0.bottom/4.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590847495083" />
+    <state width="1696" height="206" key="GridCell.Tab.0.center" timestamp="1590847495083">
       <screen x="0" y="0" width="1739" height="939" />
     </state>
     <state width="1696" height="147" key="GridCell.Tab.0.center/-1920.0.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590834560727" />
     <state width="1696" height="123" key="GridCell.Tab.0.center/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590821642551" />
     <state width="681" height="901" key="GridCell.Tab.0.center/0.0.1920.1030@0.0.1920.1030" timestamp="1590629281183" />
     <state width="1853" height="230" key="GridCell.Tab.0.center/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="1696" height="279" key="GridCell.Tab.0.center/4.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590843670250" />
-    <state width="1696" height="279" key="GridCell.Tab.0.left" timestamp="1590843670250">
+    <state width="1696" height="206" key="GridCell.Tab.0.center/4.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590847495083" />
+    <state width="1696" height="206" key="GridCell.Tab.0.left" timestamp="1590847495083">
       <screen x="0" y="0" width="1739" height="939" />
     </state>
     <state width="1696" height="147" key="GridCell.Tab.0.left/-1920.0.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590834560727" />
     <state width="1696" height="123" key="GridCell.Tab.0.left/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590821642551" />
     <state width="681" height="901" key="GridCell.Tab.0.left/0.0.1920.1030@0.0.1920.1030" timestamp="1590629281182" />
     <state width="1853" height="230" key="GridCell.Tab.0.left/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="1696" height="279" key="GridCell.Tab.0.left/4.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590843670250" />
-    <state width="1696" height="279" key="GridCell.Tab.0.right" timestamp="1590843670250">
+    <state width="1696" height="206" key="GridCell.Tab.0.left/4.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590847495083" />
+    <state width="1696" height="206" key="GridCell.Tab.0.right" timestamp="1590847495083">
       <screen x="0" y="0" width="1739" height="939" />
     </state>
     <state width="1696" height="147" key="GridCell.Tab.0.right/-1920.0.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590834560728" />
     <state width="1696" height="123" key="GridCell.Tab.0.right/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590821642551" />
     <state width="681" height="901" key="GridCell.Tab.0.right/0.0.1920.1030@0.0.1920.1030" timestamp="1590629281183" />
     <state width="1853" height="230" key="GridCell.Tab.0.right/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1587640322287" />
-    <state width="1696" height="279" key="GridCell.Tab.0.right/4.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590843670250" />
+    <state width="1696" height="206" key="GridCell.Tab.0.right/4.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1590847495083" />
     <state width="1696" height="154" key="GridCell.Tab.1.bottom" timestamp="1590815194505">
       <screen x="0" y="0" width="1739" height="939" />
     </state>

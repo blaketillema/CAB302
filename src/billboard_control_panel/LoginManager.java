@@ -57,7 +57,6 @@ public class LoginManager extends JFrame {
                 new MainControl(usernameField1.getText()).main(usernameField1.getText());
             } catch (ServerException e) {
                 JOptionPane.showMessageDialog(null, "Invalid username or password");
-                e.printStackTrace();
             }
     }
 

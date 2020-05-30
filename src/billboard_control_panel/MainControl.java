@@ -155,10 +155,9 @@ public class MainControl {
                         System.out.println("User Key:" + userKey);
                         user = Main.server.getUser(userKey);
                     } catch (ServerException ex) {
-                        ex.printStackTrace();
+                        throwDialog(ex.getMessage(),"Error");
                     }
                     new UserControl(user).main(user); // pass in selected user for edit
-                    //new UserControl().main(null);
                 }
             }
         });
@@ -188,7 +187,7 @@ public class MainControl {
                         System.out.println("Billboard Key:" + billboardKey);
                         billBoard = Main.server.getBillboard(billboardKey);
                     } catch (ServerException ex) {
-                        ex.printStackTrace();
+                        throwDialog(ex.getMessage(),"Error");
                     }
                     new BillboardControl(billBoard).main(billBoard); // pass in selected billboard for edit
 
@@ -217,8 +216,7 @@ public class MainControl {
                         billBoard = Main.server.getBillboard(billboardKey);
 
                     } catch (ServerException ex) {
-                        // TODO: make use of this stack trace exception
-                        ex.printStackTrace();
+                        throwDialog(ex.getMessage(),"Error");
                     }
 
                     //printBillboard debugging

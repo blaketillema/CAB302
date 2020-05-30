@@ -161,13 +161,16 @@ public class ServerFunctions {
         ServerResponse response = new ServerResponse();
         String userId = sessionToUserId(sessionId);
         /* make sure user attempting to add new users has permissions */
-        checkPermission(userId, Protocol.Permission.EDIT_USERS);
         /* loop through each user in the treemap */
         for (Map.Entry<String, Object> user : data.entrySet()) {
             /* cast the value of the treemap entry and get the details of each user */
             TreeMap<String, Object> userDetails = (TreeMap<String, Object>) user.getValue();
             /* get all of the relevant values and cast to types */
             String newUserId = user.getKey();
+            if(!userId.equals(newUserId)) {
+                checkPermission(userId, Protocol.Permission.EDIT_USERS);
+            }
+
             String newUsername = (String) userDetails.get("userName");
             String newSalt = (String) userDetails.get("salt");
             String newHash = (String) userDetails.get("hash");
@@ -190,9 +193,8 @@ public class ServerFunctions {
                     continue;
                 }
                 if (newUserId.equals("b220a053-91f1-48ee-acea-d1a145376e57")) {
-                        throw new ServerException("Admin settings cannot be changed");
+                    throw new ServerException("Admin settings cannot be changed");
                 }
-
 
                 database.editUser(newUserId, newUsername, doubleHash, newSalt, newPermissions);
             }

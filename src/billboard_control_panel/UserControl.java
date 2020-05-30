@@ -63,8 +63,7 @@ public class UserControl {
                     } else if (n == JOptionPane.NO_OPTION) {
                     }
                 } catch (ServerException ex) {
-                    JOptionPane.showMessageDialog(null, "You do not have permission to remove users.");
-                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
                 }
             }
         });
@@ -76,6 +75,7 @@ public class UserControl {
                 try {
                     userIDchecks = Main.server.getUserId(userNameField.getText());
                 } catch (ServerException ex) {
+                    //JOptionPane.showMessageDialog(null, ex.getMessage());
                     ex.printStackTrace();
                 }
                 String finalUserIdCheck = userIDchecks;
@@ -86,8 +86,7 @@ public class UserControl {
                         Main.server.addUser(userNameField.getText(), passwordField1.getText(), Protocol.Permission.NONE);
                         JOptionPane.showMessageDialog(null, "New user created");
                     } catch (ServerException ex) {
-                        JOptionPane.showMessageDialog(null, "You do not have permission to create users.");
-                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
                     }
                 }
                 // If existing user, edit existing user
@@ -123,8 +122,7 @@ public class UserControl {
                         JOptionPane.showMessageDialog(null, "Edited user: " + userNameField.getText());
                     }
                 } catch (ServerException ex) {
-                    JOptionPane.showMessageDialog(null, "You do not have permission to create users.");
-                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
                 }
             }
         });
