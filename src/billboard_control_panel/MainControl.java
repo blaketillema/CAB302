@@ -41,6 +41,7 @@ public class MainControl {
     private JButton refreshBillboardButton;
     private JLabel Title;
     private JTabbedPane tabbedPane;
+    private JButton deleteBillboardButton;
 
     public MainControl() {
 
@@ -116,21 +117,10 @@ public class MainControl {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new UserControl().main(null);
+                new UserControl(null).main(null);
             }
         });
-        modifyUserButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Window[] wns = LoginManager.getFrames();
-                for (Window wn1 : wns) {
-                    wn1.dispose();
-                    wn1.setVisible(false);
-                }
-                System.out.println(usersList.getSelectedValue());
-                new UserControl().main(null);
-            }
-        });
+
 
         // User Setting Buttons
 
@@ -147,6 +137,36 @@ public class MainControl {
             }
         });
 
+        modifyUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String userKey = null;
+                TreeMap user = new TreeMap<String, String>();
+                System.out.println("Edit selected user: " + usersList.getSelectedValue());
+
+                if (usersList.getSelectedValue() == null) {
+                    // No billboard selected
+                    throwDialog("No user has been selected to edit, please select a valid user.", "No User Selected");
+                } else {
+
+                    Window[] wns = LoginManager.getFrames();
+                    for (Window wn1 : wns) {
+                        wn1.dispose();
+                        wn1.setVisible(false);
+                    }
+                    try {
+                        userKey = Main.server.getUserId((String) usersList.getSelectedValue());
+                        System.out.println("User Key:" + userKey);
+                        user = Main.server.getUser(userKey);
+                    } catch (ServerException ex) {
+                        ex.printStackTrace();
+                    }
+                    new UserControl(user).main(user); // pass in selected user for edit
+                    //new UserControl().main(null);
+                }
+            }
+        });
+
         editBillboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -154,7 +174,7 @@ public class MainControl {
                 String billboardKey = null;
                 TreeMap billBoard = new TreeMap<String, String>();
 
-                System.out.println("Preview selected billboard: " + billboardsList.getSelectedValue());
+                System.out.println("Edit selected billboard: " + billboardsList.getSelectedValue());
 
                 if (billboardsList.getSelectedValue() == null) {
                     // No billboard selected
@@ -259,6 +279,28 @@ public class MainControl {
             }
         });
 
+        deleteBillboardButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String billboardID = null;
+                if (billboardsList.getSelectedValue() == null) {
+                    // No billboard selected
+                    throwDialog("No Billboard has been selected to delete, please select a valid billboard.", "No Billboard Selected");
+                } else {
+                    try {
+                        billboardID = Main.server.getBillboardId(billboardsList.getSelectedValue().toString());
+                        int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + billboardsList.getSelectedValue().toString() + "?");
+                        if (n == JOptionPane.YES_OPTION) {
+                            Main.server.deleteBillboard(billboardID);
+                        } else if (n == JOptionPane.NO_OPTION) {
+                        }
+                    } catch (ServerException ex) {
+                        ex.printStackTrace();
+                    }
+                    refreshBillboards();
+                }
+            }
+        });
     }
 
     //TODO: FIx the bug, sometimes it refreshes, sometimes it doesnt?

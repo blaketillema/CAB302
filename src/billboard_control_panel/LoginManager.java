@@ -52,19 +52,6 @@ public class LoginManager extends JFrame {
     // Login function which calls upon the server.login function
     public void login(String username, String password) {
         // TODO: Change password of cab203 to cab302 in db
-        // Case 1: First time login for admin (Admin username = admin, password = cab203"
-//        if (username.equals("admin") && password.equals("cab203")) {
-//            //ClientServerInterface server = new ClientServerInterface();
-//            try {
-//                Main.server.login(username,password);
-//                new MainControl().main(null);
-//            } catch (ServerException e) {
-//                JOptionPane.showMessageDialog(null, "Invalid username or password");
-//                e.printStackTrace();
-//            }
-//        }
-        // Case 2: Logging in with different user credentials:
-
             try {
                 Main.server.login(username,password);
                 new MainControl().main(null);
