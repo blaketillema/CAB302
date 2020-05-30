@@ -1,6 +1,7 @@
 package billboard_server.engines;
 
 import billboard_server.Database;
+import billboard_server.Scheduler;
 
 import java.io.*;
 import java.net.Socket;
@@ -24,11 +25,14 @@ public class Server {
     public static TreeMap<Long, UserInfo> sessionIds = null;
     public static final long ONE_DAY_MS = 86400000;
     public static Database database = null;
+    public static Scheduler scheduler = null;
 
     private static final String networkPath =
             Paths.get(System.getProperty("user.dir"), "src", "billboard_server", "assets", "network.props").toString();
 
     public Server() throws SQLException {
+        scheduler = new Scheduler();
+
         this.port = 1234;
         sessionIds = new TreeMap<>();
         database = new Database();
@@ -40,6 +44,7 @@ public class Server {
         newUser.createdAt = Long.MAX_VALUE - ONE_DAY_MS;
 
         sessionIds.put(sessionId, newUser);
+
     }
 
     public void run() {

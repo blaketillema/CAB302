@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.stream.events.EndDocument;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -13,10 +14,8 @@ import javax.xml.transform.stream.StreamResult;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
+import java.util.Base64;
 import java.util.Set;
 import java.util.TreeMap;
 
@@ -61,7 +60,18 @@ public class BillboardControl {
 
     TreeMap<String, String> currentBillboard = new TreeMap<>(); // Initialize an empty TreeMap
 
-    public BillboardControl() {
+
+    public BillboardControl(TreeMap editBillboard) {
+
+        if (editBillboard != null) {
+            System.out.println("Input billboard not null.");
+            currentBillboard = editBillboard;
+            refreshFields();
+            printBillboard(currentBillboard);
+        } else {
+            System.out.println("Input billboard is null.");
+        }
+        refreshFields();
 
         importXMLButton.addActionListener(new ActionListener() {
             @Override
@@ -112,6 +122,9 @@ public class BillboardControl {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Preview Billboard");
 
+                applyChanges();
+                refreshFields();
+
                 Billboard previewBillboard = new Billboard(currentBillboard, true);
 
             }
@@ -120,35 +133,87 @@ public class BillboardControl {
             @Override
             public void actionPerformed(ActionEvent e) {
                 TreeMap<String, String> body = new TreeMap<>();
-                body.put("message",""+messageArea.getText());
-                body.put("information",""+informationArea.getText());
-                body.put("pictureData",""+pictureDataArea.getText());
-                body.put("pictureUrl",""+pictureUrlArea.getText());
-                body.put("billboardBackground",""+backgroundColourArea.getText());
-                body.put("messageColour",""+messageColourArea.getText());
-                body.put("informationColour",""+informationColourArea.getText());
-                System.out.println(body);
-                try {
-                    Main.server.addBillboard(billboardNameArea.getText(), body);
-                    //Main.server.addBillboard(billboardNameArea.getText(), ClientMainTests.randomNewBillboard());
-                } catch (ServerException ex) {
-                    JOptionPane.showMessageDialog(null, "You do not have permission to create billboards");
-                    ex.printStackTrace();
+
+                String nullString = ""; // for easily changing between null or "" depending on implementation elsewhere (DB side)
+
+                if (messageArea.getText().length() > 0) {
+                    body.put("message", "" + messageArea.getText());
+                } else {
+                    body.put("message", nullString);
                 }
+
+                if (informationArea.getText().length() > 0) {
+                    body.put("information", "" + informationArea.getText());
+                } else {
+                    body.put("information", nullString);
+                }
+
+                if (pictureDataArea.getText().length() > 0) {
+                    body.put("pictureData", "" + pictureDataArea.getText());
+                } else {
+                    body.put("pictureData", nullString);
+                }
+
+                if (pictureUrlArea.getText().length() > 0) {
+                    body.put("pictureUrl", "" + pictureUrlArea.getText());
+                } else {
+                    body.put("pictureUrl", nullString);
+                }
+
+                if (backgroundColourArea.getText().length() > 0) {
+                    body.put("billboardBackground", "" + backgroundColourArea.getText());
+                } else {
+                    body.put("billboardBackground", nullString);
+                }
+
+                if (messageColourArea.getText().length() > 0) {
+                    body.put("messageColour", "" + messageColourArea.getText());
+                } else {
+                    body.put("messageColour", nullString);
+                }
+
+                if (informationColourArea.getText().length() > 0) {
+                    body.put("informationColour", "" + informationColourArea.getText());
+                } else {
+                    body.put("informationColour", nullString);
+                }
+
+                System.out.println(body);
+
+                printBillboard(body);
+
+                // Check for a billboard Name
+                if (billboardNameArea.getText().length() < 1) {
+                    // Throw error warning for no name
+                    System.out.println("Billboard Name length smaller than 1!");
+                    throwDialog("Please enter a Billboard Name", "No Billboard Name");
+                } else {
+                    // Allow saving
+                    try {
+                        LoginManager.server.addBillboard(billboardNameArea.getText(), body);
+                        //LoginManager.server.addBillboard(billboardNameArea.getText(), ClientMainTests.randomNewBillboard());
+                    } catch (ServerException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
             }
         });
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit without saving?");
+                if (n == JOptionPane.YES_OPTION) {
                     Window[] wns = LoginManager.getFrames();
                     for (Window wn1 : wns) {
                         wn1.dispose();
                         wn1.setVisible(false);
                     }
                     new MainControl().main(null);
+                } else if (n == JOptionPane.NO_OPTION) {
+                }
             }
         });
-
         unused1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -169,7 +234,35 @@ public class BillboardControl {
         uploadImageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("Upload an image");
+                // Browse for an image
+                JFileChooser fileChooser = new JFileChooser();
+                int chooserState = fileChooser.showOpenDialog(null);
 
+                if (chooserState == JFileChooser.APPROVE_OPTION) {
+                    File imageFile = fileChooser.getSelectedFile();
+
+                    String pictureData = null;
+
+                    try {
+                        FileInputStream streamReader = new FileInputStream(imageFile);
+                        byte[] imageBytes = new byte[(int) imageFile.length()];
+                        streamReader.read(imageBytes);
+
+                        pictureData = Base64.getEncoder().encodeToString(imageBytes);
+
+                    } catch (FileNotFoundException ex) {
+                        ex.printStackTrace();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+
+                    pictureDataArea.setText(pictureData);
+
+                } else {
+                    // File chooser encountered an error
+                    System.out.println("File Chooser was not approved");
+                }
 
             }
         });
@@ -180,27 +273,31 @@ public class BillboardControl {
                 applyChanges();
             }
         });
-
-
     }
 
-    public static void main(String[] args) {
+    public void main(TreeMap inputBillboard) {
         /* Create and display the form */
         JFrame frame = new JFrame("Billboard Builder");
         Main.centreWindow(frame);
-        frame.setContentPane(new BillboardControl().billboardControl);
+
+        frame.setContentPane(new BillboardControl(inputBillboard).billboardControl);
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+
+        refreshFields();
+    }
+
+    private static void throwDialog(String messageText, String title) {
+        JOptionPane.showMessageDialog(null, messageText, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
     private String createXML() {
         // parse billboard treemap to XML
 
         applyChanges(); // Apply changes from fields, will set empty fields to null
-
         String xmlExport = null;
-
 
         try {
             // Setup builders
@@ -394,6 +491,12 @@ public class BillboardControl {
         backgroundColourArea.setText(currentBillboard.get("billboardBackground"));
         pictureUrlArea.setText(currentBillboard.get("pictureUrl"));
         pictureDataArea.setText(currentBillboard.get("pictureData"));
+
+        // If billboard name set, such as editing a billboard
+        if (currentBillboard.containsKey("billboardName")) {
+            //
+            billboardNameArea.setText(currentBillboard.get("billboardName"));
+        }
     }
 
     /**

@@ -6,11 +6,13 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.TreeMap;
 
-import billboard_server.exceptions.ServerException;
+import billboard_server.Scheduler;
 import billboard_server.types.*;
+import com.sun.source.tree.Tree;
 
 import static billboard_server.engines.Server.*;
 import static billboard_server.engines.ServerFunctions.*;
+
 
 public class ServerThread implements Runnable {
     ObjectOutputStream outStream = null;
@@ -39,8 +41,10 @@ public class ServerThread implements Runnable {
                 case DELETE_BILLBOARDS:
                     response = deleteBillboards(request.sessionId, request.data);
                     break;
-
                 case GET_CURRENT_BILLBOARD:
+                    response = new ServerResponse();
+                    System.out.println(scheduler.getCurrentBillboardData());
+                    response.data.put("currentBillboard", scheduler.getCurrentBillboardData());
                     break;
 
                 case GET_BILLBOARDS:
@@ -88,9 +92,11 @@ public class ServerThread implements Runnable {
                     response.data = new TreeMap<>();
                     response.data.put("scheduleId", database.billboardToScheduleId((String) request.data.get("billboardId")));
                     break;
-
-                default:
-                    throw new ServerException("unknown command");
+                case SCHEDULE_COMMAND:
+                    response = new ServerResponse();
+                    response.data = new TreeMap<>();
+                    response.data.put("scheduleId", database.billboardToScheduleId((String) request.data.get("billboardId")));
+                    break;
             }
         } catch (Exception e) {
             response = new ServerResponse();
