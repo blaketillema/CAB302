@@ -206,7 +206,7 @@ public class Panel {
         JPanel bottomPanel = new JPanel(new GridBagLayout());
 
         String informationWrap = "<html><div style='text-align: center;'>" + information + "</div></html>";
-        JLabel bottomText = new JLabel(informationWrap);
+        JLabel bottomText = new JLabel(informationWrap, SwingConstants.CENTER);
 
         bottomText.setPreferredSize(new Dimension((int) xRes, (int) yRes / 3));
 
@@ -228,6 +228,7 @@ public class Panel {
 
         // Set information text colour
         bottomText.setForeground(Color.decode(messageColour));
+
         bottomPanel.add(bottomText);
 
         billboardPanel.add(topPanel, BorderLayout.PAGE_START);
@@ -275,7 +276,7 @@ public class Panel {
         JPanel bottomPanel = new JPanel(new GridBagLayout());
 
         String informationWrap = "<html><div style='text-align: center;'>" + information + "</div></html>";
-        JLabel bottomText = new JLabel(informationWrap);
+        JLabel bottomText = new JLabel(informationWrap, SwingConstants.CENTER);
 
         bottomText.setPreferredSize(new Dimension((int) xRes, (int) yRes / 2));
 
@@ -611,7 +612,6 @@ public class Panel {
 
     /**
      * Get a font size to scale the message text for filling the billboard width
-     *
      * @param messageLabel
      * @return newFontSize
      */
@@ -659,8 +659,8 @@ public class Panel {
     /**
      * Scale image to 50% of screen size
      *
-     * @param image
-     * @return BufferedImage
+     * @param image input image to be scaled to half size of screen
+     * @return BufferedImage scaled image result
      */
     private BufferedImage scaleHalf(BufferedImage image) {
 
@@ -694,9 +694,8 @@ public class Panel {
 
     /**
      * Scale image to a third of screen size on largest relative axis
-     *
-     * @param image
-     * @return BufferedImage
+     * @param image input image to be scaled to a third size of screen
+     * @return BufferedImage scaled image result
      */
     private BufferedImage scaleThird(BufferedImage image) {
 
@@ -729,9 +728,8 @@ public class Panel {
     }
 
     /**
-     * Return the created JPanel
-     *
-     * @return JPanel
+     * Return the created JPanel billboard
+     * @return JPanel of the created billboard
      */
     public JPanel getPanel() {
         return billboardPanel;
