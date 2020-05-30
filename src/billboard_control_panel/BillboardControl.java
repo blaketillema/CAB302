@@ -33,7 +33,6 @@ import org.w3c.dom.Element;
 
 import org.w3c.dom.*;
 
-
 // TODO - cleanup and documentation of BillboardControl class
 // TODO - cleanup of unused UI elements and appropriate element wrapping/visual presentation
 
@@ -41,8 +40,6 @@ public class BillboardControl {
     private JTextField billboardNameArea;
     private JButton importXMLButton;
     private JButton exportXMLButton;
-    private JButton unused1;
-    private JButton unused2;
     private JButton uploadImageButton;
     private JButton applyButton;
     private JButton exitButton;
@@ -57,9 +54,13 @@ public class BillboardControl {
     private JTextArea backgroundColourArea;
     private JTextArea pictureUrlArea;
     private JTextArea pictureDataArea;
+    private JLabel xmlLabel;
+    private JLabel messageColourLabel;
+    private JLabel messageColourPreviewLabel;
+    private JLabel informationColourPreviewLabel;
+    private JLabel backgroundColourPreviewLabel;
 
     TreeMap<String, String> currentBillboard = new TreeMap<>(); // Initialize an empty TreeMap
-
 
     public BillboardControl(TreeMap editBillboard) {
 
@@ -214,18 +215,6 @@ public class BillboardControl {
                 }
             }
         });
-        unused1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        unused2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
 
         // TODO - Implement image upload and conversion to BASE64
         /**
@@ -281,7 +270,7 @@ public class BillboardControl {
         Main.centreWindow(frame);
 
         frame.setContentPane(new BillboardControl(inputBillboard).billboardControl);
-
+        frame.setMinimumSize(new Dimension(500, 400)); // Set minimum size for scaling
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -500,10 +489,58 @@ public class BillboardControl {
     }
 
     /**
+     * Validates all input HTML colour codes, returns true if colour codes are valid else will return false
+     *
+     * @return
+     */
+    private boolean validateColours() {
+
+        if (messageColourArea.getText().length() > 0) {
+            //Check message colour is valid
+            try {
+                Color.decode(messageColourArea.getText());
+            } catch (Exception NumberFormatException) {
+                ///
+                System.out.println("Caught NumberFormatException...");
+                throwDialog("Message Colour code format is not valid, please enter a valid HTML Colour code", "Invalid Message Colour");
+                return false;
+            }
+        }
+
+        if (informationColourArea.getText().length() > 0) {
+            //Check information colour is valid
+            try {
+                Color.decode(informationColourArea.getText());
+            } catch (Exception NumberFormatException) {
+                ///
+                System.out.println("Caught NumberFormatException...");
+                throwDialog("Information Colour code format is not valid, please enter a valid HTML Colour code", "Invalid Information Colour");
+                return false;
+            }
+        }
+
+        if (backgroundColourArea.getText().length() > 0) {
+            //Check background colour is valid
+            try {
+                Color.decode(backgroundColourArea.getText());
+            } catch (Exception NumberFormatException) {
+                ///
+                System.out.println("Caught NumberFormatException...");
+                throwDialog("Background Colour code format is not valid, please enter a valid HTML Colour code", "Invalid Background Colour");
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Applies the changes from JTextFields to the currentBillboard treemap,
      * Applies variables based on text field contents, assigning null if empty.
+     *
+     * @return
      */
-    private void applyChanges() {
+    private boolean applyChanges() {
         // Initialize billboard variables as null
         String message = null;
         String messageColour = null;
@@ -513,25 +550,47 @@ public class BillboardControl {
         String pictureUrl = null; // Picture can be a URL or Data
         String pictureData = null;
 
+        if (validateColours() == false) {
+            return false; // Colours are not valid, return false
+        }
+
         // Check if text boxes have content and assign variables, else leave variable as null
         if (messageArea.getText().length() > 0) { // Check not empty
             message = messageArea.getText();
         } // else leave as null
+
         if (messageColourArea.getText().length() > 0) { // Check not empty
             messageColour = messageColourArea.getText();
+            // Apply validated colour to preview box
+            messageColourPreviewLabel.setBackground(Color.decode(messageColour));
+            messageColourPreviewLabel.setForeground(Color.decode(messageColour));
+            messageColourPreviewLabel.setOpaque(true);
         } // else leave as null
+
         if (informationArea.getText().length() > 0) { // Check not empty
             information = informationArea.getText();
         } // else leave as null
+
         if (informationColourArea.getText().length() > 0) { // Check not empty
             informationColour = informationColourArea.getText();
+            // Apply validated colour to preview box
+            informationColourPreviewLabel.setBackground(Color.decode(informationColour));
+            informationColourPreviewLabel.setForeground(Color.decode(informationColour));
+            informationColourPreviewLabel.setOpaque(true);
         } // else leave as null
+
         if (backgroundColourArea.getText().length() > 0) { // Check not empty
             billboardBackground = backgroundColourArea.getText();
+            // Apply validated colour to preview box
+            backgroundColourPreviewLabel.setBackground(Color.decode(billboardBackground));
+            backgroundColourPreviewLabel.setForeground(Color.decode(billboardBackground));
+            backgroundColourPreviewLabel.setOpaque(true);
         } // else leave as null
+
         if (pictureUrlArea.getText().length() > 0) { // Check not empty
             pictureUrl = pictureUrlArea.getText();
         } // else leave as null
+
         if (pictureDataArea.getText().length() > 0) { // Check not empty
             pictureData = pictureDataArea.getText();
         } // else leave as null
@@ -544,6 +603,8 @@ public class BillboardControl {
         currentBillboard.put("pictureData", pictureData);
         currentBillboard.put("information", information);
         currentBillboard.put("informationColour", informationColour);
+
+        return true;
     }
 
     /**
@@ -589,12 +650,6 @@ public class BillboardControl {
         exportXMLButton = new JButton();
         exportXMLButton.setText("Export XML");
         billboardControl.add(exportXMLButton, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        unused1 = new JButton();
-        unused1.setText("n/a");
-        billboardControl.add(unused1, new com.intellij.uiDesigner.core.GridConstraints(7, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(126, 30), null, 0, false));
-        unused2 = new JButton();
-        unused2.setText("n/a");
-        billboardControl.add(unused2, new com.intellij.uiDesigner.core.GridConstraints(7, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(153, 30), null, 0, false));
         uploadImageButton = new JButton();
         uploadImageButton.setText("Upload Image");
         billboardControl.add(uploadImageButton, new com.intellij.uiDesigner.core.GridConstraints(7, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(128, 30), null, 0, false));
