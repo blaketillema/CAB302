@@ -2,6 +2,7 @@ package billboard_server;
 
 import java.io.*;
 import java.nio.file.Paths;
+import java.time.OffsetDateTime;
 import java.util.*;
 
 import billboard_server.Protocol.*;
@@ -356,7 +357,7 @@ public class ClientServerInterface {
         return (TreeMap<String, String>) getBillboards(billboardList).get(billboardId);
     }
 
-    public TreeMap<String, Object> getCurrentBillboard() throws ServerException {
+    public TreeMap<String, String> getCurrentBillboard() throws ServerException {
         System.out.print("\nrequesting to get current billboard ... ");
 
         ClientRequest request = new ClientRequest();
@@ -367,7 +368,7 @@ public class ClientServerInterface {
 
         System.out.println("done");
 
-        return response.data;
+        return (TreeMap<String, String>) response.data.get( response.data.firstKey() );
     }
 
     public String getScheduleId(String billboardId) throws ServerException {
@@ -400,6 +401,57 @@ public class ClientServerInterface {
 
         System.out.println("done");
     }
+
+    public void addSchedule(String billboardName, OffsetDateTime schedStart, Integer schedDurationInMins,
+                            Boolean isRecurring, Integer recurFreqInMins, String creatorName) throws ServerException {
+        System.out.printf("\nrequesting to add schedule: %s... ", billboardName);
+
+
+        ClientRequest request = new ClientRequest();
+
+        request.cmd = Cmd.ADD_SCHEDULES;
+
+        TreeMap<String, Object> body = new TreeMap<>();
+
+        body.put("billboardId", getBillboardId(billboardName));
+        body.put("startTime", schedStart);
+        body.put("duration", schedDurationInMins);
+        body.put("isRecurring", isRecurring);
+        body.put("recurFreqInMins", recurFreqInMins);
+        body.put("creatorName", creatorName);
+
+        request.data.put(UUID.randomUUID().toString(), body);
+
+        request.sessionId = this.sessionId;
+
+        ServerClientConnection.request(this.ip, this.port, request);
+
+        System.out.println("done");
+    }
+
+
+    public TreeMap<String, Object> scheduleCommand(String command, ArrayList<Object> data) throws ServerException {
+        System.out.printf("\nrequesting schedule command: %s... ", command);
+        ClientRequest request = new ClientRequest();
+
+        TreeMap<String, Object> body = new TreeMap<>();
+
+        body.put("command", command);
+        body.put("data", data);
+
+        // schedule below ID not needed for commands
+        request.data.put(UUID.randomUUID().toString(), body);
+
+        request.sessionId = this.sessionId;
+
+        ServerResponse response = ServerClientConnection.request(this.ip, this.port, request);
+
+        TreeMap<String, Object> clientData = (TreeMap<String, Object>) response.data.get( response.data.firstKey() );
+
+        System.out.println("done");
+        return clientData;
+    }
+
 
     public void editSchedule(String scheduleId, TreeMap<String, Object> data) throws ServerException {
         System.out.printf("\nrequesting to edit schedule: %s... ", scheduleId);
@@ -435,6 +487,19 @@ public class ClientServerInterface {
         ArrayList<String> scheduleIds = new ArrayList<>(1);
         scheduleIds.add(scheduleId);
         deleteSchedules(scheduleIds);
+    }
+
+    public void deleteSchedule(String billboardName, OffsetDateTime startTime) throws ServerException {
+        TreeMap<String, Object> schedules = getSchedules();
+        for(Map.Entry<String, Object> schedule : schedules.entrySet()) {
+            TreeMap<String, Object> scheduleData = (TreeMap<String, Object>) schedule.getValue();
+            String scheduleId = schedule.getKey();
+            String billboardNameToCheck = (String) scheduleData.get("billboardName");
+            OffsetDateTime startTimeToCheck = (OffsetDateTime) scheduleData.get("startTime");
+            if(billboardName.equals(billboardNameToCheck) && startTime == startTimeToCheck) {
+                deleteSchedule(scheduleId);
+            }
+        }
     }
 
     public TreeMap<String, Object> getSchedules() throws ServerException {
@@ -480,7 +545,7 @@ public class ClientServerInterface {
 
      private functions
      **********************/
-    private static String getUserSalt(String userId) throws IOException, ClassNotFoundException {
+    public static String getUserSalt(String userId) throws IOException, ClassNotFoundException {
         FileInputStream fis = new FileInputStream(saltMapPath);
         ObjectInputStream ois = new ObjectInputStream(fis);
 

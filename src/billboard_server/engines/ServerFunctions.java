@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.time.OffsetDateTime;
 import java.util.*;
 
+import billboard_server.Database;
 import billboard_server.Protocol;
 import billboard_server.Protocol.*;
 import billboard_server.engines.UserInfo;
@@ -119,6 +120,25 @@ public class ServerFunctions {
         return billboardIds;
     }
 
+    private static ArrayList<String> fixUserList(String userId, ArrayList<String> userIds) throws SQLException {
+        for (Iterator<String> iterator = userIds.iterator(); iterator.hasNext(); ) {
+            String loopUserId = iterator.next();
+            if (!database.doesUserExist(loopUserId)) {
+                iterator.remove();
+            } else {
+                if(!loopUserId.equals(userId)) {
+                    try {
+                        checkPermission(userId, Permission.EDIT_USERS);
+                    } catch (ServerException ignored) {
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+
+        return userIds;
+    }
+
     /*
         SERVERTHREAD CALLS
      */
@@ -184,16 +204,22 @@ public class ServerFunctions {
         return response;
     }
 
-    public static ServerResponse getUsers(TreeMap<String, Object> data) throws ServerException, SQLException {
+    public static ServerResponse getUsers(long sessionId, TreeMap<String, Object> data) throws ServerException, SQLException {
         ServerResponse response = new ServerResponse();
+        String userId = sessionToUserId(sessionId);
 
         if (data.containsKey("userList")) {
-            // ArrayList<String> userIds = fixUserList((ArrayList<String>) data.get("userList"));
-            response.data = database.getUsers((ArrayList<String>) data.get("userList"));
+            ArrayList<String> userIds = fixUserList(userId, (ArrayList<String>) data.get("userList"));
+            response.data = database.getUsers(userIds);
         } else {
-            response.data = database.getUsers();
+            try {
+                checkPermission(userId, Permission.EDIT_USERS);
+                response.data = database.getUsers();
+            } catch (ServerException ignored) {
+                ArrayList<String> userIdList = new ArrayList<>(1);
+                response.data = database.getUsers(userIdList);
+            }
         }
-
         return response;
     }
 
@@ -201,7 +227,6 @@ public class ServerFunctions {
         ServerResponse response = new ServerResponse();
 
         String userId = sessionToUserId(sessionId);
-
         checkPermission(userId, Permission.EDIT_USERS);
 
         if (data.containsKey("userList")) {
@@ -238,7 +263,7 @@ public class ServerFunctions {
             String messageColour = (String) billboardDetails.get("messageColour");
             String informationColour = (String) billboardDetails.get("informationColour");
 
-            boolean isAdding = creator == null;
+            //boolean isAdding = creator == null;
 
             try {
                 creator = checkBillboardPermission(userId, billboardId);
@@ -247,7 +272,7 @@ public class ServerFunctions {
                 continue;
             }
 
-            if (isAdding) {
+            if (!database.doesBillboardExist(billboardId)) {
                 if (billboardId == null || name == null || creator == null || message == null || info == null ||
                         pictureData == null || pictureUrl == null || billboardBackground == null || messageColour == null || informationColour == null) {
                     response.status += "couldn't add " + billboardId + ", not all data provided. ";
@@ -304,15 +329,15 @@ public class ServerFunctions {
         ServerResponse response = new ServerResponse();
 
         String userId = sessionToUserId(sessionId);
-        checkPermission(userId, Protocol.Permission.SCHEDULE_BILLBOARDS);
+        checkPermission(userId, Permission.SCHEDULE_BILLBOARDS);
 
         /*(scheduleId, billboardId, startTime, scheduleDuration, isRecurring, recurFreqInMins)*/
         for (Map.Entry<String, Object> schedule : data.entrySet()) {
 
             TreeMap<String, Object> scheduleDetails = (TreeMap<String, Object>) schedule.getValue();
-
             String scheduleId = schedule.getKey();
             String billboardId = (String) scheduleDetails.get("billboardId");
+            String billboardName = database.billboardIdToName(billboardId);
             OffsetDateTime startTime = (OffsetDateTime) scheduleDetails.get("startTime");
             Integer duration = (Integer) scheduleDetails.get("duration");
             Boolean isRecurring = (Boolean) scheduleDetails.get("isRecurring");
@@ -328,14 +353,27 @@ public class ServerFunctions {
                     response.status += "attempted to edit schedule without scheduleId. ";
                     continue;
                 }
-                database.editSchedule(scheduleId, billboardId, startTime, duration, isRecurring, recurFreqInMins);
+                else {
+                    // check if schedule is legal
+                    String successMessage = scheduler.addScheduleCheckIfAllowed( billboardName, startTime, duration, isRecurring, recurFreqInMins, "Creator");
+                    if ( successMessage.equals("success") ) {
+                        // add to DB & set success message
+                        database.editSchedule(scheduleId, billboardId, startTime, duration, isRecurring, recurFreqInMins);
+                        successMessage = "Successfully added schedule starting at " + startTime + " for " + billboardName;
+                    }
+                    // keep success message from scheduler if unsuccessful
+                    response.status += successMessage;
+                }
             }
         }
-
         return response;
     }
 
-    public static ServerResponse getSchedules(TreeMap<String, Object> data) throws ServerException, SQLException {
+    public static ServerResponse getSchedules(long sessionId, TreeMap<String, Object> data) throws ServerException, SQLException {
+
+        String userId = sessionToUserId(sessionId);
+        checkPermission(userId, Protocol.Permission.SCHEDULE_BILLBOARDS);
+
         ServerResponse response = new ServerResponse();
         if (data.containsKey("scheduleList")) {
             // ArrayList<String> scheduleIds = fixScheduleList((ArrayList<String>) data.get("scheduleList"));

@@ -22,6 +22,7 @@ public final class Protocol {
         NAME_TO_ID,
         BOARD_TO_ID,
         BOARD_TO_SCHEDULE,
+        SCHEDULE_COMMAND
     }
 
     public static final String PERMISSION = "permissions";

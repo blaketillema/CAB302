@@ -60,10 +60,10 @@ public class MainControl {
 //                    System.out.println(selectedUsername);
 //                    modifyUserButton.setEnabled(true);
 //                    try {
-//                        String userId = LoginManager.server.getUserId(selectedUsername);
-//                        TreeMap<String, Object> selectedUser = LoginManager.server.getUser(userId);
+//                        String userId = Main.server.getUserId(selectedUsername);
+//                        TreeMap<String, Object> selectedUser = Main.server.getUser(userId);
 //                        System.out.println(selectedUser.toString());
-//                        //System.out.println(LoginManager.server.getUser(usersList.getSelectedValue().toString()).toString());
+//                        //System.out.println(Main.server.getUser(usersList.getSelectedValue().toString()).toString());
 //                    } catch (ServerException ex) {
 //                        ex.printStackTrace();
 //                    }
@@ -95,10 +95,10 @@ public class MainControl {
             public void actionPerformed(ActionEvent e) {
                 String userId = null;
                 try {
-                    userId = LoginManager.server.getUserId(usersList.getSelectedValue().toString());
+                    userId = Main.server.getUserId(usersList.getSelectedValue().toString());
                     int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + usersList.getSelectedValue().toString() +"?");
                     if (n == JOptionPane.YES_OPTION) {
-                        LoginManager.server.deleteUser(userId);
+                        Main.server.deleteUser(userId);
                     } else if (n == JOptionPane.NO_OPTION) {
                     }
                 } catch (ServerException ex) {
@@ -142,18 +142,41 @@ public class MainControl {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new BillboardControl().main(null);
+
+                new BillboardControl(null).main(null);
             }
         });
+
         editBillboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Window[] wns = LoginManager.getFrames();
-                for (Window wn1 : wns) {
-                    wn1.dispose();
-                    wn1.setVisible(false);
+
+                String billboardKey = null;
+                TreeMap billBoard = new TreeMap<String, String>();
+
+                System.out.println("Preview selected billboard: " + billboardsList.getSelectedValue());
+
+                if (billboardsList.getSelectedValue() == null) {
+                    // No billboard selected
+                    throwDialog("No Billboard has been selected for edit, please select a valid billboard.", "No Billboard Selected");
+                } else {
+
+                    Window[] wns = LoginManager.getFrames();
+                    for (Window wn1 : wns) {
+                        wn1.dispose();
+                        wn1.setVisible(false);
+                    }
+
+                    try {
+                        billboardKey = Main.server.getBillboardId((String) billboardsList.getSelectedValue());
+                        System.out.println("Billboard Key:" + billboardKey);
+                        billBoard = Main.server.getBillboard(billboardKey);
+                    } catch (ServerException ex) {
+                        ex.printStackTrace();
+                    }
+                    new BillboardControl(billBoard).main(billBoard); // pass in selected billboard for edit
+
                 }
-                new BillboardControl().main(null);
             }
         });
 
@@ -166,34 +189,36 @@ public class MainControl {
                 TreeMap billBoard = new TreeMap<String, String>();
 
                 System.out.println("Preview selected billboard: " + billboardsList.getSelectedValue());
-                String selectedBillboardName = (String) billboardsList.getSelectedValue();
-                try {
-                    billboardKey = LoginManager.server.getBillboardId(selectedBillboardName);
-                } catch (ServerException ex) {
-                    ex.printStackTrace();
+
+                if (billboardsList.getSelectedValue() == null) {
+                    // No billboard selected
+                    throwDialog("No Billboard has been selected for preview, please select a valid billboard.", "No Billboard Selected");
+                } else {
+
+                    try {
+                        billboardKey = Main.server.getBillboardId((String) billboardsList.getSelectedValue());
+                        System.out.println("Billboard Key:" + billboardKey);
+                        billBoard = Main.server.getBillboard(billboardKey);
+
+                    } catch (ServerException ex) {
+                        ex.printStackTrace();
+                    }
+
+                    //printBillboard debugging
+                    System.out.println("Outputing treemap contents:");
+                    Set<String> set1 = billBoard.keySet();
+                    for (String key : set1) {
+                        System.out.println("Billboard Key : " + key + "\t\t" + "Value : " + billBoard.get(key));
+                    }
+                    // end debug
+
+                    System.out.println("Previewing Billboard...");
+                    Billboard previewBillboard = new Billboard(billBoard, true);
+
                 }
-                System.out.println("Billboard Key:" + billboardKey);
-
-                try {
-                    billBoard = LoginManager.server.getBillboard(billboardKey);
-                } catch (ServerException ex) {
-                    ex.printStackTrace();
-                }
-
-                //printBillboard
-                System.out.println("Outputing treemap contents:");
-
-                Set<String> set1 = billBoard.keySet();
-                for (String key : set1) {
-                    System.out.println("Billboard Key : " + key + "\t\t" + "Value : " + billBoard.get(key));
-                }
-
-                System.out.println("Previewing Billboard...");
-                Billboard previewBillboard = new Billboard(billBoard, true);
-
-
             }
         });
+
         scheduleBillboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -211,7 +236,7 @@ public class MainControl {
             public void actionPerformed(ActionEvent e) {
                 TreeMap<String, Object> billboards = null;
                 try {
-                    billboards = LoginManager.server.getBillboards();
+                    billboards = Main.server.getBillboards();
                 } catch (ServerException z) {
                     z.printStackTrace();
                 }
@@ -253,7 +278,7 @@ public class MainControl {
     public void refreshBillboards(){
         TreeMap<String, Object> billboards = null;
         try {
-            billboards = LoginManager.server.getBillboards();
+            billboards = Main.server.getBillboards();
         } catch (ServerException z) {
             z.printStackTrace();
         }
@@ -274,7 +299,7 @@ public class MainControl {
         usersList.removeAll();
         TreeMap<String, Object> users = null;
         try {
-            users = LoginManager.server.getUsers();
+            users = Main.server.getUsers();
         } catch (ServerException z) {
             z.printStackTrace();
         }
@@ -284,12 +309,16 @@ public class MainControl {
         users.forEach((k, v) -> {
             //System.out.println("Key: " + k + ", Value: " + v);
             String userString = v.toString().substring(v.toString().lastIndexOf("=") + 1);
-            userString = userString.replace("}","");
+            userString = userString.replace("}", "");
             userNameList.add(userString);
         });
         refresh(usersList, userNameList);
         System.out.println(userNameList);
         //refresh(usersList, UserNames);
+    }
+
+    private static void throwDialog(String messageText, String title) {
+        JOptionPane.showMessageDialog(null, messageText, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static void main(String[] args) {

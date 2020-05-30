@@ -138,6 +138,16 @@ public class Database {
         }
     }
 
+    public String billboardIdToName(String billboardId) throws SQLException {
+        connect();
+        ResultSet rs = statement.executeQuery("SELECT billboardName FROM billboards WHERE billboardId=\"" + billboardId + "\"");
+        if (rs.next()) {
+            return rs.getString(1);
+        } else {
+            return null;
+        }
+    }
+
     public String billboardToScheduleId(String billboardId) throws SQLException {
         connect();
         ResultSet rs = statement.executeQuery("SELECT scheduleId FROM schedules WHERE billboardId=\"" + billboardId + "\"");
@@ -452,6 +462,7 @@ public class Database {
             schedule.put("duration", rs.getInt(4));
             schedule.put("isRecurring", rs.getBoolean(5));
             schedule.put("recurFreqInMins", rs.getInt(6));
+            schedule.put("billboardName", billboardIdToName(rs.getString(2)));
             schedules.put(rs.getString(1), schedule);
         }
         conn.close();
@@ -473,6 +484,7 @@ public class Database {
                 schedule.put("duration", rs.getInt(4));
                 schedule.put("isRecurring", rs.getBoolean(5));
                 schedule.put("recurFreqInMins", rs.getInt(6));
+                schedule.put("billboardName", billboardIdToName(rs.getString(2)));
                 schedules.put(rs.getString(1), schedule);
             }
         }

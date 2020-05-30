@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.TreeMap;
 
+import billboard_server.Scheduler;
 import billboard_server.types.*;
+import com.sun.source.tree.Tree;
 
 import static billboard_server.engines.Server.*;
 import static billboard_server.engines.ServerFunctions.*;
+
 
 public class ServerThread implements Runnable {
     ObjectOutputStream outStream = null;
@@ -38,8 +42,10 @@ public class ServerThread implements Runnable {
                 case DELETE_BILLBOARDS:
                     response = deleteBillboards(request.sessionId, request.data);
                     break;
-
                 case GET_CURRENT_BILLBOARD:
+                    response = new ServerResponse();
+                    System.out.println(scheduler.getCurrentBillboardData());
+                    response.data.put("currentBillboard", scheduler.getCurrentBillboardData());
                     break;
 
                 case GET_BILLBOARDS:
@@ -55,7 +61,7 @@ public class ServerThread implements Runnable {
                     break;
 
                 case GET_SCHEDULES:
-                    response = getSchedules(request.data);
+                    response = getSchedules(request.sessionId, request.data);
                     break;
 
                 case ADD_USERS:
@@ -67,7 +73,7 @@ public class ServerThread implements Runnable {
                     break;
 
                 case GET_USERS:
-                    response = getUsers(request.data);
+                    response = getUsers(request.sessionId, request.data);
                     break;
 
                 case NAME_TO_ID:
