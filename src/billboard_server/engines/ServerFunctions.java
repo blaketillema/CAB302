@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.time.OffsetDateTime;
 import java.util.*;
 
+import billboard_server.Database;
 import billboard_server.Protocol;
 import billboard_server.Protocol.*;
 import billboard_server.engines.UserInfo;
@@ -329,15 +330,15 @@ public class ServerFunctions {
         ServerResponse response = new ServerResponse();
 
         String userId = sessionToUserId(sessionId);
-        checkPermission(userId, Protocol.Permission.SCHEDULE_BILLBOARDS);
+        checkPermission(userId, Permission.SCHEDULE_BILLBOARDS);
 
         /*(scheduleId, billboardId, startTime, scheduleDuration, isRecurring, recurFreqInMins)*/
         for (Map.Entry<String, Object> schedule : data.entrySet()) {
 
             TreeMap<String, Object> scheduleDetails = (TreeMap<String, Object>) schedule.getValue();
-
             String scheduleId = schedule.getKey();
             String billboardId = (String) scheduleDetails.get("billboardId");
+            String billboardName = database.billboardIdToName(billboardId);
             OffsetDateTime startTime = (OffsetDateTime) scheduleDetails.get("startTime");
             Integer duration = (Integer) scheduleDetails.get("duration");
             Boolean isRecurring = (Boolean) scheduleDetails.get("isRecurring");
@@ -353,10 +354,19 @@ public class ServerFunctions {
                     response.status += "attempted to edit schedule without scheduleId. ";
                     continue;
                 }
-                database.editSchedule(scheduleId, billboardId, startTime, duration, isRecurring, recurFreqInMins);
+                else {
+                    // check if schedule is legal
+                    String successMessage = scheduler.addScheduleCheckIfAllowed( billboardName, startTime, duration, isRecurring, recurFreqInMins, "Creator");
+                    if ( successMessage.equals("success") ) {
+                        // add to DB & set success message
+                        database.editSchedule(scheduleId, billboardId, startTime, duration, isRecurring, recurFreqInMins);
+                        successMessage = "Successfully added schedule starting at " + startTime + " for " + billboardName;
+                    }
+                    // keep success message from scheduler if unsuccessful
+                    response.status += successMessage;
+                }
             }
         }
-
         return response;
     }
 

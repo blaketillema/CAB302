@@ -429,32 +429,29 @@ public class ClientServerInterface {
         System.out.println("done");
     }
 
-    /*
-    public void scheduleCommand(String command, ArrayList<Object> data) throws ServerException {
+
+    public TreeMap<String, Object> scheduleCommand(String command, ArrayList<Object> data) throws ServerException {
         System.out.printf("\nrequesting schedule command: %s... ", command);
-
-
         ClientRequest request = new ClientRequest();
-
 
         TreeMap<String, Object> body = new TreeMap<>();
 
-        body.put("billboardId", getBillboardId(billboardName));
-        body.put("startTime", schedStart);
-        body.put("duration", schedDurationInMins);
-        body.put("isRecurring", isRecurring);
-        body.put("recurFreqInMins", recurFreqInMins);
-        body.put("creatorName", creatorName);
+        body.put("command", command);
+        body.put("data", data);
 
+        // schedule below ID not needed for commands
         request.data.put(UUID.randomUUID().toString(), body);
 
         request.sessionId = this.sessionId;
 
-        ServerClientConnection.request(this.ip, this.port, request);
+        ServerResponse response = ServerClientConnection.request(this.ip, this.port, request);
+
+        TreeMap<String, Object> clientData = (TreeMap<String, Object>) response.data.get( response.data.firstKey() );
 
         System.out.println("done");
+        return clientData;
     }
-    */
+
 
     public void editSchedule(String scheduleId, TreeMap<String, Object> data) throws ServerException {
         System.out.printf("\nrequesting to edit schedule: %s... ", scheduleId);
@@ -490,6 +487,19 @@ public class ClientServerInterface {
         ArrayList<String> scheduleIds = new ArrayList<>(1);
         scheduleIds.add(scheduleId);
         deleteSchedules(scheduleIds);
+    }
+
+    public void deleteSchedule(String billboardName, OffsetDateTime startTime) throws ServerException {
+        TreeMap<String, Object> schedules = getSchedules();
+        for(Map.Entry<String, Object> schedule : schedules.entrySet()) {
+            TreeMap<String, Object> scheduleData = (TreeMap<String, Object>) schedule.getValue();
+            String scheduleId = schedule.getKey();
+            String billboardNameToCheck = (String) scheduleData.get("billboardName");
+            OffsetDateTime startTimeToCheck = (OffsetDateTime) scheduleData.get("startTime");
+            if(billboardName.equals(billboardNameToCheck) && startTime == startTimeToCheck) {
+                deleteSchedule(scheduleId);
+            }
+        }
     }
 
     public TreeMap<String, Object> getSchedules() throws ServerException {

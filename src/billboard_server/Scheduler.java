@@ -2,6 +2,7 @@ package billboard_server;
 
 
 import billboard_server.engines.ServerFunctions;
+import billboard_server.types.ServerResponse;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,7 +20,7 @@ public class Scheduler {
     private static String currentCommandName;
     private static ArrayList<Object> currentCommandData = new ArrayList<>();
     private static TreeMap<String, String> currentBillboardData = new TreeMap<>();
-
+    private static Boolean isProcessing;
 
     // ----------- STANDARD COMMANDS  ----------
     // Sent by Control Panel
@@ -34,13 +35,36 @@ public class Scheduler {
 
     // ------------ GETTER / SETTER  ----------
 
+    public Boolean getIsProcessing(){
+        return isProcessing;
+    }
 
     // TODO change to send these through connections methods to server Scheduler
-    public static void setCommand(String command, ArrayList<Object> data) {
+    public void setCommandOut(String command, ArrayList<Object> data) {
         // Add command name & list Data to map
         currentCommandName = command;
         currentCommandData = data;
-        // .scheduleCommand(command, data);
+        isProcessing = true;
+    }
+
+    // TODO change to send these through connections methods to server Scheduler
+    public ServerResponse sendCommand() {
+        ServerResponse serverResponse = new ServerResponse();
+        // Add command name & list Data to map
+        TreeMap<String, Object> body = new TreeMap<>();
+        body.put("command", currentCommandName);
+        body.put("data", currentCommandData);
+        serverResponse.data.put("r", body);
+        return serverResponse;
+    }
+
+    // TODO change to send these through connections methods to server Scheduler
+    public void setCommandIn(String command, ArrayList<Object> data) {
+        isProcessing = false;
+        // Add command name & list Data to map
+        currentCommandName = command;
+        currentCommandData = data;
+        commandParser(command, data);
     }
 
     public static String getCurrentCommandName() {
@@ -104,7 +128,7 @@ public class Scheduler {
             Integer schedDurationInMins  = (Integer) schedTreeMap.get("duration");
             Boolean isRecurring  = (Boolean) schedTreeMap.get("isRecurring");
             Integer recurFreqInMins  = (Integer) schedTreeMap.get("recurFreqInMins");
-            // TODO add creator if needed
+            // TODO add schedule creator if needed
             String creatorName = "CREATOR PLACEHOLDER";
             // add each item to a schedule ArrayList of objects
             ArrayList<Object> schedArrayListObject = new ArrayList<>();
@@ -143,11 +167,11 @@ public class Scheduler {
         // check where to send data & do so
         if ( command == SCHEDULE_ADD ) {
             // Process adding Schedule
-            addSchedule( data );
+            // addSchedule( data );
         }
         else if (  command == SCHEDULE_DELETE ){
             // process deletion from DB
-            removeSchedule( data );
+            // removeSchedule( data );
         }
         else if ( command == SCHEDULE_GET ){
             // get current schedules from DB and respond to Control Panel
@@ -156,8 +180,41 @@ public class Scheduler {
     }
 
 
+    /**
+     *
+     * @param billboardName
+     * @param schedStart
+     * @param schedDurationInMins
+     * @param isRecurring
+     * @param recurFreqInMins
+     * @param creatorName
+     * @return
+     */
+    public String addScheduleCheckIfAllowed(String billboardName, OffsetDateTime schedStart, Integer schedDurationInMins,
+                                         Boolean isRecurring, Integer recurFreqInMins, String creatorName){
+        // Check to see if any problems
+        String successMessage = "success";
+        // Start is in past
+        if( schedStart.isBefore(OffsetDateTime.now()) ) {
+            successMessage = "Schedule start is in the past - don't live in the past!";
+        }
+        // Schedule is more frequent than duration of billboard
+        else if ( recurFreqInMins < schedDurationInMins && recurFreqInMins != 0) {
+            successMessage  = "Schedule frequency is more often than duration of schedule - recurrence is obsolete! Please try again.";
+        }
+        else {
+            successMessage = "success";
+        }
+        return successMessage;
+    }
+
+
+
+
+    
+    /*
     // add schedule
-    public static ArrayList<Object> addSchedule(ArrayList<Object> scheduleToAdd){
+    public ArrayList<Object> addSchedule(ArrayList<Object> scheduleToAdd){
         // separate components
         String billboardName = (String) scheduleToAdd.get(0);
         OffsetDateTime schedStart = (OffsetDateTime) scheduleToAdd.get(1);
@@ -171,12 +228,12 @@ public class Scheduler {
         // Start is in past
         if( schedStart.isBefore(OffsetDateTime.now()) ) {
             successMessage.add("Schedule start is in the past - don't live in the past!");
-            setCommand(RESPONSE_ERROR, successMessage);
+            setCommandOut(RESPONSE_ERROR, successMessage);
         }
         // Schedule is more frequent than duration of billboard
         else if ( recurFreqInMins < schedDurationInMins && recurFreqInMins != 0) {
             successMessage.add("Schedule frequency is more often than duration of schedule - recurrence is obsolete! Please try again.");
-            setCommand(RESPONSE_ERROR, successMessage);
+            setCommandOut(RESPONSE_ERROR, successMessage);
         }
         else {
             // try to add this data to DB
@@ -184,19 +241,21 @@ public class Scheduler {
             // ServerFunctions.addSchedules(billboardName, schedStart, schedDurationInMins, isRecurring, recurFreqInMins, creatorName);
             // return message if successfully added
             if (successMessageString == RESPONSE_ADDED) {
-                setCommand(RESPONSE_ADDED, scheduleToAdd); // include schedule added in response
+                setCommandOut(RESPONSE_ADDED, scheduleToAdd); // include schedule added in response
             }
             else {
                 // add error command and message from DB
                 successMessage.add(successMessageString);
-                setCommand(RESPONSE_ERROR, successMessage);
+                setCommandOut(RESPONSE_ERROR, successMessage);
             }
         }
         return successMessage;
     }
+     */ 
 
+    /*
     // remove scheduled for billboard
-    public static ArrayList<Object> removeSchedule(ArrayList<Object> scheduleToRemove ) {
+    public ArrayList<Object> removeSchedule(ArrayList<Object> scheduleToRemove ) {
         // seperate components
         String billboardName = (String) scheduleToRemove.get(0);
         OffsetDateTime schedStart = (OffsetDateTime) scheduleToRemove.get(1);
@@ -209,16 +268,17 @@ public class Scheduler {
         if (dbMessage == RESPONSE_REMOVED ) {
             successMessageString = "Successfully deleted schedule for billboard: " + billboardName + " starting at: " + schedStart;
             successMessage.add(successMessageString);
-            setCommand(RESPONSE_REMOVED, successMessage);
+            setCommandOut(RESPONSE_REMOVED, successMessage);
         }
         else {
             successMessageString = "I'm sorry, there has been an error in deleting the billboard, because:\n" +
                     dbMessage;
             successMessage.add(successMessageString);
-            setCommand(RESPONSE_ERROR, successMessage);
+            setCommandOut(RESPONSE_ERROR, successMessage);
         }
         return scheduleToRemove;
     }
+    */
 
     /*
     // get list of all schedules
@@ -242,7 +302,10 @@ public class Scheduler {
     }
     */
 
-
+    /**
+     *
+     * @return
+     */
     private String getScheduledBillboardWithCurrentPrecedence(){
         ArrayList<Object> schedules = getAllSchedulesFromDB();
         ArrayList<Object> schedulesCurrent = new ArrayList<Object>();
@@ -306,7 +369,9 @@ public class Scheduler {
         return billboardNameWithPredecence;
     }
 
-
+    /**
+     *
+     */
     public void updateCurrentBillboardData(){
         // Find out which billboard to grab
         String billboardName = getScheduledBillboardWithCurrentPrecedence();

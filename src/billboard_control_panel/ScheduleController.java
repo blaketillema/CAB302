@@ -37,6 +37,18 @@ public class ScheduleController {
 
     // --------------- CONTROL PANEL SIDE  ---------------
     // COMMANDS FROM CONTROL PANEL GUI
+
+    public static void sendCommand(){
+
+
+        // SEND COMMAND AND WAIT FOR REPLY
+        scheduleCommand()
+        String commandReceived = (String) clientData.get("command");
+        ArrayList<Object> dataReceived = (ArrayList<Object>) clientData.get("data");
+
+        commandReplyParser()
+    }
+
     /**
      * Forms the command and data to add a new schedule to be sent to server
      * @param billboardName
@@ -76,6 +88,9 @@ public class ScheduleController {
         listOfObjects.add("Empty list");
         addCommand(commandName, listOfObjects);
     }
+
+
+
 
     // Control Panel Parser for response
     // RESPONSE PROCESSING
