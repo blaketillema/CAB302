@@ -60,10 +60,10 @@ public class MainControl {
 //                    System.out.println(selectedUsername);
 //                    modifyUserButton.setEnabled(true);
 //                    try {
-//                        String userId = LoginManager.server.getUserId(selectedUsername);
-//                        TreeMap<String, Object> selectedUser = LoginManager.server.getUser(userId);
+//                        String userId = Main.server.getUserId(selectedUsername);
+//                        TreeMap<String, Object> selectedUser = Main.server.getUser(userId);
 //                        System.out.println(selectedUser.toString());
-//                        //System.out.println(LoginManager.server.getUser(usersList.getSelectedValue().toString()).toString());
+//                        //System.out.println(Main.server.getUser(usersList.getSelectedValue().toString()).toString());
 //                    } catch (ServerException ex) {
 //                        ex.printStackTrace();
 //                    }
@@ -95,10 +95,10 @@ public class MainControl {
             public void actionPerformed(ActionEvent e) {
                 String userId = null;
                 try {
-                    userId = LoginManager.server.getUserId(usersList.getSelectedValue().toString());
+                    userId = Main.server.getUserId(usersList.getSelectedValue().toString());
                     int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + usersList.getSelectedValue().toString() +"?");
                     if (n == JOptionPane.YES_OPTION) {
-                        LoginManager.server.deleteUser(userId);
+                        Main.server.deleteUser(userId);
                     } else if (n == JOptionPane.NO_OPTION) {
                     }
                 } catch (ServerException ex) {
@@ -168,9 +168,9 @@ public class MainControl {
                     }
 
                     try {
-                        billboardKey = LoginManager.server.getBillboardId((String) billboardsList.getSelectedValue());
+                        billboardKey = Main.server.getBillboardId((String) billboardsList.getSelectedValue());
                         System.out.println("Billboard Key:" + billboardKey);
-                        billBoard = LoginManager.server.getBillboard(billboardKey);
+                        billBoard = Main.server.getBillboard(billboardKey);
                     } catch (ServerException ex) {
                         ex.printStackTrace();
                     }
@@ -196,9 +196,9 @@ public class MainControl {
                 } else {
 
                     try {
-                        billboardKey = LoginManager.server.getBillboardId((String) billboardsList.getSelectedValue());
+                        billboardKey = Main.server.getBillboardId((String) billboardsList.getSelectedValue());
                         System.out.println("Billboard Key:" + billboardKey);
-                        billBoard = LoginManager.server.getBillboard(billboardKey);
+                        billBoard = Main.server.getBillboard(billboardKey);
 
                     } catch (ServerException ex) {
                         ex.printStackTrace();
@@ -236,7 +236,7 @@ public class MainControl {
             public void actionPerformed(ActionEvent e) {
                 TreeMap<String, Object> billboards = null;
                 try {
-                    billboards = LoginManager.server.getBillboards();
+                    billboards = Main.server.getBillboards();
                 } catch (ServerException z) {
                     z.printStackTrace();
                 }
@@ -278,7 +278,7 @@ public class MainControl {
     public void refreshBillboards(){
         TreeMap<String, Object> billboards = null;
         try {
-            billboards = LoginManager.server.getBillboards();
+            billboards = Main.server.getBillboards();
         } catch (ServerException z) {
             z.printStackTrace();
         }
@@ -299,7 +299,7 @@ public class MainControl {
         usersList.removeAll();
         TreeMap<String, Object> users = null;
         try {
-            users = LoginManager.server.getUsers();
+            users = Main.server.getUsers();
         } catch (ServerException z) {
             z.printStackTrace();
         }

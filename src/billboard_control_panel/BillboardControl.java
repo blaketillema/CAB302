@@ -190,8 +190,8 @@ public class BillboardControl {
                 } else {
                     // Allow saving
                     try {
-                        LoginManager.server.addBillboard(billboardNameArea.getText(), body);
-                        //LoginManager.server.addBillboard(billboardNameArea.getText(), ClientMainTests.randomNewBillboard());
+                        Main.server.addBillboard(billboardNameArea.getText(), body);
+                        //Main.server.addBillboard(billboardNameArea.getText(), ClientMainTests.randomNewBillboard());
                     } catch (ServerException ex) {
                         ex.printStackTrace();
                     }
