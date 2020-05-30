@@ -21,7 +21,6 @@ import java.util.Locale;
 public abstract class CalendarViewer extends JComponent {
 
     protected static final LocalTime START_TIME = LocalTime.of(0, 0);
-    // TODO: This only works until 10.30pm, need to figure out star at 00:00 and end at 00:00 next day (or 23:59)
     protected static final LocalTime END_TIME = LocalTime.of(23, 59);
 
     protected static final int MIN_WIDTH = 600;

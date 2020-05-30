@@ -217,7 +217,7 @@ public class BillboardControl {
                             }
                         } catch (ServerException ex) {
                             System.out.println("Exception getting billboard ID");
-                            ex.printStackTrace();
+                            throwDialog(ex.getMessage(), "Error");
                         }
                     }
                 }
@@ -227,16 +227,12 @@ public class BillboardControl {
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit without saving?");
-                if (n == JOptionPane.YES_OPTION) {
-                    Window[] wns = LoginManager.getFrames();
-                    for (Window wn1 : wns) {
-                        wn1.dispose();
-                        wn1.setVisible(false);
-                    }
-                    new MainControl().main(null);
-                } else if (n == JOptionPane.NO_OPTION) {
+                Window[] wns = LoginManager.getFrames();
+                for (Window wn1 : wns) {
+                    wn1.dispose();
+                    wn1.setVisible(false);
                 }
+                new MainControl(null).main(null);
             }
         });
 

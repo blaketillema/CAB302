@@ -26,22 +26,41 @@ public class ClientServerInterface {
     /****************
      * initialiser (reads network.prop)
      ****************/
-    public ClientServerInterface()
-    {
+    public ClientServerInterface() {
         try {
             Properties props = new Properties();
             FileInputStream in = new FileInputStream(networkPath);
             props.load(in);
             in.close();
-
             this.ip = props.getProperty("ip");
             this.port = Integer.parseInt(props.getProperty("port"));
-        } catch (IOException ioe) { //if network.props can't be found
+            saveUserSalt("b220a053-91f1-48ee-acea-d1a145376e57", "2219d4ec595ce93cabfe7c7941d7e274");
+        } catch (Exception ioe) { //if network.props can't be found
             this.ip = "localHost";
             this.port = 1234;
-            System.out.println("network properties file not found");
             ioe.printStackTrace();
         }
+    }
+//    public ClientServerInterface()
+//    {
+//        try {
+//            Properties props = new Properties();
+//            FileInputStream in = new FileInputStream(networkPath);
+//            props.load(in);
+//            in.close();
+//
+//            this.ip = props.getProperty("ip");
+//            this.port = Integer.parseInt(props.getProperty("port"));
+//        } catch (IOException ioe) { //if network.props can't be found
+//            this.ip = "localHost";
+//            this.port = 1234;
+//            System.out.println("network properties file not found");
+//            ioe.printStackTrace();
+//        }
+//    }
+
+    public void logout(){
+        this.sessionId = 0;
     }
 
     public void login(String userName, String password) throws ServerException {
@@ -496,7 +515,7 @@ public class ClientServerInterface {
             String scheduleId = schedule.getKey();
             String billboardNameToCheck = (String) scheduleData.get("billboardName");
             OffsetDateTime startTimeToCheck = (OffsetDateTime) scheduleData.get("startTime");
-            if(billboardName.equals(billboardNameToCheck) && startTime == startTimeToCheck) {
+            if(billboardName.equals(billboardNameToCheck) && startTime.compareTo(startTimeToCheck) == 0){
                 deleteSchedule(scheduleId);
             }
         }

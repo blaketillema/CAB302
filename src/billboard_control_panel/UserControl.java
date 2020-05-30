@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.TreeMap;
 
 public class UserControl {
     private JTextField userNameField;
@@ -24,7 +25,19 @@ public class UserControl {
     private JButton exitButton;
     private JPanel userControl;
 
-    public UserControl() {
+    TreeMap<String, Object> currentUser = new TreeMap<>(); // Initialize an empty TreeMap
+
+    public UserControl(TreeMap editUser) {
+
+        if (editUser != null) {
+            System.out.println("Input billboard not null.");
+            currentUser = editUser;
+            refreshFields();
+        } else {
+            System.out.println("Input billboard is null.");
+        }
+        //refreshFields();
+
         // Get newly created user's userID to edit the user's permissions
         String userId = null;
         try {
@@ -38,10 +51,19 @@ public class UserControl {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Main.server.deleteUser(finalUserId);
+                    int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + userNameField.getText() + "?");
+                    if (n == JOptionPane.YES_OPTION) {
+                        Main.server.deleteUser(finalUserId);
+                        userNameField.setText("");
+                        passwordField1.setText("");
+                        ScheduleBBCheckBox.setSelected(false);
+                        editUsersCheckBox.setSelected(false);
+                        CreateBBCheckBox.setSelected(false);
+                        EditBBCheckBox.setSelected(false);
+                    } else if (n == JOptionPane.NO_OPTION) {
+                    }
                 } catch (ServerException ex) {
-                    JOptionPane.showMessageDialog(null, "You do not have permission to remove users.");
-                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
                 }
             }
         });
@@ -49,25 +71,27 @@ public class UserControl {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Start with check if the user exists within the system
-                String userIDcheck = null;
+                String userIDchecks = null;
                 try {
-                    userIDcheck = Main.server.getUserId(userNameField.getText());
+                    userIDchecks = Main.server.getUserId(userNameField.getText());
                 } catch (ServerException ex) {
+                    //JOptionPane.showMessageDialog(null, ex.getMessage());
                     ex.printStackTrace();
                 }
-                String finalUserIdCheck = userIDcheck;
+                String finalUserIdCheck = userIDchecks;
+
                 // If new user, create(add) new user
                 if (finalUserIdCheck == null){
                     try {
                         Main.server.addUser(userNameField.getText(), passwordField1.getText(), Protocol.Permission.NONE);
                         JOptionPane.showMessageDialog(null, "New user created");
                     } catch (ServerException ex) {
-                        JOptionPane.showMessageDialog(null, "You do not have permission to create users.");
-                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
                     }
                 }
                 // If existing user, edit existing user
                     // Now check each box and use the editUser function to give certain permissions
+                String userIDcheck = null;
                 try {
                     userIDcheck = Main.server.getUserId(userNameField.getText());
                 } catch (ServerException ex) {
@@ -75,48 +99,31 @@ public class UserControl {
                 }
                 finalUserIdCheck = userIDcheck;
 
+                // Add the checked permissions together as an integer
+                Integer newPermission = 0;
+
                 if (ScheduleBBCheckBox.isSelected()){
-                    try {
-                        Main.server.editUser(finalUserIdCheck, userNameField.getText(), passwordField1.getText(), Protocol.Permission.SCHEDULE_BILLBOARDS);
-                        JOptionPane.showMessageDialog(null, "User successfully edited");
-                    } catch (ServerException ex) {
-                        JOptionPane.showMessageDialog(null, "You do not have permission to create users.");
-                        ex.printStackTrace();
-                    }
+                    newPermission += 0b100;
                 }
                 if (EditBBCheckBox.isSelected()){
-                    try {
-                        Main.server.editUser(finalUserIdCheck, userNameField.getText(), passwordField1.getText(), Protocol.Permission.EDIT_ALL_BILLBOARDS);
-                    } catch (ServerException ex) {
-                        JOptionPane.showMessageDialog(null, "You do not have permission to create users.");
-                        ex.printStackTrace();
-                    }
+                    newPermission += 0b1;
                 }
                 if (CreateBBCheckBox.isSelected()){
-                    try {
-                        Main.server.editUser(finalUserIdCheck, userNameField.getText(), passwordField1.getText(), Protocol.Permission.CREATE_BILLBOARDS);
-                    } catch (ServerException ex) {
-                        JOptionPane.showMessageDialog(null, "You do not have permission to create users.");
-                        ex.printStackTrace();
-                    }
+                    newPermission += 0b10;
                 }
                 if (editUsersCheckBox.isSelected()){
-                    try {
-                        Main.server.editUser(finalUserIdCheck, userNameField.getText(), passwordField1.getText(), Protocol.Permission.EDIT_USERS);
-                    } catch (ServerException ex) {
-                        JOptionPane.showMessageDialog(null, "You do not have permission to create users.");
-                        ex.printStackTrace();
-                    }
+                    newPermission += 0b1000;
                 }
-//                if (editUsersCheckBox.isSelected() && ScheduleBBCheckBox.isSelected() && CreateBBCheckBox.isSelected() && EditBBCheckBox.isSelected() ){
-//                    try {
-//                        Main.server.editUser(finalUserIdCheck, userNameField.getText(), passwordField1.getText(), Protocol.Permission.ALL);
-//                    } catch (ServerException ex) {
-//                        JOptionPane.showMessageDialog(null, "You do not have permission to create users.");
-//                        ex.printStackTrace();
-//                    }
-//                }
 
+                // Edit the user with the saved data
+                try {
+                    Main.server.editUser(finalUserIdCheck, userNameField.getText(), passwordField1.getText(), newPermission);
+                    if (userIDchecks != null){
+                        JOptionPane.showMessageDialog(null, "Edited user: " + userNameField.getText());
+                    }
+                } catch (ServerException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
+                }
             }
         });
 
@@ -128,19 +135,54 @@ public class UserControl {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new MainControl().main(null);
+                new MainControl(null).main(null);
             }
         });
     }
 
-    public static void main(String[] args) {
+    public static void main(TreeMap inputUser) {
         /* Create and display the form */
         JFrame frame = new JFrame("Billboard User Builder");
         Main.centreWindow(frame);
-        frame.setContentPane(new UserControl().userControl);
+        frame.setContentPane(new UserControl(inputUser).userControl);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    /**
+     * Refreshes text area fields when changes are made or applied to the billboard data
+     */
+    private void refreshFields() {
+        // Refresh username field, leave password field blank
+        userNameField.setText(currentUser.get("userName").toString());
+
+        // Check the integer of the permissions and check the appropriate boxes
+        Integer userPermission = Integer.parseInt(currentUser.get("permissions").toString());
+        System.out.println(Protocol.Permission.toString(userPermission));
+
+        if ((userPermission & Protocol.Permission.EDIT_ALL_BILLBOARDS) != 0) {
+            EditBBCheckBox.setSelected(true);
+        }
+
+        if ((userPermission & Protocol.Permission.CREATE_BILLBOARDS) != 0) {
+            CreateBBCheckBox.setSelected(true);
+        }
+
+        if ((userPermission & Protocol.Permission.SCHEDULE_BILLBOARDS) != 0) {
+            ScheduleBBCheckBox.setSelected(true);
+        }
+
+        if ((userPermission & Protocol.Permission.EDIT_USERS) != 0) {
+            editUsersCheckBox.setSelected(true);
+        }
+
+
+        // If billboard name set, such as editing a billboard
+        if (currentUser.containsKey("userName")) {
+            //
+            userNameField.setText(currentUser.get("userName").toString());
+        }
     }
 
     {

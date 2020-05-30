@@ -1,20 +1,14 @@
 package billboard_control_panel;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;
 
 import billboard_control_panel.Calendar.*;
-import billboard_control_panel.Calendar.CalendarEvent;
-import billboard_server.ClientServerInterface;
 import billboard_server.exceptions.ServerException;
 import billboard_viewer.Billboard;
 //import billboard_viewer.DisplayBillboard;
@@ -41,8 +35,9 @@ public class MainControl {
     private JButton refreshBillboardButton;
     private JLabel Title;
     private JTabbedPane tabbedPane;
+    private JButton deleteBillboardButton;
 
-    public MainControl() {
+    public MainControl(String userName) {
 
         Window[] wns = LoginManager.getFrames();
         for (Window wn1 : wns) {
@@ -52,25 +47,10 @@ public class MainControl {
         //TODO Put users from db into string array to display in GU
         refreshBillboards();
         refreshUsers();
-//        usersList.addListSelectionListener(new ListSelectionListener() {
-//            @Override
-//            public void valueChanged(ListSelectionEvent e) {
-//                if (!e.getValueIsAdjusting()) {
-//                    String selectedUsername = usersList.getSelectedValue().toString();
-//                    System.out.println(selectedUsername);
-//                    modifyUserButton.setEnabled(true);
-//                    try {
-//                        String userId = Main.server.getUserId(selectedUsername);
-//                        TreeMap<String, Object> selectedUser = Main.server.getUser(userId);
-//                        System.out.println(selectedUser.toString());
-//                        //System.out.println(Main.server.getUser(usersList.getSelectedValue().toString()).toString());
-//                    } catch (ServerException ex) {
-//                        ex.printStackTrace();
-//                    }
-//                }
-//
-//            }
-//        });
+
+
+        Title.setText(userName + " Control Panel");
+
         logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -82,7 +62,9 @@ public class MainControl {
                         wn1.dispose();
                         wn1.setVisible(false);
                     }
+                    Main.server.logout();
                     new LoginManager().main(null);
+
                 } else if (n == JOptionPane.NO_OPTION) {
                 }
             }
@@ -102,7 +84,7 @@ public class MainControl {
                     } else if (n == JOptionPane.NO_OPTION) {
                     }
                 } catch (ServerException ex) {
-                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
                 }
                 refreshUsers();
             }
@@ -111,31 +93,35 @@ public class MainControl {
         createUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Window[] wns = LoginManager.getFrames();
-                for (Window wn1 : wns) {
-                    wn1.dispose();
-                    wn1.setVisible(false);
+
+                try {
+                    Main.server.getUsers();
+                    Window[] wns = LoginManager.getFrames();
+                    for (Window wn1 : wns) {
+                        wn1.dispose();
+                        wn1.setVisible(false);
+                    }
+                    new UserControl(null).main(null);
+                } catch (ServerException z) {
+                    throwDialog("User does not have permission to view schedules", "No permission");
                 }
-                new UserControl().main(null);
+
+//                Window[] wns = LoginManager.getFrames();
+//                for (Window wn1 : wns) {
+//                    wn1.dispose();
+//                    wn1.setVisible(false);
+//                }
+//                new UserControl(null).main(null);
             }
         });
-        modifyUserButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Window[] wns = LoginManager.getFrames();
-                for (Window wn1 : wns) {
-                    wn1.dispose();
-                    wn1.setVisible(false);
-                }
-                System.out.println(usersList.getSelectedValue());
-                new UserControl().main(null);
-            }
-        });
+
 
         // User Setting Buttons
 
         createBillboardButton.addActionListener(new ActionListener() {
             @Override
+            //TODO: check if user has permission to create billboards
+
             public void actionPerformed(ActionEvent e) {
                 Window[] wns = LoginManager.getFrames();
                 for (Window wn1 : wns) {
@@ -147,6 +133,35 @@ public class MainControl {
             }
         });
 
+        modifyUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String userKey = null;
+                TreeMap user = new TreeMap<String, String>();
+                System.out.println("Edit selected user: " + usersList.getSelectedValue());
+
+                if (usersList.getSelectedValue() == null) {
+                    // No billboard selected
+                    throwDialog("No user has been selected to edit, please select a valid user.", "No User Selected");
+                } else {
+
+                    Window[] wns = LoginManager.getFrames();
+                    for (Window wn1 : wns) {
+                        wn1.dispose();
+                        wn1.setVisible(false);
+                    }
+                    try {
+                        userKey = Main.server.getUserId((String) usersList.getSelectedValue());
+                        System.out.println("User Key:" + userKey);
+                        user = Main.server.getUser(userKey);
+                    } catch (ServerException ex) {
+                        throwDialog(ex.getMessage(),"Error");
+                    }
+                    new UserControl(user).main(user); // pass in selected user for edit
+                }
+            }
+        });
+
         editBillboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -154,7 +169,7 @@ public class MainControl {
                 String billboardKey = null;
                 TreeMap billBoard = new TreeMap<String, String>();
 
-                System.out.println("Preview selected billboard: " + billboardsList.getSelectedValue());
+                System.out.println("Edit selected billboard: " + billboardsList.getSelectedValue());
 
                 if (billboardsList.getSelectedValue() == null) {
                     // No billboard selected
@@ -172,7 +187,7 @@ public class MainControl {
                         System.out.println("Billboard Key:" + billboardKey);
                         billBoard = Main.server.getBillboard(billboardKey);
                     } catch (ServerException ex) {
-                        ex.printStackTrace();
+                        throwDialog(ex.getMessage(),"Error");
                     }
                     new BillboardControl(billBoard).main(billBoard); // pass in selected billboard for edit
 
@@ -201,7 +216,7 @@ public class MainControl {
                         billBoard = Main.server.getBillboard(billboardKey);
 
                     } catch (ServerException ex) {
-                        ex.printStackTrace();
+                        throwDialog(ex.getMessage(),"Error");
                     }
 
                     //printBillboard debugging
@@ -222,12 +237,18 @@ public class MainControl {
         scheduleBillboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Window[] wns = LoginManager.getFrames();
-                for (Window wn1 : wns) {
-                    wn1.dispose();
-                    wn1.setVisible(false);
+                try {
+                    Main.server.getSchedules();
+                    Window[] wns = LoginManager.getFrames();
+                    for (Window wn1 : wns) {
+                        wn1.dispose();
+                        wn1.setVisible(false);
+                    }
+                    //new MainControl(usernameField1.getText()).main(usernameField1.getText());
+                    new CalendarCreator(userName).main(null);
+                } catch (ServerException z) {
+                    throwDialog("User does not have permission to view schedules", "No permission");
                 }
-                new CalendarCreator().main(null);
             }
         });
 
@@ -259,6 +280,29 @@ public class MainControl {
             }
         });
 
+        deleteBillboardButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String billboardID = null;
+                if (billboardsList.getSelectedValue() == null) {
+                    // No billboard selected
+                    throwDialog("No Billboard has been selected to delete, please select a valid billboard.", "No Billboard Selected");
+                } else {
+                    try {
+                        billboardID = Main.server.getBillboardId(billboardsList.getSelectedValue().toString());
+                        int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + billboardsList.getSelectedValue().toString() + "?");
+                        if (n == JOptionPane.YES_OPTION) {
+                            Main.server.deleteBillboard(billboardID);
+                        } else if (n == JOptionPane.NO_OPTION) {
+                        }
+                    } catch (ServerException ex) {
+                        JOptionPane.showMessageDialog(null,ex.getMessage());
+                    }
+                    //TODO: refresh works properly
+                    refreshBillboards();
+                }
+            }
+        });
     }
 
     //TODO: FIx the bug, sometimes it refreshes, sometimes it doesnt?
@@ -303,6 +347,7 @@ public class MainControl {
         } catch (ServerException z) {
             z.printStackTrace();
         }
+
         //TreeMap<String, Object> userDetails = (TreeMap<String, Object>) users.get("userName");
         ArrayList<String> userNameList = new ArrayList<String>();
         TreeMap<String, Object> finalUsers = users;
@@ -321,11 +366,11 @@ public class MainControl {
         JOptionPane.showMessageDialog(null, messageText, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public static void main(String[] args) {
+    public static void main(String username) {
         /* Create and display the form */
         JFrame frame = new JFrame("Billboard Control Panel");
         Main.centreWindow(frame);
-        frame.setContentPane(new MainControl().controlPanel);
+        frame.setContentPane(new MainControl(username).controlPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
