@@ -73,13 +73,13 @@ public class UserControl {
             public void actionPerformed(ActionEvent e) {
                 // Start with check if the user exists within the system
                 String userIDchecks = null;
-
                 try {
                     userIDchecks = Main.server.getUserId(userNameField.getText());
                 } catch (ServerException ex) {
                     ex.printStackTrace();
                 }
                 String finalUserIdCheck = userIDchecks;
+
                 // If new user, create(add) new user
                 if (finalUserIdCheck == null){
                     try {

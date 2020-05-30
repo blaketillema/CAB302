@@ -53,25 +53,8 @@ public class MainControl {
         //TODO Put users from db into string array to display in GU
         refreshBillboards();
         refreshUsers();
-//        usersList.addListSelectionListener(new ListSelectionListener() {
-//            @Override
-//            public void valueChanged(ListSelectionEvent e) {
-//                if (!e.getValueIsAdjusting()) {
-//                    String selectedUsername = usersList.getSelectedValue().toString();
-//                    System.out.println(selectedUsername);
-//                    modifyUserButton.setEnabled(true);
-//                    try {
-//                        String userId = Main.server.getUserId(selectedUsername);
-//                        TreeMap<String, Object> selectedUser = Main.server.getUser(userId);
-//                        System.out.println(selectedUser.toString());
-//                        //System.out.println(Main.server.getUser(usersList.getSelectedValue().toString()).toString());
-//                    } catch (ServerException ex) {
-//                        ex.printStackTrace();
-//                    }
-//                }
-//
-//            }
-//        });
+
+
         logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -242,12 +225,17 @@ public class MainControl {
         scheduleBillboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Window[] wns = LoginManager.getFrames();
-                for (Window wn1 : wns) {
-                    wn1.dispose();
-                    wn1.setVisible(false);
+                try {
+                    Main.server.getSchedules();
+                    Window[] wns = LoginManager.getFrames();
+                    for (Window wn1 : wns) {
+                        wn1.dispose();
+                        wn1.setVisible(false);
+                    }
+                    new CalendarCreator().main(null);
+                } catch (ServerException z) {
+                    throwDialog("User does not have permission to view schedules", "No permission");
                 }
-                new CalendarCreator().main(null);
             }
         });
 
