@@ -220,7 +220,6 @@ public class ServerFunctions {
                 response.data = database.getUsers(userIdList);
             }
         }
-
         return response;
     }
 

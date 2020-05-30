@@ -93,16 +93,6 @@ public class ServerThread implements Runnable {
                     response.data = new TreeMap<>();
                     response.data.put("scheduleId", database.billboardToScheduleId((String) request.data.get("billboardId")));
                     break;
-                case SCHEDULE_COMMAND:
-                    response = new ServerResponse();
-                    response.data = new TreeMap<>();
-                    TreeMap<String, Object> clientData = (TreeMap<String, Object>) request.data.get( request.data.firstKey() );
-                    String command = (String) clientData.get("command");
-                    ArrayList<Object> data = (ArrayList<Object>) clientData.get("data");
-                    scheduler.setCommandIn(command, data);
-                    while ( scheduler.getIsProcessing() ); // wait until schedular has finished processing
-                    response = scheduler.sendCommand();
-                    break;
             }
         } catch (Exception e) {
             response = new ServerResponse();
