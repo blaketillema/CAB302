@@ -16,20 +16,16 @@ import java.util.TreeMap;
  * from input TreeMap to retrieve JPanels of a visual Billboard in full screen.
  */
 public class Billboard {
-
     private TreeMap<String, String> billboardContents;
     private double xRes; //Full screen width
     private double yRes; //Full screen height
-
     private boolean hasMessage = false;
     private boolean hasInformation = false;
     private boolean hasImageData = false;
     private boolean hasImageURL = false;
     private boolean isDefault = false;
-
     private JFrame billboardFrame = new JFrame("Billboard Frame");
     private boolean billboardClosed = false;
-
     private boolean preview = false; // Indicates if called from the control panel to preview a billboard. Default value false.
 
     /**
@@ -58,7 +54,7 @@ public class Billboard {
      * Used for previewing billboard from control panel.
      * Construct billboard with input TreeMap, with boolean overload for control panel preview
      *
-     * @param billboardContents
+     * @param billboardContents takes contents of a billboard from the billboard creator
      */
     public Billboard(TreeMap<String, String> billboardContents, boolean preview) {
         this.preview = true;
@@ -85,11 +81,9 @@ public class Billboard {
         } else {
             billboardFrame.add(noBillboardPanel());
         }
-
         // Add listeners for left mouse or ESC key to exist program
         addMouseListener();
         addKeyListener();
-
         billboardFrame.setVisible(true);
     }
 
@@ -114,19 +108,14 @@ public class Billboard {
      * @param newBillboard
      */
     public void updateBillboard(TreeMap<String, String> newBillboard) {
-
         // Check if billboard is the same as previous
         if (billboardContents.equals(newBillboard)) {
             // Same Billboard, do nothing
-            //System.out.println("Debug: Same Billboard");
+
         } else {
             // New Billboard
-            //System.out.println("Debug: New Billboard");
             this.billboardContents = newBillboard;
-
-            /**
-             * Check type of billboard
-             */
+            // Check type of billboard
             if ( billboardContents.containsKey("message") ) {
                 hasMessage = true;
             }
@@ -139,39 +128,17 @@ public class Billboard {
             if ( billboardContents.containsKey("pictureURL") ) {
                 hasImageURL = true;
             }
-
-            /*
-            System.out.println("Message: "+hasMessage);
-            System.out.println("information: "+hasInformation);
-            System.out.println("pictureData: "+hasImageData);
-            System.out.println("pictureURL: "+hasImageURL);
-             */
-
             // Create a new billboard JPanel
             Panel panel = new Panel(newBillboard);
             JPanel billboardPanel = panel.getPanel();
-
             // Clear frame contents for new panel
             billboardFrame.getContentPane().removeAll();
-
             // Add billboard Panel to frame
             billboardFrame.add(billboardPanel);
-
             // Reload Frame
             billboardFrame.revalidate();
             billboardFrame.repaint();
             billboardFrame.setVisible(true);
-        }
-    }
-
-    /**
-     * DEBUG Method, print TreeMap to check contents
-     */
-    private void printBillboard() {
-        //System.out.println("Billboard: Printing Billboard...");
-        Set<String> set1 = billboardContents.keySet();
-        for (String key : set1) {
-            //System.out.println("Billboard Key : "  + key + "\t\t" + "Value : "  + billboardContents.get(key));
         }
     }
 
@@ -184,7 +151,6 @@ public class Billboard {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int click = e.getButton();
-                //System.out.println("Mouse Click: "+click);
                 if (click == 1) {
                     exitBillboard();
                 }
@@ -213,7 +179,6 @@ public class Billboard {
             @Override
             public void keyTyped(KeyEvent e) {
                 char key = e.getKeyChar();
-                //System.out.println("Key Press: "+key);
                 if (key == '') {
                     exitBillboard();
                 }
@@ -223,26 +188,22 @@ public class Billboard {
             @Override
             public void keyReleased(KeyEvent e) {}
         });
-        //frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
     }
 
     /**
      * Close the billboard window and change boolean signal for main to read application is to close
      */
     private void exitBillboard() {
-        //System.out.println("DEBUG: Closing Billboard");
         billboardFrame.setVisible(false); // Hide but reserve the frame?
-        //frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)); // Close window
         billboardFrame.dispose(); // Dispose of JFrame
         billboardClosed = true;
     }
 
     /**
      * Check if billboard has been closed by user
-     * @return
+     * @return state of viewer if closed
      */
     public boolean getState() {
         return billboardClosed;
     }
-
 }
