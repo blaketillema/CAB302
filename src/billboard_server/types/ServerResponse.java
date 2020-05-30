@@ -5,7 +5,7 @@ import java.util.TreeMap;
 
 public class ServerResponse implements Serializable {
     public boolean success = true;
-    public String status = "OK";
+    public String status = "";
     public TreeMap<String, Object> data;
 
     public ServerResponse() {
