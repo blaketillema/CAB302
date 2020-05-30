@@ -31,11 +31,6 @@ public class CalendarCreator extends Frame {
         label2.setText("Billboard Scheduler Editor");
         schedulerPanel.add(label2, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(58, 16), null, 0, false));
 
-        // Schedule Name
-//        JTextField enterScheduleNameTextField = new JTextField();
-//        enterScheduleNameTextField.setText("Enter Schedule Name");
-//        schedulerPanel.add(enterScheduleNameTextField, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension( 150, -1), null, 0, false));
-
         // Billboard Drop down
         TreeMap<String, Object> billboards = null;
         try {
@@ -147,51 +142,52 @@ public class CalendarCreator extends Frame {
         } catch (ServerException e) {
             e.printStackTrace();
         }
+        TreeMap<String, Object> finalConfirmed = confirmed;
 
         //System.out.println(confirmed);
-        for(Map.Entry<String,Object> entry : confirmed.entrySet()) {
-            String key = entry.getKey();
-            Object value = entry.getValue();
+        for(Map.Entry<String,Object> entry : finalConfirmed.entrySet()) {
             TreeMap<String, Object> scheduleDetails = (TreeMap<String, Object>) entry.getValue();
-            System.out.println(key + " => " + value);
             OffsetDateTime offsetStartDateTime = (OffsetDateTime) scheduleDetails.get("startTime");
             Integer duration = (Integer) scheduleDetails.get("duration");
             Boolean isRecurring = (Boolean) scheduleDetails.get("isRecurring");
             Integer recurFreqInMins = (Integer) scheduleDetails.get("recurFreqInMins");
-            String scheduleId = (String) scheduleDetails.get("scheduleId");
             String billboardId = (String) scheduleDetails.get("billboardId");
 
+            String billboardName = null;
             try {
                 TreeMap<String, String> billboard = Main.server.getBillboard(billboardId);
-                //System.out.println(billboard.toString());
-                String billboardName = (String) billboard.get("billboardName");
-                int startMinute = offsetStartDateTime.getMinute();
-                int startHour = offsetStartDateTime.getHour();
-                int startDay = offsetStartDateTime.getDayOfMonth();
-                int startMonth = offsetStartDateTime.getMonthValue();
-                int startYear = offsetStartDateTime.getYear();
-                int endHour = startHour + 1;
-                int endMinute = startMinute;
+                billboardName = billboard.get("billboardName");
+            } catch (ServerException e) {
+                e.printStackTrace();
+            }
+            String billboardname = billboardName;
 
+            int startMinute = offsetStartDateTime.getMinute();
+            int startHour = offsetStartDateTime.getHour();
+            int startDay = offsetStartDateTime.getDayOfMonth();
+            int startMonth = offsetStartDateTime.getMonthValue();
+            int startYear = offsetStartDateTime.getYear();
+            int months = 0;
 
+            int Rminute = recurFreqInMins;
+            int freqDays = Rminute / 24 /60;
+            int freqHours = Rminute / 60 % 24;
+            int remMins = (Rminute % 60);
+            int endHour = startHour + duration/60%24;
+            int endMinute = startMinute + (duration% 60);
                 // Minutely Recurrence
                 if (isRecurring == true) {
-                    int months = 0;
-                    int days = 0;
-                    int Rminute = recurFreqInMins;
-                    int freqHours = Rminute / 60 % 24;
-                    int remMins = (Rminute % 60);
-                    // TODO: Reschedules for a year (can specify this with a user-input value)
-                    // TODO: Fix repaint bug
-                    while (days <= 30 || months <= 6) {
+                    while (months <= 12) {
                         // Add the first event
-                        days++;
-                        events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
+                        events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardname));
+
                         // For the next event: Add the user inputted minutes e.g. 90 minutes, to Start Time (2.30pm) + (userinputted) 90 min = (4.00pm)
+                        startDay = (startDay + freqDays);
                         startMinute = (startMinute + remMins);
                         startHour = (startHour + freqHours);
                         endMinute = (endMinute + remMins);
                         endHour = (endHour + freqHours);
+
                         // First add remainder minutes (90 minutes -> 30minutes and 1 hour)
                         if (startMinute >= 60) {
                             startMinute = startMinute % 60;
@@ -204,7 +200,6 @@ public class CalendarCreator extends Frame {
                         if (startHour > 23) {
                             startHour = startHour % 24;
                             startDay++;
-                            days++;
                         }
 
                         if (endHour > 23) {
@@ -212,20 +207,20 @@ public class CalendarCreator extends Frame {
                         }
 
                         // Months with 31 days
-                        if ((startDay == 32) && (startMonth == 1 || startMonth == 3 || startMonth == 5 || startMonth == 7 || startMonth == 8 || startMonth == 10 || startMonth == 12)) {
+                        if ((startDay >= 32) && (startMonth == 1 || startMonth == 3 || startMonth == 5 || startMonth == 7 || startMonth == 8 || startMonth == 10 || startMonth == 12)) {
                             startDay = 1;
                             startMonth++;
                             months++;
                         }
                         // Months with 30 days
-                        if ((startDay >= 31) && (startMonth == 4 || startMonth == 6 || startMonth == 9 || startMonth == 11)) {
+                        if ((startDay == 31) && (startMonth == 4 || startMonth == 6 || startMonth == 9 || startMonth == 11)) {
                             startDay = 1;
                             startMonth++;
                             months++;
                         }
 
                         // Year
-                        if (startMonth == 13) {
+                        if (startMonth >= 13) {
                             startMonth = 1;
                             startYear++;
                         }
@@ -236,20 +231,19 @@ public class CalendarCreator extends Frame {
                             months++;
                         }
                         // February Leap Year
-                        if (startMonth == 2 && startYear % 4 == 0 && startDay == 30) {
+                        if (startMonth == 2 && startYear % 4 == 0 && startDay >= 30) {
                             startDay = 1;
                             startMonth++;
                             months++;
                         }
                     }
+                    cal.goToToday();
                 }
                 else{
-                    events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
+                    events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardname));
                 }
 
-            } catch (ServerException e) {
-                e.printStackTrace();
-            }
+
         }
         //</editor-fold>
 
@@ -433,8 +427,6 @@ public class CalendarCreator extends Frame {
                 // Get seconds from each, and subtract.
                 long diff = endDateTime.getTime() - startDateTime.getTime();
                 int diffMinutes = Math.toIntExact(diff / (60 * 1000));
-                System.out.println("diff " + diff);
-                System.out.println("diffMinutes: " + diffMinutes);
                 // Get recurring values
                 int minuteSpinnerValue = (Integer) minuteSpinner.getValue();
                 boolean recurring = (Boolean) recurringCheckBox.isSelected();
@@ -514,6 +506,7 @@ public class CalendarCreator extends Frame {
                     else if (recurringHourly == true){
                         int days = 0;
                         while (days <= 365){
+                            days++;
                             events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour , startMinute), LocalTime.of(endHour, endMinute), billboardName));
                             startHour = (startHour + 1);
                             endHour = (endHour +1);
@@ -559,10 +552,12 @@ public class CalendarCreator extends Frame {
                         int Rminute = minuteSpinnerValue;
                         int freqHours = Rminute/60%24;
                         int remMins = (Rminute%60);
+                        int freqDays = Rminute / 24 /60;
                         while (months <= 12 ){
                             // Add the first event
                             events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
                             // For the next event: Add the user inputted minutes e.g. 90 minutes, to Start Time (2.30pm) + (userinputted) 90 min = (4.00pm)
+                            startDay = (startDay + freqDays);
                             startMinute = (startMinute + remMins);
                             startHour = (startHour + freqHours);
                             endMinute = (endMinute + remMins);
@@ -586,20 +581,20 @@ public class CalendarCreator extends Frame {
                             }
 
                             // Months with 31 days
-                            if ((startDay == 32) && (startMonth == 1 || startMonth  == 3 || startMonth == 5|| startMonth == 7|| startMonth == 8|| startMonth == 10|| startMonth == 12)){
+                            if ((startDay >= 32) && (startMonth == 1 || startMonth  == 3 || startMonth == 5|| startMonth == 7|| startMonth == 8|| startMonth == 10|| startMonth == 12)){
                                 startDay = 1;
                                 startMonth++;
                                 months++;
                             }
                             // Months with 30 days
-                            if ((startDay >= 31) && (startMonth == 4 || startMonth  == 6 || startMonth == 9|| startMonth == 11)){
+                            if ((startDay == 31) && (startMonth == 4 || startMonth  == 6 || startMonth == 9|| startMonth == 11)){
                                 startDay = 1;
                                 startMonth++;
                                 months++;
                             }
 
                             // Year
-                            if (startMonth == 13){
+                            if (startMonth >= 13){
                                 startMonth = 1;
                                 startYear++;
                             }
@@ -610,7 +605,7 @@ public class CalendarCreator extends Frame {
                                 months++;
                             }
                             // February Leap Year
-                            if (startMonth == 2 && startYear%4 == 0 && startDay==30){
+                            if (startMonth == 2 && startYear%4 == 0 && startDay>=30){
                                 startDay = 1;
                                 startMonth++;
                                 months++;
@@ -618,16 +613,11 @@ public class CalendarCreator extends Frame {
                         }
                         cal.goToToday();
                     }
-                    //enterScheduleNameTextField.setText("Enter new schedule name...");
 
-
-
-                    //Main.server.addSchedule(ClientMainTests.randomNewSchedule(billboardId));
                 } catch (ServerException ex) {
                     ex.printStackTrace();
                     JOptionPane.showMessageDialog(null,ex.getMessage());
                 }
-
             }
         });
 
