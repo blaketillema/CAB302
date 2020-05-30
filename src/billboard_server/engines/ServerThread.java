@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.TreeMap;
 
 import billboard_server.Scheduler;
@@ -95,7 +96,12 @@ public class ServerThread implements Runnable {
                 case SCHEDULE_COMMAND:
                     response = new ServerResponse();
                     response.data = new TreeMap<>();
-                    response.data.put("scheduleId", database.billboardToScheduleId((String) request.data.get("billboardId")));
+                    TreeMap<String, Object> clientData = (TreeMap<String, Object>) request.data.get( request.data.firstKey() );
+                    String command = (String) clientData.get("command");
+                    ArrayList<Object> data = (ArrayList<Object>) clientData.get("data");
+                    scheduler.setCommandIn(command, data);
+                    while ( scheduler.getIsProcessing() ); // wait until schedular has finished processing
+                    response = scheduler.sendCommand();
                     break;
             }
         } catch (Exception e) {
