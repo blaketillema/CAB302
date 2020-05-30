@@ -1,7 +1,6 @@
 package billboard_control_panel.Calendar;
 
 import billboard_control_panel.*;
-import billboard_server.ClientMainTests;
 import billboard_server.exceptions.ServerException;
 
 import javax.swing.*;
@@ -12,14 +11,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class CalendarCreator extends Frame {
-    public CalendarCreator() {
+    public CalendarCreator(String userName) {
 
         //<editor-fold desc="Schedule Controller Panel (Right Panel of GUI)">
         setLayout(new GridLayout());
@@ -180,11 +177,13 @@ public class CalendarCreator extends Frame {
                 // Minutely Recurrence
                 if (isRecurring == true) {
                     int months = 0;
+                    int days = 0;
                     int Rminute = recurFreqInMins;
                     int freqHours = Rminute / 60 % 24;
                     int remMins = (Rminute % 60);
                     // TODO: Reschedules for a year (can specify this with a user-input value)
-                    while (months <= 1) {
+                    // TODO: Fix repaint bug
+                    while (days <= 14) {
                         // Add the first event
                         events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
                         // For the next event: Add the user inputted minutes e.g. 90 minutes, to Start Time (2.30pm) + (userinputted) 90 min = (4.00pm)
@@ -204,6 +203,7 @@ public class CalendarCreator extends Frame {
                         if (startHour > 23) {
                             startHour = startHour % 24;
                             startDay++;
+                            days++;
                         }
 
                         if (endHour > 23) {
@@ -250,12 +250,6 @@ public class CalendarCreator extends Frame {
                 e.printStackTrace();
             }
         }
-
-
-        //System.out.println(confirmed.values().toArray(Object[0]));
-        //TODO: Paint existing schedules
-        //Pseudo code - for number of objects in schedule table, add new calendar event. If reoccuring is true, make proper adjustments
-        //add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
         //</editor-fold>
 
 
@@ -314,10 +308,6 @@ public class CalendarCreator extends Frame {
             System.out.println(startDate);
             startSpinner.setValue(startDate);
             endSpinner.setValue(endDate);
-//            if (enterScheduleNameTextField.getText() != "Enter new schedule name..."){
-//                //TODO: optional - check if ScheduleName exists in db
-//            } else enterScheduleNameTextField.setText("Enter new schedule name...");
-
         });
         //</editor-fold>
 
@@ -416,7 +406,6 @@ public class CalendarCreator extends Frame {
         });
         //</editor-fold>
 
-        //TODO: Port saved data to billboard server, database and calendar view
         //<editor-fold desc="Scheduler User Save, Delete, Exit and Reset Listeners">
         saveButton.addActionListener(new ActionListener() {
             @Override
@@ -483,7 +472,8 @@ public class CalendarCreator extends Frame {
                 } catch (ServerException ex) {
                     ex.printStackTrace();
                 }
-                //TODO: Add Schedule to DB.
+
+                //Sends schedule to server
                 TreeMap<String, Object> body = new TreeMap<>();
                 try {
                     body.put("billboardId", billboardId);
@@ -491,175 +481,167 @@ public class CalendarCreator extends Frame {
                     body.put("duration", diffMinutes);
                     body.put("isRecurring", recurring);
                     body.put("recurFreqInMins", recurringEveryXminutes);
-                    Main.server.addSchedule(body);
+                    //Main.server.addSchedule(body);
+                    Main.server.addSchedule(billboardName, offsetDateTime, diffMinutes, recurring,recurringEveryXminutes, userName);
+
+                    if (true) {
+                        //TODO: Add case where checkbox is ticked but no other buttons are selected
+                        if (!recurringCheckBox.isSelected()){
+                            events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
+                            cal.goToToday();
+                        }
+                        // Daily Recurrence
+                        else if (recurringDaily == true){
+                            int days = 0;
+
+                            while (days <= 365 ){
+                                events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
+                                startDay = (startDay + 1)%32;
+                                days++;
+                                if (startDay == 0){
+                                    startDay++;
+                                    startMonth++;
+                                }
+                                // Year
+                                if (startMonth == 13){
+                                    startMonth = 1;
+                                    startYear++;
+                                }
+                                // Months with 30 days
+                                if ((startDay == 31) && (startMonth == 4 || startMonth  == 6 || startMonth == 9|| startMonth == 11)){
+                                    startDay = 1;
+                                    startMonth++;
+                                }
+                                // February Non-Leap Year
+                                if (startMonth == 2 && startYear%4 != 0 && startDay==29){
+                                    startDay = 1;
+                                    startMonth++;
+                                }
+                                // February Leap Year
+                                if (startMonth == 2 && startYear%4 != 0 && startDay==30){
+                                    startDay = 1;
+                                    startMonth++;
+                                }
+                            }
+                            cal.goToToday();
+                        }
+                        // Hourly Recurrence
+                        else if (recurringHourly == true){
+                            int days = 0;
+                            while (days <= 7 ){
+                                events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour , startMinute), LocalTime.of(endHour, endMinute), billboardName));
+                                startHour = (startHour + 1);
+                                endHour = (endHour +1);
+                                if (startHour > 23){
+                                    startHour = startHour%24;
+                                    startDay++;
+                                    days++;
+                                }
+                                if (endHour > 23){
+                                    endHour = endHour%24;
+                                }
+                                // Months with 31 days
+                                if ((startDay == 32) && (startMonth == 1 || startMonth  == 3 || startMonth == 5|| startMonth == 7|| startMonth == 8|| startMonth == 10|| startMonth == 12)){
+                                    startDay = 1;
+                                    startMonth++;
+                                }
+                                // Months with 30 days
+                                if ((startDay >= 31) && (startMonth == 4 || startMonth  == 6 || startMonth == 9|| startMonth == 11)){
+                                    startDay = 1;
+                                    startMonth++;
+                                }
+                                // Year
+                                if (startMonth == 13){
+                                    startMonth = 1;
+                                    startYear++;
+                                }
+                                // February Non-Leap Year
+                                if (startMonth == 2 && startYear%4 != 0 && startDay==29){
+                                    startDay = 1;
+                                    startMonth++;
+                                }
+                                // February Leap Year
+                                if (startMonth == 2 && startYear%4 == 0 && startDay==30){
+                                    startDay = 1;
+                                    startMonth++;
+                                }
+                            }
+                            cal.goToToday();
+                        }
+                        // Minutely Recurrence
+                        else if (recurringMinutely == true){
+                            int months = 0;
+                            int Rminute = minuteSpinnerValue;
+                            int freqHours = Rminute/60%24;
+                            int remMins = (Rminute%60);
+                            while (months <= 12 ){
+                                // Add the first event
+                                events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
+                                // For the next event: Add the user inputted minutes e.g. 90 minutes, to Start Time (2.30pm) + (userinputted) 90 min = (4.00pm)
+                                startMinute = (startMinute + remMins);
+                                startHour = (startHour + freqHours);
+                                endMinute = (endMinute + remMins);
+                                endHour = (endHour + freqHours);
+                                // First add remainder minutes (90 minutes -> 30minutes and 1 hour)
+                                if (startMinute >= 60){
+                                    startMinute = startMinute%60;
+                                    startHour++;
+                                }
+                                if (endMinute >= 60){
+                                    endMinute = endMinute%60;
+                                    endHour++;
+                                }
+                                if (startHour > 23){
+                                    startHour = startHour%24;
+                                    startDay++;
+                                }
+
+                                if (endHour > 23){
+                                    endHour = endHour%24;
+                                }
+
+                                // Months with 31 days
+                                if ((startDay == 32) && (startMonth == 1 || startMonth  == 3 || startMonth == 5|| startMonth == 7|| startMonth == 8|| startMonth == 10|| startMonth == 12)){
+                                    startDay = 1;
+                                    startMonth++;
+                                    months++;
+                                }
+                                // Months with 30 days
+                                if ((startDay >= 31) && (startMonth == 4 || startMonth  == 6 || startMonth == 9|| startMonth == 11)){
+                                    startDay = 1;
+                                    startMonth++;
+                                    months++;
+                                }
+
+                                // Year
+                                if (startMonth == 13){
+                                    startMonth = 1;
+                                    startYear++;
+                                }
+                                // February Non-Leap Year
+                                if (startMonth == 2 && startYear%4 != 0 && startDay==29){
+                                    startDay = 1;
+                                    startMonth++;
+                                    months++;
+                                }
+                                // February Leap Year
+                                if (startMonth == 2 && startYear%4 == 0 && startDay==30){
+                                    startDay = 1;
+                                    startMonth++;
+                                    months++;
+                                }
+                            }
+                            cal.goToToday();
+                        }
+                        //enterScheduleNameTextField.setText("Enter new schedule name...");
+                    }
+
+
                     //Main.server.addSchedule(ClientMainTests.randomNewSchedule(billboardId));
                 } catch (ServerException ex) {
                     ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null,ex.getMessage());
                 }
-
-                // TODO: Grab Current Signed-in User and input into function below
-                ScheduleController.commandAddSchedule(billboardName,offsetDateTime,diffMinutes, recurring,recurringEveryXminutes, "Lahiru" );
-                Scheduler.commandParser( ScheduleController.getCurrentCommandName(), ScheduleController.getCurrentCommandData() );
-                String CommandNow = Scheduler.getCurrentCommandName();
-                if (CommandNow == "schedule-response:error"){
-                    JOptionPane.showMessageDialog(null,
-                            ScheduleController.commandReplyParser( Scheduler.getCurrentCommandName(), Scheduler.getCurrentCommandData() ),
-                            "Error",
-                            JOptionPane.WARNING_MESSAGE);
-                }
-                else {
-                    //TODO: Add case where checkbox is ticked but no other buttons are selected
-                    if (!recurringCheckBox.isSelected()){
-                        events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
-                        cal.goToToday();
-                    }
-                    // Daily Recurrence
-                    else if (recurringDaily == true){
-                        int days = 0;
-                        // TODO: Reschedules for a year (can specify this with a user-input value)
-                        while (days <= 365 ){
-                            events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
-                            startDay = (startDay + 1)%32;
-                            days++;
-                            if (startDay == 0){
-                                startDay++;
-                                startMonth++;
-                            }
-                            // Year
-                            if (startMonth == 13){
-                                startMonth = 1;
-                                startYear++;
-                            }
-                            // Months with 30 days
-                            if ((startDay == 31) && (startMonth == 4 || startMonth  == 6 || startMonth == 9|| startMonth == 11)){
-                                startDay = 1;
-                                startMonth++;
-                            }
-                            // February Non-Leap Year
-                            if (startMonth == 2 && startYear%4 != 0 && startDay==29){
-                                startDay = 1;
-                                startMonth++;
-                            }
-                            // February Leap Year
-                            if (startMonth == 2 && startYear%4 != 0 && startDay==30){
-                                startDay = 1;
-                                startMonth++;
-                            }
-                        }
-                        cal.goToToday();
-                    }
-                    // Hourly Recurrence
-                    else if (recurringHourly == true){
-                        int days = 0;
-                        while (days <= 7 ){
-                            events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour , startMinute), LocalTime.of(endHour, endMinute), billboardName));
-                            startHour = (startHour + 1);
-                            endHour = (endHour +1);
-                            if (startHour > 23){
-                                startHour = startHour%24;
-                                startDay++;
-                                days++;
-                            }
-                            if (endHour > 23){
-                                endHour = endHour%24;
-                            }
-                            // Months with 31 days
-                            if ((startDay == 32) && (startMonth == 1 || startMonth  == 3 || startMonth == 5|| startMonth == 7|| startMonth == 8|| startMonth == 10|| startMonth == 12)){
-                                startDay = 1;
-                                startMonth++;
-                            }
-                            // Months with 30 days
-                            if ((startDay >= 31) && (startMonth == 4 || startMonth  == 6 || startMonth == 9|| startMonth == 11)){
-                                startDay = 1;
-                                startMonth++;
-                            }
-                            // Year
-                            if (startMonth == 13){
-                                startMonth = 1;
-                                startYear++;
-                            }
-                            // February Non-Leap Year
-                            if (startMonth == 2 && startYear%4 != 0 && startDay==29){
-                                startDay = 1;
-                                startMonth++;
-                            }
-                            // February Leap Year
-                            if (startMonth == 2 && startYear%4 == 0 && startDay==30){
-                                startDay = 1;
-                                startMonth++;
-                            }
-                        }
-                        cal.goToToday();
-                    }
-                    // Minutely Recurrence
-                    else if (recurringMinutely == true){
-                        int months = 0;
-                        int Rminute = minuteSpinnerValue;
-                        int freqHours = Rminute/60%24;
-                        int remMins = (Rminute%60);
-                        // TODO: Reschedules for a year (can specify this with a user-input value)
-                        while (months <= 12 ){
-                            // Add the first event
-                            events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
-                            // For the next event: Add the user inputted minutes e.g. 90 minutes, to Start Time (2.30pm) + (userinputted) 90 min = (4.00pm)
-                            startMinute = (startMinute + remMins);
-                            startHour = (startHour + freqHours);
-                            endMinute = (endMinute + remMins);
-                            endHour = (endHour + freqHours);
-                            // First add remainder minutes (90 minutes -> 30minutes and 1 hour)
-                            if (startMinute >= 60){
-                                startMinute = startMinute%60;
-                                startHour++;
-                            }
-                            if (endMinute >= 60){
-                                endMinute = endMinute%60;
-                                endHour++;
-                            }
-                            if (startHour > 23){
-                                startHour = startHour%24;
-                                startDay++;
-                            }
-
-                            if (endHour > 23){
-                                endHour = endHour%24;
-                            }
-
-                            // Months with 31 days
-                            if ((startDay == 32) && (startMonth == 1 || startMonth  == 3 || startMonth == 5|| startMonth == 7|| startMonth == 8|| startMonth == 10|| startMonth == 12)){
-                                startDay = 1;
-                                startMonth++;
-                                months++;
-                            }
-                            // Months with 30 days
-                            if ((startDay >= 31) && (startMonth == 4 || startMonth  == 6 || startMonth == 9|| startMonth == 11)){
-                                startDay = 1;
-                                startMonth++;
-                                months++;
-                            }
-
-                            // Year
-                            if (startMonth == 13){
-                                startMonth = 1;
-                                startYear++;
-                            }
-                            // February Non-Leap Year
-                            if (startMonth == 2 && startYear%4 != 0 && startDay==29){
-                                startDay = 1;
-                                startMonth++;
-                                months++;
-                            }
-                            // February Leap Year
-                            if (startMonth == 2 && startYear%4 == 0 && startDay==30){
-                                startDay = 1;
-                                startMonth++;
-                                months++;
-                            }
-                        }
-                        cal.goToToday();
-                    }
-                    //enterScheduleNameTextField.setText("Enter new schedule name...");
-                }
-
 
             }
         });
@@ -693,8 +675,8 @@ public class CalendarCreator extends Frame {
                 events.remove(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
                 cal.goToToday();
 
-                ScheduleController.commandRemoveSchedule(billboardName,offsetDateTime);
-                Scheduler.commandParser( ScheduleController.getCurrentCommandName(), ScheduleController.getCurrentCommandData() );
+                //ScheduleController.commandRemoveSchedule(billboardName,offsetDateTime);
+                //Scheduler.commandParser( ScheduleController.getCurrentCommandName(), ScheduleController.getCurrentCommandData() );
 
                 // Deleting Billboard using ClientServer Interface
                 //TODO: Ensure this is deleting a schedule of a billboard, not a billboard
@@ -705,14 +687,13 @@ public class CalendarCreator extends Frame {
                     ex.printStackTrace();
                 }
                 try {
-                    Main.server.deleteSchedule(scheduleId);
+                    //TODO: Pick one or the other
+                    //Main.server.deleteSchedule(scheduleId);
+                    Main.server.deleteSchedule(billboardName, offsetDateTime);
+                    JOptionPane.showMessageDialog(null, "Successfully deleted schedule for billboard");
                 } catch (ServerException ex) {
-                    ex.printStackTrace();
+                    JOptionPane.showMessageDialog(null, ex.getMessage());
                 }
-
-                JOptionPane.showMessageDialog(null, Scheduler.getCurrentCommandData().toString(),
-                        "Success",
-                        JOptionPane.PLAIN_MESSAGE);
             }
         });
 
@@ -724,7 +705,7 @@ public class CalendarCreator extends Frame {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new MainControl().main(null);
+                new MainControl(null).main(null);
             }
         });
         //</editor-fold>
@@ -732,7 +713,7 @@ public class CalendarCreator extends Frame {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String username) {
         // Either keep one at the top, or this one below.
         // CalendarCreator edit = new CalendarCreator(tal);
     }

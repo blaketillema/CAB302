@@ -4,7 +4,6 @@ import javax.swing.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.events.EndDocument;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -21,8 +20,6 @@ import java.util.TreeMap;
 
 import billboard_viewer.Billboard; // Viewer billboard class required for previewing the billboard
 
-import billboard_server.ClientMainTests;
-import billboard_server.ClientServerInterface;
 import billboard_server.exceptions.ServerException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -59,6 +56,11 @@ public class BillboardControl {
     private JTextArea pictureDataArea;
 
     TreeMap<String, String> currentBillboard = new TreeMap<>(); // Initialize an empty TreeMap
+
+    // TODO: check if billboard is currently scheduled, if so, disallow edits/deletes
+    // Users with the “Create Billboards” permission will also be able to edit or delete any billboards they created, as long as those billboards are not presently scheduled.
+    // Users with the “Edit All Billboards” permission will be able to edit or delete any billboard on the system, including billboards that are currently scheduled.
+
 
 
     public BillboardControl(TreeMap editBillboard) {
@@ -209,7 +211,7 @@ public class BillboardControl {
                         wn1.dispose();
                         wn1.setVisible(false);
                     }
-                    new MainControl().main(null);
+                    new MainControl(null).main(null);
                 } else if (n == JOptionPane.NO_OPTION) {
                 }
             }

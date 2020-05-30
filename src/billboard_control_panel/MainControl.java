@@ -1,20 +1,14 @@
 package billboard_control_panel;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeMap;
 
 import billboard_control_panel.Calendar.*;
-import billboard_control_panel.Calendar.CalendarEvent;
-import billboard_server.ClientServerInterface;
 import billboard_server.exceptions.ServerException;
 import billboard_viewer.Billboard;
 //import billboard_viewer.DisplayBillboard;
@@ -43,7 +37,7 @@ public class MainControl {
     private JTabbedPane tabbedPane;
     private JButton deleteBillboardButton;
 
-    public MainControl() {
+    public MainControl(String userName) {
 
         Window[] wns = LoginManager.getFrames();
         for (Window wn1 : wns) {
@@ -54,6 +48,8 @@ public class MainControl {
         refreshBillboards();
         refreshUsers();
 
+
+        Title.setText(userName + " Control Panel");
 
         logOutButton.addActionListener(new ActionListener() {
             @Override
@@ -97,12 +93,25 @@ public class MainControl {
         createUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Window[] wns = LoginManager.getFrames();
-                for (Window wn1 : wns) {
-                    wn1.dispose();
-                    wn1.setVisible(false);
+
+                try {
+                    Main.server.getUsers();
+                    Window[] wns = LoginManager.getFrames();
+                    for (Window wn1 : wns) {
+                        wn1.dispose();
+                        wn1.setVisible(false);
+                    }
+                    new UserControl(null).main(null);
+                } catch (ServerException z) {
+                    throwDialog("User does not have permission to view schedules", "No permission");
                 }
-                new UserControl(null).main(null);
+
+//                Window[] wns = LoginManager.getFrames();
+//                for (Window wn1 : wns) {
+//                    wn1.dispose();
+//                    wn1.setVisible(false);
+//                }
+//                new UserControl(null).main(null);
             }
         });
 
@@ -111,6 +120,8 @@ public class MainControl {
 
         createBillboardButton.addActionListener(new ActionListener() {
             @Override
+            //TODO: check if user has permission to create billboards
+
             public void actionPerformed(ActionEvent e) {
                 Window[] wns = LoginManager.getFrames();
                 for (Window wn1 : wns) {
@@ -206,6 +217,7 @@ public class MainControl {
                         billBoard = Main.server.getBillboard(billboardKey);
 
                     } catch (ServerException ex) {
+                        // TODO: make use of this stack trace exception
                         ex.printStackTrace();
                     }
 
@@ -234,7 +246,8 @@ public class MainControl {
                         wn1.dispose();
                         wn1.setVisible(false);
                     }
-                    new CalendarCreator().main(null);
+                    //new MainControl(usernameField1.getText()).main(usernameField1.getText());
+                    new CalendarCreator(userName).main(null);
                 } catch (ServerException z) {
                     throwDialog("User does not have permission to view schedules", "No permission");
                 }
@@ -285,8 +298,9 @@ public class MainControl {
                         } else if (n == JOptionPane.NO_OPTION) {
                         }
                     } catch (ServerException ex) {
-                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(null,ex.getMessage());
                     }
+                    //TODO: refresh works properly
                     refreshBillboards();
                 }
             }
@@ -354,11 +368,11 @@ public class MainControl {
         JOptionPane.showMessageDialog(null, messageText, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public static void main(String[] args) {
+    public static void main(String username) {
         /* Create and display the form */
         JFrame frame = new JFrame("Billboard Control Panel");
         Main.centreWindow(frame);
-        frame.setContentPane(new MainControl().controlPanel);
+        frame.setContentPane(new MainControl(username).controlPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

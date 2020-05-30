@@ -137,7 +137,7 @@ public class UserControl {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new MainControl().main(null);
+                new MainControl(null).main(null);
             }
         });
     }

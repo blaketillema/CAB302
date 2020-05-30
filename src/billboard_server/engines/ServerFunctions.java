@@ -159,34 +159,24 @@ public class ServerFunctions {
 
     public static ServerResponse addUsers(long sessionId, TreeMap<String, Object> data) throws ServerException, SQLException {
         ServerResponse response = new ServerResponse();
-
         String userId = sessionToUserId(sessionId);
-
         /* make sure user attempting to add new users has permissions */
         checkPermission(userId, Protocol.Permission.EDIT_USERS);
-
         /* loop through each user in the treemap */
         for (Map.Entry<String, Object> user : data.entrySet()) {
-
             /* cast the value of the treemap entry and get the details of each user */
             TreeMap<String, Object> userDetails = (TreeMap<String, Object>) user.getValue();
-
             /* get all of the relevant values and cast to types */
             String newUserId = user.getKey();
             String newUsername = (String) userDetails.get("userName");
             String newSalt = (String) userDetails.get("salt");
             String newHash = (String) userDetails.get("hash");
-
             String doubleHash = null;
-
             if (newHash != null && newSalt != null) {
                 doubleHash = UserAuth.hashAndSalt(newHash, newSalt);
             }
-
             System.out.println(newHash + " " + doubleHash);
-
             Integer newPermissions = (Integer) userDetails.get("permissions");
-
             /* if user doesn't exist, make sure all user information has been provided and add it */
             if (!database.doesUserExist(user.getKey())) {
                 if (newUsername == null || doubleHash == null || newSalt == null || newPermissions == null) {
@@ -199,29 +189,39 @@ public class ServerFunctions {
                     response.status += "attempted to edit user without providing userId. ";
                     continue;
                 }
+                if (newUserId.equals("b220a053-91f1-48ee-acea-d1a145376e57")) {
+                        throw new ServerException("Admin settings cannot be changed");
+                }
+
+
                 database.editUser(newUserId, newUsername, doubleHash, newSalt, newPermissions);
             }
         }
-
         return response;
     }
+
 
     public static ServerResponse getUsers(long sessionId, TreeMap<String, Object> data) throws ServerException, SQLException {
         ServerResponse response = new ServerResponse();
         String userId = sessionToUserId(sessionId);
+
         if (data.containsKey("userList")) {
             ArrayList<String> userIds = fixUserList(userId, (ArrayList<String>) data.get("userList"));
+            System.out.println("if userList" + userIds.toString());
             response.data = database.getUsers(userIds);
         } else {
             try {
                 checkPermission(userId, Permission.EDIT_USERS);
+                System.out.println("if has edit" + userId.toString());
                 response.data = database.getUsers();
             } catch (ServerException ignored) {
                 ArrayList<String> userIdList = new ArrayList<>(1);
                 userIdList.add(userId);
+                System.out.println("if not has edit " + userIdList.toString());
                 response.data = database.getUsers(userIdList);
             }
         }
+
         return response;
     }
 
@@ -332,10 +332,10 @@ public class ServerFunctions {
 
         String userId = sessionToUserId(sessionId);
         checkPermission(userId, Permission.SCHEDULE_BILLBOARDS);
-
+        System.out.println("Before forloop");
         /*(scheduleId, billboardId, startTime, scheduleDuration, isRecurring, recurFreqInMins)*/
         for (Map.Entry<String, Object> schedule : data.entrySet()) {
-
+            System.out.println("After forloop");
             TreeMap<String, Object> scheduleDetails = (TreeMap<String, Object>) schedule.getValue();
             String scheduleId = schedule.getKey();
             String billboardId = (String) scheduleDetails.get("billboardId");
@@ -345,27 +345,32 @@ public class ServerFunctions {
             Boolean isRecurring = (Boolean) scheduleDetails.get("isRecurring");
             Integer recurFreqInMins = (Integer) scheduleDetails.get("recurFreqInMins");
 
+            // If schedule DOES NOT exist
             if (!database.doesScheduleExist(scheduleId)) {
                 if (scheduleId == null || billboardId == null || startTime == null || duration == null || isRecurring == null || recurFreqInMins == null) {
+                    System.out.println("1");
                     throw new ServerException("all schedule details not provided");
                 }
-                database.addSchedule(scheduleId, billboardId, startTime, duration, isRecurring, recurFreqInMins);
-            } else {
-                if (scheduleId == null) {
-                    response.status += "attempted to edit schedule without scheduleId. ";
-                    continue;
+
+                System.out.println("101010");
+                String successMessage = scheduler.addScheduleCheckIfAllowed( billboardName, startTime, duration, isRecurring, recurFreqInMins, "Creator");
+                System.out.println("3");
+                if ( successMessage.equals("success") ) {
+                    System.out.println("4");
+                    // add to DB & set success message
+                    database.addSchedule(scheduleId, billboardId, startTime, duration, isRecurring, recurFreqInMins);
+                    successMessage = "Successfully added schedule starting at " + startTime + " for " + billboardName;
                 }
                 else {
-                    // check if schedule is legal
-                    String successMessage = scheduler.addScheduleCheckIfAllowed( billboardName, startTime, duration, isRecurring, recurFreqInMins, "Creator");
-                    if ( successMessage.equals("success") ) {
-                        // add to DB & set success message
-                        database.editSchedule(scheduleId, billboardId, startTime, duration, isRecurring, recurFreqInMins);
-                        successMessage = "Successfully added schedule starting at " + startTime + " for " + billboardName;
-                    }
-                    // keep success message from scheduler if unsuccessful
-                    response.status += successMessage;
+                    System.out.println("5");
+                    response.success = false;
                 }
+                // keep success message from scheduler if unsuccessful
+                response.status += successMessage;
+                //database.addSchedule(scheduleId, billboardId, startTime, duration, isRecurring, recurFreqInMins);
+            }
+            else {
+                throw new ServerException("Can't edit schedules");
             }
         }
         return response;

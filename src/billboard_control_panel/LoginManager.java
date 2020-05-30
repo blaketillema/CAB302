@@ -54,13 +54,11 @@ public class LoginManager extends JFrame {
         // TODO: Change password of cab203 to cab302 in db
             try {
                 Main.server.login(username,password);
-                new MainControl().main(null);
+                new MainControl(usernameField1.getText()).main(usernameField1.getText());
             } catch (ServerException e) {
                 JOptionPane.showMessageDialog(null, "Invalid username or password");
                 e.printStackTrace();
             }
-
-
     }
 
     public static void main(String[] args) {

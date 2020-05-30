@@ -1,5 +1,6 @@
 package billboard_server;
 
+import billboard_server.exceptions.ServerException;
 import billboard_server.tools.UserAuth;
 
 import java.io.FileInputStream;
@@ -22,8 +23,8 @@ public class Database {
             "billboardId VARCHAR(191) PRIMARY KEY NOT NULL," +
             "billboardName VARCHAR(191)," +
             "billboardCreator VARCHAR(191)," +
-            "billboardMessage VARCHAR(191)," +
-            "billboardInfo VARCHAR(191)," +
+            "billboardMessage TEXT," +
+            "billboardInfo TEXT," +
             "billboardPictureData MEDIUMTEXT," +
             "billboardPictureUrl MEDIUMTEXT," +
             "billboardBg VARCHAR(191)," +
@@ -105,6 +106,7 @@ public class Database {
     public int getPermission(String userId) throws SQLException {
         connect();
         ResultSet rs = statement.executeQuery("SELECT permissions FROM users WHERE userId=\"" + userId + "\"");
+        conn.close();
         if (rs.next()) {
             return rs.getInt(1);
         } else {
@@ -115,12 +117,14 @@ public class Database {
     public boolean doesUserExist(String userId) throws SQLException {
         connect();
         ResultSet rs = statement.executeQuery("SELECT * FROM users WHERE userId=\"" + userId + "\"");
+        conn.close();
         return rs.next();
     }
 
     public String userNameToId(String userName) throws SQLException {
         connect();
         ResultSet rs = statement.executeQuery("SELECT userId FROM users WHERE userName=\"" + userName + "\"");
+        conn.close();
         if (rs.next()) {
             return rs.getString(1);
         } else {
@@ -131,6 +135,7 @@ public class Database {
     public String billboardNameToId(String billboardName) throws SQLException {
         connect();
         ResultSet rs = statement.executeQuery("SELECT billboardId FROM billboards WHERE billboardName=\"" + billboardName + "\"");
+        conn.close();
         if (rs.next()) {
             return rs.getString(1);
         } else {
@@ -141,6 +146,7 @@ public class Database {
     public String billboardIdToName(String billboardId) throws SQLException {
         connect();
         ResultSet rs = statement.executeQuery("SELECT billboardName FROM billboards WHERE billboardId=\"" + billboardId + "\"");
+        conn.close();
         if (rs.next()) {
             return rs.getString(1);
         } else {
@@ -151,6 +157,7 @@ public class Database {
     public String billboardToScheduleId(String billboardId) throws SQLException {
         connect();
         ResultSet rs = statement.executeQuery("SELECT scheduleId FROM schedules WHERE billboardId=\"" + billboardId + "\"");
+        conn.close();
         if (rs.next()) {
             return rs.getString(1);
         } else {
@@ -161,18 +168,21 @@ public class Database {
     public boolean doesBillboardExist(String billboardId) throws SQLException {
         connect();
         ResultSet rs = statement.executeQuery("SELECT * FROM billboards WHERE billboardId=\"" + billboardId + "\"");
+        conn.close();
         return rs.next();
     }
 
     public boolean doesScheduleExist(String scheduleId) throws SQLException {
         connect();
         ResultSet rs = statement.executeQuery("SELECT * FROM schedules WHERE scheduleId=\"" + scheduleId + "\"");
+        conn.close();
         return rs.next();
     }
 
     public String getHash(String userId) throws SQLException {
         connect();
         ResultSet rs = statement.executeQuery("SELECT hash FROM users WHERE userId=\"" + userId + "\"");
+        conn.close();
         if (rs.next()) {
             return rs.getString(1);
         } else {
@@ -183,6 +193,7 @@ public class Database {
     public String getBillboardCreator(String billboardId) throws SQLException {
         connect();
         ResultSet rs = statement.executeQuery("SELECT billboardCreator FROM billboards WHERE billboardId=\"" + billboardId + "\"");
+        conn.close();
         if (rs.next()) {
             return rs.getString(1);
         } else {
@@ -193,12 +204,14 @@ public class Database {
     public String getSalt(String userId) throws SQLException {
         connect();
         ResultSet rs = statement.executeQuery("SELECT salt FROM users WHERE userId=\"" + userId + "\"");
+        conn.close();
         if (rs.next()) {
             return rs.getString(1);
         } else {
             return null;
         }
     }
+
 
     public void addUser(String userId, String userName, String hash, String salt, Integer permissions) throws SQLException {
         connect();
@@ -294,6 +307,10 @@ public class Database {
 
     public void deleteUser(String userId) throws SQLException {
         connect();
+        if (userId.equals("b220a053-91f1-48ee-acea-d1a145376e57")) {
+            conn.close();
+            return;
+        }
         statement.executeQuery("DELETE FROM users WHERE userId=\"" + userId + "\"");
         conn.close();
     }
@@ -302,6 +319,10 @@ public class Database {
         connect();
 
         for (String userId : userIds) {
+            if (userId.equals("b220a053-91f1-48ee-acea-d1a145376e57")) {
+                continue;
+                //throw new ServerException("Admin settings cannot be changed");
+            }
             statement.executeQuery("DELETE FROM users WHERE userId=\"" + userId + "\"");
         }
         conn.close();

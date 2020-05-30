@@ -1,8 +1,0 @@
-package billboard_control_panel.SwingCalendar;
-
-import java.util.EventListener;
-
-public interface CalendarEventClickListener extends EventListener {
-    // Event dispatch methods
-    void calendarEventClick(CalendarEventClickEvent e);
-}
