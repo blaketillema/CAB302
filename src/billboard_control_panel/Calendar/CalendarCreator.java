@@ -15,9 +15,17 @@ import java.text.SimpleDateFormat;
 import java.time.*;
 import java.util.*;
 
+/**
+ * CalendarCreator is a length class which involves the interaction wtih all the other classes and interfaces within the
+ * Calendar Package. CalendarCreate begins by customly create the GUI, rather than using the IntelliJ GUI designer.
+ *
+ */
 public class CalendarCreator extends Frame {
     public CalendarCreator(String userName) {
 
+        /**
+         * Creating the Schedule Controller Panel (Right Panel of GUI)
+         */
         //<editor-fold desc="Schedule Controller Panel (Right Panel of GUI)">
         setLayout(new GridLayout());
         JFrame frm = new JFrame();
@@ -131,11 +139,15 @@ public class CalendarCreator extends Frame {
         schedulerPanel.add(saveButton, new com.intellij.uiDesigner.core.GridConstraints(12, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(69, 24), null, 0, false));
         //</editor-fold>
 
+        /**
+         * Creating the Calendar Viewer panel and painting the existing billboard schedules from the DB into the viewer
+         */
         //<editor-fold desc="Print existing schedules from db">
-        //Ok
+        // Create a new array list and CalendarWeek object
         ArrayList<CalendarEvent> events = new ArrayList<>();
         CalendarWeek cal = new CalendarWeek(events);
 
+        // Get all the schedules stored within the DB from the server.getSchedules() function
         TreeMap<String, Object> confirmed = null;
         try {
             confirmed = Main.server.getSchedules();
@@ -144,7 +156,7 @@ public class CalendarCreator extends Frame {
         }
         TreeMap<String, Object> finalConfirmed = confirmed;
 
-        //System.out.println(confirmed);
+        // For each schedule, retrieve the appropriate data and utilise it to paint it into the calendar viewer
         for(Map.Entry<String,Object> entry : finalConfirmed.entrySet()) {
             TreeMap<String, Object> scheduleDetails = (TreeMap<String, Object>) entry.getValue();
             OffsetDateTime offsetStartDateTime = (OffsetDateTime) scheduleDetails.get("startTime");
@@ -153,6 +165,7 @@ public class CalendarCreator extends Frame {
             Integer recurFreqInMins = (Integer) scheduleDetails.get("recurFreqInMins");
             String billboardId = (String) scheduleDetails.get("billboardId");
 
+            // A lengthy process to get the billboardName by the billboardID
             String billboardName = null;
             try {
                 TreeMap<String, String> billboard = Main.server.getBillboard(billboardId);
@@ -162,6 +175,7 @@ public class CalendarCreator extends Frame {
             }
             String billboardname = billboardName;
 
+            // Initialise the schedule's parameters
             int startMinute = offsetStartDateTime.getMinute();
             int startHour = offsetStartDateTime.getHour();
             int startDay = offsetStartDateTime.getDayOfMonth();
@@ -169,13 +183,15 @@ public class CalendarCreator extends Frame {
             int startYear = offsetStartDateTime.getYear();
             int months = 0;
 
+            // Determine its frequency in terms of hours, minutes, days
             int Rminute = recurFreqInMins;
             int freqDays = Rminute / 24 /60;
             int freqHours = Rminute / 60 % 24;
             int remMins = (Rminute % 60);
             int endHour = startHour + duration/60%24;
             int endMinute = startMinute + (duration% 60);
-                // Minutely Recurrence
+
+                // If the schedule is to reoccur, calculate the new start and end time of each schedule for that billboard
                 if (isRecurring == true) {
                     while (months <= 12) {
                         // Add the first event
@@ -239,6 +255,7 @@ public class CalendarCreator extends Frame {
                     }
                     cal.goToToday();
                 }
+                // If not reoccuring, paint the one billboard schedule
                 else{
                     events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardname));
                 }
@@ -247,7 +264,9 @@ public class CalendarCreator extends Frame {
         }
         //</editor-fold>
 
-
+        /**
+         * Creating the buttons on top of the calendar viewer
+         */
         //<editor-fold desc="Calendar Viewer w/ buttons">
         ////////////////// Calendar Week Controls (NORTH) ////////////////////////////
         JButton goToTodayBtn = new JButton("Today");
@@ -274,6 +293,9 @@ public class CalendarCreator extends Frame {
         weekControls.add(nextMonthBtn);
         //</editor-fold>
 
+        /**
+         * Initialising the three elemements above into the JFrame of this CalendarCreator form
+         */
         //<editor-fold desc="Adding to form and setting JFrame">
         //// CREATE ENTIRE SCHEDULE + CALENDAR VIEW ///////
         frm.add(weekControls, BorderLayout.NORTH);
@@ -285,13 +307,15 @@ public class CalendarCreator extends Frame {
         frm.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         //</editor-fold>
 
+        /**
+         * Calendar Viewer event click/empty click listeners (using the classes and interfaces in the package)
+         */
         //<editor-fold desc="Calendar Viewer Listeners">
         cal.addCalendarEventClickListener(e -> {
             Date startDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getStartDateTime().toString());
             Date endDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm").parse(e.getEndDateTime().toString());
             startSpinner.setValue(startDate);
             endSpinner.setValue(endDate);
-            //enterScheduleNameTextField.setText(e.getBillboardName());
             billboardDropdown.setSelectedItem(e.getBillboardName());
         });
 
@@ -306,8 +330,12 @@ public class CalendarCreator extends Frame {
         });
         //</editor-fold>
 
-
+        /**
+         * User Panel Buttons and Options Listeners
+         */
         //<editor-fold desc="Scheduler Option Listeners">
+
+        // Checks if end time is before start time for validity
         endSpinner.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -321,6 +349,8 @@ public class CalendarCreator extends Frame {
                 }
             }
         });
+
+        // Enables the reoccurring options if recurring checkbox is ticked and vice versa
         recurringCheckBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -348,7 +378,6 @@ public class CalendarCreator extends Frame {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
-                    //do something...
                     dailyButton.setEnabled(true);
                     hourlyButton.setEnabled(false);
                     minuteSpinner.setEnabled(false);
@@ -367,7 +396,6 @@ public class CalendarCreator extends Frame {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
-                    //do something...
                     dailyButton.setEnabled(false);
                     hourlyButton.setEnabled(true);
                     minuteSpinner.setEnabled(false);
@@ -386,7 +414,6 @@ public class CalendarCreator extends Frame {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange() == ItemEvent.SELECTED) {//checkbox has been selected
-                    //do something...
                     dailyButton.setEnabled(false);
                     hourlyButton.setEnabled(false);
                     minuteSpinner.setEnabled(true);
@@ -395,22 +422,20 @@ public class CalendarCreator extends Frame {
                     hourlyButton.setEnabled(true);
                     minuteSpinner.setEnabled(false);
                 }
-//                minuteSpinner.setEnabled(true);
-//                minutelyButton.setEnabled(true);
             }
         });
         //</editor-fold>
 
+        /**
+         * Scheduler User Save, Delete, Exit and Reset Listeners
+         */
         //<editor-fold desc="Scheduler User Save, Delete, Exit and Reset Listeners">
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // Initialise new calendar time and retrieve billboard
                 Calendar calendar = new GregorianCalendar();
-                // Get Values Entered:
-                //String scheduleName = (String) enterScheduleNameTextField.getText();
-                String billboardName = (String) billboardDropdown.getSelectedItem().toString();
-                //String billboardName = ((JTextField)billboardDropdown.getEditor().getEditorComponent()).getText();
-                System.out.println(billboardName);
+                String billboardName = billboardDropdown.getSelectedItem().toString();
                 // Get Start Time Values
                 Date startDateTime = (Date) startSpinner.getValue();
                 calendar.setTime(startDateTime);
@@ -460,17 +485,17 @@ public class CalendarCreator extends Frame {
                 LocalDateTime convertedDate = Instant.ofEpochMilli(startDateTime.getTime()).atZone(ZoneId.systemDefault()).toLocalDateTime();
                 OffsetDateTime offsetDateTime = convertedDate.atOffset(OffsetDateTime.now().getOffset());
 
-                //Sends schedule to server
+                //Sends schedule to server and paints scheduels onto viewer
                 try {
                     Main.server.addSchedule(billboardName, offsetDateTime, diffMinutes, recurring,recurringEveryXminutes, userName);
+                    // If not recurring
                     if (!recurringCheckBox.isSelected()){
                         events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
                         cal.goToToday();
-                    }
+                    } //else
                     // Daily Recurrence
                     else if (recurringDaily == true){
                         int days = 0;
-
                         while (days <= 365 ){
                             events.add(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
                             startDay = (startDay + 1)%32;
@@ -626,8 +651,7 @@ public class CalendarCreator extends Frame {
             public void actionPerformed(ActionEvent e) {
                 Calendar calendar = new GregorianCalendar();
                 // Get Values Entered:
-                String billboardName = (String) billboardDropdown.getSelectedItem().toString();
-                //String billboardName = (String) enterScheduleNameTextField.getText();
+                String billboardName = billboardDropdown.getSelectedItem().toString();
                 // Get Start Time Values (Hour and Minute)
                 Date startDateTime = (Date) startSpinner.getValue();
                 calendar.setTime(startDateTime);
@@ -647,7 +671,6 @@ public class CalendarCreator extends Frame {
 
                 events.remove(new CalendarEvent(LocalDate.of(startYear, startMonth, startDay), LocalTime.of(startHour, startMinute), LocalTime.of(endHour, endMinute), billboardName));
                 cal.goToToday();
-
 
                 // Deleting Billboard using ClientServer Interface
                 String scheduleId = null;
@@ -673,7 +696,7 @@ public class CalendarCreator extends Frame {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new MainControl(null).main(null);
+                new MainControl(userName).main(null);
             }
         });
         //</editor-fold>

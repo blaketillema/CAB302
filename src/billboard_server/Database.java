@@ -80,9 +80,7 @@ public class Database {
         statement = conn.createStatement();
     }
 
-    private void setup() throws SQLException { //Runs a setup SQL statement, creating the users table. This is run during construction TODO: actually make the right tables
-        dropDb();
-
+    private void setup() throws SQLException { //Runs a setup SQL statement, creating the users table. This is run during construction
         String adminUserID = "b220a053-91f1-48ee-acea-d1a145376e57";
         String adminSalt = "2219d4ec595ce93cabfe7c7941d7e274";
         String adminHash = UserAuth.hashAndSalt("7ec582cb6dda5f00485d4f3026c1309ba7c3eb255cdfbdcb4a3fb3646d74953d", adminSalt);
@@ -92,13 +90,15 @@ public class Database {
         statement.executeQuery(BILLBOARDS_TABLE);
         statement.executeQuery(SCHEDULE_TABLE);
 
-        pstmt = conn.prepareStatement(adduserStatement);
-        pstmt.setString(1, adminUserID);
-        pstmt.setString(2, "admin");
-        pstmt.setString(3, adminHash);
-        pstmt.setString(4, adminSalt);
-        pstmt.setInt(5, Protocol.Permission.ALL);
-        pstmt.execute();
+        if(!doesUserExist(adminUserID)) {
+            pstmt = conn.prepareStatement(adduserStatement);
+            pstmt.setString(1, adminUserID);
+            pstmt.setString(2, "admin");
+            pstmt.setString(3, adminHash);
+            pstmt.setString(4, adminSalt);
+            pstmt.setInt(5, Protocol.Permission.ALL);
+            pstmt.execute();
+        }
 
         conn.close();
     }

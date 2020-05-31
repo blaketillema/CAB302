@@ -17,9 +17,21 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Locale;
 
+/**
+ * The following code was adapted from GitHub-user davejm's SwingCalendar public repository.
+ * Title: SwingCalendar source code
+ * Author: davejm
+ * Date: 2016
+ * Availability: https://github.com/davejm/SwingCalendar
+ */
 
+/**
+ * CalendarViewer is responsible for creating and painting the CalendarViewer panel.
+ * This includes dividing the panel into 7 days vertically, and 24 hours horizontally
+ */
 public abstract class CalendarViewer extends JComponent {
 
+    // Set parameters
     protected static final LocalTime START_TIME = LocalTime.of(0, 0);
     protected static final LocalTime END_TIME = LocalTime.of(23, 59);
 
@@ -29,8 +41,7 @@ public abstract class CalendarViewer extends JComponent {
     protected static final int HEADER_HEIGHT = 20;
     protected static final int TIME_COL_WIDTH = 50;
 
-    // An estimate of the width of a single character (not exact but good
-    // enough)
+    // An estimate of the width of a single character
     private static final int FONT_LETTER_PIXEL_WIDTH = 7;
     private ArrayList<CalendarEvent> events;
     private double timeScale;
@@ -38,11 +49,6 @@ public abstract class CalendarViewer extends JComponent {
     private Graphics2D g2;
 
     private EventListenerList listenerList = new EventListenerList();
-    private JButton deleteButton;
-    private JTextField enterBillboardScheduleNameTextField;
-    private JButton saveButton;
-    private JButton cancelButton;
-    private JPanel schedulePanel;
 
     public CalendarViewer() {
         this(new ArrayList<>());
@@ -63,7 +69,6 @@ public abstract class CalendarViewer extends JComponent {
         } else if (t.getMinute() % minutes < minutes / 2) {
             t = t.minusMinutes(t.getMinute() % minutes);
         }
-
         return t;
     }
 
@@ -89,7 +94,7 @@ public abstract class CalendarViewer extends JComponent {
 
     protected abstract boolean dateInRange(LocalDate date);
 
-    // Click on an already scheduled billboard
+    // Clicking on an already scheduled billboard
     private boolean checkCalendarEventClick(Point p) throws ParseException {
         double x0, x1, y0, y1;
         for (CalendarEvent event : events) {
@@ -125,7 +130,6 @@ public abstract class CalendarViewer extends JComponent {
     protected abstract LocalDate getDateFromDay(DayOfWeek day);
 
     // CalendarEventClick methods
-
     public void addCalendarEventClickListener(CalendarEventClickListener l) {
         listenerList.add(CalendarEventClickListener.class, l);
     }
@@ -135,7 +139,6 @@ public abstract class CalendarViewer extends JComponent {
     }
 
     // CalendarEmptyClick methods
-
     public void addCalendarEmptyClickListener(CalendarEmptyClickListener l) {
         listenerList.add(CalendarEmptyClickListener.class, l);
     }
@@ -144,13 +147,11 @@ public abstract class CalendarViewer extends JComponent {
         listenerList.remove(CalendarEmptyClickListener.class, l);
     }
 
-    // Notify all listeners that have registered interest for
-    // notification on this event type.
+    // Notify all listeners that have are linked to this event type.
     private void fireCalendarEventClick(CalendarEvent calendarEvent) throws ParseException {
         // Guaranteed to return a non-null array
         Object[] listeners = listenerList.getListenerList();
-        // Process the listeners last to first, notifying
-        // those that are interested in this event
+        // Process the listeners last to first
         CalendarEventClickEvent calendarEventClickEvent;
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == CalendarEventClickListener.class) {
@@ -160,7 +161,6 @@ public abstract class CalendarViewer extends JComponent {
         }
 
     }
-
 
     private void fireCalendarEmptyClick(LocalDateTime dateTime) throws ParseException {
         Object[] listeners = listenerList.getListenerList();
@@ -173,6 +173,7 @@ public abstract class CalendarViewer extends JComponent {
         }
     }
 
+    // Calculates the scales of column and row sizes according to size of screen
     private void calculateScaleVars() {
         int width = getWidth();
         int height = getHeight();
@@ -195,6 +196,7 @@ public abstract class CalendarViewer extends JComponent {
     // Gives x val of left most pixel for day col
     protected abstract double dayToPixel(DayOfWeek dayOfWeek);
 
+    // Converts the start time to a corresponding pixel to utilise for painting (vertically locating)
     private double timeToPixel(LocalTime time) {
         return ((time.toSecondOfDay() - START_TIME.toSecondOfDay()) * timeScale) + HEADER_HEIGHT;
     }
@@ -203,6 +205,7 @@ public abstract class CalendarViewer extends JComponent {
         return LocalTime.ofSecondOfDay((int) ((y - HEADER_HEIGHT) / timeScale) + START_TIME.toSecondOfDay()).truncatedTo(ChronoUnit.MINUTES);
     }
 
+    // Converts the x pixel to a corresponding day to utilise for painting (horizontally locating)
     private DayOfWeek pixelToDay(double x) {
         double pixel;
         DayOfWeek day;
@@ -216,6 +219,10 @@ public abstract class CalendarViewer extends JComponent {
         return null;
     }
 
+    /**
+     * Painting the given graphic
+     * @param g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         calculateScaleVars();
@@ -231,19 +238,22 @@ public abstract class CalendarViewer extends JComponent {
         // Set paint colour to black
         g2.setColor(Color.black);
 
-        drawDayHeadings();
-        drawTodayShade();
-        drawGrid();
-        drawTimes();
-        drawEvents();
-        drawCurrentTimeLine();
+        paintDayHeadings();
+        paintTodayShade();
+        paintGrid();
+        paintTimes();
+        paintEvents();
+        paintCurrentTimeLine();
     }
 
     protected abstract DayOfWeek getStartDay();
 
     protected abstract DayOfWeek getEndDay();
 
-    private void drawDayHeadings() {
+    /**
+     * Private paint functions, to paint headings, grid, events, current time, today shade
+     */
+    private void paintDayHeadings() {
         int y = 20;
         int x;
         LocalDate day;
@@ -259,7 +269,7 @@ public abstract class CalendarViewer extends JComponent {
         }
     }
 
-    private void drawGrid() {
+    private void paintGrid() {
         // Save the original colour
         final Color ORIG_COLOUR = g2.getColor();
 
@@ -297,7 +307,7 @@ public abstract class CalendarViewer extends JComponent {
         g2.setColor(ORIG_COLOUR);
     }
 
-    private void drawTodayShade() {
+    private void paintTodayShade() {
         LocalDate today = LocalDate.now();
 
         // Check that date range being viewed is current date range
@@ -315,7 +325,7 @@ public abstract class CalendarViewer extends JComponent {
         g2.setColor(origColor);
     }
 
-    private void drawCurrentTimeLine() {
+    private void paintCurrentTimeLine() {
         LocalDate today = LocalDate.now();
 
         // Check that date range being viewed is current date range
@@ -328,7 +338,7 @@ public abstract class CalendarViewer extends JComponent {
         final Color origColor = g2.getColor();
         final Stroke origStroke = g2.getStroke();
 
-        g2.setColor(new Color(255, 127, 110));
+        g2.setColor(new Color(50, 140, 100));
         g2.setStroke(new BasicStroke(2));
         g2.draw(new Line2D.Double(x0, y, x1, y));
 
@@ -336,7 +346,7 @@ public abstract class CalendarViewer extends JComponent {
         g2.setStroke(origStroke);
     }
 
-    private void drawTimes() {
+    private void paintTimes() {
         int y;
         for (LocalTime time = START_TIME; time.compareTo(END_TIME) < 0; time = time.plusHours(1)) {
             y = (int) timeToPixel(time) + 15;
@@ -347,7 +357,7 @@ public abstract class CalendarViewer extends JComponent {
         }
     }
 
-    private void drawEvents() {
+    private void paintEvents() {
         double x;
         double y0;
 
@@ -376,7 +386,7 @@ public abstract class CalendarViewer extends JComponent {
 
             //g2.drawString(event.getStart() + " - " + event.getEnd(), (int) x + 5, (int) y0 + 11);
 
-            // Unbolden
+            // Unbold
             g2.setFont(origFont.deriveFont(fontSize));
 
             // Draw the event's text

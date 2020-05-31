@@ -3,6 +3,11 @@ package billboard_server.types;
 import java.io.Serializable;
 import java.util.TreeMap;
 
+/**
+ * Encapsulation class to send data from the server to the client
+ *
+ * @author Max Ferguson
+ */
 public class ServerResponse implements Serializable {
     public boolean success = true;
     public String status = "";
@@ -18,8 +23,7 @@ public class ServerResponse implements Serializable {
                 this.success, this.status, this.data);
     }
 
-    public void print()
-    {
+    public void print() {
         System.out.println(this.toString());
     }
 }

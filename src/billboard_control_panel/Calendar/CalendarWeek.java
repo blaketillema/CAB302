@@ -4,6 +4,10 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * CalendarWeek provides functionality to decide upon the start day, end day, how many days to show, which day is the
+ * beginning, and what the previous, next and today buttons do.
+ */
 public class CalendarWeek extends CalendarViewer {
     private Week week;
 
