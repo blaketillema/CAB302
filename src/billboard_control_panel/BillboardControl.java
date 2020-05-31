@@ -61,25 +61,28 @@ public class BillboardControl {
 
     TreeMap<String, String> currentBillboard = new TreeMap<>(); // Initialize an empty TreeMap
 
+    /**
+     * Initial setup for the billboard creator and editor and set up of button actions
+     *
+     * @param editBillboard takes an input billboard which was selected, if no billboard was selected a null input is provided
+     */
     public BillboardControl(TreeMap editBillboard) {
 
         if (editBillboard != null) {
-            System.out.println("Input billboard not null.");
+            // Check if a billboard was selected for Edit and set the current billboard
             currentBillboard = editBillboard;
-            refreshFields();
-            printBillboard(currentBillboard);
-        } else {
-            System.out.println("Input billboard is null.");
         }
         refreshFields();
+        applyChanges();
 
+        // Button for importing XML from the xml text field
         importXMLButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                 String paneText = null;
                 paneText = editorPane1.getText();
-                System.out.println("paneText: " + paneText);
+                //System.out.println("paneText: " + paneText);
 
                 //TreeMap billboardMap = new TreeMap<String, String>();
 
@@ -98,17 +101,31 @@ public class BillboardControl {
                     ex.printStackTrace();
                 }
 
-                //billboardMap = parseBillboard(doc);
-                currentBillboard = parseBillboard(doc);
+                TreeMap<String, String> parsedBillboard = null; // Initialise null Billboard TreeMap
 
-                // Refresh text fields
-                refreshFields();
+                // Get a TreeMap of input XML data
+                parsedBillboard = parseBillboard(doc); // Returns a valid billboard or null if invalid
 
-                printBillboard(currentBillboard);
+                //set current billboard to output of billboard parser, null returned if not valid XML
+                if (parsedBillboard == null) {
+                    // Billboard parsed from XML was not valid, do nothing.
+                    // Dialog error messages would be thrown from the parseBillboard validation
 
+                } else {
+                    //System.out.println("Printing parsed billboard.");
+                    //printBillboard(parsedBillboard);
+                    currentBillboard = parsedBillboard; // Apply the valid billboard
+
+                    // Refresh UI text fields and apply the changes
+                    refreshFields();
+                    applyChanges();
+                    //printBillboard(currentBillboard);
+
+                }
             }
         });
 
+        // Button for Exporting XML to the XML text field
         exportXMLButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -119,19 +136,21 @@ public class BillboardControl {
             }
         });
 
+        // Button for previewing the currently edited billboard contents, calls the viewer classes which builds the visual elements
         previewButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Preview Billboard");
+                //System.out.println("Preview Billboard");
 
                 applyChanges();
                 refreshFields();
-
+                // create billboard for preview with current billboard data in the editor
                 Billboard previewBillboard = new Billboard(currentBillboard, true);
 
             }
         });
 
+        // Save the current billboard in the editor to the server
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -141,7 +160,7 @@ public class BillboardControl {
                 boolean valid = applyChanges();
                 if (!valid) {
                     // Not valid - Do nothing. applyChanges will have popped an error dialog.
-                    System.out.println("Billboard not saved due to an invalid format.");
+                    //System.out.println("Billboard not saved due to an invalid format.");
 
                 } else {
                     String nullString = ""; // for easily changing between null or "" depending on implementation elsewhere (DB side)
@@ -188,14 +207,13 @@ public class BillboardControl {
                         body.put("informationColour", nullString);
                     }
 
-                    System.out.println(body);
-
-                    printBillboard(body);
+                    //System.out.println(body);
+                    //printBillboard(body);
 
                     // Check for a billboard Name
                     if (billboardNameArea.getText().length() < 1) {
                         // Throw error warning for no name
-                        System.out.println("Billboard Name length smaller than 1!");
+                        //System.out.println("Billboard Name length smaller than 1!");
                         throwDialog("Please enter a Billboard Name", "No Billboard Name");
                     } else {
 
@@ -205,25 +223,26 @@ public class BillboardControl {
 
                             if (existingID == null) {
                                 // Billboard with this name does not exist, create new billboard
-                                System.out.println("Creating new billboard...");
+                                //System.out.println("Creating new billboard...");
                                 Main.server.addBillboard(billboardNameArea.getText(), body);
                                 throwDialog("Newly created Billboard " + billboardNameArea.getText() + " has been saved.", "Billboard Created");
                             } else {
                                 // This billboard name already exists, edit existing billboard
                                 body.put("billboardName", billboardNameArea.getText());
-                                System.out.println("Editing existing billboard with ID: " + existingID + " ...");
+                                //System.out.println("Editing existing billboard with ID: " + existingID + " ...");
                                 Main.server.editBillboard(existingID, body);
                                 throwDialog("Existing Billboard with name " + billboardNameArea.getText() + " has been saved.", "Billboard Edited");
                             }
                         } catch (ServerException ex) {
-                            System.out.println("Exception getting billboard ID");
-                            throwDialog(ex.getMessage(), "Error");
+                            //System.out.println("Exception getting billboard ID");
+                            throwDialog(ex.getMessage(), "Server Error");
                         }
                     }
                 }
             }
         });
 
+        // Exit the billboard builder and go back to the main control panel
         exitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -236,13 +255,11 @@ public class BillboardControl {
             }
         });
 
-        /**
-         * Convert provided image file (png,jpg) to BASE64 Format
-         */
+        // Select and upload an image file from the user to parse to BASE64 format
         uploadImageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Upload an image");
+                //System.out.println("Upload an image");
                 // Browse for an image
                 JFileChooser fileChooser = new JFileChooser();
                 int chooserState = fileChooser.showOpenDialog(null);
@@ -269,7 +286,8 @@ public class BillboardControl {
 
                 } else {
                     // File chooser encountered an error
-                    System.out.println("File Chooser was not approved");
+                    //System.out.println("File Chooser was not approved");
+
                 }
             }
         });
@@ -282,6 +300,11 @@ public class BillboardControl {
         });
     }
 
+    /**
+     * Frame initial main setup on call from the control panel
+     *
+     * @param inputBillboard billboard data selected for edit, null sent if no billboard selected
+     */
     public void main(TreeMap inputBillboard) {
         /* Create and display the form */
         JFrame frame = new JFrame("Billboard Builder");
@@ -296,10 +319,21 @@ public class BillboardControl {
         refreshFields();
     }
 
+    /**
+     * Reusable class for throwing dialogs such as errors and confirmations
+     *
+     * @param messageText Message body for the thrown dialog
+     * @param title       Title text of the dialog window
+     */
     private static void throwDialog(String messageText, String title) {
         JOptionPane.showMessageDialog(null, messageText, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * Generates an XML doc to string from the currently set fields in the billboard creator and returns the result.
+     *
+     * @return xmlExport string of the generated XML doc
+     */
     private String createXML() {
         // parse billboard treemap to XML
 
@@ -394,6 +428,13 @@ public class BillboardControl {
 
         return xmlExport;
     }
+
+    /**
+     * Parses an input billboard XML document to TreeMap format. Includes calls to validate some billboard data.
+     *
+     * @param doc XML Document from the input fields to be parsed
+     * @return billboard TreeMap from the parsed XML document, returns null if xml was not valid
+     */
     private TreeMap parseBillboard(Document doc) {
         // implementation attempt
         // Initialize possible variables;
@@ -405,84 +446,97 @@ public class BillboardControl {
         String information = null;
         String informationColour = null;
 
-        NodeList nodeList = doc.getElementsByTagName("billboard");
 
-        for (int i = 0; i <= nodeList.getLength() - 1; i++) {
-            // Iterate nodes in NodeList (should only be one)
-            Node node = nodeList.item(i);
+        try {
+            NodeList nodeList = doc.getElementsByTagName("billboard");
+            for (int i = 0; i <= nodeList.getLength() - 1; i++) {
+                // Iterate nodes in NodeList (should only be one)
+                Node node = nodeList.item(i);
 
-            // Start with billboard background attribute
-            NamedNodeMap attributes = node.getAttributes();
+                // Start with billboard background attribute
+                NamedNodeMap attributes = node.getAttributes();
 
-            // Check if billboard background is set, else leave null
-            if (node.getAttributes().item(0).getNodeName() == "background") {
-                // Background attribute name found
-                billboardBackground = node.getAttributes().item(0).getNodeValue();
-            } else {
-                billboardBackground = null;
-            }
-
-            // Iterate child nodes
-            NodeList childList = node.getChildNodes();
-            //System.out.println("LENGTH: " + childList.getLength());
-            for (int k = 0; k <= childList.getLength() - 1; k++) {
-                // iterate through child nodes and find values
-                Node childNode = childList.item(k);
-
-                // Check node
-                //System.out.println("getNodeName: "+ childNode.getNodeName());
-                //System.out.println("getNodeValue: "+ childNode.getNodeValue());
-
-                if (childNode.getNodeName() == "message") {
-                    //
-                    message = childNode.getTextContent();
-                    // Check for message colour attribute
-                    if (childNode.getAttributes().item(0).getNodeName() == "colour") {
-                        // Assign colour
-                        messageColour = childNode.getAttributes().item(0).getNodeValue();
-                    }
+                // Check if billboard background is set, else leave null
+                if (node.getAttributes().item(0).getNodeName() == "background") {
+                    // Background attribute name found
+                    billboardBackground = node.getAttributes().item(0).getNodeValue();
                 } else {
-                    if (childNode.getNodeName() == "picture") {
-                        //
-                        //System.out.println("PICTURE");
-                        //System.out.println("PICTURE value: "+ childNode.getNodeValue());
+                    billboardBackground = null;
+                }
 
-                        if (childNode.getAttributes().item(0).getNodeName() == "url") {
-                            // Assign picture URL
-                            pictureUrl = childNode.getAttributes().item(0).getNodeValue();
-                        } else {
-                            if (childNode.getAttributes().item(0).getNodeName() == "data") {
-                                // assign picture Data
-                                pictureData = childNode.getAttributes().item(0).getNodeValue();
-                            }
+                // Iterate child nodes
+                NodeList childList = node.getChildNodes();
+                //System.out.println("LENGTH: " + childList.getLength());
+                for (int k = 0; k <= childList.getLength() - 1; k++) {
+                    // iterate through child nodes and find values
+                    Node childNode = childList.item(k);
+
+                    // Check node
+                    //System.out.println("getNodeName: "+ childNode.getNodeName());
+                    //System.out.println("getNodeValue: "+ childNode.getNodeValue());
+
+                    if (childNode.getNodeName() == "message") {
+                        //
+                        message = childNode.getTextContent();
+                        // Check for message colour attribute
+                        if (childNode.getAttributes().item(0).getNodeName() == "colour") {
+                            // Assign colour
+                            messageColour = childNode.getAttributes().item(0).getNodeValue();
                         }
                     } else {
-                        if (childNode.getNodeName() == "information") {
+                        if (childNode.getNodeName() == "picture") {
                             //
-                            information = childNode.getTextContent();
+                            //System.out.println("PICTURE");
+                            //System.out.println("PICTURE value: "+ childNode.getNodeValue());
 
-                            if (childNode.getAttributes().item(0).getNodeName() == "colour") {
-                                // Assign colour
-                                informationColour = childNode.getAttributes().item(0).getNodeValue();
+                            if (childNode.getAttributes().item(0).getNodeName() == "url") {
+                                // Assign picture URL
+                                pictureUrl = childNode.getAttributes().item(0).getNodeValue();
+                            } else {
+                                if (childNode.getAttributes().item(0).getNodeName() == "data") {
+                                    // assign picture Data
+                                    pictureData = childNode.getAttributes().item(0).getNodeValue();
+                                }
+                            }
+                        } else {
+                            if (childNode.getNodeName() == "information") {
+                                //
+                                information = childNode.getTextContent();
+
+                                if (childNode.getAttributes().item(0).getNodeName() == "colour") {
+                                    // Assign colour
+                                    informationColour = childNode.getAttributes().item(0).getNodeValue();
+                                }
                             }
                         }
                     }
                 }
             }
+
+            // Parse XML into HashMap
+            TreeMap xmlTreeMap = new TreeMap<String, String>();
+
+            xmlTreeMap.put("billboardBackground", billboardBackground);
+            xmlTreeMap.put("message", message);
+            xmlTreeMap.put("messageColour", messageColour);
+            xmlTreeMap.put("pictureUrl", pictureUrl);
+            xmlTreeMap.put("pictureData", pictureData);
+            xmlTreeMap.put("information", information);
+            xmlTreeMap.put("informationColour", informationColour);
+
+            if (!validateColours(xmlTreeMap)) {
+                return null; // return null billboard data, validateColours method would have thrown an error dialog
+            } else {
+                // Return TreeMap of parsed XML document deemed valid
+                return xmlTreeMap;
+            }
+
+        } catch (Exception e) {
+            // If the xml code fails such as with invalid xml import, throw an error dialog and return null
+            throwDialog("Imported Billboard XML was not valid, please import valid Billboard XML.", "Invalid XML Import");
+            return null;
         }
 
-        // Parse XML into HashMap
-        TreeMap xmlTreeMap = new TreeMap<String, String>();
-
-        xmlTreeMap.put("billboardBackground", billboardBackground);
-        xmlTreeMap.put("message", message);
-        xmlTreeMap.put("messageColour", messageColour);
-        xmlTreeMap.put("pictureUrl", pictureUrl);
-        xmlTreeMap.put("pictureData", pictureData);
-        xmlTreeMap.put("information", information);
-        xmlTreeMap.put("informationColour", informationColour);
-
-        return xmlTreeMap;
     }
 
     /**
@@ -506,9 +560,67 @@ public class BillboardControl {
     }
 
     /**
-     * Validates all input HTML colour codes, returns true if colour codes are valid else will return false
+     * Validate colours within a TreeMap, used for validating imported XML,
+     * If the JDK Color.decode class accepts the colour, it is considered valid.
      *
-     * @return
+     * @param billboard billboard to validate colours from
+     * @return boolean value of if colours were valid
+     */
+    private boolean validateColours(TreeMap<String, String> billboard) {
+
+        // Validate the message colour if exists and not null.
+        //out.println("Validate message colour: " + billboard.get("messageColour"));
+        if (billboard.containsKey("messageColour")) {
+            if (billboard.get("messageColour") != null) {
+                try {
+                    Color.decode(billboard.get("messageColour"));
+                } catch (Exception NumberFormatException) {
+                    ///
+                    //System.out.println("Caught NumberFormatException...");
+                    throwDialog("Message Colour code format is not valid, please enter a valid HTML Colour code", "Invalid Message Colour");
+                    return false; // INVALID colour
+                }
+            }
+        }
+
+        // Validate the information colour if exists and not null.
+        //System.out.println("Validate information colour: " + billboard.get("informationColour"));
+        if (billboard.containsKey("informationColour")) {
+            if (billboard.get("informationColour") != null) {
+                try {
+                    Color.decode(billboard.get("informationColour"));
+                } catch (Exception NumberFormatException) {
+                    ///
+                    //System.out.println("Caught NumberFormatException...");
+                    throwDialog("Information Colour code format is not valid, please enter a valid HTML Colour code", "Invalid Information Colour");
+                    return false; // INVALID colour
+                }
+            }
+        }
+
+        // Validate the background colour if exists and not null.
+        //System.out.println("Validate background colour: " + billboard.get("billboardBackground"));
+        if (billboard.containsKey("billboardBackground")) {
+            if (billboard.get("billboardBackground") != null) {
+                try {
+                    Color.decode(billboard.get("billboardBackground"));
+                } catch (Exception NumberFormatException) {
+                    ///
+                    //System.out.println("Caught NumberFormatException...");
+                    throwDialog("Background Colour code format is not valid, please enter a valid HTML Colour code", "Invalid Background Colour");
+                    return false; // INVALID colour
+                }
+            }
+        }
+
+        return true; // VALID colour
+    }
+
+    /**
+     * Validates all input HTML colour codes, returns true if colour codes are valid else will return false,
+     * If the JDK Color.decode class accepts the colour, it is considered valid.
+     *
+     * @return boolean value of if colour is considered valid or not
      */
     private boolean validateColours() {
 
@@ -518,7 +630,7 @@ public class BillboardControl {
                 Color.decode(messageColourArea.getText());
             } catch (Exception NumberFormatException) {
                 ///
-                System.out.println("Caught NumberFormatException...");
+                //System.out.println("Caught NumberFormatException...");
                 throwDialog("Message Colour code format is not valid, please enter a valid HTML Colour code", "Invalid Message Colour");
                 return false;
             }
@@ -530,7 +642,7 @@ public class BillboardControl {
                 Color.decode(informationColourArea.getText());
             } catch (Exception NumberFormatException) {
                 ///
-                System.out.println("Caught NumberFormatException...");
+                //System.out.println("Caught NumberFormatException...");
                 throwDialog("Information Colour code format is not valid, please enter a valid HTML Colour code", "Invalid Information Colour");
                 return false;
             }
@@ -542,7 +654,7 @@ public class BillboardControl {
                 Color.decode(backgroundColourArea.getText());
             } catch (Exception NumberFormatException) {
                 ///
-                System.out.println("Caught NumberFormatException...");
+                //System.out.println("Caught NumberFormatException...");
                 throwDialog("Background Colour code format is not valid, please enter a valid HTML Colour code", "Invalid Background Colour");
                 return false;
             }
@@ -552,10 +664,9 @@ public class BillboardControl {
     }
 
     /**
-     * Applies the changes from JTextFields to the currentBillboard treemap,
-     * Applies variables based on text field contents, assigning null if empty.
-     *
-     * @return
+     * Applies the changes from JTextFields to the currentBillboard treemap, includes call to check valid colour format
+     * Applies variables based on text field contents, assigning null if empty. Also changes the Colour preview boxes if applicable.
+     * @return boolean value of if colour changes were valid or not
      */
     private boolean applyChanges() {
         // Initialize billboard variables as null
@@ -582,7 +693,11 @@ public class BillboardControl {
             messageColourPreviewLabel.setBackground(Color.decode(messageColour));
             messageColourPreviewLabel.setForeground(Color.decode(messageColour));
             messageColourPreviewLabel.setOpaque(true);
-        } // else leave as null
+        } else {
+            // else leave as null, remove colour preview
+            messageColourPreviewLabel.setOpaque(false);
+        }
+        messageColourPreviewLabel.repaint();
 
         if (informationArea.getText().length() > 0) { // Check not empty
             information = informationArea.getText();
@@ -594,7 +709,11 @@ public class BillboardControl {
             informationColourPreviewLabel.setBackground(Color.decode(informationColour));
             informationColourPreviewLabel.setForeground(Color.decode(informationColour));
             informationColourPreviewLabel.setOpaque(true);
-        } // else leave as null
+        } else {
+            // else leave as null, remove colour preview
+            informationColourPreviewLabel.setOpaque(false);
+        }
+        informationColourPreviewLabel.repaint();
 
         if (backgroundColourArea.getText().length() > 0) { // Check not empty
             billboardBackground = backgroundColourArea.getText();
@@ -602,7 +721,11 @@ public class BillboardControl {
             backgroundColourPreviewLabel.setBackground(Color.decode(billboardBackground));
             backgroundColourPreviewLabel.setForeground(Color.decode(billboardBackground));
             backgroundColourPreviewLabel.setOpaque(true);
-        } // else leave as null
+        } else {
+            // else leave as null, remove colour preview
+            backgroundColourPreviewLabel.setOpaque(false);
+        }
+        backgroundColourPreviewLabel.repaint();
 
         if (pictureUrlArea.getText().length() > 0) { // Check not empty
             pictureUrl = pictureUrlArea.getText();
@@ -621,19 +744,19 @@ public class BillboardControl {
         currentBillboard.put("information", information);
         currentBillboard.put("informationColour", informationColour);
 
-        return true;
+        return true; // Validated changes applied
     }
 
+    @Deprecated
     /**
-     * TEST CLASS FOR PRINTING TREEMAP / BILLBOARD CONTENTS
-     *
+     * TEST CLASS FOR PRINTING TREEMAP / BILLBOARD CONTENTS     *
      * @param billboardMap
      */
     public void printBillboard(TreeMap<String, String> billboardMap) {
-        System.out.println("Connect: Printing Billboard...");
+        System.out.println("Billboard Builder: Printing Billboard...");
         Set<String> set1 = billboardMap.keySet();
         for (String key : set1) {
-            System.out.println("Connect Key : " + key + "\t\t" + "Value : " + billboardMap.get(key));
+            System.out.println("Billboard Key : " + key + "\t\t" + "Value : " + billboardMap.get(key));
         }
     }
 
