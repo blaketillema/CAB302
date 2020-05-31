@@ -5,8 +5,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+/**
+ * Simple class to generate salts and to hash and salt a password
+ * @author Max Ferguson
+ */
 public class UserAuth
 {
+    /**
+     * Generates a random salt of size 16 chars
+     * @return String generated salt
+     */
     public static String generateSalt()
     {
         SecureRandom random = new SecureRandom();
@@ -20,6 +28,12 @@ public class UserAuth
         return sb.toString();
     }
 
+    /**
+     * Hashes and salts a password using SHA-256
+     * @param password The password to be hashed (e.g. "password1" or "1234")
+     * @param strSalt The randomly generated salt using the generateSalt() function
+     * @return String The hashed and salted password to be sent over the network
+     */
     public static String hashAndSalt(String password, String strSalt)
     {
         MessageDigest md;
