@@ -286,6 +286,11 @@ public class ServerFunctions {
                     throw new ServerException("Admin settings cannot be changed");
                 }
 
+                try {
+                    checkPermission(userId, Permission.EDIT_USERS);
+                } catch (ServerException e) {
+                    newPermissions = null;
+                }
                 database.editUser(newUserId, newUsername, doubleHash, newSalt, newPermissions);
             }
         }
