@@ -49,6 +49,7 @@ public class Scheduler {
             Boolean isRecurring  = (Boolean) schedTreeMap.get("isRecurring");
             Integer recurFreqInMins  = (Integer) schedTreeMap.get("recurFreqInMins");
             String creatorName = "CREATOR PLACEHOLDER";
+            OffsetDateTime scheduleCreationTime = (OffsetDateTime) schedTreeMap.get("scheduleCreationTime");
             // add each item to a schedule ArrayList of objects
             ArrayList<Object> schedArrayListObject = new ArrayList<>();
             schedArrayListObject.add(billboardName);
@@ -57,6 +58,7 @@ public class Scheduler {
             schedArrayListObject.add(isRecurring);
             schedArrayListObject.add(recurFreqInMins);
             schedArrayListObject.add(creatorName);
+            schedArrayListObject.add(scheduleCreationTime);
             // add the objects to the
             schedulesList.add(schedArrayListObject);
         }
