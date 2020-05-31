@@ -2,6 +2,10 @@ package billboard_control_panel.Calendar;
 import java.awt.*;
 import java.time.LocalDateTime;
 
+/**
+ * CalendarEventClickEvent retrieves the info from the interface, if, within the calendar viewer, an empty space has been clicked.
+ * If so, it will return the clicked event's start and endtime along with its name and use it to populate the scheduler panel.
+ */
 public class CalendarEventClickEvent extends AWTEvent{
     private CalendarEvent calendarEvent;
     private LocalDateTime startDateTime;

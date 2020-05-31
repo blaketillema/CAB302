@@ -11,11 +11,6 @@ import java.util.TreeMap;
 import billboard_control_panel.Calendar.*;
 import billboard_server.exceptions.ServerException;
 import billboard_viewer.Billboard;
-//import billboard_viewer.DisplayBillboard;
-//import connections.ClientServerInterface;
-//import connections.Protocol;
-//import connections.ServerMainTest;
-//import connections.testing.AdminAddUsers;
 
 
 public class MainControl {
@@ -37,6 +32,13 @@ public class MainControl {
     private JTabbedPane tabbedPane;
     private JButton deleteBillboardButton;
 
+    /**
+     * MainControl takes the logged in user as a parameter to display in the GUI, but uses the server's session token
+     * to correctly identify the user's permissions and abilities within the Control Panel
+     * MainControl displays a clickable list of Users and Billboards, as well as buttons to delete, edit, create,
+     * preview, schedule etc. These are all dependent on the user's permissions
+     * @param userName
+     */
     public MainControl(String userName) {
 
         Window[] wns = LoginManager.getFrames();
@@ -44,19 +46,19 @@ public class MainControl {
             wn1.setVisible(false);
         }
         // Get Current Users in Database
-        //TODO Put users from db into string array to display in GU
         refreshBillboards();
         refreshUsers();
 
-
         Title.setText(userName + " Control Panel");
 
+        /**
+         * Logout button takes the user back to the LoginManager screen and ends that user's session
+         */
         logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to log out?");
                 if (n == JOptionPane.YES_OPTION) {
-                    // TODO: Make this a function (Hides and disposes Frames)
                     Window[] wns = LoginManager.getFrames();
                     for (Window wn1 : wns) {
                         wn1.dispose();
@@ -70,26 +72,9 @@ public class MainControl {
             }
         });
 
-        // User Setting Buttons
-
-        deleteUserButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String userId = null;
-                try {
-                    userId = Main.server.getUserId(usersList.getSelectedValue().toString());
-                    int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + usersList.getSelectedValue().toString() +"?");
-                    if (n == JOptionPane.YES_OPTION) {
-                        Main.server.deleteUser(userId);
-                    } else if (n == JOptionPane.NO_OPTION) {
-                    }
-                } catch (ServerException ex) {
-                    JOptionPane.showMessageDialog(null, ex.getMessage());
-                }
-                refreshUsers();
-            }
-        });
-
+        /**
+         * Button functionality related to User Settings
+         */
         createUserButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -101,35 +86,10 @@ public class MainControl {
                         wn1.dispose();
                         wn1.setVisible(false);
                     }
-                    new UserControl(null).main(null);
+                    new UserControl(null, userName).main(null,userName);
                 } catch (ServerException z) {
-                    throwDialog("User does not have permission to view schedules", "No permission");
+                    throwDialog(z.getMessage(), "Error");
                 }
-
-//                Window[] wns = LoginManager.getFrames();
-//                for (Window wn1 : wns) {
-//                    wn1.dispose();
-//                    wn1.setVisible(false);
-//                }
-//                new UserControl(null).main(null);
-            }
-        });
-
-
-        // User Setting Buttons
-
-        createBillboardButton.addActionListener(new ActionListener() {
-            @Override
-            //TODO: check if user has permission to create billboards
-
-            public void actionPerformed(ActionEvent e) {
-                Window[] wns = LoginManager.getFrames();
-                for (Window wn1 : wns) {
-                    wn1.dispose();
-                    wn1.setVisible(false);
-                }
-
-                new BillboardControl(null).main(null);
             }
         });
 
@@ -157,8 +117,62 @@ public class MainControl {
                     } catch (ServerException ex) {
                         throwDialog(ex.getMessage(),"Error");
                     }
-                    new UserControl(user).main(user); // pass in selected user for edit
+                    new UserControl(user, userName).main(user,userName); // pass in selected user for edit
                 }
+            }
+        });
+
+        deleteUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String userId = null;
+                if (usersList.getSelectedValue() == null) {
+                    // No billboard selected
+                    throwDialog("No User has been selected to delete, please select a valid user.", "No User Selected");
+                }
+                else if(usersList.getSelectedValue().toString().equals(userName)){
+                    // Trying to delete yourself
+                    throwDialog("You cannot remove yourself", "Invalid action");
+                }
+                else{
+                    try {
+                        userId = Main.server.getUserId(usersList.getSelectedValue().toString());
+                        int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + usersList.getSelectedValue().toString() +"?");
+                        if (n == JOptionPane.YES_OPTION) {
+                            Main.server.deleteUser(userId);
+                        } else if (n == JOptionPane.NO_OPTION) {
+                        }
+                    } catch (ServerException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                    }
+                    refreshUsers();
+                }
+
+            }
+        });
+
+        refreshUserButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                refreshUsers();
+            }
+        });
+
+        /**
+         * Button functionality related to Billboard Settings
+         * Note - if a user does not have permission to create and/or edit billboards, they will still be able to open
+         * the BillboardControl interface, but will not be able to save or make changes ot new/existing billboards
+         */
+        createBillboardButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Window[] wns = LoginManager.getFrames();
+                for (Window wn1 : wns) {
+                    wn1.dispose();
+                    wn1.setVisible(false);
+                }
+
+                new BillboardControl(null, userName).main(null, userName);
             }
         });
 
@@ -189,7 +203,7 @@ public class MainControl {
                     } catch (ServerException ex) {
                         throwDialog(ex.getMessage(),"Error");
                     }
-                    new BillboardControl(billBoard).main(billBoard); // pass in selected billboard for edit
+                    new BillboardControl(billBoard, userName).main(billBoard, userName); // pass in selected billboard for edit
 
                 }
             }
@@ -198,8 +212,6 @@ public class MainControl {
         previewBillboardButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new DisplayBillboard(null).displayCurrentBillboard();
-
                 String billboardKey = null;
                 TreeMap billBoard = new TreeMap<String, String>();
 
@@ -244,7 +256,6 @@ public class MainControl {
                         wn1.dispose();
                         wn1.setVisible(false);
                     }
-                    //new MainControl(usernameField1.getText()).main(usernameField1.getText());
                     new CalendarCreator(userName).main(null);
                 } catch (ServerException z) {
                     throwDialog("User does not have permission to view schedules", "No permission");
@@ -273,12 +284,6 @@ public class MainControl {
                 refresh(billboardsList, bbList);
             }
         });
-        refreshUserButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                refreshUsers();
-            }
-        });
 
         deleteBillboardButton.addActionListener(new ActionListener() {
             @Override
@@ -298,19 +303,28 @@ public class MainControl {
                     } catch (ServerException ex) {
                         JOptionPane.showMessageDialog(null,ex.getMessage());
                     }
-                    //TODO: refresh works properly
                     refreshBillboards();
                 }
             }
         });
     }
 
-    //TODO: FIx the bug, sometimes it refreshes, sometimes it doesnt?
-    public void refresh(JList list, ArrayList<String> stringArray) {
+    //TODO: BUG -> if there is only one billboard, or user, in the list and I delete it: it will delete from the db,
+    // but the list will still show the deleted billboard until one leaves the MainControl and re enters it. Clicking
+    // the refresh button doesnt seem to empty the list
+    /**
+     * The following private functions refresh either the users list or billboards list according to what exists
+     * in the DB along with what the currently logged in user's permissions allow him/her to see
+     * @param list
+     * @param stringArray
+     */
+    private static void refresh(JList list, ArrayList<String> stringArray) {
         list.removeAll();
         list.clearSelection();
 
         final DefaultListModel model = new DefaultListModel();
+
+        // Remove all elements within the JList model and add the inputted ArrayList
         model.clear();
         model.removeAllElements();
         for (int i = 0, n = stringArray.size(); i < n; i++) {
@@ -319,16 +333,21 @@ public class MainControl {
         }
     }
 
-    public void refreshBillboards(){
+    private void refreshBillboards(){
+        // Clear the billboard list
+        billboardsList.clearSelection();
+        billboardsList.removeAll();
+        // Retrieve all billboards in db
         TreeMap<String, Object> billboards = null;
         try {
             billboards = Main.server.getBillboards();
         } catch (ServerException z) {
             z.printStackTrace();
         }
-        //TreeMap<String, Object> userDetails = (TreeMap<String, Object>) users.get("userName");
+        // Retrieve all billboards names and store into an array list
         ArrayList<String> bbList = new ArrayList<String>();
-        billboards.forEach((k, v) -> {
+        TreeMap<String, Object> finalBillboards = billboards;
+        finalBillboards.forEach((k, v) -> {
             System.out.println("Key: " + k + ", Value: " + v);
             String bbString = v.toString();
             bbString = bbString.substring(bbString.indexOf("billboardName=") + 14);
@@ -338,34 +357,36 @@ public class MainControl {
         refresh(billboardsList, bbList);
     }
 
-    public void refreshUsers(){
+    private void refreshUsers(){
+        // Clear the username list
         usersList.clearSelection();
         usersList.removeAll();
+        // Retrieve all usernames in db
         TreeMap<String, Object> users = null;
         try {
             users = Main.server.getUsers();
         } catch (ServerException z) {
             z.printStackTrace();
         }
-
-        //TreeMap<String, Object> userDetails = (TreeMap<String, Object>) users.get("userName");
+        // Retrieve all usernames and store into an array list
         ArrayList<String> userNameList = new ArrayList<String>();
         TreeMap<String, Object> finalUsers = users;
-        users.forEach((k, v) -> {
-            //System.out.println("Key: " + k + ", Value: " + v);
+        finalUsers.forEach((k, v) -> {
             String userString = v.toString().substring(v.toString().lastIndexOf("=") + 1);
             userString = userString.replace("}", "");
             userNameList.add(userString);
         });
         refresh(usersList, userNameList);
-        System.out.println(userNameList);
-        //refresh(usersList, UserNames);
     }
 
     private static void throwDialog(String messageText, String title) {
         JOptionPane.showMessageDialog(null, messageText, title, JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * MainControl takers in a username argument to refer to when navigating through the main screen of the control panel
+     * @param username
+     */
     public static void main(String username) {
         /* Create and display the form */
         JFrame frame = new JFrame("Billboard Control Panel");
@@ -375,84 +396,5 @@ public class MainControl {
         frame.pack();
         frame.setVisible(true);
 
-    }
-
-    private void createUIComponents() {
-        // TODO: place custom component creation code here
-    }
-
-    {
-// GUI initializer generated by IntelliJ IDEA GUI Designer
-// >>> IMPORTANT!! <<<
-// DO NOT EDIT OR ADD ANY CODE HERE!
-        $$$setupUI$$$();
-    }
-
-    /**
-     * Method generated by IntelliJ IDEA GUI Designer
-     * >>> IMPORTANT!! <<<
-     * DO NOT edit this method OR call it in your code!
-     *
-     * @noinspection ALL
-     */
-    private void $$$setupUI$$$() {
-        controlPanel = new JPanel();
-        controlPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(4, 2, new Insets(0, 0, 0, 0), -1, -1));
-        final JTabbedPane tabbedPane1 = new JTabbedPane();
-        controlPanel.add(tabbedPane1, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 409), null, 0, false));
-        final JPanel panel1 = new JPanel();
-        panel1.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 5, new Insets(0, 0, 0, 0), -1, -1));
-        tabbedPane1.addTab("Billboard Settings", panel1);
-        billboardsList = new JList();
-        panel1.add(billboardsList, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 5, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
-        scheduleBillboardButton = new JButton();
-        scheduleBillboardButton.setText("Schedule");
-        panel1.add(scheduleBillboardButton, new com.intellij.uiDesigner.core.GridConstraints(1, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        createBillboardButton = new JButton();
-        createBillboardButton.setText("Create");
-        panel1.add(createBillboardButton, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        editBillboardButton = new JButton();
-        editBillboardButton.setText("Edit");
-        panel1.add(editBillboardButton, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        previewBillboardButton = new JButton();
-        previewBillboardButton.setText("Preview");
-        panel1.add(previewBillboardButton, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        refreshBillboardButton = new JButton();
-        refreshBillboardButton.setText("Refresh");
-        panel1.add(refreshBillboardButton, new com.intellij.uiDesigner.core.GridConstraints(1, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel2 = new JPanel();
-        panel2.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(2, 4, new Insets(0, 0, 0, 0), -1, -1));
-        tabbedPane1.addTab("User Settings", panel2);
-        usersList = new JList();
-        final DefaultListModel defaultListModel1 = new DefaultListModel();
-        usersList.setModel(defaultListModel1);
-        panel2.add(usersList, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 237), null, 0, false));
-        createUserButton = new JButton();
-        createUserButton.setText("Create");
-        panel2.add(createUserButton, new com.intellij.uiDesigner.core.GridConstraints(1, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        deleteUserButton = new JButton();
-        deleteUserButton.setText("Delete");
-        panel2.add(deleteUserButton, new com.intellij.uiDesigner.core.GridConstraints(1, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        modifyUserButton = new JButton();
-        modifyUserButton.setText("Modify");
-        panel2.add(modifyUserButton, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        refreshUserButton = new JButton();
-        refreshUserButton.setText("Refresh");
-        panel2.add(refreshUserButton, new com.intellij.uiDesigner.core.GridConstraints(1, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        logOutButton = new JButton();
-        logOutButton.setText("Log Out");
-        controlPanel.add(logOutButton, new com.intellij.uiDesigner.core.GridConstraints(3, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_EAST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
-        controlPanel.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(2, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_VERTICAL, 1, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(11, 11), null, 0, false));
-        final JLabel label1 = new JLabel();
-        label1.setText("$User$ Control Panel");
-        controlPanel.add(label1, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-    }
-
-    /**
-     * @noinspection ALL
-     */
-    public JComponent $$$getRootComponent$$$() {
-        return controlPanel;
     }
 }

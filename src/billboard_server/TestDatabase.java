@@ -1,11 +1,13 @@
 package billboard_server;
 
-import com.sun.source.tree.Tree;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -154,5 +156,17 @@ public class TestDatabase {
         db.deleteBillboard(billboardId);
 
         Assertions.assertEquals(emptyTree.toString(), db.getBillboards().toString());
+    }
+
+    @Test
+    void addSchedule() throws SQLException{
+        String userId = java.util.UUID.randomUUID().toString();
+        String billboardId = java.util.UUID.randomUUID().toString();
+        String scheduleId = java.util.UUID.randomUUID().toString();
+        OffsetDateTime startTime = OffsetDateTime.now();
+        db.addUser(userId, "name", "hash", "salt", 8);
+        db.addBillboard(billboardId, "name", userId, "message", "info", "pd", "pu", "bg", "msgc", "infoc");
+        db.addSchedule(scheduleId, billboardId, startTime, 120, false, 0);
+        System.out.println(db.getSchedules().toString());
     }
 }

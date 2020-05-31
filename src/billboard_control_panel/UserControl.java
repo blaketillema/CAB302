@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.TreeMap;
 
+
 public class UserControl {
     private JTextField userNameField;
     private JPasswordField passwordField1;
@@ -27,7 +28,15 @@ public class UserControl {
 
     TreeMap<String, Object> currentUser = new TreeMap<>(); // Initialize an empty TreeMap
 
-    public UserControl(TreeMap editUser) {
+    /**
+     * UserControl is where a user can create, edit and/or delete users depending on their permissions.
+     * If a null editUser tree map is inputted from the MainControl, this means the "Create User" button was selected,
+     * leaving the fields blank. If a non-null editUser tree map was inputted, this means a user was selected in the
+     * MainControl along with the "Edit User" button. This then populates the UserControl fields with the user's username
+     * and elected permissions.
+     * @param editUser
+     */
+    public UserControl(TreeMap editUser, String userName) {
 
         if (editUser != null) {
             System.out.println("Input billboard not null.");
@@ -36,7 +45,6 @@ public class UserControl {
         } else {
             System.out.println("Input billboard is null.");
         }
-        //refreshFields();
 
         // Get newly created user's userID to edit the user's permissions
         String userId = null;
@@ -47,6 +55,10 @@ public class UserControl {
         }
         String finalUserId = userId;
 
+        /**
+         * Button functionality
+         */
+        // Deletes a user
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -67,6 +79,8 @@ public class UserControl {
                 }
             }
         });
+
+        //Saves a user
         saveButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -75,12 +89,11 @@ public class UserControl {
                 try {
                     userIDchecks = Main.server.getUserId(userNameField.getText());
                 } catch (ServerException ex) {
-                    //JOptionPane.showMessageDialog(null, ex.getMessage());
                     ex.printStackTrace();
                 }
                 String finalUserIdCheck = userIDchecks;
 
-                // If new user, create(add) new user
+                // If user does not exist in db, create(add) new user
                 if (finalUserIdCheck == null){
                     try {
                         Main.server.addUser(userNameField.getText(), passwordField1.getText(), Protocol.Permission.NONE);
@@ -89,8 +102,8 @@ public class UserControl {
                         JOptionPane.showMessageDialog(null, ex.getMessage());
                     }
                 }
-                // If existing user, edit existing user
-                    // Now check each box and use the editUser function to give certain permissions
+
+                // Now check again if user exist (which it should)
                 String userIDcheck = null;
                 try {
                     userIDcheck = Main.server.getUserId(userNameField.getText());
@@ -99,9 +112,8 @@ public class UserControl {
                 }
                 finalUserIdCheck = userIDcheck;
 
-                // Add the checked permissions together as an integer
+                // Tally the checked permissions together as an integer
                 Integer newPermission = 0;
-
                 if (ScheduleBBCheckBox.isSelected()){
                     newPermission += 0b100;
                 }
@@ -115,7 +127,7 @@ public class UserControl {
                     newPermission += 0b1000;
                 }
 
-                // Edit the user with the saved data
+                // Edit the newly created or existing user with the saved data using the server.editUser function
                 try {
                     Main.server.editUser(finalUserIdCheck, userNameField.getText(), passwordField1.getText(), newPermission);
                     if (userIDchecks != null){
@@ -135,16 +147,16 @@ public class UserControl {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new MainControl(null).main(null);
+                new MainControl(userName).main(userName);
             }
         });
     }
 
-    public static void main(TreeMap inputUser) {
+    public static void main(TreeMap inputUser, String userName) {
         /* Create and display the form */
         JFrame frame = new JFrame("Billboard User Builder");
         Main.centreWindow(frame);
-        frame.setContentPane(new UserControl(inputUser).userControl);
+        frame.setContentPane(new UserControl(inputUser, userName).userControl);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
@@ -185,73 +197,5 @@ public class UserControl {
         }
     }
 
-    {
-// GUI initializer generated by IntelliJ IDEA GUI Designer
-// >>> IMPORTANT!! <<<
-// DO NOT EDIT OR ADD ANY CODE HERE!
-        $$$setupUI$$$();
-    }
 
-    /**
-     * Method generated by IntelliJ IDEA GUI Designer
-     * >>> IMPORTANT!! <<<
-     * DO NOT edit this method OR call it in your code!
-     *
-     * @noinspection ALL
-     */
-    private void $$$setupUI$$$() {
-        userControl = new JPanel();
-        userControl.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(7, 6, new Insets(0, 0, 0, 0), -1, -1));
-        final JLabel label1 = new JLabel();
-        label1.setText("User Control");
-        userControl.add(label1, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label2 = new JLabel();
-        label2.setText("Username:");
-        userControl.add(label2, new com.intellij.uiDesigner.core.GridConstraints(2, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label3 = new JLabel();
-        label3.setText("Password:");
-        userControl.add(label3, new com.intellij.uiDesigner.core.GridConstraints(3, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label4 = new JLabel();
-        label4.setText("Permissions");
-        userControl.add(label4, new com.intellij.uiDesigner.core.GridConstraints(4, 1, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        userNameField = new JTextField();
-        userControl.add(userNameField, new com.intellij.uiDesigner.core.GridConstraints(2, 2, 1, 3, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        passwordField1 = new JPasswordField();
-        userControl.add(passwordField1, new com.intellij.uiDesigner.core.GridConstraints(3, 2, 1, 3, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        editUsersCheckBox = new JCheckBox();
-        editUsersCheckBox.setText("CheckBox");
-        userControl.add(editUsersCheckBox, new com.intellij.uiDesigner.core.GridConstraints(5, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(78, 18), null, 0, false));
-        ScheduleBBCheckBox = new JCheckBox();
-        ScheduleBBCheckBox.setText("CheckBox");
-        userControl.add(ScheduleBBCheckBox, new com.intellij.uiDesigner.core.GridConstraints(5, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label5 = new JLabel();
-        label5.setText("Credentials");
-        userControl.add(label5, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 4, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        EditBBCheckBox = new JCheckBox();
-        EditBBCheckBox.setText("CheckBox");
-        userControl.add(EditBBCheckBox, new com.intellij.uiDesigner.core.GridConstraints(5, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final com.intellij.uiDesigner.core.Spacer spacer1 = new com.intellij.uiDesigner.core.Spacer();
-        userControl.add(spacer1, new com.intellij.uiDesigner.core.GridConstraints(2, 5, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        final com.intellij.uiDesigner.core.Spacer spacer2 = new com.intellij.uiDesigner.core.Spacer();
-        userControl.add(spacer2, new com.intellij.uiDesigner.core.GridConstraints(2, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        CreateBBCheckBox = new JCheckBox();
-        CreateBBCheckBox.setText("CheckBox");
-        userControl.add(CreateBBCheckBox, new com.intellij.uiDesigner.core.GridConstraints(5, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        exitButton = new JButton();
-        exitButton.setText("Save and Exit");
-        userControl.add(exitButton, new com.intellij.uiDesigner.core.GridConstraints(6, 4, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_NONE, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(78, 24), null, 0, false));
-        saveButton = new JButton();
-        saveButton.setText("Save");
-        userControl.add(saveButton, new com.intellij.uiDesigner.core.GridConstraints(6, 3, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        removeButton = new JButton();
-        removeButton.setText("Remove");
-        userControl.add(removeButton, new com.intellij.uiDesigner.core.GridConstraints(6, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-    }
-
-    /**
-     * @noinspection ALL
-     */
-    public JComponent $$$getRootComponent$$$() {
-        return userControl;
-    }
 }
