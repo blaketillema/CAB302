@@ -65,24 +65,16 @@ public class LoginManager extends JFrame {
      * @param password
      */
     public void login(String username, String password) {
-        boolean success = true;
-            try {
-                Main.server.login(username,password);
-                // TODO: bug when logging in as someone who doesnt exist,
-                //  if the following is called, it will attempt to run regardless if exception is thrown or not
-                //new MainControl(usernameField1.getText()).main(usernameField1.getText());
+        boolean success = false;
 
-            } catch (ServerException e) {
-                JOptionPane.showMessageDialog(null, "Invalid username or password");
-                success = false;
-            }
-            // TODO: this keeps successs as true
-        boolean successs = success;
-            System.out.println(successs);
-            if (successs == true){
-                new MainControl(usernameField1.getText()).main(usernameField1.getText());
-            }
+        try {
+            Main.server.login(username,password);
+            new MainControl(usernameField1.getText()).main(usernameField1.getText());
+        } catch (ServerException e) {
+            JOptionPane.showMessageDialog(null, "Invalid username or password");
+        }
     }
+
 
     public static void main(String[] args) {
         /* Create and display the form */

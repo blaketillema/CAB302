@@ -83,6 +83,10 @@ public class ClientServerInterface {
             throw new ServerException(e.getMessage());
         }
 
+        if(userId == null) {
+            throw new ServerException("user doesn't exist");
+        }
+
         // try to get the salt of the user ID from salts.map
         String salt;
 
