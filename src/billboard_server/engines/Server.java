@@ -28,7 +28,7 @@ public class Server {
     public static Scheduler scheduler = null;
 
     private static final String networkPath =
-            Paths.get(System.getProperty("user.dir"), "src", "billboard_server", "assets", "network.props").toString();
+            Paths.get(System.getProperty("user.dir"), "network.props").toString();
 
     /**
      * Initialises the server, setting the port and adding a session ID for admin

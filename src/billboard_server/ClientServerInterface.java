@@ -22,10 +22,10 @@ public class ClientServerInterface {
     private int port;
     private long sessionId;
     private static final String saltMapPath =
-            Paths.get(System.getProperty("user.dir"), "src", "billboard_server", "assets", "salts.map").toString();
+            Paths.get(System.getProperty("user.dir"), "salts.map").toString();
 
     private static final String networkPath =
-            Paths.get(System.getProperty("user.dir"), "src", "billboard_server", "assets", "network.props").toString();
+            Paths.get(System.getProperty("user.dir"), "network.props").toString();
 
     /**
      * Initialiser that reads assets/network.props and stores the salt of admin in assets/salts.map

@@ -204,7 +204,6 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Android JUnit.Unnamed" />
       <item itemvalue="Application.MainRunDisplay" />
       <item itemvalue="Application.UserManagement" />
       <item itemvalue="Application.ServerMainTest" />
@@ -388,11 +387,11 @@
       <screen x="0" y="0" width="1739" height="939" />
     </state>
     <state x="655" y="272" key="#com.intellij.uiDesigner.palette.ComponentItemDialog/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585579096665" />
-    <state x="637" y="27" key="CommitChangelistDialog2" timestamp="1589275042982">
+    <state x="637" y="27" key="CommitChangelistDialog2" timestamp="1590904746524">
       <screen x="0" y="0" width="1920" height="1030" />
     </state>
     <state x="577" y="25" key="CommitChangelistDialog2/0.-1080.1739.939/0.0.1739.939@0.0.1739.939" timestamp="1585582372076" />
-    <state x="637" y="27" key="CommitChangelistDialog2/0.0.1920.1030@0.0.1920.1030" timestamp="1589275042982" />
+    <state x="637" y="27" key="CommitChangelistDialog2/0.0.1920.1030@0.0.1920.1030" timestamp="1590904746524" />
     <state x="1920" y="0" key="CommitChangelistDialog2/0.0.1920.1050/1920.0.1920.1080@1920.0.1920.1080" timestamp="1585453971046" />
     <state x="873" y="198" key="FileChooserDialogImpl" timestamp="1590847891161">
       <screen x="0" y="0" width="1739" height="939" />
@@ -523,10 +522,10 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/CAB302$MainRunDisplay.ic" NAME="MainRunDisplay Coverage Results" MODIFIED="1585574155421" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/CAB302$RunDisplayBillboard.ic" NAME="RunDisplayBillboard Coverage Results" MODIFIED="1585481569110" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>Sandbox.*</FILTER>
     </SUITE>
-    <SUITE FILE_PATH="coverage/CAB302$RunDisplayBillboard.ic" NAME="RunDisplayBillboard Coverage Results" MODIFIED="1585481569110" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+    <SUITE FILE_PATH="coverage/CAB302$MainRunDisplay.ic" NAME="MainRunDisplay Coverage Results" MODIFIED="1585574155421" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
       <FILTER>Sandbox.*</FILTER>
     </SUITE>
   </component>
