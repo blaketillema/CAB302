@@ -36,6 +36,7 @@ public class Database {
             "scheduleId VARCHAR(191) PRIMARY KEY NOT NULL," +
             "billboardId VARCHAR(191), " +
             "startTime DATETIME, " +
+            "scheduleCreationTime DATETIME, " +
             "duration INT, " +
             "isRecurring BOOLEAN, " +
             "recurFreqInMins INT, " +
@@ -44,7 +45,7 @@ public class Database {
     private static final String adduserStatement = "INSERT INTO users (userId, userName, hash, salt, permissions) VALUES (?, ?, ?, ?, ?)";
     private static final String addbilbStatement = "INSERT INTO billboards (billboardId, billboardName, billboardCreator, billboardMessage, billboardInfo, billboardPictureData, billboardPictureUrl, billboardBg, billboardMsgColour, billboardInfoColour)" +
             " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String addschedStatement = "INSERT INTO schedules (scheduleId, billboardId, startTime, duration, isRecurring, recurFreqInMins) VALUES (?, ?, ?, ?, ?, ?)";
+    private static final String addschedStatement = "INSERT INTO schedules (scheduleId, billboardId, startTime, scheduleCreationTime, duration, isRecurring, recurFreqInMins) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     private String url;
     private String schema;
@@ -444,9 +445,10 @@ public class Database {
         pstmt.setString(1, scheduleId);
         pstmt.setString(2, billboardId);
         pstmt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.ofInstant(startTime.toInstant(), ZoneOffset.of("+10:00"))));
-        pstmt.setInt(4, duration);
-        pstmt.setBoolean(5, isRecurring);
-        pstmt.setInt(6, recurFreqInMins);
+        pstmt.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+        pstmt.setInt(5, duration);
+        pstmt.setBoolean(6, isRecurring);
+        pstmt.setInt(7, recurFreqInMins);
         pstmt.execute();
         conn.close();
     }
@@ -480,9 +482,10 @@ public class Database {
             schedule.put("scheduleId", rs.getString(1));
             schedule.put("billboardId", rs.getString(2));
             schedule.put("startTime", OffsetDateTime.of(rs.getTimestamp(3).toLocalDateTime(), ZoneOffset.of("+10:00")));
-            schedule.put("duration", rs.getInt(4));
-            schedule.put("isRecurring", rs.getBoolean(5));
-            schedule.put("recurFreqInMins", rs.getInt(6));
+            schedule.put("scheduleCreationTime", OffsetDateTime.of(rs.getTimestamp(4).toLocalDateTime(), ZoneOffset.of("+10:00")));
+            schedule.put("duration", rs.getInt(5));
+            schedule.put("isRecurring", rs.getBoolean(6));
+            schedule.put("recurFreqInMins", rs.getInt(7));
             schedule.put("billboardName", billboardIdToName(rs.getString(2)));
             schedules.put(rs.getString(1), schedule);
         }
@@ -502,9 +505,10 @@ public class Database {
                 schedule.put("scheduleId", rs.getString(1));
                 schedule.put("billboardId", rs.getString(2));
                 schedule.put("startTime", OffsetDateTime.of(rs.getTimestamp(3).toLocalDateTime(), ZoneOffset.of("+10:00")));
-                schedule.put("duration", rs.getInt(4));
-                schedule.put("isRecurring", rs.getBoolean(5));
-                schedule.put("recurFreqInMins", rs.getInt(6));
+                schedule.put("scheduleCreationTime", OffsetDateTime.of(rs.getTimestamp(4).toLocalDateTime(), ZoneOffset.of("+10:00")));
+                schedule.put("duration", rs.getInt(5));
+                schedule.put("isRecurring", rs.getBoolean(6));
+                schedule.put("recurFreqInMins", rs.getInt(7));
                 schedule.put("billboardName", billboardIdToName(rs.getString(2)));
                 schedules.put(rs.getString(1), schedule);
             }

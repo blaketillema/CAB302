@@ -5,6 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -66,6 +69,28 @@ public class TestDatabase {
     }
 
     @Test
+    void removeUser() throws SQLException{
+        String userId = java.util.UUID.randomUUID().toString();
+        TreeMap<String, Object> emptyTree = new TreeMap<>();
+
+        db.addUser(userId, "name", "hash", "salt", 8);
+
+        db.deleteUser(userId);
+
+        TreeMap<String, Object> getUsers = db.getUsers();
+
+        String adminId = "";
+        for(Map.Entry<String, Object> user : getUsers.entrySet()){
+            if(user.getValue().toString().contains("admin")){
+                adminId = user.getKey();
+            }
+        }
+        if(!adminId.equals("")) getUsers.remove(adminId);
+
+        Assertions.assertEquals(emptyTree.toString(), getUsers.toString());
+    }
+
+    @Test
     void addBillboard() throws SQLException{
         String billboardId = java.util.UUID.randomUUID().toString();
         String userId = java.util.UUID.randomUUID().toString();
@@ -79,7 +104,7 @@ public class TestDatabase {
         TreeMap<String, Object> bilb = new TreeMap<>();
 
         data.put("billboardName", "name"); data.put("billboardCreator", userId);
-        data.put("message", "message"); data.put("info", "info");
+        data.put("message", "message"); data.put("information", "info");
         data.put("pictureData", "pd"); data.put("pictureUrl", "pu");
         data.put("billboardBackground", "bg"); data.put("messageColour", "mc");
         data.put("informationColour", "ic"); bilb.put(billboardId, data);
@@ -87,5 +112,61 @@ public class TestDatabase {
         db.addBillboard(billboardId, "name", userId, "message", "info", "pd", "pu", "bg", "mc", "ic");
 
         Assertions.assertEquals(bilb.toString(), db.getBillboards(bilbs).toString());
+    }
+
+    @Test
+    void addBillboards() throws SQLException{
+        String billboardId1 = java.util.UUID.randomUUID().toString();
+        String billboardId2 = java.util.UUID.randomUUID().toString();
+        String userId = java.util.UUID.randomUUID().toString();
+
+        ArrayList<String> bilbsStr = new ArrayList<>();
+        bilbsStr.add(billboardId1);
+        bilbsStr.add(billboardId2);
+
+        db.addUser(userId, "test", "test", "test", 8);
+
+        TreeMap<String, Object> data = new TreeMap<>();
+        TreeMap<String, Object> bilbs = new TreeMap<>();
+
+        data.put("billboardName", "name"); data.put("billboardCreator", userId);
+        data.put("message", "message"); data.put("information", "info");
+        data.put("pictureData", "pd"); data.put("pictureUrl", "pu");
+        data.put("billboardBackground", "bg"); data.put("messageColour", "mc");
+        data.put("informationColour", "ic");
+
+        bilbs.put(billboardId1, data);
+        bilbs.put(billboardId2, data);
+
+        db.addBillboard(billboardId1, "name", userId, "message", "info", "pd", "pu", "bg", "mc", "ic");
+        db.addBillboard(billboardId2, "name", userId, "message", "info", "pd", "pu", "bg", "mc", "ic");
+
+        Assertions.assertEquals(bilbs.toString(), db.getBillboards(bilbsStr).toString());
+    }
+
+    @Test
+    void removeBillboard() throws SQLException{
+        String userId = java.util.UUID.randomUUID().toString();
+        String billboardId = java.util.UUID.randomUUID().toString();
+        TreeMap<String, Object> emptyTree = new TreeMap<>();
+
+        db.addUser(userId, "name", "hash", "salt", 8);
+
+        db.addBillboard(billboardId, "name", userId, "message", "info", "pictureD", "pictureU", "bg", "msgC", "infoC");
+        db.deleteBillboard(billboardId);
+
+        Assertions.assertEquals(emptyTree.toString(), db.getBillboards().toString());
+    }
+
+    @Test
+    void addSchedule() throws SQLException{
+        String userId = java.util.UUID.randomUUID().toString();
+        String billboardId = java.util.UUID.randomUUID().toString();
+        String scheduleId = java.util.UUID.randomUUID().toString();
+        OffsetDateTime startTime = OffsetDateTime.now();
+        db.addUser(userId, "name", "hash", "salt", 8);
+        db.addBillboard(billboardId, "name", userId, "message", "info", "pd", "pu", "bg", "msgc", "infoc");
+        db.addSchedule(scheduleId, billboardId, startTime, 120, false, 0);
+        System.out.println(db.getSchedules().toString());
     }
 }
