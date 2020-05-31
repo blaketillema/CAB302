@@ -4,6 +4,10 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * Week gets the current week's data, including date of the allocated starting day.
+ * It also handles how another week would look like if the next and previous buttons are clicked
+ */
 public class Week {
     private ArrayList<LocalDate> days;
 

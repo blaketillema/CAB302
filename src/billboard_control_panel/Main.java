@@ -4,6 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Main {
+    /**
+     * This Main class initiates the ClientServerInterface as an object 'server' to be called upon by every other
+     * class within the billboard_control_panel.
+     */
     public static ClientServerInterface server = new ClientServerInterface();
     public static void centreWindow(Window frame) {
         Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
@@ -12,6 +16,10 @@ public class Main {
         frame.setLocation((x-frame.getWidth()) / 2, (y - frame.getHeight()) / 2);
     }
 
+    /**
+     * This class initiates the LoginManager
+     * @param args
+     */
     public static void main(String[] args) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

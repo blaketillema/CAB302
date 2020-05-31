@@ -5,7 +5,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-
+/**
+ * CalendarEvent is responsible for getting and setting a billboard's schedule's details.
+ *
+ */
 public class CalendarEvent {
     private static final Color DEFAULT_COLOR = Color.ORANGE;
 
@@ -79,7 +82,11 @@ public class CalendarEvent {
         return color;
     }
 
-
+    /**
+     * Checks if the clicked object is equal to an existing calendar event, irrespective of the exact cursor position
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -93,6 +100,7 @@ public class CalendarEvent {
 
     }
 
+    // Returns the integer hash code value of the date object considering 31 unique days.
     @Override
     public int hashCode() {
         int result = date.hashCode();
