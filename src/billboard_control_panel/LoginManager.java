@@ -34,6 +34,7 @@ public class LoginManager extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 login(usernameField1.getText(), passwordField1.getText());
             }
+
         });
 
         // Pressing 'Enter/Return' acts as clicking the Login Button

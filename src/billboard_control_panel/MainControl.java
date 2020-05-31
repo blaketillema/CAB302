@@ -49,7 +49,7 @@ public class MainControl {
         refreshBillboards();
         refreshUsers();
 
-        Title.setText(userName + "Control Panel");
+        Title.setText(userName + " Control Panel");
 
         /**
          * Logout button takes the user back to the LoginManager screen and ends that user's session
@@ -87,7 +87,7 @@ public class MainControl {
                         wn1.dispose();
                         wn1.setVisible(false);
                     }
-                    new UserControl(null).main(null);
+                    new UserControl(null, userName).main(null,userName);
                 } catch (ServerException z) {
                     throwDialog(z.getMessage(), "Error");
                 }
@@ -118,7 +118,7 @@ public class MainControl {
                     } catch (ServerException ex) {
                         throwDialog(ex.getMessage(),"Error");
                     }
-                    new UserControl(user).main(user); // pass in selected user for edit
+                    new UserControl(user, userName).main(user,userName); // pass in selected user for edit
                 }
             }
         });
@@ -131,12 +131,16 @@ public class MainControl {
                     // No billboard selected
                     throwDialog("No User has been selected to delete, please select a valid user.", "No User Selected");
                 }
+                else if(usersList.getSelectedValue().toString() == userName){
+                    // Trying to delete yourself
+                    throwDialog("You cannot remove yourself", "Invalid action");
+                }
                 else{
                     try {
                         userId = Main.server.getUserId(usersList.getSelectedValue().toString());
                         int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + usersList.getSelectedValue().toString() +"?");
                         if (n == JOptionPane.YES_OPTION) {
-                            Main.server.deleteUser(userId);
+                            Main.server.deleteUser(userId); // TODO: Use the catch from this, not above
                         } else if (n == JOptionPane.NO_OPTION) {
                         }
                     } catch (ServerException ex) {
@@ -169,7 +173,7 @@ public class MainControl {
                     wn1.setVisible(false);
                 }
 
-                new BillboardControl(null).main(null);
+                new BillboardControl(null, userName).main(null, userName);
             }
         });
 
@@ -200,7 +204,7 @@ public class MainControl {
                     } catch (ServerException ex) {
                         throwDialog(ex.getMessage(),"Error");
                     }
-                    new BillboardControl(billBoard).main(billBoard); // pass in selected billboard for edit
+                    new BillboardControl(billBoard, userName).main(billBoard, userName); // pass in selected billboard for edit
 
                 }
             }
