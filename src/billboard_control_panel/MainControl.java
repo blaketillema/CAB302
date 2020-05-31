@@ -294,10 +294,10 @@ public class MainControl {
                     throwDialog("No Billboard has been selected to delete, please select a valid billboard.", "No Billboard Selected");
                 } else {
                     try {
-                        billboardID = Main.server.getBillboardId(billboardsList.getSelectedValue().toString());
+                        //billboardID = Main.server.getBillboardId(billboardsList.getSelectedValue().toString());
                         int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + billboardsList.getSelectedValue().toString() + "?");
                         if (n == JOptionPane.YES_OPTION) {
-                            Main.server.deleteBillboard(billboardID);
+                            Main.server.deleteBillboard(Main.server.getBillboardId(billboardsList.getSelectedValue().toString()));
                         } else if (n == JOptionPane.NO_OPTION) {
                         }
                     } catch (ServerException ex) {

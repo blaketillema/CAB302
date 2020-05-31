@@ -456,6 +456,9 @@ public class ServerFunctions {
         // check if the user provided a list to delete, and then remove any values from that list they aren't allowed to touch
         if (data.containsKey("billboardList")) {
             ArrayList<String> billboardIds = fixBillboardList(userId, (ArrayList<String>) data.get("billboardList"));
+            if(billboardIds.size() == 0) {
+                throw new ServerException("user attempted to delete a non-existent billboard, or a billboard without the required permissions");
+            }
             database.deleteBillboards(billboardIds);
         } else {
             throw new ServerException("user requested to delete billboards, but didn't say which ones");
