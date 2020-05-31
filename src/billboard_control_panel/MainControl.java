@@ -131,7 +131,7 @@ public class MainControl {
                     // No billboard selected
                     throwDialog("No User has been selected to delete, please select a valid user.", "No User Selected");
                 }
-                else if(usersList.getSelectedValue() == userName){
+                else if(usersList.getSelectedValue().toString() == userName){
                     // Trying to delete yourself
                     throwDialog("You cannot remove yourself", "Invalid action");
                 }
@@ -140,7 +140,7 @@ public class MainControl {
                         userId = Main.server.getUserId(usersList.getSelectedValue().toString());
                         int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + usersList.getSelectedValue().toString() +"?");
                         if (n == JOptionPane.YES_OPTION) {
-                            Main.server.deleteUser(userId);
+                            Main.server.deleteUser(userId); // TODO: Use the catch from this, not above
                         } else if (n == JOptionPane.NO_OPTION) {
                         }
                     } catch (ServerException ex) {
