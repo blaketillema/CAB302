@@ -36,7 +36,7 @@ public class UserControl {
      * and elected permissions.
      * @param editUser
      */
-    public UserControl(TreeMap editUser) {
+    public UserControl(TreeMap editUser, String userName) {
 
         if (editUser != null) {
             System.out.println("Input billboard not null.");
@@ -147,16 +147,16 @@ public class UserControl {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new MainControl(null).main(null);
+                new MainControl(null).main(userName);
             }
         });
     }
 
-    public static void main(TreeMap inputUser) {
+    public static void main(TreeMap inputUser, String userName) {
         /* Create and display the form */
         JFrame frame = new JFrame("Billboard User Builder");
         Main.centreWindow(frame);
-        frame.setContentPane(new UserControl(inputUser).userControl);
+        frame.setContentPane(new UserControl(inputUser, userName).userControl);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);

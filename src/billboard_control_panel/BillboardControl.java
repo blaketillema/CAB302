@@ -61,7 +61,7 @@ public class BillboardControl {
 
     TreeMap<String, String> currentBillboard = new TreeMap<>(); // Initialize an empty TreeMap
 
-    public BillboardControl(TreeMap editBillboard) {
+    public BillboardControl(TreeMap editBillboard, String userName) {
 
         if (editBillboard != null) {
             System.out.println("Input billboard not null.");
@@ -235,7 +235,7 @@ public class BillboardControl {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new MainControl(null).main(null);
+                new MainControl(userName).main(userName);
             }
         });
 
@@ -285,12 +285,12 @@ public class BillboardControl {
         });
     }
 
-    public void main(TreeMap inputBillboard) {
+    public void main(TreeMap inputBillboard, String userName) {
         /* Create and display the form */
         JFrame frame = new JFrame("Billboard Builder");
         Main.centreWindow(frame);
 
-        frame.setContentPane(new BillboardControl(inputBillboard).billboardControl);
+        frame.setContentPane(new BillboardControl(inputBillboard, userName).billboardControl);
         frame.setMinimumSize(new Dimension(500, 400)); // Set minimum size for scaling
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();

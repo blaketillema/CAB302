@@ -696,7 +696,7 @@ public class CalendarCreator extends Frame {
                     wn1.dispose();
                     wn1.setVisible(false);
                 }
-                new MainControl(userName).main(null);
+                new MainControl(userName).main(userName);
             }
         });
         //</editor-fold>
@@ -704,7 +704,7 @@ public class CalendarCreator extends Frame {
     }
 
 
-    public static void main(String username) {
+    public static void main(String userName) {
         // Either keep one at the top, or this one below.
         // CalendarCreator edit = new CalendarCreator(tal);
     }

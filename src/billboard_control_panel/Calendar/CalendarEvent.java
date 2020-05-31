@@ -6,6 +6,13 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 /**
+ * The following code was adapted from GitHub-user davejm's SwingCalendar public repository.
+ * Title: SwingCalendar source code
+ * Author: davejm
+ * Date: 2016
+ * Availability: https://github.com/davejm/SwingCalendar
+ */
+/**
  * CalendarEvent is responsible for getting and setting a billboard's schedule's details.
  */
 public class CalendarEvent {
