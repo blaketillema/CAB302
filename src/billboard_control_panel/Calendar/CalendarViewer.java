@@ -18,6 +18,13 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 /**
+ * The following code was adapted from GitHub-user davejm's SwingCalendar public repository.
+ * Title: SwingCalendar
+ * Author: davejm
+ * Availability: https://github.com/davejm/SwingCalendar
+ */
+
+/**
  * CalendarViewer is responsible for creating and painting the CalendarViewer panel.
  * This includes dividing the panel into 7 days vertically, and 24 hours horizontally
  */

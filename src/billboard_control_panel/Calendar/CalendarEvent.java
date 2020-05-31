@@ -7,7 +7,6 @@ import java.time.LocalTime;
 
 /**
  * CalendarEvent is responsible for getting and setting a billboard's schedule's details.
- *
  */
 public class CalendarEvent {
     private static final Color DEFAULT_COLOR = Color.ORANGE;
@@ -32,6 +31,7 @@ public class CalendarEvent {
         this.color = color;
     }
 
+    // Getting date times
     public LocalDate getDate() {
         return date;
     }
@@ -54,6 +54,7 @@ public class CalendarEvent {
         return endDateTime;
     }
 
+    // Setting date times
     public void setStart(LocalTime start) {
         this.start = start;
     }
