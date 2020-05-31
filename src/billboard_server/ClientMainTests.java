@@ -5,6 +5,10 @@ import billboard_server.exceptions.ServerException;
 import java.time.OffsetDateTime;
 import java.util.*;
 
+/**
+ * Test class that demonstrates and runs various functionalities available in ClientServerInterface
+ * @author Max Ferguson
+ */
 public class ClientMainTests {
     public static void main(String[] args) throws ServerException {
         Test1_LoginAdmin();
@@ -23,14 +27,12 @@ public class ClientMainTests {
         Test4a_LoginBobScheduleBillboards();
         // get current schedule
         getCurrentScheduledBB();
-        //
-        Test4b_LoginBobEditSchedules();
+        // Test4b_LoginBobEditSchedules();
         Test4c_LoginBobDeleteSchedules();
 
         // EDIT_ALL_BILLBOARDS: editing/deleting other billboards (as jack)
         Test5a_LoginJackEditBillboard();
         Test5b_LoginJackDeleteBillboard();
-
 
     }
 
@@ -131,6 +133,7 @@ public class ClientMainTests {
         System.out.println(confirmed);
     }
 
+    @Deprecated
     static void Test4b_LoginBobEditSchedules() throws ServerException {
         ClientServerInterface server = new ClientServerInterface();
         server.login("bob", "2345");
@@ -138,7 +141,6 @@ public class ClientMainTests {
         String billboardId = server.getBillboardId("joe's billboard 2");
         String scheduleId = server.getScheduleId(billboardId);
         server.editSchedule(scheduleId, randomNewSchedule(billboardId));
-
 
         TreeMap<String, Object> confirmed = server.getSchedule(scheduleId);
         System.out.println(confirmed);

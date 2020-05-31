@@ -1,11 +1,18 @@
 package billboard_server;
 
+/**
+ * Definitions used to ensure data is formatted correctly
+ * @author Max Ferguson
+ */
 public final class Protocol {
     public static final String TYPE = "type";
 
     public static final String DATABASE_CMD = "dbcmd";
     public static final String SERVER_CMD = "svcmd";
 
+    /**
+     * All possible commands that can be requested from the server
+     */
     public enum Cmd {
         NONE,
         ADD_USERS,
@@ -22,11 +29,13 @@ public final class Protocol {
         NAME_TO_ID,
         BOARD_TO_ID,
         BOARD_TO_SCHEDULE,
-        SCHEDULE_COMMAND
     }
 
     public static final String PERMISSION = "permissions";
 
+    /**
+     * Permission class that handles permissions by setting and reading bits of an integer
+     */
     public static final class Permission {
         public static final int NONE = 0b0;
         public static final int EDIT_ALL_BILLBOARDS = 0b1;
@@ -35,6 +44,11 @@ public final class Protocol {
         public static final int EDIT_USERS = 0b1000;
         public static final int ALL = 0b1111;
 
+        /**
+         * Converts the integer format of a permission into a human readable string
+         * @param permission The permission in integer format
+         * @return String the permission(s) in String format
+         */
         public static String toString(int permission) {
             if (permission == 0) {
                 return "None";

@@ -5,6 +5,11 @@ import billboard_server.Protocol;
 import java.io.Serializable;
 import java.util.TreeMap;
 
+/**
+ * Encapsulation class to send data from the client to the server
+ *
+ * @author Max Ferguson
+ */
 public class ClientRequest implements Serializable {
     public Protocol.Cmd cmd = Protocol.Cmd.NONE;
     public long sessionId = 0;
@@ -22,8 +27,7 @@ public class ClientRequest implements Serializable {
                 "\n---------------------------";
     }
 
-    public void print()
-    {
+    public void print() {
         System.out.println(this.toString());
     }
 }
