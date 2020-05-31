@@ -33,7 +33,6 @@ import org.w3c.dom.Element;
 
 import org.w3c.dom.*;
 
-// TODO - cleanup and documentation of BillboardControl class
 
 public class BillboardControl {
     private JTextField billboardNameArea;

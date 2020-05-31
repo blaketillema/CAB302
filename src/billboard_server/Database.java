@@ -31,7 +31,7 @@ public class Database {
             "billboardMsgColour VARCHAR(191)," +
             "billboardInfoColour VARCHAR(191)," +
             "FOREIGN KEY (billboardCreator) REFERENCES users(userId) ON DELETE CASCADE )";
-    // TODO: add support for startTime as datetime object
+
     private static final String SCHEDULE_TABLE = "CREATE TABLE IF NOT EXISTS schedules ( " +
             "scheduleId VARCHAR(191) PRIMARY KEY NOT NULL," +
             "billboardId VARCHAR(191), " +
@@ -453,7 +453,6 @@ public class Database {
         conn.close();
     }
 
-    // TODO:
     public void editSchedule(String scheduleId, String billboardId, OffsetDateTime startTime, Integer duration, Boolean isRecurring, Integer recurFreqInMins) throws SQLException {
         connect();
         String editStatement = "UPDATE schedules SET ";

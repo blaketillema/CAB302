@@ -59,7 +59,6 @@ public class MainControl {
             public void actionPerformed(ActionEvent e) {
                 int n = JOptionPane.showConfirmDialog(null, "Are you sure you want to log out?");
                 if (n == JOptionPane.YES_OPTION) {
-                    // TODO: Make this a function (Hides and disposes Frames)
                     Window[] wns = LoginManager.getFrames();
                     for (Window wn1 : wns) {
                         wn1.dispose();
@@ -304,7 +303,6 @@ public class MainControl {
                     } catch (ServerException ex) {
                         JOptionPane.showMessageDialog(null,ex.getMessage());
                     }
-                    //TODO: ensure refresh works properly
                     refreshBillboards();
                 }
             }
