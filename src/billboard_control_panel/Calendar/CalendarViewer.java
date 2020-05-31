@@ -19,8 +19,9 @@ import java.util.Locale;
 
 /**
  * The following code was adapted from GitHub-user davejm's SwingCalendar public repository.
- * Title: SwingCalendar
+ * Title: SwingCalendar source code
  * Author: davejm
+ * Date: 2016
  * Availability: https://github.com/davejm/SwingCalendar
  */
 
