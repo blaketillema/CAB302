@@ -8,13 +8,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Base64;
-import java.util.Set;
 import java.util.TreeMap;
 
 /**
  * Create a JPanel based on the input TreeMap and determination of type of billboard,
  * Includes methods to create billboard types and to return the JPanel to the calling billboard class
- * <p>
  * Types of Billboards:
  * 1 - Message, picture and information
  * 2 - Message and Information
@@ -46,11 +44,9 @@ public class Panel {
      * Construct the Panel class with the input billboard data from a TreeMap, determines the type of billboard
      * and calls the appropriate JPanel creation class.
      *
-     * @param billboard
+     * @param billboard TreeMap sent from the Billboard class defining billboard contents
      */
     public Panel(TreeMap<String, String> billboard) {
-
-        printBillboard(billboard);
 
         // Get full screen Resolution and set variables
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -61,7 +57,6 @@ public class Panel {
         if (billboard.get("billboardBackground") != null && !billboard.get("billboardBackground").isEmpty()) {
             //not null or empty
             billboardBackground = billboard.get("billboardBackground");
-            System.out.println("Backgound is not null or empty:" + billboardBackground);
         } else {
             //null or empty, keep default
         }
@@ -104,11 +99,6 @@ public class Panel {
             }
         }
 
-        // Sanitise empty non-default empty strings to null
-
-        // testing code example;
-        // createDefault();
-
         // Determine billboard type and call method to create appropriate panel
         if (message != null) {
             if (information != null && (pictureData != null || pictureUrl != null)) {
@@ -147,16 +137,6 @@ public class Panel {
      * Creates a billboard of type; Message, Picture and Information
      */
     private void createMPI() {
-        /**
-         * If message, picture and information are all present, all three should be drawn.
-         * The picture should be drawn in the centre, but this time at 1/3 of screen width and screen height
-         * (once again, scaled to preserve aspect ratio).
-         * The message should be sized and centred to fit in the gap between the top of the picture
-         * and the top of the screen.
-         * The information should be sized and centred to fit in the gap between the bottom of the picture
-         * and the bottom of the screen.
-         */
-
         billboardPanel.setLayout(new BorderLayout());
 
         // Image SETUP
@@ -248,12 +228,6 @@ public class Panel {
      * Creates a billboard of type; Message and Information
      */
     private void createMI() {
-        /**
-         * If only message and information are present,
-         * the message text should be sized to fit in the top half of the screen and
-         * the information text sized to fit in the bottom half of the screen.
-         */
-
         billboardPanel.setLayout(new BorderLayout());
 
         // Top Message
@@ -315,13 +289,6 @@ public class Panel {
      * Creates a billboard of type; Message and Picture
      */
     private void createMP() {
-        /**
-         * If only message and picture are present, the picture should be the same size as before,
-         * but instead of being drawn in the centre of the screen,
-         * it should be drawn in the middle of the bottom 2/3 of the screen.
-         * The message should then be sized to fit in the remaining space between the top of the image
-         * and the top of the screen and placed in the centre of that gap.
-         */
 
         billboardPanel.setLayout(new BorderLayout());
 
@@ -377,11 +344,6 @@ public class Panel {
      * Creates a billboard of type; Message
      */
     private void createM() {
-        /**
-         * If only message is present, the message should be displayed almost as large as possible,
-         * within the constraints that the text cannot be broken across multiple lines and it must all fit on the screen.
-         */
-
         billboardPanel.setLayout(new BorderLayout());
 
         // Top Message
@@ -412,15 +374,6 @@ public class Panel {
      * Creates a billboard of type; Picture and Information
      */
     private void createPI() {
-        /**
-         * If only picture and information are present, the picture should be the same size as before,
-         * but instead of being drawn in the centre of the screen,
-         * it should be drawn in the middle of the top 2/3 of the screen.
-         * The information text should then be sized to fit in the remaining space between the bottom of the image and
-         * the bottom of the screen and placed in the centre of that gap
-         * (within the constraint that the information text should not fill up more than 75% of the screen’s width.)
-         */
-
         billboardPanel.setLayout(new BorderLayout());
 
         // IMAGE SETUP
@@ -479,15 +432,6 @@ public class Panel {
      * Creates a billboard of type; Picture
      */
     private void createP() {
-        /**
-         * If only picture is present, the image should be scaled up to
-         * half the width and height of the screen and displayed in the centre.
-         *  Note that this scaling up should not distort the aspect ratio of the image.
-         * If the screen is 1000 pixels wide and 750 pixels high, a 100x100 image should be displayed at 375x375.
-         * On the other hand, a 100x50 image should be displayed at 500x250. In each case the image is scaled,
-         * preserving the aspect ratio, to the largest size that can fit in a 500x375 (50% of the screen’s width and height) rectangle.
-         */
-
         billboardPanel.setLayout(new BorderLayout());
 
         // IMAGE SETUP
@@ -525,11 +469,6 @@ public class Panel {
      * Creates a billboard of type; Information
      */
     private void createI() {
-        /**
-         * If only information is present, the text should be displayed in the centre,
-         * with word wrapping and font size chosen so that the text fills up no more than 75% of the screen’s width
-         * and 50% of the screen’s height.
-         */
         billboardPanel.setLayout(new BorderLayout());
         // Bottom Text
         JPanel centrePanel = new JPanel(new GridBagLayout());
@@ -575,13 +514,13 @@ public class Panel {
     }
 
     /**
+     * Scales the font size of the input text and label given a rectangle to wrap text to fit
      * @param rectangleWidth
      * @param rectangleHeight
      * @param label
      * @param font
      * @param text
-     * @return fontSizeToSet
-     * Useful resources: http://www.java2s.com/Code/Java/Swing-JFC/GetMaxFittingFontSize.htm
+     * @return fontSizeToSet The font size required to wrap and fit the Jlabel rectangle
      */
     private int getFontSizeToFitBoundingRectangle(int rectangleWidth, int rectangleHeight, JLabel label, Font font, String text) {
         int minSize = 0;
@@ -612,8 +551,8 @@ public class Panel {
 
     /**
      * Get a font size to scale the message text for filling the billboard width
-     * @param messageLabel
-     * @return newFontSize
+     * @param messageLabel Message JLabel including message text
+     * @return newFontSize Font size found to fit the billboard width
      */
     private int scaleMessageFont(JLabel messageLabel) {
         // Scale message font to almost screen width size on one line
@@ -658,7 +597,6 @@ public class Panel {
 
     /**
      * Scale image to 50% of screen size
-     *
      * @param image input image to be scaled to half size of screen
      * @return BufferedImage scaled image result
      */
@@ -737,10 +675,9 @@ public class Panel {
 
     /**
      * Creates and returns a billboard image from either base64 image data or an Image URL
-     *
-     * @param pictureUrl
-     * @param pictureData
-     * @return
+     * @param pictureUrl Picture URL for a URL resource if applicable
+     * @param pictureData Picture Data for base64 image if applicable
+     * @return imagebuffer Image in memory created for the billboard panel
      * @throws IOException
      */
     private BufferedImage produceImageBuffer(String pictureUrl, String pictureData) throws IOException {
@@ -759,17 +696,6 @@ public class Panel {
 
         // Sample image goes here
         return imageBuffer;
-    }
-
-    /**
-     * Debugging class for printing treemap contents
-     */
-    private void printBillboard(TreeMap billboard) {
-        System.out.println("Billboard: Printing Billboard... (panel class)");
-        Set<String> set1 = billboard.keySet();
-        for (String key : set1) {
-            System.out.println("Billboard Key : " + key + "\t\t" + "Value : " + billboard.get(key));
-        }
     }
 
 }
