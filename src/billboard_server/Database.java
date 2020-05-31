@@ -90,13 +90,15 @@ public class Database {
         statement.executeQuery(BILLBOARDS_TABLE);
         statement.executeQuery(SCHEDULE_TABLE);
 
-        pstmt = conn.prepareStatement(adduserStatement);
-        pstmt.setString(1, adminUserID);
-        pstmt.setString(2, "admin");
-        pstmt.setString(3, adminHash);
-        pstmt.setString(4, adminSalt);
-        pstmt.setInt(5, Protocol.Permission.ALL);
-        pstmt.execute();
+        if(!doesUserExist(adminUserID)) {
+            pstmt = conn.prepareStatement(adduserStatement);
+            pstmt.setString(1, adminUserID);
+            pstmt.setString(2, "admin");
+            pstmt.setString(3, adminHash);
+            pstmt.setString(4, adminSalt);
+            pstmt.setInt(5, Protocol.Permission.ALL);
+            pstmt.execute();
+        }
 
         conn.close();
     }
